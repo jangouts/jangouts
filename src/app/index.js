@@ -6,7 +6,8 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
       .state('home', {
         url: '/',
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        controllerAs: 'vm'
       });
 
     $urlRouterProvider.otherwise('/');
