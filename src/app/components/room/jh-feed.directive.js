@@ -19,9 +19,12 @@
   }
 
   function jhFeedLink(scope, element, attrs) {
-    scope.$watch('vm.feed', function(newVal) {
+    scope.$watch('vm.feed.stream', function(newVal) {
       if (newVal !== undefined) {
-        attachMediaStream($('video', element)[0], newVal.stream);
+        var video = $('video', element)[0];
+        // Mute video of the local stream
+        video.muted = (scope.vm.feed.id === 0);
+        attachMediaStream(video, newVal);
       }
     });
   }
