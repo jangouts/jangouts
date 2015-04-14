@@ -1,22 +1,15 @@
 <div class="container">
 
-  <a href="#" ng-click="vm.enter()">Entrar</a>
-  <a href="#" ng-click="vm.change()">Cambiar</a>
+  <a href="#" ng-click="enter()">Entrar</a>
 
   <div class="row">
     <div class="col-sm-12 col-md-8">
       <div class="row">
-        <div>
-          <video id="main-video" muted="muted" autoplay>
-          </video>
-        </div>
+        <div jh-feed="true" feed="data.feeds[0]"></div>
       </div>
       <div class="row">
         <div id="thumbnails">
-          <figure>
-            <video muted="muted"></video>
-            <figcaption>One</figcaption>
-          </figure>
+          <figure jh-feed="true" feed="f" ng-repeat="f in data.feeds"></figure>
           <figure>
             <video muted="muted"></video>
             <figcaption>Two</figcaption>

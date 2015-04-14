@@ -2,20 +2,20 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .controller('MainCtrl', ['$rootScope', 'RoomService', MainCtrl]);
+    .controller('MainCtrl', ['$scope', '$timeout', 'RoomService', MainCtrl]);
 
-  function MainCtrl($rootScope, RoomService) {
-    var vm = this;
-    vm.localStream = undefined;
+  function MainCtrl($scope, $timeout, RoomService) {
+    $scope.data = {
+      feeds: [],
+    }
 
-    vm.enter = function () {
+    $scope.enter = function () {
       RoomService.enter(1234, 'trololo');
     }
 
-    $rootScope.$on('stream.create', function(evt, stream) {
-      debugger;
-      attachMediaStream(angular.element('#main-video')[0], stream);
-
+    $scope.$on('stream.create', function(evt, stream) {
+      $scope.data.feeds.push({ stream: stream, name: 'Testing'});
+      $scope.$apply();
     });
 
   }

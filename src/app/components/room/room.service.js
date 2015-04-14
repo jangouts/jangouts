@@ -11,11 +11,6 @@
     this.mcutest = undefined;
     this.userId = undefined;
     this.localStream = undefined;
-    this.streams = { local: 'testing' };
-
-    this.change = function () {
-      this.streams.another = 'hola';
-    }
 
     function enter(roomId, username) {
       var that = this;
