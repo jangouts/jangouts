@@ -6,6 +6,7 @@
 
   function RoomService($rootScope) {
     this.enter = enter;
+    this.sendData = sendData;
     this.server = 'http://' + window.location.hostname + ':8088/janus';
     window.janus = null;
     this.localFeed = {
@@ -44,6 +45,13 @@
                 error: function(error) {
                   console.error("Error attaching plugin... " + error);
                 },
+                consentDialog: function(on) {
+                  // TODO
+                  console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
+                },
+                ondataopen: function(data) {
+                  console.log("The publisher DataChannel is available");
+                },
                 onlocalstream: function(stream) {
                   // Step 4b (parallel with 4a).
                   // Send the created stream to the UI, so it can be attached to
@@ -51,6 +59,10 @@
                   console.log(" ::: Got a local stream :::");
                   that.localFeed.stream = stream;
                   $$rootScope.$broadcast('stream.create', that.localFeed);
+                },
+                oncleanup: function () {
+                  console.log(" ::: Got a cleanup notification: we are unpublished now :::");
+                  $$rootScope.$broadcast('room.exit');
                 },
                 onmessage: function (msg, jsep) {
                   var event = msg["videoroom"];
@@ -112,7 +124,13 @@
     function publishOwnFeed(useVideo, handler) {
       console.log("publishOwnFeed called");
       handler.createOffer({
-        media: { audioRecv: false, videoRecv: false, audioSend: true, videoSend: useVideo },	// Publishers are sendonly
+        media: { // Publishers are sendonly
+          audioRecv: false,
+          videoRecv: false,
+          audioSend: true,
+          videoSend: useVideo,
+          data: true
+        },
         success: function(jsep) {
           console.log("Got publisher SDP!");
           console.log(jsep);
@@ -187,7 +205,11 @@
             // Answer and attach
             remoteFeed.pluginHandle.createAnswer({
               jsep: jsep,
-              media: { audioSend: false, videoSend: false },	// We want recvonly audio/video
+              media: { // We want recvonly audio/video
+                audioSend: false,
+                videoSend: false,
+                data: true
+              },
               success: function(jsep) {
                 console.log("Got SDP!");
                 console.log(jsep);
@@ -205,10 +227,36 @@
           remoteFeed.stream = stream;
           $$rootScope.$broadcast('feeds.update', remoteFeed);
         },
+        ondataopen: function(data) {
+          console.log("The subscriber DataChannel is available");
+        },
+        ondata: function(data) {
+          console.log(" ::: Got info in the data channel (subscriber) :::");
+          var msg = JSON.parse(data);
+          var type = msg["type"];
+          var content = msg["content"];
+          // TODO
+          console.log(type);
+          console.log(content);
+        },
         oncleanup: function() {
 				  console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
           $$rootScope.$broadcast('feeds.delete', id);
         }
+      });
+    }
+
+    function sendData(type, content) {
+      var that = this;
+      var text = JSON.stringify({
+        type: type,
+        content: content
+      });
+      var handle = that.localFeed.pluginHandle;
+      handle.data({
+        text: text,
+        error: function(reason) { alert(reason); },
+        success: function() { console.log("Data sent: " + type); }
       });
     }
   }

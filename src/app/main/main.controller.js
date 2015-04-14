@@ -15,6 +15,10 @@
       });
     }
 
+    $scope.fistro = function () {
+      RoomService.sendData("chatMsg", "Eres un fistro");
+    }
+
     $scope.$on('stream.create', function(evt, feed) {
       $scope.data.feeds[feed.id] = feed;
       $scope.$apply();
@@ -43,6 +47,11 @@
     $scope.$on('room.destroy', function(evt) {
       // FIXME: alert and redirect to some place
       alert("Janus room destroyed");
+    });
+
+    $scope.$on('room.exit', function(evt) {
+      // FIXME: redirect to some place
+      alert("Exit");
     });
 
     $scope.enter();
