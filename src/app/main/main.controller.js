@@ -2,15 +2,17 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .controller('MainCtrl', ['$scope', '$timeout', 'RoomService', MainCtrl]);
+    .controller('MainCtrl', ['$scope', 'UsersService', 'RoomService', MainCtrl]);
 
-  function MainCtrl($scope, $timeout, RoomService) {
+  function MainCtrl($scope, UsersService, RoomService) {
     $scope.data = {
       feeds: {}
     }
 
     $scope.enter = function () {
-      RoomService.enter(1234, 'trololo');
+      UsersService.currentUser().then(function (user) {
+        RoomService.enter(1234, user.username);
+      });
     }
 
     $scope.$on('stream.create', function(evt, feed) {
@@ -42,5 +44,7 @@
       // FIXME: alert and redirect to some place
       alert("Janus room destroyed");
     });
+
+    $scope.enter();
   }
 })();
