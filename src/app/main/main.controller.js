@@ -72,6 +72,10 @@
       RoomService.sendData("chatMsg", text);
     });
 
+    $scope.$on('user.unset', function(evt) {
+      RoomService.leave();
+    });
+
     $scope.enter();
   }
 })();
