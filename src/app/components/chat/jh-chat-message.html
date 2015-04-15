@@ -5,6 +5,4 @@
     {{ vm.message.timestamp | date:'shortTime' }}
   </small>
 </div>
-<p>
-{{ vm.message.text | linky }}
-</p>
+<p ng-bind-html="vm.message.text | linky"></p>
