@@ -3,11 +3,13 @@
     .factory('Feed', feedFactory);
 
   function feedFactory() {
-    return function() {
-      this.id = 0;
-      this.display = null;
-      this.pluginHandle = null;
-      this.stream = null;
+    return function(attrs) {
+      attrs = attrs || {};
+
+      this.id = attrs.id || 0;
+      this.display = attrs.display || null;
+      this.pluginHandle = attrs.pluginHandle || null;
+      this.stream = attrs.stream || null;
     };
   }
 })();

@@ -165,7 +165,7 @@
 
     function createRemoteFeed(id, display, room, feeds) {
       // A new feed has been published, create a new plugin handle and attach to it as a listener
-      var remoteFeed = new Feed();
+      var remoteFeed = new Feed({id: id, display: display});
       var $$rootScope = $rootScope;
       window.janus.attach({
         plugin: "janus.plugin.videoroom",
