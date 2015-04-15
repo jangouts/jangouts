@@ -6,7 +6,7 @@
   figure {
     margin: 1px;
     min-width: 70px;
-    flex: 0.67;
+    max-width: 150px;
     transition: .5s;
     border: 1px solid #aaa;
 
@@ -17,27 +17,39 @@
   }
 }
 
-#chat {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+#main-video {
+  display: flex;
+  margin: 0 auto;
 
-  li {
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px dotted #aaa;
+  figure {
+    margin: 1px;
+    min-width: 70px;
+    transition: .5s;
 
-    p {
-      margin: 0;
-      color: #666;
+    video {
+      width: 100%;
+      height: auto;
     }
   }
 }
 
-#main-video {
-  width: 100%;
-  height: auto;
-  border: 1px solid #aaa;
+.chat {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px dotted #aaa;
+
+      p {
+        margin: 0;
+        color: #666;
+      }
+    }
+  }
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject

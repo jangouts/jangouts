@@ -1,21 +1,21 @@
-<div class="container">
-
-  <a href="#" ng-click="fistro()">Llamar fistro</a>
-
-  <div class="row">
-    <div class="col-sm-12 col-md-8">
-      <div class="row">
-        <div jh-feed="true" feed="data.feeds[0]"></div>
-      </div>
-      <div class="row">
-        <div id="thumbnails">
-          <figure jh-feed="true" feed="f" ng-repeat="f in data.feeds"></figure>
-        </div>
+<div class="row">
+  <div class="col-sm-12 col-md-8">
+    <div class="row">
+      <a href="#" ng-click="fistro()">Llamar fistro</a>
+      <div id="main-video">
+        <figure jh-feed="true" feed="data.feeds[0]"></figure>
       </div>
     </div>
-    <div class="col-sm-12 col-md-4">
-      <div>
-        <ul id="chat">
+    <div class="row">
+      <div id="thumbnails">
+        <figure jh-feed="true" feed="f" ng-repeat="f in data.feeds"></figure>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4">
+    <div class="chat panel panel-default">
+      <div class="panel-body">
+        <ul>
           <li>
             <div class="header">
               <strong>John doe</strong>
@@ -44,12 +44,20 @@
           </li>
         </ul>
       </div>
+      <div class="panel-footer">
+        <div class="input-group">
+          <input class="form-control input-sm" placeholder="Type your message here..." type="text">
+          <span class="input-group-btn">
+            <button class="btn btn-sm">Send</button>
+          </span>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
-  <hr>
+<hr>
 
-  <div class="footer">
-    <p>With ♥ from <a href="https://twitter.com/Swiip">@Swiip</a></p>
-  </div>
+<div class="footer">
+  <p>With ♥ from <a href="https://twitter.com/Swiip">@Swiip</a></p>
 </div>
