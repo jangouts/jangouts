@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('UsersService', ['$q', '$state', UserService]);
+    .service('UserService', ['$q', '$state', '$rootScope', UserService]);
 
-  function UserService($q, $state) {
+  function UserService($q, $state, $rootScope) {
     this.user = null;
 
     this.signin = function (username) {

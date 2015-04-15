@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .controller('MainCtrl', ['$scope', 'UsersService', 'RoomService', MainCtrl]);
+    .controller('MainCtrl', ['$scope', 'UserService', 'RoomService', MainCtrl]);
 
-  function MainCtrl($scope, UsersService, RoomService) {
+  function MainCtrl($scope, UserService, RoomService) {
     $scope.data = {
       feeds: {},
       chat: [],
@@ -12,7 +12,7 @@
     };
 
     $scope.enter = function () {
-      UsersService.currentUser().then(function (user) {
+      UserService.currentUser().then(function (user) {
         RoomService.enter(1234, user.username);
       });
     };

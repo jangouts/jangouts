@@ -2,8 +2,8 @@
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ui.router', 'ui.bootstrap'])
   .config(function ($stateProvider, $urlRouterProvider) {
-    var authenticated = ['$q', '$state', 'UsersService', function($q, $state, UsersService) {
-      return UsersService.currentUser();
+    var authenticated = ['$q', '$state', 'UserService', function($q, $state, UserService) {
+      return UserService.currentUser();
     }];
 
     $stateProvider
