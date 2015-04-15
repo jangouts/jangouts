@@ -2,12 +2,12 @@
   <div class="col-sm-12 col-md-8">
     <div class="row">
       <div id="main-video">
-        <figure jh-feed="true" feed="data.feeds[0]"></figure>
+        <figure jh-feed="true" feed="data.mainFeed"></figure>
       </div>
     </div>
     <div class="row">
       <div id="thumbnails">
-        <figure jh-feed="true" feed="f" ng-repeat="f in data.feeds"></figure>
+        <figure jh-feed="true" feed="f" click-fn="setMainFeed(f)" ng-repeat="f in data.feeds"></figure>
       </div>
     </div>
   </div>

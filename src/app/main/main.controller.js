@@ -7,7 +7,8 @@
   function MainCtrl($scope, UsersService, RoomService) {
     $scope.data = {
       feeds: {},
-      chat: []
+      chat: [],
+      mainFeed: {}
     };
 
     $scope.enter = function () {
@@ -16,8 +17,14 @@
       });
     };
 
+    $scope.setMainFeed = function(feed) {
+      console.debug(feed);
+      $scope.data.mainFeed = feed;
+    }
+
     $scope.$on('stream.create', function(evt, feed) {
       $scope.data.feeds[feed.id] = feed;
+      $scope.data.mainFeed = feed;
       $scope.$apply();
     });
 

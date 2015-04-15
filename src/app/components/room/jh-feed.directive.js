@@ -9,7 +9,8 @@
       restrict: 'EA',
       templateUrl: 'app/components/room/jh-feed.html',
       scope: {
-        feed: '='
+        feed: '=',
+        clickFn: '&'
       },
       controllerAs: 'vm',
       bindToController: true,
