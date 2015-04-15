@@ -2,20 +2,15 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('RoomService', ['$rootScope', RoomService]);
+    .service('RoomService', ['$rootScope', 'Feed', RoomService]);
 
-  function RoomService($rootScope) {
+  function RoomService($rootScope, Feed) {
     this.enter = enter;
     this.sendData = sendData;
     this.leave = leave;
     this.server = 'http://' + window.location.hostname + ':8088/janus';
     window.janus = null;
-    this.localFeed = {
-      id: 0,
-      display: null,
-      pluginHandle: null,
-      stream: null
-    };
+    this.localFeed = new Feed();
     this.feeds = {};
     this.roomId = undefined;
 
@@ -170,7 +165,7 @@
 
     function createRemoteFeed(id, display, room, feeds) {
       // A new feed has been published, create a new plugin handle and attach to it as a listener
-      var remoteFeed = { id: id, display: display };
+      var remoteFeed = new Feed();
       var $$rootScope = $rootScope;
       window.janus.attach({
         plugin: "janus.plugin.videoroom",
