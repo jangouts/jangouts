@@ -1,0 +1,10 @@
+<div class="header">
+  <strong>{{ vm.message.feed.display }}</strong>
+  <small class="pull-right text-muted">
+    <span class="glyphicon glyphicon-time"></span>
+    {{ vm.message.timestamp | date:'shortTime' }}
+  </small>
+</div>
+<p>
+{{ vm.message.text | linky }}
+</p>

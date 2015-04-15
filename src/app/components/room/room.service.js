@@ -235,9 +235,11 @@
           var msg = JSON.parse(data);
           var type = msg["type"];
           var content = msg["content"];
-          // TODO
-          console.log(type);
-          console.log(content);
+          if (type == "chatMsg") {
+            $$rootScope.$broadcast('chat.message', {feed: remoteFeed, content: content});
+          } else {
+            console.log("Unknown data type: " + type);
+          }
         },
         oncleanup: function() {
 				  console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");

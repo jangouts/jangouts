@@ -1,7 +1,6 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
     <div class="row">
-      <a href="#" ng-click="fistro()">Llamar fistro</a>
       <div id="main-video">
         <figure jh-feed="true" feed="data.feeds[0]"></figure>
       </div>
@@ -13,46 +12,7 @@
     </div>
   </div>
   <div class="col-sm-12 col-md-4">
-    <div class="chat panel panel-default">
-      <div class="panel-body">
-        <ul>
-          <li>
-            <div class="header">
-              <strong>John doe</strong>
-              <small class="pull-right text-muted">
-                <span class="glyphicon glyphicon-time"></span>
-                10:59
-              </small>
-            </div>
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-            cursus ultricies dolor, non rutrum magna.
-            </p>
-          </li>
-          <li>
-            <div class="header">
-              <strong>Pepe lopez</strong>
-              <small class="pull-right text-muted">
-                <span class="glyphicon glyphicon-time"></span>
-                11:00
-              </small>
-            </div>
-            <p>
-            Lorem what?
-            <a href="http://https://github.com/ancorgs/hackweek12">https://github.com/ancorgs/hackweek12</a>
-            </p>
-          </li>
-        </ul>
-      </div>
-      <div class="panel-footer">
-        <div class="input-group">
-          <input class="form-control input-sm" placeholder="Type your message here..." type="text">
-          <span class="input-group-btn">
-            <button class="btn btn-sm">Send</button>
-          </span>
-        </div>
-      </div>
-    </div>
+    <jh-chat messages="data.chat"></jh-chat>
   </div>
 </div>
 

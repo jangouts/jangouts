@@ -6,17 +6,14 @@
 
   function MainCtrl($scope, UsersService, RoomService) {
     $scope.data = {
-      feeds: {}
+      feeds: {},
+      chat: []
     }
 
     $scope.enter = function () {
       UsersService.currentUser().then(function (user) {
         RoomService.enter(1234, user.username);
       });
-    }
-
-    $scope.fistro = function () {
-      RoomService.sendData("chatMsg", "Eres un fistro");
     }
 
     $scope.$on('stream.create', function(evt, feed) {
@@ -52,6 +49,25 @@
     $scope.$on('room.exit', function(evt) {
       // FIXME: redirect to some place
       alert("Exit");
+    });
+
+    $scope.$on('chat.message', function(evt, message) {
+      $scope.data.chat.push({
+        feed: message.feed,
+        text: message.content,
+        timestamp: new Date()
+      });
+      $scope.$apply();
+    });
+
+    $scope.$on('chat.submit', function(evt, text) {
+      $scope.data.chat.push({
+        feed: $scope.data.feeds[0],
+        text: text,
+        timestamp: new Date()
+      });
+      $scope.$apply();
+      RoomService.sendData("chatMsg", text);
     });
 
     $scope.enter();
