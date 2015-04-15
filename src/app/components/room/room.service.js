@@ -43,6 +43,7 @@
                 },
                 consentDialog: function(on) {
                   // TODO
+                  $$rootScope.$broadcast('consentDialog.changed', on);
                   console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
                 },
                 ondataopen: function(data) {

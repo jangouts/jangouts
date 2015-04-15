@@ -2,13 +2,14 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .controller('MainCtrl', ['$scope', 'UserService', 'RoomService', MainCtrl]);
+    .controller('MainCtrl', ['$scope', 'blockUI', 'UserService', 'RoomService', MainCtrl]);
 
-  function MainCtrl($scope, UserService, RoomService) {
+  function MainCtrl($scope, blockUI, UserService, RoomService) {
     $scope.data = {
       feeds: {},
       chat: [],
-      mainFeed: {}
+      mainFeed: {},
+      isConsentDialogOpen: null
     };
 
     $scope.enter = function () {
@@ -74,6 +75,14 @@
 
     $scope.$on('user.unset', function(evt) {
       RoomService.leave();
+    });
+
+    $scope.$on('consentDialog.changed', function(evt, open) {
+      if (open) {
+        blockUI.start();
+      } else if (!open) {
+        blockUI.stop();
+      }
     });
 
     $scope.enter();

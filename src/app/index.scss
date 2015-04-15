@@ -52,13 +52,22 @@
   }
 }
 
-/* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
-   all your sass files automatically */
-// injector
-// endinjector
-
 .form-signin {
   max-width: 25%;
   margin: 0 auto;
   padding: 15px;
 }
+
+body div.block-ui-container {
+  background-color: black;
+  opacity: 0.5 !important;
+  img {
+    z-index: 1001;
+  }
+}
+
+/* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
+   all your sass files automatically */
+// injector
+// endinjector
+
