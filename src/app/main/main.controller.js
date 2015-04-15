@@ -53,11 +53,6 @@
       alert("Janus room destroyed");
     });
 
-    $scope.$on('room.exit', function(evt) {
-      // FIXME: redirect to some place
-      alert("Exit");
-    });
-
     $scope.$on('chat.message', function(evt, message) {
       $scope.data.chat.push({
         feed: message.feed,

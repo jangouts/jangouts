@@ -7,6 +7,7 @@
   function RoomService($rootScope) {
     this.enter = enter;
     this.sendData = sendData;
+    this.leave = leave;
     this.server = 'http://' + window.location.hostname + ':8088/janus';
     window.janus = null;
     this.localFeed = {
@@ -62,7 +63,6 @@
                 },
                 oncleanup: function () {
                   console.log(" ::: Got a cleanup notification: we are unpublished now :::");
-                  $$rootScope.$broadcast('room.exit');
                 },
                 onmessage: function (msg, jsep) {
                   var event = msg["videoroom"];
@@ -260,6 +260,16 @@
         error: function(reason) { alert(reason); },
         success: function() { console.log("Data sent: " + type); }
       });
+    }
+
+    function leave() {
+      var that = this;
+      // Detach all the remote feeds before leaving the room
+      for (var i in Object.keys(that.feeds)) {
+        detachRemoteFeed(i, that.feeds)
+      }
+      that.localFeed.pluginHandle.detach();
+      that.localFeed.pluginHandle = null;
     }
   }
 }());
