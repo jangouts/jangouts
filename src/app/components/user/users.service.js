@@ -1,4 +1,6 @@
 (function () {
+  'use strict';
+
   angular.module('janusHangouts')
     .service('UsersService', ['$q', '$state', UserService]);
 
@@ -7,7 +9,7 @@
 
     this.signin = function (username) {
       var d = $q.defer();
-      this.user = { username: username }
+      this.user = { username: username };
       d.resolve(this.user);
       return d.promise;
     };

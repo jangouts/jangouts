@@ -24,9 +24,8 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
 
     $urlRouterProvider.otherwise('/');
   })
-  .run(function ($rootScope, $state, $log) {
-    $rootScope.$on('$stateChangeError', function (error) {
+  .run(function ($rootScope, $state) {
+    $rootScope.$on('$stateChangeError', function () {
       $state.go('signin');
     });
   });
-;

@@ -6,7 +6,7 @@
   "eqeqeq": true,
   "immed": true,
   "indent": 2,
-  "latedef": true,
+  "latedef": false,
   "newcap": true,
   "noarg": true,
   "regexp": true,
@@ -31,6 +31,8 @@
     "afterEach": false,
     "expect": false,
     // Direct access to console
-    "console": false
+    "console": false,
+    "window": false,
+    "alert": false
   }
 }

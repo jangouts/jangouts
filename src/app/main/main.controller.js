@@ -8,13 +8,13 @@
     $scope.data = {
       feeds: {},
       chat: []
-    }
+    };
 
     $scope.enter = function () {
       UsersService.currentUser().then(function (user) {
         RoomService.enter(1234, user.username);
       });
-    }
+    };
 
     $scope.$on('stream.create', function(evt, feed) {
       $scope.data.feeds[feed.id] = feed;
