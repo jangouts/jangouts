@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .controller('MainCtrl', ['$scope', 'blockUI', 'UserService', 'RoomService', MainCtrl]);
+    .controller('MainCtrl', ['$scope', 'blockUI', 'UserService', 'RoomService', 'DataChannelService', MainCtrl]);
 
-  function MainCtrl($scope, blockUI, UserService, RoomService) {
+  function MainCtrl($scope, blockUI, UserService, RoomService, DataChannelService) {
     $scope.data = {
       feeds: {},
       chat: [],
@@ -65,12 +65,11 @@
 
     $scope.$on('chat.submit', function(evt, text) {
       $scope.data.chat.push({
-        feed: $scope.data.feeds[0],
+        feed: window.publisherFeed,
         text: text,
         timestamp: new Date()
       });
-      $scope.$apply();
-      RoomService.sendData("chatMsg", text);
+      DataChannelService.sendMessage("chatMsg", text);
     });
 
     $scope.$on('user.unset', function(evt) {

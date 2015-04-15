@@ -1,2 +1,15 @@
-<video autoplay ng-click="vm.clickFn()"></video>
-<figcaption>{{ vm.feed.display }}</figcaption>
+<video autoplay></video>
+<figcaption>
+  {{ vm.feed.display }}
+  <button type="button" class="btn btn-default btn-xs" ng-click="vm.toggleAudio()">
+    <span class="glyphicon glyphicon-volume-off" ng-show="vm.feed.audioEnabled"></span>
+    <span class="glyphicon glyphicon-volume-up" ng-hide="vm.feed.audioEnabled"></span>
+  </button>
+  <button type="button" class="btn btn-default btn-xs" ng-click="vm.toggleVideo()">
+    <span class="glyphicon glyphicon-eye-close" ng-show="vm.feed.videoEnabled"></span>
+    <span class="glyphicon glyphicon-eye-open" ng-hide="vm.feed.videoEnabled"></span>
+  </button>
+  <button type="button" class="btn btn-default btn-xs" ng-click="vm.clickFn()">
+    <span class="glyphicon glyphicon-arrow-up"></span>
+  </button>
+</figcaption>

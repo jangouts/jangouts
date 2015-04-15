@@ -2,22 +2,21 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('RoomService', ['$rootScope', 'Feed', RoomService]);
+    .service('RoomService', ['$rootScope', 'Feed', 'DataChannelService', RoomService]);
 
-  function RoomService($rootScope, Feed) {
+  function RoomService($rootScope, Feed, DataChannelService) {
     this.enter = enter;
-    this.sendData = sendData;
     this.leave = leave;
     this.server = 'http://' + window.location.hostname + ':8088/janus';
     window.janus = null;
-    this.localFeed = new Feed();
+    window.publisherFeed = new Feed();
     this.feeds = {};
     this.roomId = undefined;
 
     // Enter the room
     function enter(roomId, username) {
       var that = this;
-      that.localFeed.display = username;
+      window.publisherFeed.display = username;
       var $$rootScope = $rootScope;
       Janus.init({
         debug: false,
@@ -29,13 +28,13 @@
               window.janus.attach({
                 plugin: "janus.plugin.videoroom",
                 success: function(pluginHandle) {
-                  that.localFeed.pluginHandle = pluginHandle;
+                  window.publisherFeed.pluginHandle = pluginHandle;
                   that.roomId = roomId;
-                  console.log("Plugin attached! (" + that.localFeed.pluginHandle.getPlugin() + ", id=" + that.localFeed.pluginHandle.getId() + ")");
+                  console.log("Plugin attached! (" + window.publisherFeed.pluginHandle.getPlugin() + ", id=" + window.publisherFeed.pluginHandle.getId() + ")");
                   // Step 1. Right after attaching to the plugin, we send a
                   // request to join
                   var register = { "request": "join", "room": roomId, "ptype": "publisher", "display": username };
-                  that.localFeed.pluginHandle.send({"message": register});
+                  window.publisherFeed.pluginHandle.send({"message": register});
                   console.log("  -- This is a publisher/manager");
                 },
                 error: function(error) {
@@ -54,8 +53,8 @@
                   // Send the created stream to the UI, so it can be attached to
                   // some element of the local DOM
                   console.log(" ::: Got a local stream :::");
-                  that.localFeed.stream = stream;
-                  $$rootScope.$broadcast('stream.create', that.localFeed);
+                  window.publisherFeed.stream = stream;
+                  $$rootScope.$broadcast('stream.create', window.publisherFeed);
                 },
                 oncleanup: function () {
                   console.log(" ::: Got a cleanup notification: we are unpublished now :::");
@@ -69,12 +68,12 @@
                     console.log("Successfully joined room " + msg["room"]);
                     // Step 3. Establish WebRTC connection with the Janus server
                     // Step 4a (parallel with 4b). Publish our feed on server
-                    publishOwnFeed(true, that.localFeed.pluginHandle);
+                    publishOwnFeed(true, window.publisherFeed.pluginHandle);
 
                     // Step 5. Attach to existing feeds, if any
                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                       var list = msg["publishers"];
-                      subscribeToFeeds(list, that.roomId, that.feeds);
+                      subscribeToFeeds(list, that.roomId, that.feeds, window.publisherFeed);
                     }
                   // The room has been destroyed
                   } else if(event === "destroyed") {
@@ -84,7 +83,7 @@
                     // Any new feed to attach to?
                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                       var list = msg["publishers"];
-                      subscribeToFeeds(list, that.roomId, that.feeds);
+                      subscribeToFeeds(list, that.roomId, that.feeds, window.publisherFeed);
                     // One of the publishers has gone away?
                     } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {
                       var leaving = msg["leaving"];
@@ -103,7 +102,7 @@
                   if (jsep !== undefined && jsep !== null) {
                     console.log("Handling SDP as well...");
                     console.log(jsep);
-                    that.localFeed.pluginHandle.handleRemoteJsep({jsep: jsep});
+                    window.publisherFeed.pluginHandle.handleRemoteJsep({jsep: jsep});
                   }
                 }
               });
@@ -153,6 +152,8 @@
         console.log("  >> [" + id + "] " + display);
         createRemoteFeed(id, display, room, feeds)
       }
+      // Send status information to inform the newcommers
+      window.publisherFeed.sendStatus();
     }
 
     function detachRemoteFeed(feedId, feeds) {
@@ -161,7 +162,7 @@
       if (remoteFeed === undefined) { return };
       console.log("Feed " + remoteFeed.id + " (" + remoteFeed.display + ") has left the room, detaching");
       delete feeds[feedId];
-      remoteFeed.pluginHandle.detach();
+      remoteFeed.detach();
     }
 
     function createRemoteFeed(id, display, room, feeds) {
@@ -228,33 +229,12 @@
         },
         ondata: function(data) {
           console.log(" ::: Got info in the data channel (subscriber) :::");
-          var msg = JSON.parse(data);
-          var type = msg["type"];
-          var content = msg["content"];
-          if (type == "chatMsg") {
-            $$rootScope.$broadcast('chat.message', {feed: remoteFeed, content: content});
-          } else {
-            console.log("Unknown data type: " + type);
-          }
+          DataChannelService.receiveMessage(data, remoteFeed);
         },
         oncleanup: function() {
 				  console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
           $$rootScope.$broadcast('feeds.delete', id);
         }
-      });
-    }
-
-    function sendData(type, content) {
-      var that = this;
-      var text = JSON.stringify({
-        type: type,
-        content: content
-      });
-      var handle = that.localFeed.pluginHandle;
-      handle.data({
-        text: text,
-        error: function(reason) { alert(reason); },
-        success: function() { console.log("Data sent: " + type); }
       });
     }
 
@@ -264,8 +244,7 @@
       for (var i in Object.keys(that.feeds)) {
         detachRemoteFeed(i, that.feeds)
       }
-      that.localFeed.pluginHandle.detach();
-      that.localFeed.pluginHandle = null;
+      window.publisherFeed.detach();
     }
   }
 }());

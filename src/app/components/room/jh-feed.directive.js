@@ -33,5 +33,21 @@
   function JhFeedCtrl() {
     /* jshint: validthis */
     var vm = this;
+
+    vm.toggleAudio = function() {
+      if (vm.feed.audioEnabled) {
+        vm.feed.setEnabledTrack("audio", false);
+      } else {
+        vm.feed.setEnabledTrack("audio", true);
+      }
+    }
+
+    vm.toggleVideo = function() {
+      if (vm.feed.videoEnabled) {
+        vm.feed.setEnabledTrack("video", false);
+      } else {
+        vm.feed.setEnabledTrack("video", true);
+      }
+    }
   }
 })();
