@@ -33,7 +33,11 @@
   }
 }
 
-.chat {
+.jh-chat {
+  .panel-body {
+    height: 60vh;
+    overflow: auto;
+  }
   ul {
     list-style: none;
     margin: 0;

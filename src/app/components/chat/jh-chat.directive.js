@@ -11,14 +11,29 @@
       scope: {
         messages: '='
       },
+      link: jhChatLink,
       controllerAs: 'vm',
       bindToController: true,
       controller: JhChatCtrl
     };
+
+    function jhChatLink(scope) {
+      scope.$watch('vm.messages.length', function(newVal) {
+        console.log('launching');
+        if (newVal !== undefined) {
+          // Scroll to bottom of messages list.
+          var messagesList = document.getElementById('jh-chat-messages')
+          setTimeout(function() {
+            messagesList.scrollTop = messagesList.scrollHeight;
+          }, 100);
+        }
+      });
+    }
+
+    function JhChatCtrl() {
+      /* jshint: validthis */
+      var vm = this;
+    }
   }
 
-  function JhChatCtrl() {
-    /* jshint: validthis */
-    var vm = this;
-  }
 })();
