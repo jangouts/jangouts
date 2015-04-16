@@ -9,7 +9,8 @@
       feeds: {},
       chat: [],
       mainFeed: {},
-      isConsentDialogOpen: null
+      isConsentDialogOpen: null,
+      isScreenShared: false
     };
 
     $scope.enter = function () {
@@ -21,6 +22,16 @@
     $scope.setMainFeed = function(feed) {
       console.debug(feed);
       $scope.data.mainFeed = feed;
+    }
+
+    $scope.publishScreen = function() {
+      RoomService.publishScreen();
+      $scope.data.isScreenShared = true;
+    }
+
+    $scope.unPublishScreen = function() {
+      RoomService.unPublishScreen();
+      $scope.data.isScreenShared = false;
     }
 
     $scope.$on('stream.create', function(evt, feed) {

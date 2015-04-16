@@ -7,11 +7,18 @@
   function RoomService($rootScope, Feed, DataChannelService) {
     this.enter = enter;
     this.leave = leave;
-    this.server = 'http://' + window.location.hostname + ':8088/janus';
+    if(window.location.protocol === 'http:') {
+      this.server = 'http://' + window.location.hostname + ':8088/janus';
+    } else {
+      this.server = "https://" + window.location.hostname + ":8089/janus";
+    }
     window.janus = null;
     window.publisherFeed = new Feed();
+    this.screenFeed = null;
     this.feeds = {};
     this.roomId = undefined;
+    this.publishScreen = publishScreen;
+    this.unPublishScreen = unPublishScreen;
 
     // Enter the room
     function enter(roomId, username) {
@@ -116,29 +123,101 @@
     // (optionally) video with the janus server. On success (the stream is
     // created and accepted), publishes the corresponding feed on the janus
     // server.
-    function publishOwnFeed(useVideo, handler) {
+    function publishOwnFeed(useVideo, handle) {
       console.log("publishOwnFeed called");
-      handler.createOffer({
+      handle.createOffer({
         media: { // Publishers are sendonly
-          audioRecv: false,
           videoRecv: false,
-          audioSend: true,
           videoSend: useVideo,
+          audioRecv: false,
+          audioSend: true,
           data: true
         },
         success: function(jsep) {
           console.log("Got publisher SDP!");
           console.log(jsep);
           var publish = { "request": "configure", "audio": true, "video": useVideo };
-          handler.send({"message": publish, "jsep": jsep});
+          handle.send({"message": publish, "jsep": jsep});
         },
         error: function(error) {
           console.error("WebRTC error:" + error);
           if (useVideo) {
-            publishOwnFeed(false, handler);
+            publishOwnFeed(false, handle);
           } else {
-					  console.error("WebRTC error... " + JSON.stringify(error));
+            console.error("WebRTC error... " + JSON.stringify(error));
+            console.error(error);
           }
+        }
+      });
+    }
+
+    function publishScreen() {
+      var that = this;
+      var $$rootScope = $rootScope;
+      var feed;
+      window.janus.attach({
+        plugin: "janus.plugin.videoroom",
+        success: function(pluginHandle) {
+          feed = new Feed({
+            pluginHandle: pluginHandle,
+            display: window.publisherFeed.display
+          });
+          console.log("Screen sharing plugin attached");
+          var register = { "request": "join", "room": that.roomId, "ptype": "publisher", "display": feed.display };
+          feed.pluginHandle.send({"message": register});
+          that.screenFeed = feed;
+        },
+        error: function(error) {
+          console.error("  -- Error attaching screen plugin... " + error);
+        },
+        onlocalstream: function(stream) {
+          console.log(" ::: Got the screen stream :::");
+          that.screenFeed.stream = stream;
+        },
+        onmessage: function(msg, jsep) {
+          console.log(" ::: Got a message (screen) :::");
+          console.log(msg);
+          var event = msg.videoroom;
+
+          if (event === "joined") {
+            publishScreenFeed(that.screenFeed);
+          } else {
+            console.log("Unexpected event for screen");
+          }
+          if (jsep !== undefined && jsep !== null) {
+            console.log("Handling SDP as well...");
+            console.log(jsep);
+            that.screenFeed.pluginHandle.handleRemoteJsep({jsep: jsep});
+          }
+        }
+      });
+    }
+
+    function unPublishScreen() {
+      var $$rootScope = $rootScope;
+      this.screenFeed.detach();
+      this.screenFeed = null;
+    }
+
+    function publishScreenFeed(feed) {
+      console.log("publishScreenFeed called");
+      var handle = feed.pluginHandle;
+      handle.createOffer({
+        media: {
+          videoRecv: false,
+          audio: false,
+          video: "screen",
+          data: false
+        },
+        success: function(jsep) {
+          console.log("Got publisher SDP!");
+          console.log(jsep);
+          var publish = { "request": "configure", "audio": false, "video": true };
+          handle.send({"message": publish, "jsep": jsep});
+        },
+        error: function(error) {
+          console.error("WebRTC error:" + error);
+          console.error(error);
         }
       });
     }

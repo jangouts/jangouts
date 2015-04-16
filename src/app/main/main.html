@@ -12,7 +12,24 @@
     </div>
   </div>
   <div class="col-sm-12 col-md-4">
-    <jh-chat messages="data.chat"></jh-chat>
+    <div class="row">
+      <button
+        class="btn btn-default"
+        ng-hide="data.isScreenShared"
+        ng-click="publishScreen()">
+        Publish screen (needs some previous setup)
+      </button>
+      <button
+        class="btn btn-default"
+        ng-show="data.isScreenShared"
+        ng-click="unPublishScreen()">
+        Unpublish screen
+      </button>
+    </div>
+    <br>
+    <div class="row">
+      <jh-chat messages="data.chat"></jh-chat>
+    </div>
   </div>
 </div>
 

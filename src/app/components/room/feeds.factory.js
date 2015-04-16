@@ -36,7 +36,8 @@
       this.sendStatus = function() {
         var content = {
           audioEnabled: that.audioEnabled,
-          videoEnabled: that.videoEnabled
+          videoEnabled: that.videoEnabled,
+          display:      that.display
         };
 
         DataChannelService.sendMessage("statusUpdate", content);
