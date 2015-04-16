@@ -32,6 +32,7 @@ module.exports = function(options) {
     browserSync.instance = browserSync.init({
       startPath: '/',
       server: server,
+      https: process.env.JH_HTTPS === 'true',
       browser: browser
     });
   }
