@@ -5,4 +5,4 @@
     {{ vm.message.timestamp | date:'shortTime' }}
   </small>
 </div>
-<p ng-bind-html="vm.message.text | linky"></p>
+<ng-emoticons emoticons-data="vm.message.text" emoticons-options="vm.emoticonsOptions">

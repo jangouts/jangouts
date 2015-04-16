@@ -20,5 +20,23 @@
   function JhChatMessageCtrl() {
     /* jshint: validthis */
     var vm = this;
+
+    vm.emoticonsOptions = {
+      link: true,
+      linkTarget: '_blank',
+      image: {
+        embed: true
+      },
+      pdf: {
+        embed: false
+      },
+      audio: {
+        embed: false
+      },
+      code: {
+        highlight: false,
+      },
+      basicVideo: false
+    };
   }
 })();
