@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .factory('Feed', ['DataChannelService', feedFactory]);
+    .factory('Feed', ['$timeout', 'DataChannelService', feedFactory]);
 
-  function feedFactory(DataChannelService) {
+  function feedFactory($timeout, DataChannelService) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -18,16 +18,16 @@
       this.videoEnabled = true;
 
       this.setEnabledTrack = function(type, enabled) {
+        var that = this;
         if (this === window.publisherFeed) {
-          // FIXME: this is not triggering the button change in the UI
-          // Imo, aquí no parece que ng-show y ng-hide se den por aludidos.
-          // Sólo funciona si le dimos al botón localmente. Si esta función
-          // es llamada como resultado de un setEnabledRemoteTrack, la interfaz
-          // no se entera
-          var track = getTrack(type);
-          track.enabled = enabled;
-          this[type + "Enabled"] = enabled;
-          this.sendStatus();
+          // We need to use $timeout function just to let AngularJS know
+          // about changes in the feed.
+          $timeout(function() {
+            var track = getTrack(type);
+            track.enabled = enabled;
+            that[type + "Enabled"] = enabled;
+            that.sendStatus();
+          });
         } else {
           setEnabledRemoteTrack(type, enabled);
         }
@@ -45,12 +45,12 @@
       // Update local representation of the feed (used to process
       // information sent by the remote peer using sendStatus)
       this.updateStatus = function(attrs) {
-        // FIXME: this is not triggering the button change in the UI
-        // Imo aquí tampoco parece que ng-show y ng-hide se den por aludidos
-        _.assign(this, attrs);
-        // Just an alternative in case _assign was the culprit
-        //var that = this;
-        //_.forOwn(attrs, function(val, key) { that[key] = val });
+        // We need to use $timeout function just to let AngularJS know
+        // about changes in the feed.
+        var that = this;
+        $timeout(function() {
+          _.assign(that, attrs);
+        });
       };
 
       this.detach = function() {
