@@ -41,9 +41,8 @@
                   console.error("Error attaching plugin... " + error);
                 },
                 consentDialog: function(on) {
-                  // TODO
-                  $$rootScope.$broadcast('consentDialog.changed', on);
                   console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
+                  $$rootScope.$broadcast('consentDialog.changed', on);
                 },
                 ondataopen: function(data) {
                   console.log("The publisher DataChannel is available");
