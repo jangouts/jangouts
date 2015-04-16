@@ -65,6 +65,7 @@
                   // Step 2. Response from janus confirming we joined
                   if (event === "joined") {
                     console.log("Successfully joined room " + msg["room"]);
+                    window.publisherFeed.id = msg.id;
                     // Step 3. Establish WebRTC connection with the Janus server
                     // Step 4a (parallel with 4b). Publish our feed on server
                     publishOwnFeed(true, window.publisherFeed.pluginHandle);

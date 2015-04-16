@@ -31,7 +31,7 @@
       if (type === "chatMsg") {
         $$rootScope.$broadcast('chat.message', {feed: remoteFeed, content: content});
       } else if (type === "setTrackStatusRequest") {
-        if (window.publisherFeed.display === content.display) {
+        if (window.publisherFeed.id === content.target) {
           window.publisherFeed.setEnabledTrack(content.trackType, content.enabled);
         }
       } else if (type === "statusUpdate") {

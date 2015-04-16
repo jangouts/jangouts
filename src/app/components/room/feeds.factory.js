@@ -78,7 +78,7 @@
 
       function setEnabledRemoteTrack(type, enabled) {
         var content = {
-          display: that.display,
+          target: that.id,
           trackType: type,
           enabled: enabled
         };
