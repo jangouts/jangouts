@@ -8,7 +8,7 @@
   poster="assets/images/suse.png"
   ng-hide="vm.isVideoVisible()">
 </video>
-<figcaption>
+<figcaption ng-class="{'own-feed': 'vm.isPublished()'}">
   {{ vm.feed.display }}
 
   <button

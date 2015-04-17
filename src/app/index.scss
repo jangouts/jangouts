@@ -70,6 +70,12 @@ body div.block-ui-container {
   }
 }
 
+// FIXME: it must be moved from here when jh-feed directive is implemented in a
+// proper way (including the figure in the directive).
+figcaption.own-feed {
+  background-color: #ddd;
+}
+
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */
 // injector
