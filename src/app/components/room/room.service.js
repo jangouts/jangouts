@@ -13,7 +13,7 @@
       this.server = "https://" + window.location.hostname + ":8089/janus";
     }
     window.janus = null;
-    window.publisherFeed = new Feed();
+    window.publisherFeed = new Feed({isPublisher: true});
     this.screenFeed = null;
     this.feeds = {};
     this.roomId = undefined;
@@ -80,7 +80,7 @@
                     // Step 5. Attach to existing feeds, if any
                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                       var list = msg["publishers"];
-                      subscribeToFeeds(list, that.roomId, that.feeds, window.publisherFeed);
+                      subscribeToFeeds(list, that.roomId, that.feeds);
                     }
                   // The room has been destroyed
                   } else if(event === "destroyed") {
@@ -90,7 +90,9 @@
                     // Any new feed to attach to?
                     if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
                       var list = msg["publishers"];
-                      subscribeToFeeds(list, that.roomId, that.feeds, window.publisherFeed);
+                      // FIXME this should not be needed with a proper FeedsService
+                      var ignoreId = (that.screenFeed) ? that.screenFeed.id : null;
+                      subscribeToFeeds(list, that.roomId, that.feeds, ignoreId);
                     // One of the publishers has gone away?
                     } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {
                       var leaving = msg["leaving"];
@@ -160,7 +162,8 @@
         success: function(pluginHandle) {
           feed = new Feed({
             pluginHandle: pluginHandle,
-            display: window.publisherFeed.display
+            display: window.publisherFeed.display,
+            isPublisher: true
           });
           console.log("Screen sharing plugin attached");
           var register = { "request": "join", "room": that.roomId, "ptype": "publisher", "display": feed.display };
@@ -173,6 +176,7 @@
         onlocalstream: function(stream) {
           console.log(" ::: Got the screen stream :::");
           that.screenFeed.stream = stream;
+          $$rootScope.$broadcast('stream.create', that.screenFeed);
         },
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (screen) :::");
@@ -180,6 +184,7 @@
           var event = msg.videoroom;
 
           if (event === "joined") {
+            that.screenFeed.id = msg.id;
             publishScreenFeed(that.screenFeed);
           } else {
             console.log("Unexpected event for screen");
@@ -195,8 +200,12 @@
 
     function unPublishScreen() {
       var $$rootScope = $rootScope;
-      this.screenFeed.detach();
-      this.screenFeed = null;
+      if (this.screenFeed) {
+        delete this.feeds[this.screenFeed.id];
+        this.screenFeed.detach();
+        $$rootScope.$broadcast('feeds.delete', this.screenFeed.id);
+        this.screenFeed = null;
+      }
     }
 
     function publishScreenFeed(feed) {
@@ -222,16 +231,20 @@
       });
     }
 
-    function subscribeToFeeds(list, room, feeds) {
+    function subscribeToFeeds(list, room, feeds, ignoreId) {
       console.log("Got a list of available publishers/feeds:");
       console.log(list);
       for(var f in list) {
         var id = list[f]["id"];
         var display = list[f]["display"];
         console.log("  >> [" + id + "] " + display);
-        createRemoteFeed(id, display, room, feeds)
+        if (id !== ignoreId) {
+          createRemoteFeed(id, display, room, feeds)
+        }
       }
       // Send status information to inform the newcommers
+      // TODO send status about all the feeds that are publisher as soon as the
+      // architecture allows it
       window.publisherFeed.sendStatus();
     }
 
@@ -319,6 +332,7 @@
 
     function leave() {
       var that = this;
+      this.unPublishScreen();
       // Detach all the remote feeds before leaving the room
       for (var i in Object.keys(that.feeds)) {
         detachRemoteFeed(i, that.feeds)

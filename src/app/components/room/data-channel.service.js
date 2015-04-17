@@ -35,6 +35,8 @@
           window.publisherFeed.setEnabledTrack(content.trackType, content.enabled);
         }
       } else if (type === "statusUpdate") {
+        // TODO poor architecture enforces that a remote feed can only speak
+        // about itself (and not about it screenFeed)
         remoteFeed.updateStatus(content);
       } else {
         console.log("Unknown data type: " + type);

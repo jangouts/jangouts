@@ -49,5 +49,24 @@
         vm.feed.setEnabledTrack("video", true);
       }
     }
+
+    vm.isVideoVisible = function() {
+      return (vm.feed.videoEnabled && vm.feed.hasVideo());
+    }
+    vm.showsEnableAudio = function() {
+      return (vm.feed.isPublisher && vm.feed.hasAudio() && !vm.feed.audioEnabled);
+    }
+    vm.showsDisableAudio = function() {
+      return (vm.feed.audioEnabled && vm.feed.hasAudio());
+    }
+    vm.showsAudioOff = function() {
+      return (!vm.feed.isPublisher && vm.feed.hasAudio && vm.feed.hasAudio() && !vm.feed.audioEnabled);
+    }
+    vm.showsEnableVideo = function() {
+      return (vm.feed.isPublisher && vm.feed.hasVideo() && !vm.feed.videoEnabled);
+    }
+    vm.showsDisableVideo = function() {
+      return (vm.feed.isPublisher && vm.feed.hasVideo() && vm.feed.videoEnabled);
+    }
   }
 })();

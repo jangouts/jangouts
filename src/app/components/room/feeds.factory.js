@@ -13,13 +13,14 @@
       this.display = attrs.display || null;
       this.pluginHandle = attrs.pluginHandle || null;
       this.stream = attrs.stream || null;
+      this.isPublisher = attrs.isPublisher || false;
 
       this.audioEnabled = true;
       this.videoEnabled = true;
 
       this.setEnabledTrack = function(type, enabled) {
         var that = this;
-        if (this === window.publisherFeed) {
+        if (this.isPublisher) {
           // We need to use $timeout function just to let AngularJS know
           // about changes in the feed.
           $timeout(function() {
@@ -29,12 +30,18 @@
             that.sendStatus();
           });
         } else {
-          setEnabledRemoteTrack(type, enabled);
+          // Just ensure we don't send a harmful request
+          if (type === "audio" && enabled === false) {
+            setEnabledRemoteTrack(type, enabled);
+          }
         }
       };
 
       this.sendStatus = function() {
         var content = {
+          // TODO: Right now it's only useful to send information about
+          // publisherFeed. After some refactoring we should be able to send
+          // information about any feed
           audioEnabled: that.audioEnabled,
           videoEnabled: that.videoEnabled,
           display:      that.display
@@ -60,6 +67,16 @@
         this.stream = null;
         this.audioEnabled = true;
         this.videoEnabled = true;
+      }
+
+      this.hasAudio = function() {
+        var that = this;
+        return (getTrack('audio') !== null);
+      }
+
+      this.hasVideo = function() {
+        var that = this;
+        return (getTrack('video') !== null);
       }
 
       function getTrack(type) {
