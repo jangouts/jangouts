@@ -1,0 +1,10 @@
+# Browsers' support
+
+Firefox 37 on Linux -> Ok
+Firefox 37 on Windows -> Ok
+Firefox 36 on Linux -> seems to fail
+Chromium 40 on Linux -> ok
+Chromium 41 on Linux -> works but causes high CPU usage on server (see [1])
+
+
+[1] https://groups.google.com/forum/#!topic/meetecho-janus/y0DqRVWDIN8
