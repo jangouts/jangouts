@@ -17,6 +17,7 @@
 
       this.audioEnabled = true;
       this.videoEnabled = true;
+      this.speaking = false;
 
       this.setEnabledTrack = function(type, enabled) {
         var that = this;
@@ -30,12 +31,23 @@
             that.sendStatus();
           });
         } else {
+          // FIXME harmful request should be filtered in the other side
           // Just ensure we don't send a harmful request
           if (type === "audio" && enabled === false) {
             setEnabledRemoteTrack(type, enabled);
           }
         }
       };
+
+      this.setSpeaking = function(speaking) {
+        var that = this;
+        // We need to use $timeout function just to let AngularJS know
+        // about changes in the feed.
+        $timeout(function() {
+          that.speaking = speaking;
+          that.sendStatus();
+        });
+      }
 
       this.sendStatus = function() {
         var content = {
@@ -44,6 +56,7 @@
           // information about any feed
           audioEnabled: that.audioEnabled,
           videoEnabled: that.videoEnabled,
+          speaking:     that.speaking,
           display:      that.display
         };
 

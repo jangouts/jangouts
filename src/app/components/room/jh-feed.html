@@ -13,7 +13,8 @@
 
   <button
     type="button"
-    class="btn btn-xs btn-default"
+    class="btn btn-xs"
+    ng-class="{'btn-primary': vm.feed.speaking, 'btn-default': !vm.feed.speaking}"
     ng-click="vm.toggleAudio()"
     title="Disable audio"
     ng-show="vm.showsDisableAudio()">

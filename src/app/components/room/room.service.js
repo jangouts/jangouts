@@ -60,6 +60,7 @@
                   // some element of the local DOM
                   console.log(" ::: Got a local stream :::");
                   window.publisherFeed.stream = stream;
+                  observeAudio(window.publisherFeed);
                   $$rootScope.$broadcast('stream.create', window.publisherFeed);
                 },
                 oncleanup: function () {
@@ -338,6 +339,16 @@
         detachRemoteFeed(i, that.feeds)
       }
       window.publisherFeed.detach();
+    }
+
+    function observeAudio(feed) {
+      var speech = hark(feed.stream);
+      speech.on('speaking', function() {
+        feed.setSpeaking(true);
+      });
+      speech.on('stopped_speaking', function() {
+        feed.setSpeaking(false);
+      });
     }
   }
 }());
