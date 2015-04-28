@@ -95,9 +95,8 @@
             publishMainFeed(true);
 
             // Step 5. Attach to existing feeds, if any
-            if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
-              var list = msg["publishers"];
-              subscribeToFeeds(list, that.roomId);
+            if ((msg["publishers"] instanceof Array) && msg["publishers"].length > 0) {
+              subscribeToFeeds(msg["publishers"], that.roomId);
             }
             // The room has been destroyed
           } else if(event === "destroyed") {
@@ -105,9 +104,8 @@
             $$rootScope.$broadcast('room.destroy'); /*XXX*/
           } else if(event === "event") {
             // Any new feed to attach to?
-            if(msg["publishers"] !== undefined && msg["publishers"] !== null) {
-              var list = msg["publishers"];
-              subscribeToFeeds(list, that.roomId);
+            if ((msg["publishers"] instanceof Array) && msg["publishers"].length > 0) {
+              subscribeToFeeds(msg["publishers"], that.roomId);
               // One of the publishers has gone away?
             } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {
               var leaving = msg["leaving"];
