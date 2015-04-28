@@ -28,13 +28,11 @@
             var track = getTrack(type);
             track.enabled = enabled;
             that[type + "Enabled"] = enabled;
-            that.sendStatus();
+            DataChannelService.sendStatus(this);
           });
         } else {
-          // FIXME harmful request should be filtered in the other side
-          // Just ensure we don't send a harmful request
           if (type === "audio" && enabled === false) {
-            setEnabledRemoteTrack(type, enabled);
+            DataChannelService.sendMuteRequest(this);
           }
         }
       };
@@ -45,27 +43,22 @@
         // about changes in the feed.
         $timeout(function() {
           that.speaking = speaking;
-          that.sendStatus();
+          DataChannelService.sendStatus(this);
         });
       }
 
-      this.sendStatus = function() {
-        var content = {
-          // TODO: Right now it's only useful to send information about
-          // publisherFeed. After some refactoring we should be able to send
-          // information about any feed
+      this.getStatus = function() {
+        return {
           audioEnabled: that.audioEnabled,
           videoEnabled: that.videoEnabled,
           speaking:     that.speaking,
           display:      that.display
         };
-
-        DataChannelService.sendMessage("statusUpdate", content);
       }
 
       // Update local representation of the feed (used to process
-      // information sent by the remote peer using sendStatus)
-      this.updateStatus = function(attrs) {
+      // information sent by the remote peer)
+      this.setStatus = function(attrs) {
         // We need to use $timeout function just to let AngularJS know
         // about changes in the feed.
         var that = this;
@@ -73,14 +66,6 @@
           _.assign(that, attrs);
         });
       };
-
-      this.detach = function() {
-        this.pluginHandle.detach();
-        this.pluginHandle = null;
-        this.stream = null;
-        this.audioEnabled = true;
-        this.videoEnabled = true;
-      }
 
       this.hasAudio = function() {
         var that = this;
@@ -105,16 +90,6 @@
           return null;
         }
         return track;
-      }
-
-      function setEnabledRemoteTrack(type, enabled) {
-        var content = {
-          target: that.id,
-          trackType: type,
-          enabled: enabled
-        };
-
-        DataChannelService.sendMessage("setTrackStatusRequest", content);
       }
     };
   }

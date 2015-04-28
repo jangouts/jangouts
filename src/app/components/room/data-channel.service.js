@@ -2,25 +2,12 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('DataChannelService', ['$rootScope', DataChannelService]);
+    .service('DataChannelService', ['$rootScope', FeedsService, DataChannelService]);
 
-  function DataChannelService($rootScope) {
-    this.sendMessage = sendMessage;
+  function DataChannelService($rootScope, FeedsService) {
+    this.sendStatus = sendStatus;
+    this.sendMuteRequest = sendMuteRequest;
     this.receiveMessage = receiveMessage;
-
-    function sendMessage(type, content) {
-      var text = JSON.stringify({
-        type: type,
-        content: content
-      });
-      if (window.publisherFeed.stream === null) { return; }
-      var handle = window.publisherFeed.pluginHandle;
-      handle.data({
-        text: text,
-        error: function(reason) { alert(reason); },
-        success: function() { console.log("Data sent: " + type); }
-      });
-    }
 
     function receiveMessage(data, remoteFeed) {
       var $$rootScope = $rootScope;
@@ -30,17 +17,51 @@
 
       if (type === "chatMsg") {
         $$rootScope.$broadcast('chat.message', {feed: remoteFeed, content: content});
-      } else if (type === "setTrackStatusRequest") {
-        if (window.publisherFeed.id === content.target) {
-          window.publisherFeed.setEnabledTrack(content.trackType, content.enabled);
+      } else if (type === "muteRequest") {
+        var feed = FeedsService.find(content.target);
+        if (feed.isPublisher) {
+          feed.setEnabledTrack("audio", false);
         }
       } else if (type === "statusUpdate") {
-        // TODO poor architecture enforces that a remote feed can only speak
-        // about itself (and not about it screenFeed)
-        remoteFeed.updateStatus(content);
+        var feed = FeedsService.find(content.source);
+        if (feed && !feed.isPublisher) {
+          feed.setStatus(content.status);
+        }
       } else {
         console.log("Unknown data type: " + type);
       }
     }
+
+    function sendMuteRequest(feed) {
+      var content = {
+        target: feed.id,
+      };
+
+      sendMessage("muteRequest", content);
+    }
+
+    function sendStatus(feed) {
+      var content = {
+        source: feed.id,
+        status: feed.getStatus()
+      };
+
+      sendMessage("statusUpdate", content);
+    }
+
+    function sendMessage(type, content) {
+      var text = JSON.stringify({
+        type: type,
+        content: content
+      });
+      if (FeedsService.findMain() === null) { return; }
+      var handle = FeedsService.findMain().pluginHandle;
+      handle.data({
+        text: text,
+        error: function(reason) { alert(reason); },
+        success: function() { console.log("Data sent: " + type); }
+      });
+    }
+
   }
 }());
