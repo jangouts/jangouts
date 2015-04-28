@@ -15,7 +15,9 @@
 
     $scope.enter = function () {
       UserService.currentUser().then(function (user) {
-        RoomService.enter(1234, user.username);
+        RoomService.connect().then(function() {
+          RoomService.enter(1234, user.username);
+        });
       });
     };
 

@@ -2,21 +2,36 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('RoomService', ['$rootScope', FeedsService, DataChannelService, RoomService]);
+    .service('RoomService', ['$q', '$rootScope', 'FeedsService', 'DataChannelService', 'ActionService', RoomService]);
 
-  function RoomService($rootScope, FeedsService, DataChannelService) {
+  function RoomService($q, $rootScope, FeedsService, DataChannelService, ActionService) {
+    this.connect = connect;
     this.enter = enter;
     this.leave = leave;
+    this.roomId = null;
 
     if(window.location.protocol === 'http:') {
       this.server = 'http://' + window.location.hostname + ':8088/janus';
     } else {
       this.server = "https://" + window.location.hostname + ":8089/janus";
     }
-    Janus.init({debug: true});
-    this.janus = new Janus({server: this.server});
 
-    this.roomId = null;
+    function connect() {
+      var deferred = $q.defer();
+
+      Janus.init({debug: false});
+      this.janus = new Janus({
+        server: this.server,
+        success: function() {
+          deferred.resolve();
+        },
+        error: function() {
+          deferred.reject();
+        }
+      });
+
+      return deferred.promise;
+    }
 
 /*    window.publisherFeed = new Feed({isPublisher: true});
     this.screenFeed = null;
