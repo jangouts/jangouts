@@ -28,7 +28,7 @@
             var track = getTrack(type);
             track.enabled = enabled;
             that[type + "Enabled"] = enabled;
-            DataChannelService.sendStatus(this);
+            DataChannelService.sendStatus(that);
           });
         } else {
           if (type === "audio" && enabled === false) {
@@ -43,7 +43,7 @@
         // about changes in the feed.
         $timeout(function() {
           that.speaking = speaking;
-          DataChannelService.sendStatus(this);
+          DataChannelService.sendStatus(that);
         });
       }
 
