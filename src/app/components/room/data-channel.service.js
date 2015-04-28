@@ -2,11 +2,12 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('DataChannelService', ['$rootScope', FeedsService, DataChannelService]);
+    .service('DataChannelService', ['$rootScope', 'FeedsService', DataChannelService]);
 
   function DataChannelService($rootScope, FeedsService) {
     this.sendStatus = sendStatus;
     this.sendMuteRequest = sendMuteRequest;
+    this.sendMessage = sendMessage;
     this.receiveMessage = receiveMessage;
 
     function receiveMessage(data, remoteFeed) {

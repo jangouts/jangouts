@@ -17,11 +17,11 @@
         id: feedId,
         isPublisher: true
       });
-      FeedService.add(feed, {main: true});
+      FeedsService.add(feed, {main: true});
     }
 
     function leaveRoom() {
-      for (var feed in FeedsService.all()) {
+      for (var feed in FeedsService.allFeeds()) {
         feed.pluginHandle.detach();
         FeedsService.destroy(feed.id);
       }
@@ -34,7 +34,7 @@
         id: feedId,
         isPublisher: false
       });
-      FeedService.add(feed);
+      FeedsService.add(feed);
     }
 
     function detachRemoteFeed(feedId) {

@@ -16,11 +16,11 @@
     this.publisherFeeds = publisherFeeds;
 
     function find(id) {
-      return (feeds[id] || null);
+      return (this.feeds[id] || null);
     }
 
     function findMain() {
-      return mainFeed;
+      return this.mainFeed;
     }
 
     function add(feed, options) {
