@@ -7,7 +7,7 @@
   function jhFeed() {
     return {
       restrict: 'EA',
-      templateUrl: 'app/components/room/jh-feed.html',
+      templateUrl: 'app/components/videochat/jh-feed.html',
       scope: {
         feed: '=',
         clickFn: '&'

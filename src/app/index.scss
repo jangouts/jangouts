@@ -14,21 +14,29 @@
       width: 100%;
       height: auto;
     }
+
+    &.own-feed {
+      figcaption {
+        background: #ddd;
+      }
+    }
   }
 }
 
 #main-video {
   display: flex;
   margin: 0 auto;
+  height: 20vw;
 
   figure {
+    height: 20vw;
     margin: 1px;
     min-width: 70px;
     transition: .5s;
 
     video {
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 80%;
     }
   }
 }
@@ -77,12 +85,6 @@ body div.block-ui-container {
   img {
     z-index: 1001;
   }
-}
-
-// FIXME: it must be moved from here when jh-feed directive is implemented in a
-// proper way (including the figure in the directive).
-figcaption.own-feed {
-  background-color: #ddd;
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject

@@ -1,0 +1,8 @@
+<div class="row">
+  <div id="main-video" jh-main-feed="true" feed="vm.highlightedFeed()" class="text-center"></div>
+</div>
+<div class="row">
+  <div id="thumbnails">
+    <div jh-feed="true" feed="f" click-fn="vm.toggleHighlightedFeed(f)" ng-repeat="f in vm.feeds()"></div>
+  </div>
+</div>

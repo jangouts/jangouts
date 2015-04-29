@@ -6,9 +6,6 @@
 
   function MainCtrl($scope, blockUI, UserService, RoomService, DataChannelService, FeedsService, LogService) {
     $scope.data = {
-      feeds: function() {
-        return FeedsService.allFeeds();
-      },
       logEntries: function() {
         return LogService.allEntries();
       },
@@ -25,20 +22,6 @@
         });
       });
     };
-
-    $scope.highlightedFeed = function () {
-      if ($scope.data.highlightedByUser !== null) {
-        $scope.data.highlighted = $scope.data.highlightedByUser;
-      } else {
-        $scope.data.highlighted = FeedsService.speakingFeed() || $scope.data.highlighted || FeedsService.findMain();
-      }
-      return $scope.data.highlighted;
-    }
-
-    $scope.toggleHighlightedFeed = function(feed) {
-      console.log("Toggling feed");
-      $scope.data.highlightedByUser = $scope.data.highlightedByUser ? null : feed;
-    }
 
     $scope.publishScreen = function() {
       RoomService.publishScreen();
