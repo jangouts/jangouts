@@ -82,7 +82,6 @@
             feed.stream = stream;
             observeAudio(feed);
           })
-          //$$rootScope.$broadcast('stream.create', feed); /*XXX*/
         },
         oncleanup: function () {
           console.log(" ::: Got a cleanup notification: we are unpublished now :::");
@@ -214,9 +213,10 @@
           console.log("Event: " + event);
           if(event === "attached") {
             // Subscriber created and attached
-            ActionService.remoteJoin(id, display, _handle);
-            $$rootScope.$broadcast('feeds.add', FeedsService.find(id)); /*XXX*/
-            console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg["room"]);
+            $timeout(function() {
+              ActionService.remoteJoin(id, display, _handle);
+              console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg["room"]);
+            });
           } else {
             // What has just happened?
           }
@@ -245,9 +245,10 @@
           }
         },
         onremotestream: function(stream) {
-          var feed = FeedsService.find(id);
-          feed.stream = stream;
-          $$rootScope.$broadcast('feeds.update', feed); /*XXX*/
+          $timeout(function() {
+            var feed = FeedsService.find(id);
+            feed.stream = stream;
+          });
         },
         ondataopen: function(data) {
           console.log("The subscriber DataChannel is available");
@@ -257,8 +258,9 @@
           DataChannelService.receiveMessage(data, id);
         },
         oncleanup: function() {
-				  console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
-          $$rootScope.$broadcast('feeds.delete', id); /*XXX*/
+          $timeout(function () {
+            console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
+          });
         }
       });
     }
