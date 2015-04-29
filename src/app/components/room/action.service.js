@@ -23,10 +23,11 @@
     }
 
     function leaveRoom() {
-      for (var feed in FeedsService.allFeeds()) {
-        feed.pluginHandle.detach();
-        FeedsService.destroy(feed.id);
-      }
+      var that = this;
+
+      _.forEach(FeedsService.allFeeds(), function(feed) {
+        that.detachFeed(feed.id);
+      });
     }
 
     function publishScreen(feedId, display, handle) {
@@ -53,7 +54,7 @@
     function detachFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return };
-      console.log("Feed " + feedId + " (" + feed.display + ") has left the room, detaching");
+      console.log("Detaching feed " + feedId + " (" + feed.display + ")");
       feed.pluginHandle.detach();
       FeedsService.destroy(feedId);
     }

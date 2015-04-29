@@ -34,7 +34,7 @@
 
     function destroy(id) {
       delete this.feeds[id];
-      if (id === this.mainFeed.id) {
+      if (this.mainFeed && (id === this.mainFeed.id)) {
         this.mainFeed = null;
       }
     }
