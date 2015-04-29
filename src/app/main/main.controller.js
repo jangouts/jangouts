@@ -2,13 +2,13 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .controller('MainCtrl', ['$scope', 'blockUI', 'UserService', 'RoomService', 'DataChannelService', MainCtrl]);
+    .controller('MainCtrl', ['$scope', 'blockUI', 'UserService', 'RoomService', 'DataChannelService', 'FeedsService', MainCtrl]);
 
-  function MainCtrl($scope, blockUI, UserService, RoomService, DataChannelService) {
+  function MainCtrl($scope, blockUI, UserService, RoomService, DataChannelService, FeedsService) {
     $scope.data = {
-      feeds: {},
+      feeds: FeedsService.feeds,
       chat: [],
-      mainFeed: {},
+      mainFeed: FeedsService.mainFeed,
       isConsentDialogOpen: null,
       isScreenShared: false
     };
@@ -36,24 +36,16 @@
       $scope.data.isScreenShared = false;
     }
 
-    $scope.$on('stream.create', function(evt, feed) {
-      $scope.data.feeds[feed.id] = feed;
-      $scope.data.mainFeed = feed;
-      $scope.$apply();
-    });
-
+    /* FIXME: code smell. These signals should be removed. */
     $scope.$on('feeds.add', function(evt, feed) {
-      $scope.data.feeds[feed.id] = feed;
       $scope.$apply();
     });
 
     $scope.$on('feeds.update', function(evt, feed) {
-      $scope.data.feeds[feed.id] = feed;
       $scope.$apply();
     });
 
     $scope.$on('feeds.delete', function(evt, feedId) {
-      delete $scope.data.feeds[feedId];
       $scope.$apply();
     });
 

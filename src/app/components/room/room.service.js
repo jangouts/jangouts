@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('RoomService', ['$q', '$rootScope', 'FeedsService', 'DataChannelService', 'ActionService', RoomService]);
+    .service('RoomService', ['$q', '$rootScope', '$timeout', 'FeedsService', 'DataChannelService', 'ActionService', RoomService]);
 
-  function RoomService($q, $rootScope, FeedsService, DataChannelService, ActionService) {
+  function RoomService($q, $rootScope, $timeout, FeedsService, DataChannelService, ActionService) {
     this.connect = connect;
     this.enter = enter;
     this.leave = leave;
@@ -78,9 +78,11 @@
           // some element of the local DOM
           console.log(" ::: Got a local stream :::");
           var feed = FeedsService.findMain();
-          feed.stream = stream;
-          observeAudio(feed);
-          $$rootScope.$broadcast('stream.create', feed); /*XXX*/
+          $timeout(function () {
+            feed.stream = stream;
+            observeAudio(feed);
+          })
+          //$$rootScope.$broadcast('stream.create', feed); /*XXX*/
         },
         oncleanup: function () {
           console.log(" ::: Got a cleanup notification: we are unpublished now :::");
@@ -283,8 +285,10 @@
         },
         onlocalstream: function(stream) {
           console.log(" ::: Got the screen stream :::");
-          that.screenFeed.stream = stream;
-          $$rootScope.$broadcast('stream.create', that.screenFeed);
+          $timeout(function() {
+            that.screenFeed.stream = stream;
+          });
+          //$$rootScope.$broadcast('stream.create', that.screenFeed);
         },
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (screen) :::");
