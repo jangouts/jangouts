@@ -6,9 +6,11 @@
 
   function MainCtrl($scope, blockUI, UserService, RoomService, DataChannelService, FeedsService) {
     $scope.data = {
-      feeds: FeedsService.feeds,
+      feeds: function() {
+        return FeedsService.allFeeds();
+      },
       chat: [],
-      mainFeed: FeedsService.mainFeed,
+      mainFeed: FeedsService.findMain(),
       isConsentDialogOpen: null,
       isScreenShared: false
     };
@@ -37,10 +39,6 @@
     }
 
     /* FIXME: code smell. These signals should be removed. */
-    $scope.$on('feeds.add', function(evt, feed) {
-      $scope.$apply();
-    });
-
     $scope.$on('feeds.update', function(evt, feed) {
       $scope.$apply();
     });
