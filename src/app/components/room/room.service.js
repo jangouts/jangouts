@@ -213,7 +213,7 @@
           if(event === "attached") {
             // Subscriber created and attached
             ActionService.remoteJoin(id, display, _handle);
-            $$rootScope.$broadcast('feeds.add', remoteFeed); /*XXX*/
+            $$rootScope.$broadcast('feeds.add', FeedsService.find(id)); /*XXX*/
             console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg["room"]);
           } else {
             // What has just happened?
