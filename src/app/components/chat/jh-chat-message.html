@@ -1,8 +1,8 @@
 <div class="header">
-  <strong>{{ vm.message.feed.display }}</strong>
+  <strong>{{ vm.message.content.feed.display }}</strong>
   <small class="pull-right text-muted">
     <span class="glyphicon glyphicon-time"></span>
     {{ vm.message.timestamp | date:'shortTime' }}
   </small>
 </div>
-<ng-emoticons emoticons-data="vm.message.text" emoticons-options="vm.emoticonsOptions">
+<ng-emoticons emoticons-data="vm.message.content.text" emoticons-options="vm.emoticonsOptions">

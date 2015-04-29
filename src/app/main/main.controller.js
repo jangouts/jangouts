@@ -2,14 +2,16 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .controller('MainCtrl', ['$scope', 'blockUI', 'UserService', 'RoomService', 'DataChannelService', 'FeedsService', MainCtrl]);
+    .controller('MainCtrl', ['$scope', 'blockUI', 'UserService', 'RoomService', 'DataChannelService', 'FeedsService', 'LogService', MainCtrl]);
 
-  function MainCtrl($scope, blockUI, UserService, RoomService, DataChannelService, FeedsService) {
+  function MainCtrl($scope, blockUI, UserService, RoomService, DataChannelService, FeedsService, LogService) {
     $scope.data = {
       feeds: function() {
         return FeedsService.allFeeds();
       },
-      chat: [],
+      logEntries: function() {
+        return LogService.allEntries();
+      },
       highlightedByUser: null,
       highlighted: null,
       isConsentDialogOpen: null,
@@ -65,24 +67,6 @@
     $scope.$on('room.destroy', function(evt) {
       // FIXME: alert and redirect to some place
       alert("Janus room destroyed");
-    });
-
-    $scope.$on('chat.message', function(evt, message) {
-      $scope.data.chat.push({
-        feed: message.feed,
-        text: message.content,
-        timestamp: new Date()
-      });
-      $scope.$apply();
-    });
-
-    $scope.$on('chat.submit', function(evt, text) {
-      $scope.data.chat.push({
-        feed: window.publisherFeed,
-        text: text,
-        timestamp: new Date()
-      });
-      DataChannelService.sendMessage("chatMsg", text);
     });
 
     $scope.$on('user.unset', function(evt) {

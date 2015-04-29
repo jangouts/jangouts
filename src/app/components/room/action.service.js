@@ -2,13 +2,14 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('ActionService', ['Feed', 'FeedsService', ActionService]);
+    .service('ActionService', ['$timeout', 'Feed', 'FeedsService', 'LogEntry', 'LogService', 'DataChannelService', ActionService]);
 
-  function ActionService(Feed, FeedsService) {
+  function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataChannelService) {
     this.enterRoom = enterRoom;
     this.leaveRoom = leaveRoom;
     this.remoteJoin = remoteJoin;
     this.detachRemoteFeed = detachRemoteFeed;
+    this.writeChatMessage = writeChatMessage;
 
     function enterRoom(feedId, display, mainHandle) {
       var feed = new Feed({
@@ -43,6 +44,14 @@
       console.log("Feed " + feedId + " (" + feed.display + ") has left the room, detaching");
       feed.pluginHandle.detach();
       FeedsService.destroy(feedId);
+    }
+
+    function writeChatMessage(text) {
+      var entry = new LogEntry("chatMsg", {feed: FeedsService.findMain(), text: text});
+      $timeout(function () {
+        LogService.add(entry);
+      });
+      DataChannelService.sendChatMessage(text);
     }
   }
 }());

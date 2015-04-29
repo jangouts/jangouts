@@ -143,7 +143,7 @@
     // created and accepted), publishes the corresponding feed on the janus
     // server.
     function publishMainFeed(useVideo) {
-      console.log("publishOwnFeed called");
+      console.log("publishMainFeed called: " + useVideo);
       var handle = FeedsService.findMain().pluginHandle;
       handle.createOffer({
         media: { // Publishers are sendonly
@@ -183,6 +183,8 @@
         }
       }
       // Send status information of all our feeds to inform the newcommers
+      // FIXME: after the refactoring, looks like this is attempted before the
+      // data channel is ready
       FeedsService.publisherFeeds().forEach(function (p) {
         DataChannelService.sendStatus(p);
       });

@@ -2,22 +2,25 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('DataChannelService', ['$rootScope', 'FeedsService', DataChannelService]);
+    .service('DataChannelService', ['$timeout', 'FeedsService', 'LogEntry', 'LogService', DataChannelService]);
 
-  function DataChannelService($rootScope, FeedsService) {
+  function DataChannelService($timeout, FeedsService, LogEntry, LogService) {
     this.sendStatus = sendStatus;
     this.sendMuteRequest = sendMuteRequest;
-    this.sendMessage = sendMessage;
+    this.sendChatMessage = sendChatMessage;
     this.receiveMessage = receiveMessage;
 
-    function receiveMessage(data, remoteFeed) {
-      var $$rootScope = $rootScope;
+    function receiveMessage(data, remoteId) {
+      var $$timeout = $timeout;
       var msg = JSON.parse(data);
       var type = msg.type;
       var content = msg.content;
 
       if (type === "chatMsg") {
-        $$rootScope.$broadcast('chat.message', {feed: remoteFeed, content: content});
+        var entry = new LogEntry("chatMsg", {feed: FeedsService.find(remoteId), text: content});
+        $$timeout(function () {
+          LogService.add(entry);
+        });
       } else if (type === "muteRequest") {
         var feed = FeedsService.find(content.target);
         if (feed.isPublisher) {
@@ -50,6 +53,10 @@
       sendMessage("statusUpdate", content);
     }
 
+    function sendChatMessage(text) {
+      sendMessage("chatMsg", text);
+    }
+
     function sendMessage(type, content) {
       var text = JSON.stringify({
         type: type,
@@ -63,6 +70,5 @@
         success: function() { console.log("Data sent: " + type); }
       });
     }
-
   }
 }());
