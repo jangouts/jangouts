@@ -14,6 +14,7 @@
     this.destroy = destroy;
     this.allFeeds = allFeeds;
     this.publisherFeeds = publisherFeeds;
+    this.speakingFeed = speakingFeed;
 
     function find(id) {
       return (this.feeds[id] || null);
@@ -44,6 +45,12 @@
     function publisherFeeds() {
       return _.filter(this.allFeeds(), function (f) {
         return f.isPublisher;
+      });
+    }
+
+    function speakingFeed() {
+      return _.detect(this.allFeeds(), function (f) {
+        return f.speaking;
       });
     }
   }

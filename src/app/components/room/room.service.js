@@ -348,7 +348,9 @@
     function observeAudio(feed) {
       var speech = hark(feed.stream);
       speech.on('speaking', function() {
-        feed.setSpeaking(true);
+        $timeout(function() {
+          feed.setSpeaking(true);
+        });
       });
       speech.on('stopped_speaking', function() {
         feed.setSpeaking(false);

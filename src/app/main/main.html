@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-sm-12 col-md-8">
     <div class="row">
-      <div id="main-video" ng-if="data.mainFeed">
-        <figure jh-feed="true" feed="data.mainFeed"></figure>
+      <div id="main-video" ng-if="highlightedFeed()">
+        <figure jh-feed="true" feed="highlightedFeed()"></figure>
       </div>
     </div>
     <div class="row">
       <div id="thumbnails">
-        <figure jh-feed="true" feed="f" click-fn="setMainFeed(f)" ng-repeat="f in data.feeds()"></figure>
+        <figure jh-feed="true" feed="f" click-fn="toggleHighlightedFeed(f)" ng-repeat="f in data.feeds()"></figure>
       </div>
     </div>
   </div>

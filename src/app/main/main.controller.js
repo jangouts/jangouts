@@ -10,7 +10,8 @@
         return FeedsService.allFeeds();
       },
       chat: [],
-      mainFeed: FeedsService.findMain(),
+      highlightedByUser: null,
+      highlighted: null,
       isConsentDialogOpen: null,
       isScreenShared: false
     };
@@ -23,9 +24,18 @@
       });
     };
 
-    $scope.setMainFeed = function(feed) {
-      console.debug(feed);
-      $scope.data.mainFeed = feed;
+    $scope.highlightedFeed = function () {
+      if ($scope.data.highlightedByUser !== null) {
+        $scope.data.highlighted = $scope.data.highlightedByUser;
+      } else {
+        $scope.data.highlighted = FeedsService.speakingFeed() || $scope.data.highlighted || FeedsService.findMain();
+      }
+      return $scope.data.highlighted;
+    }
+
+    $scope.toggleHighlightedFeed = function(feed) {
+      console.log("Toggling feed");
+      $scope.data.highlightedByUser = $scope.data.highlightedByUser ? null : feed;
     }
 
     $scope.publishScreen = function() {
