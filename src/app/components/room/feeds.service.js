@@ -14,6 +14,7 @@
     this.destroy = destroy;
     this.allFeeds = allFeeds;
     this.publisherFeeds = publisherFeeds;
+    this.localScreenFeeds = localScreenFeeds;
     this.speakingFeed = speakingFeed;
 
     function find(id) {
@@ -45,6 +46,12 @@
     function publisherFeeds() {
       return _.filter(this.allFeeds(), function (f) {
         return f.isPublisher;
+      });
+    }
+
+    function localScreenFeeds() {
+      return _.filter(this.allFeeds(), function (f) {
+        return f.isLocalScreen;
       });
     }
 

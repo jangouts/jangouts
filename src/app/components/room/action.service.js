@@ -8,8 +8,9 @@
     this.enterRoom = enterRoom;
     this.leaveRoom = leaveRoom;
     this.remoteJoin = remoteJoin;
-    this.detachRemoteFeed = detachRemoteFeed;
+    this.detachFeed = detachFeed;
     this.writeChatMessage = writeChatMessage;
+    this.publishScreen = publishScreen;
 
     function enterRoom(feedId, display, mainHandle) {
       var feed = new Feed({
@@ -28,6 +29,17 @@
       }
     }
 
+    function publishScreen(feedId, display, handle) {
+      var feed = new Feed({
+        display: display,
+        pluginHandle: handle,
+        id: feedId,
+        isPublisher: true,
+        isLocalScreen: true
+      });
+      FeedsService.add(feed);
+    }
+
     function remoteJoin(feedId, display, pluginHandle) {
       var feed = new Feed({
         display: display,
@@ -38,7 +50,7 @@
       FeedsService.add(feed);
     }
 
-    function detachRemoteFeed(feedId) {
+    function detachFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return };
       console.log("Feed " + feedId + " (" + feed.display + ") has left the room, detaching");

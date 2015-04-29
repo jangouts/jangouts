@@ -8,6 +8,8 @@
     this.connect = connect;
     this.enter = enter;
     this.leave = leave;
+    this.publishScreen = publishScreen;
+    this.unPublishScreen = unPublishScreen;
     this.subscribeToFeeds = subscribeToFeeds;
     this.createRemoteFeed = createRemoteFeed;
     this.roomId = null;
@@ -35,13 +37,6 @@
 
       return deferred.promise;
     }
-
-/*    window.publisherFeed = new Feed({isPublisher: true});
-    this.screenFeed = null;
-    this.feeds = {};
-    this.publishScreen = publishScreen;
-    this.unPublishScreen = unPublishScreen;
-*/
 
     // Enter the room
     function enter(roomId, username) {
@@ -115,11 +110,11 @@
               // One of the publishers has gone away?
             } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {
               var leaving = msg["leaving"];
-              ActionService.detachRemoteFeed(leaving);
+              ActionService.detachFeed(leaving);
               // One of the publishers has unpublished?
             } else if(msg["unpublished"] !== undefined && msg["unpublished"] !== null) {
               var unpublished = msg["unpublished"];
-              ActionService.detachRemoteFeed(unpublished);
+              ActionService.detachFeed(unpublished);
               // The server reported an error
             } else if(msg["error"] !== undefined && msg["error"] !== null) {
               console.log("Error message from server" + msg["error"]);
@@ -188,7 +183,6 @@
 
     function createRemoteFeed(id, display) {
       // A new feed has been published, create a new plugin handle and attach to it as a listener
-      var $$rootScope = $rootScope;
       var _handle = null;
       var that = this;
       this.janus.attach({
@@ -269,31 +263,32 @@
     }
 
     function publishScreen() {
+      var display = FeedsService.findMain().display;
       var that = this;
-      var $$rootScope = $rootScope;
-      var feed;
-      window.janus.attach({
+      var _handle;
+      var _id;
+
+      this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
-          feed = new Feed({
-            pluginHandle: pluginHandle,
-            display: window.publisherFeed.display,
-            isPublisher: true
-          });
           console.log("Screen sharing plugin attached");
-          var register = { "request": "join", "room": that.roomId, "ptype": "publisher", "display": feed.display };
-          feed.pluginHandle.send({"message": register});
-          that.screenFeed = feed;
+          var register = {
+            "request": "join",
+            "room": that.roomId,
+            "ptype": "publisher",
+            "display": display };
+          pluginHandle.send({"message": register});
+          _handle = pluginHandle;
         },
         error: function(error) {
           console.error("  -- Error attaching screen plugin... " + error);
         },
         onlocalstream: function(stream) {
           console.log(" ::: Got the screen stream :::");
-          $timeout(function() {
-            that.screenFeed.stream = stream;
-          });
-          //$$rootScope.$broadcast('stream.create', that.screenFeed);
+          var feed = FeedsService.find(_id);
+          $timeout(function () {
+            feed.stream = stream;
+          })
         },
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (screen) :::");
@@ -301,27 +296,25 @@
           var event = msg.videoroom;
 
           if (event === "joined") {
-            that.screenFeed.id = msg.id;
-            publishScreenFeed(that.screenFeed);
+            _id = msg.id;
+            ActionService.publishScreen(_id, display, _handle);
+            publishScreenFeed(FeedsService.find(_id));
           } else {
             console.log("Unexpected event for screen");
           }
           if (jsep !== undefined && jsep !== null) {
             console.log("Handling SDP as well...");
             console.log(jsep);
-            that.screenFeed.pluginHandle.handleRemoteJsep({jsep: jsep});
+            _handle.handleRemoteJsep({jsep: jsep});
           }
         }
       });
     }
 
     function unPublishScreen() {
-      var $$rootScope = $rootScope;
-      if (this.screenFeed) {
-        delete this.feeds[this.screenFeed.id];
-        this.screenFeed.detach();
-        $$rootScope.$broadcast('feeds.delete', this.screenFeed.id);
-        this.screenFeed = null;
+      var feed = FeedsService.localScreenFeeds()[0];
+      if (feed) {
+        ActionService.detachFeed(feed.id);
       }
     }
 
