@@ -8,7 +8,10 @@
     this.connect = connect;
     this.enter = enter;
     this.leave = leave;
+    this.subscribeToFeeds = subscribeToFeeds;
+    this.createRemoteFeed = createRemoteFeed;
     this.roomId = null;
+    this.janus = null;
 
     if(window.location.protocol === 'http:') {
       this.server = 'http://' + window.location.hostname + ':8088/janus';
@@ -96,7 +99,7 @@
 
             // Step 5. Attach to existing feeds, if any
             if ((msg["publishers"] instanceof Array) && msg["publishers"].length > 0) {
-              subscribeToFeeds(msg["publishers"], that.roomId);
+              that.subscribeToFeeds(msg["publishers"], that.roomId);
             }
             // The room has been destroyed
           } else if(event === "destroyed") {
@@ -105,7 +108,7 @@
           } else if(event === "event") {
             // Any new feed to attach to?
             if ((msg["publishers"] instanceof Array) && msg["publishers"].length > 0) {
-              subscribeToFeeds(msg["publishers"], that.roomId);
+              that.subscribeToFeeds(msg["publishers"], that.roomId);
               // One of the publishers has gone away?
             } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {
               var leaving = msg["leaving"];
@@ -175,7 +178,7 @@
         var display = list[f]["display"];
         console.log("  >> [" + id + "] " + display);
         if (FeedsService.find(id) === null) {
-          createRemoteFeed(id, display, room)
+          this.createRemoteFeed(id, display, room)
         }
       }
       // Send status information of all our feeds to inform the newcommers
@@ -188,14 +191,15 @@
       // A new feed has been published, create a new plugin handle and attach to it as a listener
       var $$rootScope = $rootScope;
       var _handle = null;
-      RoomService.janus.attach({
+      var that = this;
+      this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           _handle = pluginHandle;
           console.log("Plugin attached! (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
           console.log("  -- This is a subscriber");
           // We wait for the plugin to send us an offer
-          var listen = { "request": "join", "room": RoomService.roomId, "ptype": "listener", "feed": id };
+          var listen = { "request": "join", "room": that.roomId, "ptype": "listener", "feed": id };
           pluginHandle.send({"message": listen});
         },
         error: function(error) {
@@ -229,7 +233,7 @@
               success: function(jsep) {
                 console.log("Got SDP!");
                 console.log(jsep);
-                var body = { "request": "start", "room": RoomService.roomId };
+                var body = { "request": "start", "room": that.roomId };
                 _handle.send({"message": body, "jsep": jsep});
               },
               error: function(error) {
@@ -240,8 +244,7 @@
         },
         onremotestream: function(stream) {
           var feed = FeedsService.find(id);
-          console.log("Remote feed #" + feeds);
-          feeds.stream = stream;
+          feed.stream = stream;
           $$rootScope.$broadcast('feeds.update', feed); /*XXX*/
         },
         ondataopen: function(data) {
