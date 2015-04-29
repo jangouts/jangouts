@@ -28,6 +28,7 @@
       /* Functions */
       vm.feeds = feeds;
       vm.highlightedFeed = highlightedFeed;
+      vm.mirrored = mirrored;
       vm.toggleHighlightedFeed = toggleHighlightedFeed;
 
       function feeds() {
@@ -41,6 +42,15 @@
           vm.highlight.current = FeedsService.speakingFeed() || vm.highlight.current || FeedsService.findMain();
         }
         return vm.highlight.current;
+      }
+
+      function mirrored() {
+        var f = vm.highlightedFeed();
+        if (f) {
+          return (f.isPublisher && !f.isLocalScreen);
+        } else {
+          return false;
+        }
       }
 
       function toggleHighlightedFeed(feed) {

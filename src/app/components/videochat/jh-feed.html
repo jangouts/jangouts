@@ -1,6 +1,7 @@
 <figure ng-class="{'own-feed': vm.feed.isPublisher}">
     <video
       autoplay
+      ng-class="{mirrored: vm.mirrored}"
       poster="assets/images/suse.png"
       ng-show="vm.isVideoVisible()">
     </video>

@@ -41,13 +41,10 @@
   }
 }
 
-/* Mirror the own video */
-.main-in-the-real-sense {
-  video {
-    transform: rotateY(180deg);
-    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-    -moz-transform:rotateY(180deg); /* Firefox */
-  }
+.mirrored {
+  transform: rotateY(180deg);
+  -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+  -moz-transform:rotateY(180deg); /* Firefox */
 }
 
 .jh-chat {

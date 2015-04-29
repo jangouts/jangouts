@@ -1,5 +1,11 @@
 <div class="row">
-  <div id="main-video" jh-main-feed="true" feed="vm.highlightedFeed()" class="text-center"></div>
+  <div
+    id="main-video"
+    jh-main-feed="true"
+    feed="vm.highlightedFeed()"
+    ng-class="{mirrored: vm.mirrored()}"
+    class="text-center">
+  </div>
 </div>
 <div class="row">
   <div id="thumbnails">

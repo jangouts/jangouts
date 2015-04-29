@@ -33,6 +33,7 @@
   function JhFeedCtrl() {
     /* jshint: validthis */
     var vm = this;
+    vm.mirrored = (vm.feed.isPublisher && !vm.feed.isLocalScreen);
 
     vm.toggleAudio = function() {
       if (vm.feed.audioEnabled) {
