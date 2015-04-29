@@ -14,6 +14,7 @@
       this.pluginHandle = attrs.pluginHandle || null;
       this.stream = attrs.stream || null;
       this.isPublisher = attrs.isPublisher || false;
+      this.isDataOpen = attrs.isDataOpen || false;
 
       this.audioEnabled = true;
       this.videoEnabled = true;

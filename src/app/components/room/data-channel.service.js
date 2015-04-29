@@ -62,8 +62,13 @@
         type: type,
         content: content
       });
-      if (FeedsService.findMain() === null) { return; }
-      var handle = FeedsService.findMain().pluginHandle;
+      var mainFeed = FeedsService.findMain();
+      if (mainFeed === null) { return; }
+      if (!mainFeed.isDataOpen) {
+        console.log("Data channel not open yet. Skipping");
+        return;
+      }
+      var handle = mainFeed.pluginHandle;
       handle.data({
         text: text,
         error: function(reason) { alert(reason); },

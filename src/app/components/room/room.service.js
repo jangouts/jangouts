@@ -71,6 +71,8 @@
         },
         ondataopen: function(data) {
           console.log("The publisher DataChannel is available");
+          FeedsService.findMain().isDataOpen = true;
+          DataChannelService.sendStatus(FeedsService.findMain());
         },
         onlocalstream: function(stream) {
           // Step 4b (parallel with 4a).
@@ -182,12 +184,6 @@
           this.createRemoteFeed(id, display, room)
         }
       }
-      // Send status information of all our feeds to inform the newcommers
-      // FIXME: after the refactoring, looks like this is attempted before the
-      // data channel is ready
-      FeedsService.publisherFeeds().forEach(function (p) {
-        DataChannelService.sendStatus(p);
-      });
     }
 
     function createRemoteFeed(id, display) {
@@ -254,6 +250,11 @@
         },
         ondataopen: function(data) {
           console.log("The subscriber DataChannel is available");
+          FeedsService.find(id).isDataOpen = true;
+          // Send status information of all our feeds to inform the newcommer
+          FeedsService.publisherFeeds().forEach(function (p) {
+            DataChannelService.sendStatus(p);
+          });
         },
         ondata: function(data) {
           console.log(" ::: Got info in the data channel (subscriber) :::");
