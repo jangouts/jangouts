@@ -1,20 +1,15 @@
-- Proper management of main-stream
-  * Auto-select who is speaking (unless manually selected)
-  * Change is selected leaves the room
 - Room selection
-- Toastr or similar
-- Proper instructions and ssl check for screen sharing
-- Notification of status of screen streams
-- Mirror for local video
-- VM/appliance
-- The CPU problem / server requirements
 
-- "Small" UI improvements
-  * Duplicated buttons
-  * Highlight publisher streams
-  * Order of the thumbnails
-  * Colors in chat (and more compact chat)
-  * Manage resizing of videos
+- Move more things (like muting) to ActionService
+- Include events in the chat window (and do it more compact)
+- Toastr or similar?
+
+- Change the big feed if the current leaves the room
+
+- Proper instructions and ssl check for screen sharing
+- Checking of the browser being used
+
+- The CPU problem / server requirements
 
 - Documentation
   * README
