@@ -54,7 +54,11 @@
       }
 
       function toggleHighlightedFeed(feed) {
-        return vm.highlight.byUser = vm.highlight.byUser ? null : feed;
+        if (vm.highlight.byUser != feed) {
+          vm.highlight.byUser = feed;
+        } else {
+          vm.highlight.byUser = null;
+        }
       }
     }
   }
