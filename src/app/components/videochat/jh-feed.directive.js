@@ -10,7 +10,8 @@
       templateUrl: 'app/components/videochat/jh-feed.html',
       scope: {
         feed: '=',
-        clickFn: '&'
+        clickFn: '&',
+        highlighted: '='
       },
       controllerAs: 'vm',
       bindToController: true,

@@ -30,6 +30,7 @@
       vm.highlightedFeed = highlightedFeed;
       vm.mirrored = mirrored;
       vm.toggleHighlightedFeed = toggleHighlightedFeed;
+      vm.isHighlightedByUser = isHighlightedByUser;
 
       function feeds() {
         return FeedsService.allFeeds();
@@ -59,6 +60,10 @@
         } else {
           vm.highlight.byUser = null;
         }
+      }
+
+      function isHighlightedByUser(f) {
+        return f === vm.highlight.byUser;
       }
     }
   }
