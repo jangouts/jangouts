@@ -5,14 +5,23 @@
 
   figure {
     margin: 1px;
-    min-width: 70px;
-    max-width: 150px;
+    min-width: 85px;
+    max-width: 120px;
     transition: .5s;
     border: 1px solid #aaa;
 
     video {
       width: 100%;
       height: auto;
+    }
+
+    figcaption {
+      line-height: 1;
+
+      .buttons {
+        margin-top: 3px;
+        text-align: center;
+      }
     }
 
     &.own-feed {
@@ -26,7 +35,7 @@
 #main-video {
   display: flex;
   margin: 0 auto;
-  height: 60vh;
+  height: 55vh;
 
   figure {
     height: 20vw;
