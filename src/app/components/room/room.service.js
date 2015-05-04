@@ -2,17 +2,20 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('RoomService', ['$q', '$rootScope', '$timeout', 'FeedsService', 'DataChannelService', 'ActionService', RoomService]);
+    .service('RoomService', ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room', 'DataChannelService', 'ActionService', RoomService]);
 
-  function RoomService($q, $rootScope, $timeout, FeedsService, DataChannelService, ActionService) {
+  function RoomService($q, $rootScope, $timeout, FeedsService, Room, DataChannelService, ActionService) {
     this.connect = connect;
     this.enter = enter;
     this.leave = leave;
+    this.getAvailableRooms = getAvailableRooms;
+    this.setRoom = setRoom;
+    this.getRoom = getRoom;
     this.publishScreen = publishScreen;
     this.unPublishScreen = unPublishScreen;
     this.subscribeToFeeds = subscribeToFeeds;
     this.createRemoteFeed = createRemoteFeed;
-    this.roomId = null;
+    this.room = null;
     this.janus = null;
 
     if(window.location.protocol === 'http:') {
@@ -39,7 +42,7 @@
     }
 
     // Enter the room
-    function enter(roomId, username) {
+    function enter(username) {
       var that = this;
       var $$rootScope = $rootScope; /*XXX*/
       var _handle = null;
@@ -49,11 +52,10 @@
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           _handle = pluginHandle;
-          that.roomId = roomId;
           console.log("Plugin attached! (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
           // Step 1. Right after attaching to the plugin, we send a
           // request to join
-          var register = { "request": "join", "room": roomId, "ptype": "publisher", "display": username };
+          var register = { "request": "join", "room": that.room.id, "ptype": "publisher", "display": username };
           pluginHandle.send({"message": register});
           console.log("  -- This is a publisher/manager");
         },
@@ -97,7 +99,7 @@
 
             // Step 5. Attach to existing feeds, if any
             if ((msg["publishers"] instanceof Array) && msg["publishers"].length > 0) {
-              that.subscribeToFeeds(msg["publishers"], that.roomId);
+              that.subscribeToFeeds(msg["publishers"], that.room.id);
             }
             // The room has been destroyed
           } else if(event === "destroyed") {
@@ -106,7 +108,7 @@
           } else if(event === "event") {
             // Any new feed to attach to?
             if ((msg["publishers"] instanceof Array) && msg["publishers"].length > 0) {
-              that.subscribeToFeeds(msg["publishers"], that.roomId);
+              that.subscribeToFeeds(msg["publishers"], that.room.id);
               // One of the publishers has gone away?
             } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {
               var leaving = msg["leaving"];
@@ -133,6 +135,41 @@
 
     function leave() {
       ActionService.leaveRoom();
+    }
+
+    function getAvailableRooms() {
+      var deferred = $q.defer();
+
+      // Create a new session just to get the list
+      this.janus.attach({
+        plugin: "janus.plugin.videoroom",
+        success: function(pluginHandle) {
+          console.log("getAvailableRooms plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
+          var request = { "request": "list" };
+          pluginHandle.send({"message": request, success: function(result) {
+            // Free the resource (it looks safe to do it here)
+            pluginHandle.detach();
+
+            if (result.videoroom === "success") {
+              var rooms = _.map(result.list, function(r) {
+                return new Room(r);
+              });
+              deferred.resolve(rooms);
+            } else {
+              deferred.reject();
+            }
+          }});
+        }
+      });
+      return deferred.promise;
+    }
+
+    function setRoom(room) {
+      this.room = room;
+    }
+
+    function getRoom() {
+      return this.room;
     }
 
     // Negotiates WebRTC by creating a webRTC offer for sharing the audio and
@@ -192,7 +229,7 @@
           console.log("Plugin attached! (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
           console.log("  -- This is a subscriber");
           // We wait for the plugin to send us an offer
-          var listen = { "request": "join", "room": that.roomId, "ptype": "listener", "feed": id };
+          var listen = { "request": "join", "room": that.room.id, "ptype": "listener", "feed": id };
           pluginHandle.send({"message": listen});
         },
         error: function(error) {
@@ -227,7 +264,7 @@
               success: function(jsep) {
                 console.log("Got SDP!");
                 console.log(jsep);
-                var body = { "request": "start", "room": that.roomId };
+                var body = { "request": "start", "room": that.room.id };
                 _handle.send({"message": body, "jsep": jsep});
               },
               error: function(error) {
@@ -274,7 +311,7 @@
           console.log("Screen sharing plugin attached");
           var register = {
             "request": "join",
-            "room": that.roomId,
+            "room": that.room.id,
             "ptype": "publisher",
             "display": display };
           pluginHandle.send({"message": register});

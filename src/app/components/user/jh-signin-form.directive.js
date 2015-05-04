@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .directive('jhSigninForm', ['$state', 'UserService', jhSigninFormDirective]);
+    .directive('jhSigninForm', ['$state', 'UserService', 'RoomService', jhSigninFormDirective]);
 
-  function jhSigninFormDirective($state, UserService) {
+  function jhSigninFormDirective($state, UserService, RoomService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/user/jh-signin-form.html',
@@ -25,14 +25,25 @@
       /* jshint: validthis */
       var vm = this;
       vm.username = null;
+      vm.room = null;
+      vm.rooms = []
       vm.signin = signin;
 
-      function signin(username) {
-        UserService.signin(username).then(function (user) {
-          if (user) {
-            $state.go('home');
-          }
+      RoomService.connect().then(function() {
+        RoomService.getAvailableRooms().then(function(rooms) {
+          vm.rooms = rooms;
         });
+      });
+
+      function signin(username, room) {
+        if (room) {
+          RoomService.setRoom(room);
+          UserService.signin(username).then(function (user) {
+            if (user) {
+              $state.go('home');
+            }
+          });
+        }
       }
     }
   }
