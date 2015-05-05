@@ -30,6 +30,9 @@
             var track = getTrack(type);
             track.enabled = enabled;
             that[type + "Enabled"] = enabled;
+            if (type === "audio" && enabled === false) {
+              that.speaking = false;
+            }
             DataChannelService.sendStatus(that);
           });
         } else {
@@ -44,8 +47,13 @@
         // We need to use $timeout function just to let AngularJS know
         // about changes in the feed.
         $timeout(function() {
-          that.speaking = speaking;
-          DataChannelService.sendStatus(that);
+          if (that.audioEnabled === false) {
+            speaking = false;
+          }
+          if (that.speaking !== speaking) {
+            that.speaking = speaking;
+            DataChannelService.sendStatus(that);
+          }
         });
       }
 
