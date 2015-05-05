@@ -33,8 +33,14 @@
         success: function() {
           deferred.resolve();
         },
-        error: function() {
+        error: function(error) {
+          var msg = "Janus error: " + error;
+          console.error(msg);
+          alert(msg);
           deferred.reject();
+        },
+        destroyed: function() {
+          console.log("Janus object destroyed");
         }
       });
 
