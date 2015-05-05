@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('RoomService', ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room', 'DataChannelService', 'ActionService', RoomService]);
+    .service('RoomService', ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room', 'DataChannelService', 'ActionService', 'jhConfig', RoomService]);
 
-  function RoomService($q, $rootScope, $timeout, FeedsService, Room, DataChannelService, ActionService) {
+  function RoomService($q, $rootScope, $timeout, FeedsService, Room, DataChannelService, ActionService, jhConfig) {
     this.connect = connect;
     this.enter = enter;
     this.leave = leave;
@@ -18,10 +18,10 @@
     this.room = null;
     this.janus = null;
 
-    if(window.location.protocol === 'http:') {
-      this.server = 'http://' + window.location.hostname + ':8088/janus';
+    if (jhConfig.janusServer) {
+      this.server = jhConfig.janusServer;
     } else {
-      this.server = "https://" + window.location.hostname + ":8089/janus";
+      this.server = window.location.protocol + '//' + window.location.hostname + '/janus';
     }
 
     function connect() {
