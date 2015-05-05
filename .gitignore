@@ -3,3 +3,5 @@ bower_components/
 .sass-cache/
 .tmp/
 dist/
+src/app/config.local.json
+src/app/config.js
