@@ -31,15 +31,6 @@
       $scope.data.isScreenShared = false;
     }
 
-    /* FIXME: code smell. These signals should be removed. */
-    $scope.$on('feeds.update', function(evt, feed) {
-      $scope.$apply();
-    });
-
-    $scope.$on('feeds.delete', function(evt, feedId) {
-      $scope.$apply();
-    });
-
     $scope.$on('room.error', function(evt, error) {
       // FIXME: do something neat
       alert("Janus error: " + error);
