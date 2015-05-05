@@ -2,7 +2,10 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('ActionService', ['$timeout', 'Feed', 'FeedsService', 'LogEntry', 'LogService', 'DataChannelService', ActionService]);
+    .service('ActionService', ActionService);
+
+  ActionService.$inject = ['$timeout', 'Feed', 'FeedsService', 'LogEntry',
+    'LogService', 'DataChannelService'];
 
   function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataChannelService) {
     this.enterRoom = enterRoom;

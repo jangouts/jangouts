@@ -2,7 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('UserService', ['$q', '$state', '$rootScope', UserService]);
+    .service('UserService', UserService);
+
+  UserService.$inject = ['$q', '$state', '$rootScope'];
 
   function UserService($q, $state, $rootScope) {
     this.user = null;

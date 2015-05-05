@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('FeedsService', [FeedsService]);
+    .service('FeedsService', FeedsService);
 
   function FeedsService() {
     this.mainFeed = null;

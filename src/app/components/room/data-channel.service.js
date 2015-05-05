@@ -2,7 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('DataChannelService', ['$timeout', 'FeedsService', 'LogEntry', 'LogService', DataChannelService]);
+    .service('DataChannelService', DataChannelService);
+
+  DataChannelService.$inject = ['$timeout', 'FeedsService', 'LogEntry', 'LogService'];
 
   function DataChannelService($timeout, FeedsService, LogEntry, LogService) {
     this.sendStatus = sendStatus;

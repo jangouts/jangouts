@@ -2,11 +2,10 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .factory('LogEntry', ['$timeout', LogEntryFactory]);
+    .factory('LogEntry', LogEntryFactory);
 
-  function LogEntryFactory($timeout) {
+  function LogEntryFactory() {
     return function(type, content) {
-
       this.type = type;
       this.timestamp = new Date();
       this.content = content || {};

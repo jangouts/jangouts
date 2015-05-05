@@ -2,7 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .directive('jhSigninForm', ['$state', 'UserService', 'RoomService', jhSigninFormDirective]);
+    .directive('jhSigninForm', jhSigninFormDirective);
+
+  jhSigninFormDirective.$inject = ['$state', 'UserService', 'RoomService'];
 
   function jhSigninFormDirective($state, UserService, RoomService) {
     return {
@@ -26,7 +28,7 @@
       var vm = this;
       vm.username = null;
       vm.room = null;
-      vm.rooms = []
+      vm.rooms = [];
       vm.signin = signin;
 
       RoomService.connect().then(function() {

@@ -2,7 +2,10 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('RoomService', ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room', 'DataChannelService', 'ActionService', 'jhConfig', RoomService]);
+    .service('RoomService',  RoomService);
+
+    RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
+      'DataChannelService', 'ActionService', 'jhConfig'];
 
   function RoomService($q, $rootScope, $timeout, FeedsService, Room, DataChannelService, ActionService, jhConfig) {
     this.connect = connect;
@@ -50,7 +53,7 @@
     // Enter the room
     function enter(username) {
       var that = this;
-      var $$rootScope = $rootScope; /*XXX*/
+      var $$rootScope = $rootScope;
       var _handle = null;
 
       // Create new session
@@ -86,7 +89,7 @@
           $timeout(function () {
             feed.stream = stream;
             observeAudio(feed);
-          })
+          });
         },
         oncleanup: function () {
           console.log(" ::: Got a cleanup notification: we are unpublished now :::");
@@ -219,7 +222,7 @@
         var display = list[f]["display"];
         console.log("  >> [" + id + "] " + display);
         if (FeedsService.find(id) === null) {
-          this.createRemoteFeed(id, display, room)
+          this.createRemoteFeed(id, display, room);
         }
       }
     }
@@ -331,7 +334,7 @@
           var feed = FeedsService.find(_id);
           $timeout(function () {
             feed.stream = stream;
-          })
+          });
         },
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (screen) :::");

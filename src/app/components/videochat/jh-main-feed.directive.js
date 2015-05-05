@@ -16,9 +16,9 @@
       bindToController: true,
       controller: JhMainFeedCtrl,
       link: jhMainFeedLink,
-    }
+    };
 
-    function jhMainFeedLink(scope, element, attrs) {
+    function jhMainFeedLink(scope, element) {
       scope.$watch('vm.feed.stream', function(newVal) {
         if (newVal !== undefined) {
           var video = $('video', element)[0];
@@ -29,9 +29,8 @@
     }
 
     function JhMainFeedCtrl() {
-      /* jshint: validthis */
+      /* jshint validthis:true */
       var vm = this;
     }
   }
-
 })();

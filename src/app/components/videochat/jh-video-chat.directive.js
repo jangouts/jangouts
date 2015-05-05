@@ -2,9 +2,11 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .directive('jhVideoChat', ['FeedsService', 'RoomService', jhVideoChatDirective]);
+    .directive('jhVideoChat', jhVideoChatDirective);
 
-  function jhVideoChatDirective(FeedsService, RoomService) {
+  jhVideoChatDirective.$inject = ['FeedsService'];
+
+  function jhVideoChatDirective(FeedsService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -13,7 +15,7 @@
       controllerAs: 'vm',
       bindToController: true,
       controller: jhVideoChatCtrl
-    }
+    };
 
     function jhVideoChatCtrl() {
       /* jshint: validthis */
@@ -55,7 +57,7 @@
       }
 
       function toggleHighlightedFeed(feed) {
-        if (vm.highlight.byUser != feed) {
+        if (vm.highlight.byUser !== feed) {
           vm.highlight.byUser = feed;
         } else {
           vm.highlight.byUser = null;

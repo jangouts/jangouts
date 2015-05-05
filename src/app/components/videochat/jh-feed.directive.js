@@ -35,8 +35,16 @@
     /* jshint: validthis */
     var vm = this;
     vm.mirrored = (vm.feed.isPublisher && !vm.feed.isLocalScreen);
+    vm.toggleAudio = toggleAudio;
+    vm.toggleVideo = toggleVideo;
+    vm.isVideoVisible = isVideoVisible;
+    vm.showsEnableAudio = showsEnableAudio;
+    vm.showsDisableAudio = showsDisableAudio;
+    vm.showsAudioOff = showsAudioOff;
+    vm.showsEnableVideo =showsEnableVideo;
+    vm.showsDisableVideo = showsDisableVideo;
 
-    vm.toggleAudio = function() {
+    function toggleAudio() {
       if (vm.feed.audioEnabled) {
         vm.feed.setEnabledTrack("audio", false);
       } else {
@@ -44,7 +52,7 @@
       }
     }
 
-    vm.toggleVideo = function() {
+    function toggleVideo() {
       if (vm.feed.videoEnabled) {
         vm.feed.setEnabledTrack("video", false);
       } else {
@@ -52,22 +60,27 @@
       }
     }
 
-    vm.isVideoVisible = function() {
+    function isVideoVisible() {
       return (vm.feed.videoEnabled && vm.feed.hasVideo());
     }
-    vm.showsEnableAudio = function() {
+
+    function showsEnableAudio() {
       return (vm.feed.isPublisher && vm.feed.hasAudio() && !vm.feed.audioEnabled);
     }
-    vm.showsDisableAudio = function() {
+
+    function showsDisableAudio() {
       return (vm.feed.audioEnabled && vm.feed.hasAudio());
     }
-    vm.showsAudioOff = function() {
+
+    function showsAudioOff() {
       return (!vm.feed.isPublisher && vm.feed.hasAudio && vm.feed.hasAudio() && !vm.feed.audioEnabled);
     }
-    vm.showsEnableVideo = function() {
+
+    function showsEnableVideo() {
       return (vm.feed.isPublisher && vm.feed.hasVideo() && !vm.feed.videoEnabled);
     }
-    vm.showsDisableVideo = function() {
+
+    function showsDisableVideo() {
       return (vm.feed.isPublisher && vm.feed.hasVideo() && vm.feed.videoEnabled);
     }
   }

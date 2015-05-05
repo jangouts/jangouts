@@ -2,7 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .directive('jhChatForm', ['ActionService', jhChatFormDirective]);
+    .directive('jhChatForm', jhChatFormDirective);
+
+  jhChatFormDirective.$inject = ['ActionService'];
 
   function jhChatFormDirective(ActionService) {
     return {
@@ -16,14 +18,14 @@
       controller: JhChatFormCtrl
     };
 
-    function JhChatFormCtrl($scope) {
-      // jshint: validthis
+    function JhChatFormCtrl() {
+      /* jshint validthis:true */
       var vm = this;
-
       vm.text = null;
+      vm.submit = submit;
 
-      vm.submit = function () {
-        ActionService.writeChatMessage(vm.text)
+      function submit() {
+        ActionService.writeChatMessage(vm.text);
         vm.text = null;
       }
     }

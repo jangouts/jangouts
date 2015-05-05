@@ -19,10 +19,9 @@
 
     function jhChatLink(scope) {
       scope.$watch('vm.messages.length', function(newVal) {
-        console.log('launching');
         if (newVal !== undefined) {
           // Scroll to bottom of messages list.
-          var messagesList = document.getElementById('jh-chat-messages')
+          var messagesList = document.getElementById('jh-chat-messages');
           setTimeout(function() {
             messagesList.scrollTop = messagesList.scrollHeight;
           }, 100);
@@ -31,9 +30,8 @@
     }
 
     function JhChatCtrl() {
-      /* jshint: validthis */
+      /* jshint validthis:true */
       var vm = this;
     }
   }
-
 })();

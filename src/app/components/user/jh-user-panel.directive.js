@@ -2,7 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .directive('jhUserPanel', ['UserService', jhUserPanelDirective]);
+    .directive('jhUserPanel', jhUserPanelDirective);
+
+  jhUserPanelDirective.$inject = ['UserService'];
 
   function jhUserPanelDirective(UserService) {
     return {
@@ -20,7 +22,7 @@
       });
 
       scope.$on('user.unset', function() {
-        scope.vm.user = null
+        scope.vm.user = null;
       });
     }
 

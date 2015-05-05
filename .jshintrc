@@ -33,6 +33,17 @@
     // Direct access to console
     "console": false,
     "window": false,
-    "alert": false
+    "alert": false,
+    "document": false,
+    "$": false,
+    "vm": false,
+    // From Janus
+    "attachMediaStream": false,
+    "Janus": false,
+    // Standard JavaScript
+    "setTimeout": false,
+    // lodash
+    "_": false
+
   }
 }

@@ -2,7 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .directive('jhFooter', ['jhConfig', jhFooterDirective]);
+    .directive('jhFooter', jhFooterDirective);
+
+  jhFooterDirective.$inject = ['jhConfig'];
 
   function jhFooterDirective(jhConfig) {
     return {
@@ -14,6 +16,7 @@
     };
 
     function JhFooterCtrl() {
+      /* jshint validthis:true */
       this.version = jhConfig.version;
     }
   }

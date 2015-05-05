@@ -2,7 +2,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .factory('Feed', ['$timeout', 'DataChannelService', feedFactory]);
+    .factory('Feed', feedFactory);
+
+  feedFactory.$inject = ['$timeout', 'DataChannelService'];
 
   function feedFactory($timeout, DataChannelService) {
     return function(attrs) {
@@ -55,7 +57,7 @@
             DataChannelService.sendStatus(that);
           }
         });
-      }
+      };
 
       this.getStatus = function() {
         return {
@@ -64,7 +66,7 @@
           speaking:     that.speaking,
           display:      that.display
         };
-      }
+      };
 
       // Update local representation of the feed (used to process
       // information sent by the remote peer)
@@ -78,14 +80,12 @@
       };
 
       this.hasAudio = function() {
-        var that = this;
         return (getTrack('audio') !== null);
-      }
+      };
 
       this.hasVideo = function() {
-        var that = this;
         return (getTrack('video') !== null);
-      }
+      };
 
       function getTrack(type) {
         if(that.stream === null || that.stream === undefined) {

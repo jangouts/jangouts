@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('LogService', [LogService]);
+    .service('LogService', LogService);
 
   function LogService() {
     this.entries = [];

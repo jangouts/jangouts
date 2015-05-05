@@ -2,9 +2,12 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .controller('MainCtrl', ['$scope', 'blockUI', 'UserService', 'RoomService', 'DataChannelService', 'FeedsService', 'LogService', MainCtrl]);
+    .controller('MainCtrl',  MainCtrl);
 
-  function MainCtrl($scope, blockUI, UserService, RoomService, DataChannelService, FeedsService, LogService) {
+  MainCtrl.$inject = ['$scope', 'blockUI', 'UserService', 'RoomService',
+    'LogService'];
+
+  function MainCtrl($scope, blockUI, UserService, RoomService, LogService) {
     $scope.data = {
       logEntries: function() {
         return LogService.allEntries();
@@ -24,12 +27,12 @@
     $scope.publishScreen = function() {
       RoomService.publishScreen();
       $scope.data.isScreenShared = true;
-    }
+    };
 
     $scope.unPublishScreen = function() {
       RoomService.unPublishScreen();
       $scope.data.isScreenShared = false;
-    }
+    };
 
     $scope.$on('room.error', function(evt, error) {
       // FIXME: do something neat
