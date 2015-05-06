@@ -95,20 +95,20 @@
           console.log(" ::: Got a cleanup notification: we are unpublished now :::");
         },
         onmessage: function (msg, jsep) {
-          var event = msg["videoroom"];
+          var event = msg.videoroom;
           console.log("Event: " + event);
 
           // Step 2. Response from janus confirming we joined
           if (event === "joined") {
-            console.log("Successfully joined room " + msg["room"]);
+            console.log("Successfully joined room " + msg.room);
             ActionService.enterRoom(msg.id, username, _handle);
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
             publishMainFeed(true);
 
             // Step 5. Attach to existing feeds, if any
-            if ((msg["publishers"] instanceof Array) && msg["publishers"].length > 0) {
-              that.subscribeToFeeds(msg["publishers"], that.room.id);
+            if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
+              that.subscribeToFeeds(msg.publishers, that.room.id);
             }
             // The room has been destroyed
           } else if(event === "destroyed") {
@@ -116,20 +116,20 @@
             $$rootScope.$broadcast('room.destroy'); /*XXX*/
           } else if(event === "event") {
             // Any new feed to attach to?
-            if ((msg["publishers"] instanceof Array) && msg["publishers"].length > 0) {
-              that.subscribeToFeeds(msg["publishers"], that.room.id);
+            if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
+              that.subscribeToFeeds(msg.publishers, that.room.id);
               // One of the publishers has gone away?
-            } else if(msg["leaving"] !== undefined && msg["leaving"] !== null) {
-              var leaving = msg["leaving"];
+            } else if(msg.leaving !== undefined && msg.leaving !== null) {
+              var leaving = msg.leaving;
               ActionService.detachFeed(leaving);
               // One of the publishers has unpublished?
-            } else if(msg["unpublished"] !== undefined && msg["unpublished"] !== null) {
-              var unpublished = msg["unpublished"];
+            } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
+              var unpublished = msg.unpublished;
               ActionService.detachFeed(unpublished);
               // The server reported an error
-            } else if(msg["error"] !== undefined && msg["error"] !== null) {
-              console.log("Error message from server" + msg["error"]);
-              $$rootScope.$broadcast('room.error', msg["error"]); /*XXX*/
+            } else if(msg.error !== undefined && msg.error !== null) {
+              console.log("Error message from server" + msg.error);
+              $$rootScope.$broadcast('room.error', msg.error); /*XXX*/
             }
           }
 
@@ -218,8 +218,8 @@
       console.log("Got a list of available publishers/feeds:");
       console.log(list);
       for(var f in list) {
-        var id = list[f]["id"];
-        var display = list[f]["display"];
+        var id = list[f].id;
+        var display = list[f].display;
         console.log("  >> [" + id + "] " + display);
         if (FeedsService.find(id) === null) {
           this.createRemoteFeed(id, display, room);
@@ -247,13 +247,13 @@
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (listener) :::");
           console.log(JSON.stringify(msg));
-          var event = msg["videoroom"];
+          var event = msg.videoroom;
           console.log("Event: " + event);
           if(event === "attached") {
             // Subscriber created and attached
             $timeout(function() {
               ActionService.remoteJoin(id, display, _handle);
-              console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg["room"]);
+              console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
             });
           } else {
             // What has just happened?
