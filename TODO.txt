@@ -9,12 +9,7 @@
 
 - The CPU problem / server requirements
 
-- Version number
-- Best handling of proper deploy (behind proxy). Configuration?
-
-- Documentation
-  * README
-  * Installation
+- Development section on README
 
 ~~ Waterline ~~
 
