@@ -20,7 +20,7 @@
     };
   }
 
-  function jhFeedLink(scope, element, attrs) {
+  function jhFeedLink(scope, element) {
     scope.$watch('vm.feed.stream', function(newVal) {
       if (newVal !== undefined) {
         var video = $('video', element)[0];

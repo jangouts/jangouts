@@ -17,6 +17,7 @@
       var msg = JSON.parse(data);
       var type = msg.type;
       var content = msg.content;
+      var feed;
 
       if (type === "chatMsg") {
         var entry = new LogEntry("chatMsg", {feed: FeedsService.find(remoteId), text: content});
@@ -24,12 +25,12 @@
           LogService.add(entry);
         });
       } else if (type === "muteRequest") {
-        var feed = FeedsService.find(content.target);
+        feed = FeedsService.find(content.target);
         if (feed.isPublisher) {
           feed.setEnabledTrack("audio", false);
         }
       } else if (type === "statusUpdate") {
-        var feed = FeedsService.find(content.source);
+        feed = FeedsService.find(content.source);
         if (feed && !feed.isPublisher) {
           feed.setStatus(content.status);
         }

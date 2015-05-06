@@ -56,7 +56,7 @@
 
     function detachFeed(feedId) {
       var feed = FeedsService.find(feedId);
-      if (feed === null) { return };
+      if (feed === null) { return; }
       console.log("Detaching feed " + feedId + " (" + feed.display + ")");
       feed.pluginHandle.detach();
       FeedsService.destroy(feedId);
