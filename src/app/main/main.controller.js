@@ -18,30 +18,15 @@
       isScreenShared: false
     };
 
-    $scope.enter = function () {
-      UserService.currentUser().then(function (user) {
-        RoomService.enter(user.username);
-      });
-    };
+    $scope.enter = enter;
+    $scope.publishScreen = publishScreen;
+    $scope.unPublishScreen = unPublishScreen;
 
-    $scope.publishScreen = function() {
-      RoomService.publishScreen();
-      $scope.data.isScreenShared = true;
-    };
-
-    $scope.unPublishScreen = function() {
-      RoomService.unPublishScreen();
-      $scope.data.isScreenShared = false;
-    };
+    $scope.enter();
 
     $scope.$on('room.error', function(evt, error) {
       // FIXME: do something neat
       alert("Janus error: " + error);
-    });
-
-    $scope.$on('room.destroy', function(evt) {
-      // FIXME: alert and redirect to some place
-      alert("Janus room destroyed");
     });
 
     $scope.$on('user.unset', function(evt) {
@@ -56,6 +41,20 @@
       }
     });
 
-    $scope.enter();
+    function enter() {
+      UserService.currentUser().then(function (user) {
+        RoomService.enter(user.username);
+      });
+    }
+
+    function publishScreen() {
+      RoomService.publishScreen();
+      $scope.data.isScreenShared = true;
+    }
+
+    function unPublishScreen() {
+      RoomService.unPublishScreen();
+      $scope.data.isScreenShared = false;
+    }
   }
 })();
