@@ -13,6 +13,8 @@
 
 ~~ Waterline ~~
 
+- Mute streams only locally (for people sharing room)
+- Sharing of an externally hosted video
 - Breathing removal
 - Manually select video quality
 - Goodies: sound effects, timer, etc.
