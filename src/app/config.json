@@ -1,3 +1,6 @@
 {
-  "janusServer": null
+  "janusServer": null,
+  "janusServerSSL": null,
+  "httpsAvailable": true,
+  "httpsUrl": null
 }

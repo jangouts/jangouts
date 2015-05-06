@@ -11,7 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhFeed', jhFeed);
 
-  function jhFeed() {
+  jhFeed.$inject = ['RoomService'];
+
+  function jhFeed(RoomService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-feed.html',
@@ -25,70 +27,80 @@
       controller: JhFeedCtrl,
       link: jhFeedLink,
     };
-  }
 
-  function jhFeedLink(scope, element) {
-    scope.$watch('vm.feed.stream', function(newVal) {
-      if (newVal !== undefined) {
-        var video = $('video', element)[0];
-        // Mute video of the local stream
-        video.muted = scope.vm.feed.isPublisher;
-        attachMediaStream(video, newVal);
+    function jhFeedLink(scope, element) {
+      scope.$watch('vm.feed.stream', function(newVal) {
+        if (newVal !== undefined) {
+          var video = $('video', element)[0];
+          // Mute video of the local stream
+          video.muted = scope.vm.feed.isPublisher;
+          attachMediaStream(video, newVal);
+        }
+      });
+    }
+
+    function JhFeedCtrl() {
+      /* jshint: validthis */
+      var vm = this;
+      vm.mirrored = (vm.feed.isPublisher && !vm.feed.isLocalScreen);
+      vm.toggleAudio = toggleAudio;
+      vm.toggleVideo = toggleVideo;
+      vm.isVideoVisible = isVideoVisible;
+      vm.showsEnableAudio = showsEnableAudio;
+      vm.showsDisableAudio = showsDisableAudio;
+      vm.showsAudioOff = showsAudioOff;
+      vm.showsEnableVideo =showsEnableVideo;
+      vm.showsDisableVideo = showsDisableVideo;
+      vm.unPublish = unPublish;
+      vm.showsUnPublish = showsUnPublish;
+
+      function toggleAudio() {
+        if (vm.feed.audioEnabled) {
+          vm.feed.setEnabledTrack("audio", false);
+        } else {
+          vm.feed.setEnabledTrack("audio", true);
+        }
       }
-    });
-  }
 
-  function JhFeedCtrl() {
-    /* jshint: validthis */
-    var vm = this;
-    vm.mirrored = (vm.feed.isPublisher && !vm.feed.isLocalScreen);
-    vm.toggleAudio = toggleAudio;
-    vm.toggleVideo = toggleVideo;
-    vm.isVideoVisible = isVideoVisible;
-    vm.showsEnableAudio = showsEnableAudio;
-    vm.showsDisableAudio = showsDisableAudio;
-    vm.showsAudioOff = showsAudioOff;
-    vm.showsEnableVideo =showsEnableVideo;
-    vm.showsDisableVideo = showsDisableVideo;
-
-    function toggleAudio() {
-      if (vm.feed.audioEnabled) {
-        vm.feed.setEnabledTrack("audio", false);
-      } else {
-        vm.feed.setEnabledTrack("audio", true);
+      function toggleVideo() {
+        if (vm.feed.videoEnabled) {
+          vm.feed.setEnabledTrack("video", false);
+        } else {
+          vm.feed.setEnabledTrack("video", true);
+        }
       }
-    }
 
-    function toggleVideo() {
-      if (vm.feed.videoEnabled) {
-        vm.feed.setEnabledTrack("video", false);
-      } else {
-        vm.feed.setEnabledTrack("video", true);
+      function unPublish() {
+        RoomService.unPublishFeed(vm.feed.id);
       }
-    }
 
-    function isVideoVisible() {
-      return (vm.feed.videoEnabled && vm.feed.hasVideo());
-    }
+      function showsUnPublish() {
+        return (vm.feed.isPublisher && vm.feed.isLocalScreen);
+      }
 
-    function showsEnableAudio() {
-      return (vm.feed.isPublisher && vm.feed.hasAudio() && !vm.feed.audioEnabled);
-    }
+      function isVideoVisible() {
+        return (vm.feed.videoEnabled && vm.feed.hasVideo());
+      }
 
-    function showsDisableAudio() {
-      return (vm.feed.audioEnabled && vm.feed.hasAudio());
-    }
+      function showsEnableAudio() {
+        return (vm.feed.isPublisher && vm.feed.hasAudio() && !vm.feed.audioEnabled);
+      }
 
-    function showsAudioOff() {
-      return (!vm.feed.isPublisher && vm.feed.hasAudio && vm.feed.hasAudio() && !vm.feed.audioEnabled);
-    }
+      function showsDisableAudio() {
+        return (vm.feed.audioEnabled && vm.feed.hasAudio());
+      }
 
-    function showsEnableVideo() {
-      return (vm.feed.isPublisher && vm.feed.hasVideo() && !vm.feed.videoEnabled);
-    }
+      function showsAudioOff() {
+        return (!vm.feed.isPublisher && vm.feed.hasAudio && vm.feed.hasAudio() && !vm.feed.audioEnabled);
+      }
 
-    function showsDisableVideo() {
-      return (vm.feed.isPublisher && vm.feed.hasVideo() && vm.feed.videoEnabled);
+      function showsEnableVideo() {
+        return (vm.feed.isPublisher && vm.feed.hasVideo() && !vm.feed.videoEnabled);
+      }
+
+      function showsDisableVideo() {
+        return (vm.feed.isPublisher && vm.feed.hasVideo() && vm.feed.videoEnabled);
+      }
     }
   }
 })();

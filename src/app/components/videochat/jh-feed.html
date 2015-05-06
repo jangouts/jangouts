@@ -16,6 +16,15 @@
       <div class="buttons">
         <button
           type="button"
+          class="btn btn-xs btn-default"
+          ng-click="vm.unPublish()"
+          title="Stop sharing"
+          ng-show="vm.showsUnPublish()">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+
+        <button
+          type="button"
           class="btn btn-xs"
           ng-class="{'btn-primary': vm.feed.speaking, 'btn-default': !vm.feed.speaking}"
           ng-click="vm.toggleAudio()"

@@ -12,9 +12,9 @@
     .service('RoomService',  RoomService);
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
-      'DataChannelService', 'ActionService', 'jhConfig'];
+      'DataChannelService', 'ActionService', 'jhConfig', 'ScreenShareService'];
 
-  function RoomService($q, $rootScope, $timeout, FeedsService, Room, DataChannelService, ActionService, jhConfig) {
+  function RoomService($q, $rootScope, $timeout, FeedsService, Room, DataChannelService, ActionService, jhConfig, ScreenShareService) {
     this.connect = connect;
     this.enter = enter;
     this.leave = leave;
@@ -22,16 +22,18 @@
     this.setRoom = setRoom;
     this.getRoom = getRoom;
     this.publishScreen = publishScreen;
-    this.unPublishScreen = unPublishScreen;
+    this.unPublishFeed = unPublishFeed;
     this.subscribeToFeeds = subscribeToFeeds;
     this.createRemoteFeed = createRemoteFeed;
     this.room = null;
     this.janus = null;
 
+    this.server = window.location.protocol + '//' + window.location.hostname + '/janus';
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
-    } else {
-      this.server = window.location.protocol + '//' + window.location.hostname + '/janus';
+    }
+    if (jhConfig.janusServerSSL && (window.location.protocol === "https:")) {
+      this.server = jhConfig.janusServerSSL;
     }
 
     function connect() {
@@ -331,6 +333,7 @@
             "ptype": "publisher",
             "display": display };
           pluginHandle.send({"message": register});
+          ScreenShareService.setInProgress(true);
           _handle = pluginHandle;
         },
         error: function(error) {
@@ -364,16 +367,14 @@
       });
     }
 
-    function unPublishScreen() {
-      var feed = FeedsService.localScreenFeeds()[0];
-      if (feed) {
-        ActionService.detachFeed(feed.id);
-      }
+    function unPublishFeed(feedId) {
+      ActionService.detachFeed(feedId);
     }
 
     function publishScreenFeed(feed) {
       console.log("publishScreenFeed called");
       var handle = feed.pluginHandle;
+
       handle.createOffer({
         media: {
           videoRecv: false,
@@ -386,10 +387,13 @@
           console.log(jsep);
           var publish = { "request": "configure", "audio": false, "video": true };
           handle.send({"message": publish, "jsep": jsep});
+          ScreenShareService.setInProgress(false);
         },
         error: function(error) {
-          console.error("WebRTC error:" + error);
           console.error(error);
+          unPublishFeed(feed.id);
+          ScreenShareService.setInProgress(false);
+          ScreenShareService.showHelp();
         }
       });
     }
