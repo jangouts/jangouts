@@ -112,7 +112,61 @@ above.
 
 ## Development
 
-TODO: explanation about npm and gulp.
+### Requirements
+
+In order to develop Jangouts, you need to install [Git](http://git-scm.com),
+[Node.js](http://nodejs.org), [npm](http://npmjs.com), [Bower](http://bower.io)
+and [Gulp.js](http://gulpjs.com).
+
+Git, Node.js and npm should be available in any Linux distribution. For example, if you’re
+running (open)SUSE you could type:
+
+```
+  zypper in git nodejs npm
+```
+
+Take into account that, in some cases, npm is bundled in the same package as Node.js.
+
+If you prefer, you could use [Node Version
+Manager](https://github.com/creationix/nvm) to install Node.js and npm.
+
+Now, you must install Bower and Gulp.js through npm. Just type:
+
+```
+  sudo npm install -g bower gulp
+```
+
+### Dependencies
+
+This project uses npm to manage development dependencies and Bower for runtime dependencies.
+Those dependencies are defined in `package.json` and `bower.json` files. To install them,
+just type:
+
+```
+  $ npm install && bower install
+```
+
+Take into accout that everytime a new dependency is added, you must run this command.
+
+### Configuration
+
+Configuration options are defined in `src/app/config.json`. At this time, Jangouts has only
+1 configuration option. If you want to override any of option, you must use an additional
+`src/app/config.local.json`.
+
+### Serving
+
+If you only want to make some development, you don’t need to install any webserver. Just type:
+
+```
+  $ gulp serve
+```
+
+Now you must be able to access with your browser through the URL `http://localhost:3001/`.
+
+## Acknowledgments
+
+* [Janus](http://janus.conf.meetecho.com/)
 
 ## License
 
