@@ -150,19 +150,37 @@ Take into accout that everytime a new dependency is added, you must run this com
 
 ### Configuration
 
-Configuration options are defined in `src/app/config.json`. At this time, Jangouts has only
-1 configuration option. If you want to override any of option, you must use an additional
-`src/app/config.local.json`.
+Configuration options are defined in `src/app/config.json`. If you want to override
+any option, you must use an additional `src/app/config.local.json`.
 
-### Serving
+### Serving in development mode
 
-If you only want to make some development, you don’t need to install any webserver. Just type:
+If you only want to make some development, you don’t need to install any
+webserver. Just type:
 
 ```
   $ gulp serve
 ```
 
-Now you must be able to access with your browser through the URL `http://localhost:3001/`.
+Now you must be able to access with your browser through the URL 
+`http://localhost:3001/`.
+
+Keep in mind that you will also need a running Janus. That means executing:
+
+```
+  $ systemctl start janus
+```
+
+Last but not least, you should specify where to find your Janus server (since
+the simple server provided by gulp will not handle it). If you are using the
+default Janus settings, your
+`src/app/config.local.json` should look like this:
+
+```
+{
+    "janusServer": "http://localhost:8088/janus"
+}
+```
 
 ## Acknowledgments
 
