@@ -1,20 +1,20 @@
 - Move more things (like muting) to ActionService
-- Include events in the chat window (and do it more compact)
+- Include events in the chat window
 - Toastr or similar?
 
 - Change the big feed if the current leaves the room
 
-- Proper instructions and ssl check for screen sharing
-- Checking of the browser being used
-
-- The CPU problem / server requirements
-
-- Development section on README
+- Debug Janus performance/stability problems
 
 ~~ Waterline ~~
 
+- Check the browser being used and display support info
 - Mute streams only locally (for people sharing room)
+- Keyboard shortcut for mute control
+- Bookmarkable username + room
 - Sharing of an externally hosted video
+- "Next" button for turn-based meetings
+- Support for trello/bugzilla/github on chat
 - Breathing removal
 - Manually select video quality
 - Goodies: sound effects, timer, etc.
