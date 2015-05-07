@@ -5,8 +5,13 @@
 
   figure {
     margin: 1px;
-    min-width: 85px;
-    max-width: 120px;
+    /* Resizing with min-width and max-width is not working due to something
+     * related to the <video> tag. Let's enforce a static width until we find
+     * out what the problem is
+     min-width: 85px;
+     max-width: 120px;
+     */
+    width: 100px;
     transition: .5s;
     border: 1px solid #aaa;
 
@@ -57,9 +62,12 @@
 }
 
 .jh-chat {
+  font-size: 12px;
+
   .panel-body {
     height: 60vh;
     overflow: auto;
+    padding: 8px;
   }
   ul {
     list-style: none;
@@ -67,8 +75,8 @@
     padding: 0;
 
     li {
-      margin-bottom: 10px;
-      padding-bottom: 5px;
+      margin-bottom: 5px;
+      padding-bottom: 2px;
       border-bottom: 1px dotted #aaa;
 
       p {
@@ -77,6 +85,11 @@
       }
     }
   }
+
+  .panel-footer {
+    padding: 3px;
+  }
+
 }
 
 .form-signin {
