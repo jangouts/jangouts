@@ -2,7 +2,7 @@
 
 Jangouts (for "Janus Hangouts") is a solution for videoconferencing based
 on WebRTC and the excellent [Janus Gateway](http://janus.conf.meetecho.com/)
-with a user interface heavily inspired by Google Hangouts. It aims to provides
+with a user interface heavily inspired by Google Hangouts. It aims to provide
 a completely self-hosted open source alternative to Google Hangouts and similar
 solutions. Currently Jangouts supports conferences with video, audio, screen
 sharing and textual chat organized into an unlimited amount of conference rooms
@@ -61,7 +61,7 @@ served to the clients.
 
 ### Step 3. Web server
 
-As already explained, Jangouts consists just on a bunch of static files (HTML,
+As already explained, Jangouts only consists of a bunch of static files (HTML,
 CSS and JavaScript) that, when executed by a web browser, will interact with a
 Janus gateway. Typically a web server is used to serve those files and to
 provide access to the Janus gateway, although the second part is not actually
@@ -84,7 +84,7 @@ default configuration for both Janus and the javascript files is shown below.
   # You DON'T need to enable ssl support in Janus, Apache will take care  
   SSLEngine on
 
-  # Ajust if needed
+  # Adjust if needed
   # SSLCertificateFile /your/cert.crt
   # SSLCertificateKeyFile /your/cert.key
   # SSLCertificateChainFile /your/cert-ca.crt
@@ -146,7 +146,7 @@ just type:
   $ npm install && bower install
 ```
 
-Take into accout that everytime a new dependency is added, you must run this command.
+Take into account that every time a new dependency is added, you must run this command.
 
 ### Configuration
 
