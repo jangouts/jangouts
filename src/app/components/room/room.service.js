@@ -28,9 +28,14 @@
     this.room = null;
     this.janus = null;
 
-    this.server = window.location.protocol + '//' + window.location.hostname + '/janus';
+    var wsProtocol = (window.location.protocol === "https:") ? "wss:" : "ws:";
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
+    } else {
+      this.server = [
+        wsProtocol + '//' + window.location.hostname + '/janus',
+        window.location.protocol + '//' + window.location.hostname + '/janus'
+      ];
     }
     if (jhConfig.janusServerSSL && (window.location.protocol === "https:")) {
       this.server = jhConfig.janusServerSSL;
