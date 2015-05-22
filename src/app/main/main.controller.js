@@ -21,13 +21,9 @@
       },
       highlightedByUser: null,
       highlighted: null,
-      isConsentDialogOpen: null,
-      isScreenShared: false
+      isConsentDialogOpen: null
     };
-
     $scope.enter = enter;
-    $scope.publishScreen = publishScreen;
-    $scope.unPublishScreen = unPublishScreen;
 
     $scope.enter();
 
@@ -52,16 +48,6 @@
       UserService.currentUser().then(function (user) {
         RoomService.enter(user.username);
       });
-    }
-
-    function publishScreen() {
-      RoomService.publishScreen();
-      $scope.data.isScreenShared = true;
-    }
-
-    function unPublishScreen() {
-      RoomService.unPublishScreen();
-      $scope.data.isScreenShared = false;
     }
   }
 })();
