@@ -26,7 +26,7 @@
     function JhChatMessageCtrl() {
       /* jshint validthis:true */
       var vm = this;
-      vm.emoticonsOptions = {
+      vm.embedOptions = {
         link: true,
         linkTarget: '_blank',
         image: {
@@ -36,12 +36,12 @@
           embed: false
         },
         audio: {
-          embed: false
+          embed: true
         },
         code: {
           highlight: false,
         },
-        basicVideo: false
+        basicVideo: true
       };
     }
   }

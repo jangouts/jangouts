@@ -8,7 +8,7 @@
 'use strict';
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
-               'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmoticons',
+               'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
                'janusHangouts.config'])
   .config(function ($stateProvider, $urlRouterProvider) {
     var authenticated = ['$q', '$state', 'UserService', function($q, $state, UserService) {
