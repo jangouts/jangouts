@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <button
+    type="button"
+    class="close"
+    ng-click="vm.close()"
+    aria-label="Close"><span aria-hidden="true">&times;</span>
+  </button>
+  <h3 class="modal-title">Information about browsers</h3>
+</div>
+<div class="modal-body">
+  <h4>Firefox</h4>
+  <p>
+  At least Firefox 36 is required, a more recent version is recommended.
+  </p>
+  <p>
+  Firefox will refuse to use any bit rate lower than a certain limit
+  (200 kbps by default). In some situations, a lower bit rate can
+  be useful to save bandwidth and processing power in the clients.
+  This limit can be adjusted (a sensible value would be 64) modifying
+  the <code>media.peerconnection.video.min_bitrate</code> setting at
+  <a href="about:config">about:config</a>.
+  </p>
+  <h4>Chrom(e/ium)</h4>
+  <p>
+  Jangouts has been successfully tested with Chromium 41. It will probably work
+  with older versions as well, but the usage of a version as recent as possible
+  is recommended.
+  </p>
+  <p>
+  Under certain circumstances, some versions of Chromium has been reported to
+  cause an excessive CPU usage in the Janus server powering Jangouts. This
+  problem has not been observed with recent versions of Janus and Chromium.
+  </p>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="vm.close()">OK</button>
+</div>

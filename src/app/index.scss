@@ -93,9 +93,13 @@
 }
 
 .form-signin {
-  max-width: 25%;
+  max-width: 30%;
   margin: 0 auto;
-  padding: 15px;
+  padding: 0px;
+
+  h2 {
+    margin-top: 0px;
+  }
 }
 
 body div.block-ui-container {
