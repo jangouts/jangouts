@@ -18,7 +18,9 @@
     this.enterRoom = enterRoom;
     this.leaveRoom = leaveRoom;
     this.remoteJoin = remoteJoin;
-    this.detachFeed = detachFeed;
+    this.destroyFeed = destroyFeed;
+    this.ignoreFeed = ignoreFeed;
+    this.stopIgnoringFeed = stopIgnoringFeed;
     this.writeChatMessage = writeChatMessage;
     this.publishScreen = publishScreen;
 
@@ -36,7 +38,7 @@
       var that = this;
 
       _.forEach(FeedsService.allFeeds(), function(feed) {
-        that.detachFeed(feed.id);
+        that.destroyFeed(feed.id);
       });
     }
 
@@ -61,12 +63,33 @@
       FeedsService.add(feed);
     }
 
-    function detachFeed(feedId) {
+    function destroyFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      console.log("Detaching feed " + feedId + " (" + feed.display + ")");
+      console.log("Destroying feed " + feedId + " (" + feed.display + ")");
+      if (feed.pluginHandle) {
+        feed.pluginHandle.detach();
+      }
+      $timeout(function () {
+        FeedsService.destroy(feedId);
+      });
+    }
+
+    function ignoreFeed(feedId) {
+      var feed = FeedsService.find(feedId);
+      if (feed === null) { return; }
+      console.log("Ignoring feed " + feed.id + " (" + feed.display + ")");
+      feed.isIgnored = true;
       feed.pluginHandle.detach();
-      FeedsService.destroy(feedId);
+      feed.pluginHandle = null;
+    }
+
+    function stopIgnoringFeed(feedId, handle) {
+      var feed = FeedsService.find(feedId);
+      if (feed === null) { return; }
+      console.log("Stop ignoring feed " + feed.id + " (" + feed.display + ")");
+      feed.isIgnored = false;
+      feed.pluginHandle = handle;
     }
 
     function writeChatMessage(text) {

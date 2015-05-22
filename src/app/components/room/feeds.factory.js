@@ -25,10 +25,15 @@
       this.isPublisher = attrs.isPublisher || false;
       this.isDataOpen = attrs.isDataOpen || false;
       this.isLocalScreen = attrs.isLocalScreen || false;
+      this.isIgnored = attrs.ignored || false;
 
       this.audioEnabled = true;
       this.videoEnabled = true;
       this.speaking = false;
+
+      this.waitingForHandle = function() {
+        return (this.isIgnored === false && !this.pluginHandle);
+      }
 
       this.setEnabledTrack = function(type, enabled) {
         var that = this;

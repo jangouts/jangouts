@@ -53,6 +53,10 @@
       vm.showsDisableVideo = showsDisableVideo;
       vm.unPublish = unPublish;
       vm.showsUnPublish = showsUnPublish;
+      vm.ignore = ignore;
+      vm.stopIgnoring = stopIgnoring;
+      vm.showsIgnore = showsIgnore;
+      vm.showsStopIgnoring = showsStopIgnoring;
 
       function toggleAudio() {
         if (vm.feed.audioEnabled) {
@@ -79,7 +83,7 @@
       }
 
       function isVideoVisible() {
-        return (vm.feed.videoEnabled && vm.feed.hasVideo());
+        return (!vm.feed.isIgnored && vm.feed.videoEnabled && vm.feed.hasVideo());
       }
 
       function showsEnableAudio() {
@@ -87,11 +91,11 @@
       }
 
       function showsDisableAudio() {
-        return (vm.feed.audioEnabled && vm.feed.hasAudio());
+        return (!vm.feed.isIgnored && vm.feed.audioEnabled && vm.feed.hasAudio());
       }
 
       function showsAudioOff() {
-        return (!vm.feed.isPublisher && vm.feed.hasAudio && vm.feed.hasAudio() && !vm.feed.audioEnabled);
+        return (!vm.feed.isPublisher && !vm.feed.isIgnored && vm.feed.hasAudio && vm.feed.hasAudio() && !vm.feed.audioEnabled);
       }
 
       function showsEnableVideo() {
@@ -100,6 +104,22 @@
 
       function showsDisableVideo() {
         return (vm.feed.isPublisher && vm.feed.hasVideo() && vm.feed.videoEnabled);
+      }
+
+      function ignore() {
+        RoomService.ignoreFeed(vm.feed.id);
+      }
+
+      function showsIgnore() {
+        return (!vm.feed.isPublisher && !vm.feed.isIgnored);
+      }
+
+      function stopIgnoring() {
+        RoomService.stopIgnoringFeed(vm.feed.id);
+      }
+
+      function showsStopIgnoring() {
+        return vm.feed.isIgnored;
       }
     }
   }

@@ -2,12 +2,12 @@
     <video
       autoplay
       ng-class="{mirrored: vm.mirrored}"
-      poster="assets/images/suse.png"
+      poster="assets/images/placeholder.png"
       ng-show="vm.isVideoVisible()">
     </video>
     <video
       class="placeholder"
-      poster="assets/images/suse.png"
+      poster="assets/images/placeholder.png"
       ng-hide="vm.isVideoVisible()">
     </video>
     <figcaption>
@@ -52,6 +52,23 @@
         <button
           type="button"
           class="btn btn-xs btn-default"
+          ng-click="vm.clickFn()"
+          title="Highlight feed"
+          ng-show="!vm.highlighted && !vm.feed.isIgnored">
+          <span class="glyphicon glyphicon-arrow-up"></span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-xs btn-danger"
+          ng-click="vm.clickFn()"
+          title="Un-highlight feed"
+          ng-show="vm.highlighted">
+          <span class="glyphicon glyphicon-arrow-up"></span>
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-xs btn-default"
           ng-click="vm.toggleVideo()"
           title="Disable video"
           ng-show="vm.showsDisableVideo()">
@@ -69,19 +86,20 @@
         <button
           type="button"
           class="btn btn-xs btn-default"
-          ng-click="vm.clickFn()"
-          title="Highlight feed"
-          ng-show="!vm.highlighted">
-          <span class="glyphicon glyphicon-arrow-up"></span>
+          ng-click="vm.ignore()"
+          title="Ignore"
+          ng-show="vm.showsIgnore()">
+          <span class="glyphicon glyphicon-thumbs-down"></span>
         </button>
         <button
           type="button"
-          class="btn btn-xs btn-danger"
-          ng-click="vm.clickFn()"
-          title="Un-highlight feed"
-          ng-show="vm.highlighted">
-          <span class="glyphicon glyphicon-arrow-up"></span>
-      </button>
+          class="btn btn-xs btn-default"
+          ng-click="vm.stopIgnoring()"
+          title="Stop ignoring"
+          ng-show="vm.showsStopIgnoring()">
+          <span class="glyphicon glyphicon-thumbs-up"></span>
+        </button>
+
       </div>
     </figcaption>
 </figure>

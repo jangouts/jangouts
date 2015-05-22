@@ -23,8 +23,10 @@
     this.getRoom = getRoom;
     this.publishScreen = publishScreen;
     this.unPublishFeed = unPublishFeed;
+    this.ignoreFeed = ignoreFeed;
+    this.stopIgnoringFeed = stopIgnoringFeed;
     this.subscribeToFeeds = subscribeToFeeds;
-    this.createRemoteFeed = createRemoteFeed;
+    this.subscribeToFeed = subscribeToFeed;
     this.room = null;
     this.janus = null;
 
@@ -135,11 +137,11 @@
               // One of the publishers has gone away?
             } else if(msg.leaving !== undefined && msg.leaving !== null) {
               var leaving = msg.leaving;
-              ActionService.detachFeed(leaving);
+              ActionService.destroyFeed(leaving);
               // One of the publishers has unpublished?
             } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
               var unpublished = msg.unpublished;
-              ActionService.detachFeed(unpublished);
+              ActionService.destroyFeed(unpublished);
               // The server reported an error
             } else if(msg.error !== undefined && msg.error !== null) {
               console.log("Error message from server" + msg.error);
@@ -228,23 +230,29 @@
       });
     }
 
-    function subscribeToFeeds(list, room) {
+    function subscribeToFeeds(list) {
       console.log("Got a list of available publishers/feeds:");
       console.log(list);
       for(var f in list) {
         var id = list[f].id;
         var display = list[f].display;
         console.log("  >> [" + id + "] " + display);
-        if (FeedsService.find(id) === null) {
-          this.createRemoteFeed(id, display, room);
+        var feed = FeedsService.find(id);
+        if (feed === null || feed.waitingForHandle()) {
+          this.subscribeToFeed(id, display);
         }
       }
     }
 
-    function createRemoteFeed(id, display) {
-      // A new feed has been published, create a new plugin handle and attach to it as a listener
-      var _handle = null;
+    function subscribeToFeed(id, display) {
       var that = this;
+      var feed = FeedsService.find(id);
+      var _handle = null;
+
+      if (feed) {
+        display = feed.display;
+      }
+
       this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
@@ -266,7 +274,11 @@
           if(event === "attached") {
             // Subscriber created and attached
             $timeout(function() {
-              ActionService.remoteJoin(id, display, _handle);
+              if (feed) {
+                ActionService.stopIgnoringFeed(id, _handle)
+              } else {
+                ActionService.remoteJoin(id, display, _handle);
+              }
               console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
             });
           } else {
@@ -373,7 +385,15 @@
     }
 
     function unPublishFeed(feedId) {
-      ActionService.detachFeed(feedId);
+      ActionService.destroyFeed(feedId);
+    }
+
+    function ignoreFeed(feedId) {
+      ActionService.ignoreFeed(feedId);
+    }
+
+    function stopIgnoringFeed(feedId) {
+      this.subscribeToFeed(feedId);
     }
 
     function publishScreenFeed(feed) {
