@@ -115,6 +115,12 @@ body div.block-ui-container {
   }
 }
 
+// Overriding of bootstrap's default negative margin, just a hack actually
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */
 // injector
