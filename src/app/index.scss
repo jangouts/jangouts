@@ -119,6 +119,31 @@ body div.block-ui-container {
   }
 }
 
+.navbar-no-margin {
+  margin-bottom: 0;
+  border-bottom: 0 transparent;
+}
+
+/* Colour pallete */
+$color1: #44b4eb;
+$color2: #e93eae;
+$color3: #6e49cb;
+$color4: #068d9d;
+$color5: #2F2D2E;
+
+.gradient-main-colours {
+  background: $color1;
+  background: -webkit-gradient(linear,left top,right top,color-stop(0%,$color1),color-stop(100%,$color2));
+  background: -webkit-linear-gradient(left,$color1 0%,$color2 100%);
+  background: linear-gradient(to right,$color1 0%,$color2 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color1', endColorstr='$color2',GradientType=1 );
+}
+.gradient-header-line {
+  .gradient-main-colours;
+  height: 3px;
+  width: 100%;
+}
+
 // Overriding of bootstrap's default negative margin, just a hack actually
 .row {
   margin-left: 0px;
