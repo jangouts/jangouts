@@ -1,3 +1,7 @@
+body {
+  background: #333;
+}
+
 #thumbnails {
   display: flex;
   flex-flow: row wrap;
@@ -33,24 +37,6 @@
       figcaption {
         background: #ddd;
       }
-    }
-  }
-}
-
-#main-video {
-  display: flex;
-  margin: 0 auto;
-  height: 55vh;
-
-  figure {
-    height: 20vw;
-    margin: 1px;
-    min-width: 70px;
-    transition: .5s;
-
-    video {
-      width: auto;
-      height: 80%;
     }
   }
 }
@@ -104,7 +90,7 @@ body div.block-ui-container {
   background: #fff;
   font-size: 12px;
   border-top: #dedede 1px solid;
-  height: 20px;
+  height: 30px;
   padding: 7px 0;
 }
 
@@ -115,6 +101,11 @@ body div.block-ui-container {
   &.navbar-default {
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
+  }
+  .navbar-right {
+    margin: 0;
+    padding-right: 15px;
+    padding-top: 8px;
   }
 }
 
@@ -171,6 +162,32 @@ $color5: #2F2D2E;
       -webkit-border-radius: 0px 0px 4px 4px;
       -webkit-appearance: none;
       padding: 0 15px;
+    }
+  }
+}
+
+#main-chat-session {
+  padding-top: 53px;
+  .aside-chat {
+    background: #fff;
+    padding-top: 20px;
+  }
+}
+
+#main-video {
+  display: flex;
+  margin: 0 auto;
+  height: 55vh;
+  padding: 15px;
+  figure {
+    height: 20vw;
+    margin: 1px;
+    min-width: 70px;
+    transition: .5s;
+
+    video {
+      width: auto;
+      height: 80%;
     }
   }
 }
