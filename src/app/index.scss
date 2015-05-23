@@ -92,16 +92,6 @@
 
 }
 
-.form-signin {
-  max-width: 30%;
-  margin: 0 auto;
-  padding: 0px;
-
-  h2 {
-    margin-top: 0px;
-  }
-}
-
 body div.block-ui-container {
   background-color: black;
   opacity: 0.5 !important;
@@ -111,17 +101,30 @@ body div.block-ui-container {
 }
 
 .footer {
+  background: #fff;
   font-size: 12px;
-
-  hr {
-    margin-top: 10px;
-    margin-bottom: 0px;
-  }
+  border-top: #dedede 1px solid;
+  height: 20px;
+  padding: 7px 0;
 }
 
 .navbar-no-margin {
   margin-bottom: 0;
   border-bottom: 0 transparent;
+  position: absolute;
+  &.navbar-default {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+  }
+}
+
+.container-no-padding {
+  padding-left: 0;
+  padding-right: 0;
+  .navbar-header {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 /* Colour pallete */
@@ -139,9 +142,37 @@ $color5: #2F2D2E;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color1', endColorstr='$color2',GradientType=1 );
 }
 .gradient-header-line {
-  .gradient-main-colours;
+  @extend .gradient-main-colours;
   height: 3px;
   width: 100%;
+}
+
+//styles by sections
+#signin {
+  width: 100%;
+  min-height: 660px;
+  background: url('/images/login-bg.jpg') #000;
+  background-size: cover;
+  padding-top: 80px;
+  .form-signin {
+    width: 300px;
+    margin: 0 auto;
+    padding: 0px;
+    .form-group:first-of-type {
+      margin-bottom: 0;
+      input {
+        border-radius: 4px 4px 0px 0px;
+        border: 0px;
+      }
+    }
+    .form-group:last-of-type select {
+      border-radius: 0px 0px 4px 4px;
+      border: 0px;
+      -webkit-border-radius: 0px 0px 4px 4px;
+      -webkit-appearance: none;
+      padding: 0 15px;
+    }
+  }
 }
 
 // Overriding of bootstrap's default negative margin, just a hack actually
@@ -149,6 +180,19 @@ $color5: #2F2D2E;
   margin-left: 0px;
   margin-right: 0px;
 }
+
+// Overraging Bootstrap's buttons
+.btn-primary {
+  color: #fff;
+  background-color: $color1;
+  border-color: darken($color1, 10%);
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: darken($color1, 10%);
+  border-color: darken($color1, 15%);
+}
+
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */
