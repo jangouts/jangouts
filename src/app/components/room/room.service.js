@@ -27,6 +27,7 @@
     this.stopIgnoringFeed = stopIgnoringFeed;
     this.subscribeToFeeds = subscribeToFeeds;
     this.subscribeToFeed = subscribeToFeed;
+    this.toggleChannel = toggleChannel;
     this.room = null;
     this.janus = null;
 
@@ -433,6 +434,16 @@
       speech.on('stopped_speaking', function() {
         feed.setSpeaking(false);
       });
+    }
+
+    function toggleChannel(type) {
+      var feed = FeedsService.findMain();
+      if (!feed) { return; }
+      if (feed[type + "Enabled"]) {
+        feed.setEnabledTrack(type, false);
+      } else {
+        feed.setEnabledTrack(type, true);
+      }
     }
   }
 }());

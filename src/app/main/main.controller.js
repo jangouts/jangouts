@@ -12,9 +12,9 @@
     .controller('MainCtrl',  MainCtrl);
 
   MainCtrl.$inject = ['$scope', 'blockUI', 'UserService', 'RoomService',
-    'LogService'];
+    'LogService', 'hotkeys'];
 
-  function MainCtrl($scope, blockUI, UserService, RoomService, LogService) {
+  function MainCtrl($scope, blockUI, UserService, RoomService, LogService, hotkeys) {
     $scope.data = {
       logEntries: function() {
         return LogService.allEntries();
@@ -49,5 +49,23 @@
         RoomService.enter(user.username);
       });
     }
+
+    hotkeys.bindTo($scope)
+      .add({
+        combo: 'alt+m',
+        description: 'Mute or unmute your microphone',
+        callback: function() { RoomService.toggleChannel('audio'); }
+      })
+      .add({
+        combo: 'alt+n',
+        description: 'Disable or enable camera',
+        callback: function() { RoomService.toggleChannel('video'); }
+      })
+      .add({
+        combo: 'alt+q',
+        description: 'Sign out',
+        callback: function() { UserService.signout();; }
+      });
+    $scope.hotkeys = hotkeys;
   }
 })();
