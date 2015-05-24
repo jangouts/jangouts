@@ -41,7 +41,8 @@
         code: {
           highlight: false,
         },
-        basicVideo: true
+        basicVideo: true,
+        tweetEmbed: false
       };
     }
   }
