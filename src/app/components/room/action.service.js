@@ -23,6 +23,7 @@
     this.stopIgnoringFeed = stopIgnoringFeed;
     this.writeChatMessage = writeChatMessage;
     this.publishScreen = publishScreen;
+    this.toggleChannel = toggleChannel;
 
     function enterRoom(feedId, display, mainHandle) {
       var feed = new Feed({
@@ -51,6 +52,9 @@
         isLocalScreen: true
       });
       FeedsService.add(feed);
+      // Log the event
+      var entry = new LogEntry("publishScreen");
+      LogService.add(entry);
     }
 
     function remoteJoin(feedId, display, pluginHandle) {
@@ -61,43 +65,68 @@
         isPublisher: false
       });
       FeedsService.add(feed);
+      // Log the event
+      var entry = new LogEntry("newRemoteFeed", {feed: feed});
+      LogService.add(entry);
     }
 
     function destroyFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      console.log("Destroying feed " + feedId + " (" + feed.display + ")");
       if (feed.pluginHandle) {
         feed.pluginHandle.detach();
       }
       $timeout(function () {
         FeedsService.destroy(feedId);
       });
+      // Log the event
+      var entry = new LogEntry("destroyFeed", {feed: feed});
+      LogService.add(entry);
     }
 
     function ignoreFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      console.log("Ignoring feed " + feed.id + " (" + feed.display + ")");
       feed.isIgnored = true;
       feed.pluginHandle.detach();
       feed.pluginHandle = null;
+      // Log the event
+      var entry = new LogEntry("ignoreFeed", {feed: feed});
+      LogService.add(entry);
     }
 
     function stopIgnoringFeed(feedId, handle) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      console.log("Stop ignoring feed " + feed.id + " (" + feed.display + ")");
       feed.isIgnored = false;
       feed.pluginHandle = handle;
+      // Log the event
+      var entry = new LogEntry("stopIgnoringFeed", {feed: feed});
+      LogService.add(entry);
     }
 
     function writeChatMessage(text) {
       var entry = new LogEntry("chatMsg", {feed: FeedsService.findMain(), text: text});
-      $timeout(function () {
-        LogService.add(entry);
-      });
+      LogService.add(entry);
       DataChannelService.sendChatMessage(text);
+    }
+
+    function toggleChannel(type, feed) {
+      // If no feed is provided, we are muting ourselves
+      if (!feed) {
+        feed = FeedsService.findMain();
+        if (!feed) { return; }
+      }
+      if (!feed.isPublisher) {
+        // Log the event
+        var entry = new LogEntry("muteRequest", {source: FeedsService.findMain(), target: feed});
+        LogService.add(entry);
+      }
+      if (feed[type + "Enabled"]) {
+        feed.setEnabledTrack(type, false);
+      } else {
+        feed.setEnabledTrack(type, true);
+      }
     }
   }
 }());

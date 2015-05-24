@@ -436,14 +436,8 @@
       });
     }
 
-    function toggleChannel(type) {
-      var feed = FeedsService.findMain();
-      if (!feed) { return; }
-      if (feed[type + "Enabled"]) {
-        feed.setEnabledTrack(type, false);
-      } else {
-        feed.setEnabledTrack(type, true);
-      }
+    function toggleChannel(type, feed) {
+      ActionService.toggleChannel(type, feed);
     }
   }
 }());

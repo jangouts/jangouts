@@ -11,31 +11,32 @@
   angular.module('janusHangouts')
     .service('DataChannelService', DataChannelService);
 
-  DataChannelService.$inject = ['$timeout', 'FeedsService', 'LogEntry', 'LogService'];
+  DataChannelService.$inject = ['FeedsService', 'LogEntry', 'LogService'];
 
-  function DataChannelService($timeout, FeedsService, LogEntry, LogService) {
+  function DataChannelService(FeedsService, LogEntry, LogService) {
     this.sendStatus = sendStatus;
     this.sendMuteRequest = sendMuteRequest;
     this.sendChatMessage = sendChatMessage;
     this.receiveMessage = receiveMessage;
 
     function receiveMessage(data, remoteId) {
-      var $$timeout = $timeout;
       var msg = JSON.parse(data);
       var type = msg.type;
       var content = msg.content;
       var feed;
+      var logEntry;
 
       if (type === "chatMsg") {
-        var entry = new LogEntry("chatMsg", {feed: FeedsService.find(remoteId), text: content});
-        $$timeout(function () {
-          LogService.add(entry);
-        });
+        logEntry = new LogEntry("chatMsg", {feed: FeedsService.find(remoteId), text: content});
+        LogService.add(logEntry);
       } else if (type === "muteRequest") {
         feed = FeedsService.find(content.target);
         if (feed.isPublisher) {
           feed.setEnabledTrack("audio", false);
         }
+        // Log the event
+        logEntry = new LogEntry("muteRequest", {source: FeedsService.find(remoteId), target: feed});
+        LogService.add(logEntry);
       } else if (type === "statusUpdate") {
         feed = FeedsService.find(content.source);
         if (feed && !feed.isPublisher) {

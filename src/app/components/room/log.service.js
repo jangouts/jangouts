@@ -11,14 +11,20 @@
   angular.module('janusHangouts')
     .service('LogService', LogService);
 
-  function LogService() {
+  LogService.$inject = ['$timeout'];
+
+  function LogService($timeout) {
     this.entries = [];
 
     this.add = add;
     this.allEntries = allEntries;
 
     function add(entry) {
-      this.entries.push(entry);
+      var that = this;
+
+      $timeout(function () {
+        that.entries.push(entry);
+      });
     }
 
     function allEntries() {

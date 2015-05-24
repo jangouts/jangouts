@@ -59,19 +59,11 @@
       vm.showsStopIgnoring = showsStopIgnoring;
 
       function toggleAudio() {
-        if (vm.feed.audioEnabled) {
-          vm.feed.setEnabledTrack("audio", false);
-        } else {
-          vm.feed.setEnabledTrack("audio", true);
-        }
+        RoomService.toggleChannel("audio", vm.feed);
       }
 
       function toggleVideo() {
-        if (vm.feed.videoEnabled) {
-          vm.feed.setEnabledTrack("video", false);
-        } else {
-          vm.feed.setEnabledTrack("video", true);
-        }
+        RoomService.toggleChannel("video", vm.feed);
       }
 
       function unPublish() {
