@@ -23,26 +23,27 @@ body {
      max-width: 120px;
      */
     width: 100px;
-    transition: .5s;
-    border: 1px solid #aaa;
-
+    transition: all .5s ease;
     video {
       width: 100%;
       height: auto;
+      border-radius: 4px 4px 0 0
     }
-
     figcaption {
       line-height: 1;
-
+      font-size: 13px;
+      color: #fff;
+      padding: 10px;
+      border-radius: 0 0 4px 4px;
       .buttons {
-        margin-top: 3px;
         text-align: center;
+        margin-top: 5px;
       }
     }
 
     &.own-feed {
       figcaption {
-        background: #ddd;
+        background: rgba(0,0,0,0.3);
       }
     }
   }
