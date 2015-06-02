@@ -69,36 +69,54 @@
     $scope.hotkeys = hotkeys;
 
     //call the screen risize function
-    adjust_screen_height ()
+    adjustScreenHeight ();
   }
 })();
 
 //Please, relocate this script if it does not belong here.
 //Lets take the screen size and adjust the size of the video
-var windowHeight;
-var windowWidth;
-var headerHeight;
-var footerHeight;
-var finalHeight;
-
 //if the user risizes the screen, adjust it again
 $(window).on('resize', function() {
-  adjust_screen_height ();
-})
+  'use strict';
+  adjustScreenHeight ();
+});
 
-function adjust_screen_height () {
+function adjustScreenHeight () {
+  'use strict';
+
+  var windowHeight;
+  var headerHeight;
+  var footerHeight;
+  var finalHeight;
+  var shareBtnHeight;
+  var footerChatHeight;
+  var finalHeightChat;
+
   windowHeight = $(window).outerHeight();
   headerHeight = $("header").outerHeight();
   footerHeight = $("footer").outerHeight();
+  shareBtnHeight = $(".share-help-btn").outerHeight();
 
   finalHeight = windowHeight - headerHeight - footerHeight;
 
   $("#videochat-playroom").css({
     height: finalHeight + 'px'
-  })
+  });
+
   $("#chat-playroom").css({
     height: finalHeight + 'px'
-  })
+  });
+
+  //for the chat room the number needs to rest the share button div. 30 for the paddings.
+
+  footerChatHeight = $("#chat-form-footer").outerHeight();
+
+  finalHeightChat = finalHeight - shareBtnHeight - footerChatHeight - 35;
+
+  $("#jh-chat-messages").css({
+    height: finalHeightChat + 'px'
+  });
+
 }
 
 

@@ -4,7 +4,7 @@
     </div>
   </div>
   <div id="chat-playroom" class="col-xs-4 col-md-3 aside-chat">
-    <div class="row">
+    <div class="share-help-btn">
       <jh-screen-share-button></jh-screen-share-button>
       <button
         class="btn btn-default pull-right"
@@ -13,9 +13,6 @@
         <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
       </button>
     </div>
-    <br>
-    <div class="row">
-      <jh-chat messages="data.logEntries()"></jh-chat>
-    </div>
+    <jh-chat messages="data.logEntries()"></jh-chat>
   </div>
 </div>

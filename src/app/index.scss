@@ -178,7 +178,11 @@ $color5: #2F2D2E;
   padding-top: 53px;
   .aside-chat {
     background: #fff;
-    padding-top: 20px;
+    padding-top: 15px;
+    .share-help-btn {
+      margin-bottom: 15px;
+      height: 35px;
+    }
   }
 }
 
