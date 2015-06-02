@@ -67,5 +67,38 @@
         callback: function() { UserService.signout();; }
       });
     $scope.hotkeys = hotkeys;
+
+    //call the screen risize function
+    adjust_screen_height ()
   }
 })();
+
+//Please, relocate this script if it does not belong here.
+//Lets take the screen size and adjust the size of the video
+var windowHeight;
+var windowWidth;
+var headerHeight;
+var footerHeight;
+var finalHeight;
+
+//if the user risizes the screen, adjust it again
+$(window).on('resize', function() {
+  adjust_screen_height ();
+})
+
+function adjust_screen_height () {
+  windowHeight = $(window).outerHeight();
+  headerHeight = $("header").outerHeight();
+  footerHeight = $("footer").outerHeight();
+
+  finalHeight = windowHeight - headerHeight - footerHeight;
+
+  $("#videochat-playroom").css({
+    height: finalHeight + 'px'
+  })
+  $("#chat-playroom").css({
+    height: finalHeight + 'px'
+  })
+}
+
+

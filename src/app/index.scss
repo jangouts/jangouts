@@ -1,12 +1,19 @@
 body {
   background: #333;
 }
-
+#videochat-playroom {
+  position: relative;
+  overflow: hidden;
+}
 #thumbnails {
   display: flex;
   flex-flow: row wrap;
   margin: 0 auto;
-
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.3);
+  padding: 15px;
   figure {
     margin: 1px;
     /* Resizing with min-width and max-width is not working due to something
@@ -86,7 +93,7 @@ body div.block-ui-container {
   }
 }
 
-.footer {
+footer {
   background: #fff;
   font-size: 12px;
   border-top: #dedede 1px solid;
@@ -177,18 +184,20 @@ $color5: #2F2D2E;
 #main-video {
   display: flex;
   margin: 0 auto;
-  height: 55vh;
-  padding: 15px;
+  height: 100%;
   figure {
     height: 20vw;
     margin: 1px;
     min-width: 70px;
     transition: .5s;
-
     video {
       width: auto;
-      height: 80%;
+      height: 100%;
     }
+  }
+  video {
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -196,6 +205,9 @@ $color5: #2F2D2E;
 .row {
   margin-left: 0px;
   margin-right: 0px;
+}
+.col-no-padding {
+  padding: 0px;
 }
 
 // Overraging Bootstrap's buttons
