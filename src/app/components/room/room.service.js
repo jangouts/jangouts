@@ -36,8 +36,8 @@
       this.server = jhConfig.janusServer;
     } else {
       this.server = [
-        wsProtocol + '//' + window.location.hostname + '/janus',
-        window.location.protocol + '//' + window.location.hostname + '/janus'
+        wsProtocol + '//' + window.location.hostname + '/janus/',
+        window.location.protocol + '//' + window.location.hostname + '/janus/'
       ];
     }
     if (jhConfig.janusServerSSL && (window.location.protocol === "https:")) {
