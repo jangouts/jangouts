@@ -1,7 +1,8 @@
 'use strict';
 
 var gulp = require('gulp');
-var browserSync = require('browser-sync');
+var gutil = require('gulp-util')
+var fs = require('fs');
 
 function isOnlyChange(event) {
   return event.type === 'changed';
@@ -33,8 +34,12 @@ module.exports = function(options) {
 
     gulp.watch(options.src + '/app/**/*.jade', ['markups']);
 
-    gulp.watch(options.src + '/app/**/*.html', function(event) {
-      browserSync.reload(event.path);
+    var components_symlink = options.tmp + '/serve/bower_components';
+    fs.exists(components_symlink, function (exists) {
+      if (!exists) {
+        gutil.log("Symlinking " + components_symlink + " -> bower_components");
+        fs.symlinkSync('../../../bower_components', components_symlink);
+      }
     });
   });
 };
