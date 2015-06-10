@@ -162,8 +162,8 @@ webserver. Just type:
   $ gulp serve
 ```
 
-Now you must be able to access with your browser through the URL 
-`http://localhost:3001/`.
+Now you must be able to access with your browser through the URL
+`http://localhost:3000/`.
 
 Keep in mind that you will also need a running Janus. That means executing:
 
