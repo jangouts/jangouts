@@ -28,7 +28,9 @@
 
       if (type === "chatMsg") {
         logEntry = new LogEntry("chatMsg", {feed: FeedsService.find(remoteId), text: content});
-        LogService.add(logEntry);
+        if (logEntry.hasText()) {
+          LogService.add(logEntry);
+        }
       } else if (type === "muteRequest") {
         feed = FeedsService.find(content.target);
         if (feed.isPublisher) {
