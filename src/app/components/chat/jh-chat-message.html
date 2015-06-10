@@ -5,4 +5,4 @@
     {{ vm.message.timestamp | date:'shortTime' }}
   </small>
 </div>
-<ng-embed embed-data="vm.message.content.text" embed-options="vm.embedOptions"></ng-embed>
+<ng-embed embed-data="vm.message.text()" embed-options="vm.embedOptions"></ng-embed>

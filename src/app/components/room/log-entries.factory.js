@@ -9,9 +9,9 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .factory('LogEntry', LogEntryFactory);
+    .factory('LogEntry', ['$sanitize', LogEntryFactory]);
 
-  function LogEntryFactory() {
+  function LogEntryFactory($sanitize) {
     return function(type, content) {
       this.type = type;
       this.timestamp = new Date();
@@ -37,6 +37,10 @@
         return res;
       }
 
+      this.chatMsgText = function() {
+        return $sanitize(this.content.text).trim();
+      }
+
       this.publishScreenText = function() {
         return "Screen sharing started";
       }
@@ -59,6 +63,10 @@
 
       this.stopIgnoringFeedText = function() {
         return "You are not longer ignoring " + this.content.feed.display;
+      }
+
+      this.hasText = function() {
+        return this.text() !== "";
       }
     };
   }

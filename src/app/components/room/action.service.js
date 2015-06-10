@@ -107,8 +107,10 @@
 
     function writeChatMessage(text) {
       var entry = new LogEntry("chatMsg", {feed: FeedsService.findMain(), text: text});
-      LogService.add(entry);
-      DataChannelService.sendChatMessage(text);
+      if (entry.hasText()) {
+        LogService.add(entry);
+        DataChannelService.sendChatMessage(text);
+      }
     }
 
     function toggleChannel(type, feed) {
