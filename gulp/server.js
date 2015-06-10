@@ -9,8 +9,9 @@ module.exports = function(options) {
     return gulp.src(paths)
     .pipe(webserver({
       host: '0.0.0.0',
+      port: process.env.JH_PORT || 3000,
       https: process.env.JH_HTTPS === 'true',
-      livereload: false,
+      livereload: process.env.JH_RELOAD === 'true',
       directoryListing: false,
       open: false
     }))
