@@ -276,7 +276,7 @@
             // Subscriber created and attached
             $timeout(function() {
               if (feed) {
-                ActionService.stopIgnoringFeed(id, _handle)
+                ActionService.stopIgnoringFeed(id, _handle);
               } else {
                 ActionService.remoteJoin(id, display, _handle);
               }

@@ -33,7 +33,7 @@
 
       this.waitingForHandle = function() {
         return (this.isIgnored === false && !this.pluginHandle);
-      }
+      };
 
       this.setEnabledTrack = function(type, enabled) {
         var that = this;

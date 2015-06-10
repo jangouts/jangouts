@@ -8,7 +8,6 @@ var fs = require('fs');
 
 module.exports = function(options) {
   function readConfig() {
-    var fs = require('fs');
     var _ = require('lodash');
     var localConfig = {};
     var defaultConfig = require('../src/app/config.json');

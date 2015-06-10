@@ -19,7 +19,7 @@
 
       this.text = function() {
         return this[this.type + "Text"]();
-      }
+      };
 
       this.muteRequestText = function() {
         var res;
@@ -35,7 +35,7 @@
           res += this.content.target.display;
         }
         return res;
-      }
+      };
 
       this.chatMsgText = function() {
         return $sanitize(this.content.text).trim();
@@ -43,7 +43,7 @@
 
       this.publishScreenText = function() {
         return "Screen sharing started";
-      }
+      };
 
       this.destroyFeedText = function() {
         if (this.content.feed.isLocalScreen) {
@@ -51,23 +51,23 @@
         } else {
           return this.content.feed.display + " has left the room";
         }
-      }
+      };
 
       this.newRemoteFeedText = function() {
         return this.content.feed.display + " has joined the room";
-      }
+      };
 
       this.ignoreFeedText = function() {
         return "You are ignoring " + this.content.feed.display + " now";
-      }
+      };
 
       this.stopIgnoringFeedText = function() {
         return "You are not longer ignoring " + this.content.feed.display;
-      }
+      };
 
       this.hasText = function() {
         return this.text() !== "";
-      }
+      };
     };
   }
 })();

@@ -68,7 +68,7 @@
       .add({
         combo: 'alt+q',
         description: 'Sign out',
-        callback: function() { UserService.signout();; }
+        callback: function() { UserService.signout(); }
       });
     $scope.hotkeys = hotkeys;
 
@@ -120,7 +120,4 @@ function adjustScreenHeight () {
   $("#jh-chat-messages").css({
     height: finalHeightChat + 'px'
   });
-
 }
-
-
