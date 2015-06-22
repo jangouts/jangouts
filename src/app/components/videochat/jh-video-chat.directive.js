@@ -18,6 +18,7 @@
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
       scope: {
+        thumbVideos: '='
       },
       controllerAs: 'vm',
       bindToController: true,
@@ -30,8 +31,11 @@
 
       /* Data */
       vm.highlight = {
-        current: null,
-        byUser: null
+        // Feed explicitly selected as highlight by the user (using the UI)
+        byUser: null,
+        // Feed currently highlighted, either manually (if byUser is set) or
+        // automatically (if byUser is null)
+        current: null
       };
 
       /* Functions */
@@ -39,6 +43,7 @@
       vm.highlightedFeed = highlightedFeed;
       vm.mirrored = mirrored;
       vm.toggleHighlightedFeed = toggleHighlightedFeed;
+      vm.isHighlighted = isHighlighted;
       vm.isHighlightedByUser = isHighlightedByUser;
 
       function feeds() {
@@ -69,6 +74,10 @@
         } else {
           vm.highlight.byUser = null;
         }
+      }
+
+      function isHighlighted(f) {
+        return f === vm.highlight.current;
       }
 
       function isHighlightedByUser(f) {

@@ -19,11 +19,10 @@
       logEntries: function() {
         return LogService.allEntries();
       },
-      highlightedByUser: null,
-      highlighted: null,
-      isConsentDialogOpen: null
+      thumbVideos: true
     };
     $scope.enter = enter;
+    $scope.toggleThumbVideos = toggleThumbVideos;
 
     $scope.enter();
 
@@ -48,6 +47,11 @@
       UserService.currentUser().then(function (user) {
         RoomService.enter(user.username);
       });
+    }
+
+    function toggleThumbVideos() {
+      console.log("cambia");
+      $scope.data.thumbVideos = !$scope.data.thumbVideos;
     }
 
     hotkeys.bindTo($scope)

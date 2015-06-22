@@ -54,7 +54,7 @@
           class="btn btn-xs btn-default"
           ng-click="vm.clickFn()"
           title="Highlight feed"
-          ng-show="!vm.highlighted && !vm.feed.isIgnored">
+          ng-show="!vm.highlightedByUser && !vm.feed.isIgnored">
           <span class="glyphicon glyphicon-arrow-up"></span>
         </button>
         <button
@@ -62,7 +62,7 @@
           class="btn btn-xs btn-danger"
           ng-click="vm.clickFn()"
           title="Un-highlight feed"
-          ng-show="vm.highlighted">
+          ng-show="vm.highlightedByUser">
           <span class="glyphicon glyphicon-arrow-up"></span>
         </button>
 

@@ -20,7 +20,9 @@
       scope: {
         feed: '=',
         clickFn: '&',
-        highlighted: '='
+        highlighted: '=',
+        highlightedByUser: '=',
+        thumbVideos: '='
       },
       controllerAs: 'vm',
       bindToController: true,
@@ -75,7 +77,16 @@
       }
 
       function isVideoVisible() {
-        return (!vm.feed.isIgnored && vm.feed.videoEnabled && vm.feed.hasVideo());
+        var visible;
+
+        if (vm.highlighted) { return false; }
+        if (vm.feed.isPublisher) { return true; }
+
+        visible = (!vm.feed.isIgnored && vm.feed.videoEnabled && vm.feed.hasVideo());
+        if (visible && !vm.thumbVideos) {
+          visible = vm.feed.speaking;
+        }
+        return visible;
       }
 
       function showsEnableAudio() {
