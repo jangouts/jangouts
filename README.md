@@ -10,6 +10,15 @@ with a configurable limit of participants per room.
 
 ## Installation
 
+Jangouts is a JavaScript application running exclusively client-side (i.e. in
+the browser). The server simply needs to provide a bunch of static files
+through a web server.
+
+The following set up is aimed to be used in development environment. If you
+want to go to production, take a look at the [deployment
+instructions](DEPLOYMENT.md). Anyway, it's strongly recommended to set up the
+development environment to get in touch with Jangouts.
+
 ### Step 1. Janus Gateway
 
 All the server-side WebRTC handling is performed by Janus Gateway, so the first
@@ -20,99 +29,45 @@ For (open)SUSE distributions, the package can be easily found at
 [software.opensuse.org](https://software.opensuse.org/package/janus-gateway) and
 installed using 1 Click Install.
 
+For security reasons, (open)SUSE package does not include SSL certificates
+shipped by default with Janus Gateway. To generate a self-signed certificate,
+you can use OpenSSL:
+
+```sh
+cd /usr/share/janus/certs
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
+  -keyout server.key -out server.crt
+```
+
 In (open)SUSE, the gateway can be then started (after adjusting the list of
 rooms at ```/etc/janus/janus.plugin.videoroom.cfg``` if desired) with the
 command:
 
-```bash
+```sh
 systemctl start janus.service
 ```
 
-### Step 2. Configure and compile Jangouts
+### Step 2. Configure Jangouts
 
-Jangouts is a JavaScript application running exclusively client-side (i.e. in
-the browser). The server simply needs to provide a bunch of static files through
-a web server. [Gulp.js](http://gulpjs.com/) is used to generate those files.
-More information about Gulp and other tools used during Jangouts development can
-be found below in the corresponding section.
+The first step to configure Jangouts is to get a local copy of this repository:
 
-The first step to generate the files would be to get a local copy of this
-repository:
-
-```bash
-git clone https://github.com/ancorgs/jangouts
+```sh
+git clone https://github.com/jangouts/jangouts
 ```
 
 Then you could adapt the configuration by creating a file called
-```src/app/config.local.json``` overriding the default settings found in
-```src/app/config.json```. Currently that's only necessary if you plan to make
-the Janus server directly accessible to the clients, without your web server
-acting as a proxy (see step 3 for a more detailed explanation). In most cases,
-you can simply skip the creation of that file.
+`src/app/config.local.json` overriding the default settings found in
+`src/app/config.json`.
 
-To actually generate the static files, execute:
+For a development environment, the next configuration would be fine:
 
-```bash
-gulp build
+```json
+{
+  "janusServer": "http://localhost:8088/janus"
+}
 ```
 
-That will result in a new ```dist``` file containing all the files that must be
-served to the clients.
-
-### Step 3. Web server
-
-As already explained, Jangouts only consists of a bunch of static files (HTML,
-CSS and JavaScript) that, when executed by a web browser, will interact with a
-Janus gateway. Typically a web server is used to serve those files and to
-provide access to the Janus gateway, although the second part is not actually
-mandatory and the Janus gateway can be accessed directly by the clients without
-the intervention of the web server (which would need adjustment in the
-```janusServer``` configuration parameter as explained in step 2).
-
-Any web server can be used. As a reference, the configuration of Apache2 for a
-standard Jangouts instance using virtual hosts with SSL support and with the
-default configuration for both Janus and the javascript files is shown below.
-
-```
-<VirtualHost _default_:443>
-
-  # General setup for the virtual host
-  DocumentRoot /path/to/the/static/files
-  ServerName example.com
-
-  # SSL Engine Switch.
-  # You DON'T need to enable ssl support in Janus, Apache will take care  
-  SSLEngine on
-
-  # Adjust if needed
-  # SSLCertificateFile /your/cert.crt
-  # SSLCertificateKeyFile /your/cert.key
-  # SSLCertificateChainFile /your/cert-ca.crt
-
-  <Directory "/path/to/the/static/files">
-    # Controls who can get stuff from this server.
-    Require all granted
-  </Directory>
-
-   # Set a proxy to Janus
-   ProxyRequests Off
-   ProxyVia Off
-   ProxyPass /janus http://127.0.0.1:8088/janus
-   ProxyPassReverse /janus http://127.0.0.1:8088/janus
-</VirtualHost>
-```
-
-## A note about screen sharing
-
-Browsers will refuse to allow screen sharing through WebRTC for connections not
-using SSL. Thus, to allow users of your Jangouts instance to use the screen
-sharing functionality you will have to provide HTTPS access to both the files
-and the Janus gateway, like shown in the example configuration for Apache2
-above.
-
-## Development
-
-### Requirements
+### Step 3. Install requirements
 
 In order to develop Jangouts, you need to install [Git](http://git-scm.com),
 [Node.js](http://nodejs.org), [npm](http://npmjs.com), [Bower](http://bower.io)
@@ -121,8 +76,8 @@ and [Gulp.js](http://gulpjs.com).
 Git, Node.js and npm should be available in any Linux distribution. For example, if you’re
 running (open)SUSE you could type:
 
-```
-  zypper in git nodejs npm
+```sh
+zypper in git nodejs npm
 ```
 
 Take into account that, in some cases, npm is bundled in the same package as Node.js.
@@ -132,59 +87,45 @@ Manager](https://github.com/creationix/nvm) to install Node.js and npm.
 
 Now, you must install Bower and Gulp.js through npm. Just type:
 
-```
-  sudo npm install -g bower gulp
+```sh
+sudo npm install -g bower gulp
 ```
 
-### Dependencies
+### Step 4. Install dependencies
 
 This project uses npm to manage development dependencies and Bower for runtime dependencies.
 Those dependencies are defined in `package.json` and `bower.json` files. To install them,
 just type:
 
+```sh
+npm install && bower install
 ```
-  $ npm install && bower install
-```
 
-Take into account that every time a new dependency is added, you must run this command.
+Bear in mind that every time a new dependency is added, you must run this command again.
 
-### Configuration
-
-Configuration options are defined in `src/app/config.json`. If you want to override
-any option, you must use an additional `src/app/config.local.json`.
-
-### Serving in development mode
+### Step 5. Start the webserver
 
 If you only want to make some development, you don’t need to install any
 webserver. Just type:
 
-```
-  $ gulp serve
+```sh
+gulp serve
 ```
 
 Now you must be able to access with your browser through the URL
 `http://localhost:3000/`.
 
-Keep in mind that you will also need a running Janus. That means executing:
+## A note about screen sharing
 
-```
-  $ systemctl start janus
-```
-
-Last but not least, you should specify where to find your Janus server (since
-the simple server provided by gulp will not handle it). If you are using the
-default Janus settings, your
-`src/app/config.local.json` should look like this:
-
-```
-{
-    "janusServer": "http://localhost:8088/janus"
-}
-```
+Browsers will refuse to allow screen sharing through WebRTC for
+connections not using SSL. Thus, to allow users of your Jangouts
+instance to use the screen sharing functionality you will have to
+provide HTTPS access to both the files and the Janus gateway, like shown
+in the [deployment instructions](DEPLOYMENT.md).
 
 ## Acknowledgments
 
-* [Janus](http://janus.conf.meetecho.com/)
+* [Janus Gateway](http://janus.conf.meetecho.com/)
 
 ## License
 
