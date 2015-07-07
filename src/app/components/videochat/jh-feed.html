@@ -1,15 +1,22 @@
 <figure ng-class="{'own-feed': vm.feed.isPublisher}">
     <video
       autoplay
+      class="thumb"
       ng-class="{mirrored: vm.mirrored}"
       poster="assets/images/placeholder.png"
-      ng-show="vm.isVideoVisible()">
+      ng-show="vm.thumbnailTag() === 'video'">
     </video>
-    <video
-      class="placeholder"
-      poster="assets/images/placeholder.png"
-      ng-hide="vm.isVideoVisible()">
-    </video>
+    <canvas
+      class="thumb"
+      ng-class="{mirrored: vm.mirrored}"
+      ng-show="vm.thumbnailTag() === 'picture'">
+    </canvas>
+    <img
+      ng-src="assets/images/placeholder.png"
+      class="thumb"
+      ng-class="{mirrored: vm.mirrored}"
+      ng-show="vm.thumbnailTag() === 'placeholder'">
+    </img>
     <figcaption>
       {{ vm.feed.display }}
 

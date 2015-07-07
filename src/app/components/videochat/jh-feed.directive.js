@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhFeed', jhFeed);
 
-  jhFeed.$inject = ['RoomService'];
+  jhFeed.$inject = ['RoomService', '$interval'];
 
-  function jhFeed(RoomService) {
+  function jhFeed(RoomService, $interval) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-feed.html',
@@ -39,6 +39,9 @@
           attachMediaStream(video, newVal);
         }
       });
+
+      scope.vm.initPics(element);
+      $interval(scope.vm.takePic, 5000);
     }
 
     function JhFeedCtrl() {
@@ -47,7 +50,7 @@
       vm.mirrored = (vm.feed.isPublisher && !vm.feed.isLocalScreen);
       vm.toggleAudio = toggleAudio;
       vm.toggleVideo = toggleVideo;
-      vm.isVideoVisible = isVideoVisible;
+      vm.thumbnailTag = thumbnailTag;
       vm.showsEnableAudio = showsEnableAudio;
       vm.showsDisableAudio = showsDisableAudio;
       vm.showsAudioOff = showsAudioOff;
@@ -59,6 +62,8 @@
       vm.stopIgnoring = stopIgnoring;
       vm.showsIgnore = showsIgnore;
       vm.showsStopIgnoring = showsStopIgnoring;
+      vm.initPics = initPics;
+      vm.takePic = takePic;
 
       function toggleAudio() {
         RoomService.toggleChannel("audio", vm.feed);
@@ -76,17 +81,16 @@
         return (vm.feed.isPublisher && vm.feed.isLocalScreen);
       }
 
-      function isVideoVisible() {
-        var visible;
+      function thumbnailTag() {
+        if (vm.highlighted || vm.feed.isIgnored) { return "placeholder"; }
+        if (!vm.feed.videoEnabled || !vm.feed.hasVideo()) { return "placeholder"; }
+        if (vm.feed.isPublisher) { return "video"; }
 
-        if (vm.highlighted) { return false; }
-        if (vm.feed.isPublisher) { return true; }
-
-        visible = (!vm.feed.isIgnored && vm.feed.videoEnabled && vm.feed.hasVideo());
-        if (visible && !vm.thumbVideos) {
-          visible = vm.feed.speaking;
+        if (vm.thumbVideos || vm.feed.speaking) {
+          return "video";
+        } else {
+          return "picture";
         }
-        return visible;
       }
 
       function showsEnableAudio() {
@@ -123,6 +127,41 @@
 
       function showsStopIgnoring() {
         return vm.feed.isIgnored;
+      }
+
+      function initPics(element) {
+        var canvas = $('canvas', element);
+        var canvasTag = canvas[0];
+        var video = $('video', element).first();
+        var context = canvasTag.getContext('2d');
+
+        // Initially set it to 4:3 (fitting the placeholder image)
+        canvasTag.width = canvas.width();
+        canvasTag.height = Math.round(canvasTag.width * 0.75);
+
+        var placeholder = new Image();
+        placeholder.src = "assets/images/placeholder.png";
+        placeholder.onload = function() {
+          context.drawImage(placeholder, 0, 0, canvasTag.width, canvasTag.height);
+        };
+
+        vm.picCanvas = canvas;
+        vm.picSource = video;
+        vm.picContext = context;
+      }
+
+      function takePic() {
+        if (vm.thumbVideos) { return; }
+
+        var width = vm.picCanvas[0].width;
+        // Skip the rest if the video has no dimensions yet
+        if (vm.picSource[0].videoHeight) {
+          var height = width * vm.picSource[0].videoHeight / vm.picSource[0].videoWidth;
+          vm.picCanvas[0].height = height;
+          vm.picContext.drawImage(vm.picSource[0], 0, 0, width, height);
+          // Prepare for next step: sending the picture
+          //vm.feed.updatePic(picCanvas.toDataURL('image/jpeg',0.4));
+        }
       }
     }
   }
