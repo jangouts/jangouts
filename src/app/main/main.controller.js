@@ -50,7 +50,6 @@
     }
 
     function toggleThumbVideos() {
-      console.log("cambia");
       $scope.data.thumbVideos = !$scope.data.thumbVideos;
     }
 
