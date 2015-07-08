@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhFeed', jhFeed);
 
-  jhFeed.$inject = ['RoomService', '$interval'];
+  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig'];
 
-  function jhFeed(RoomService, $interval) {
+  function jhFeed(RoomService, $interval, jhConfig) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-feed.html',
@@ -21,8 +21,7 @@
         feed: '=',
         clickFn: '&',
         highlighted: '=',
-        highlightedByUser: '=',
-        thumbVideos: '='
+        highlightedByUser: '='
       },
       controllerAs: 'vm',
       bindToController: true,
@@ -86,7 +85,7 @@
         if (!vm.feed.videoEnabled || !vm.feed.hasVideo()) { return "placeholder"; }
         if (vm.feed.isPublisher) { return "video"; }
 
-        if (vm.thumbVideos || vm.feed.speaking) {
+        if (jhConfig.videoThumbnails || vm.feed.speaking) {
           return "video";
         } else {
           return "picture";
@@ -151,7 +150,7 @@
       }
 
       function takePic() {
-        if (vm.thumbVideos) { return; }
+        if (jhConfig.videoThumbnails) { return; }
 
         var width = vm.picCanvas[0].width;
         // Skip the rest if the video has no dimensions yet

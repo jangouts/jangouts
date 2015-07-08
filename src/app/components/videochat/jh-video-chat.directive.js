@@ -17,9 +17,7 @@
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
-      scope: {
-        thumbVideos: '='
-      },
+      scope: {},
       controllerAs: 'vm',
       bindToController: true,
       controller: jhVideoChatCtrl

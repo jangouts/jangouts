@@ -12,18 +12,17 @@
     .controller('MainCtrl',  MainCtrl);
 
   MainCtrl.$inject = ['$scope', 'blockUI', 'UserService', 'RoomService',
-    'LogService', 'hotkeys'];
+    'LogService', 'hotkeys', 'jhConfig'];
 
-  function MainCtrl($scope, blockUI, UserService, RoomService, LogService, hotkeys) {
+  function MainCtrl($scope, blockUI, UserService, RoomService, LogService, hotkeys, jhConfig) {
     $scope.data = {
       logEntries: function() {
         return LogService.allEntries();
-      },
-      thumbVideos: true
+      }
     };
     $scope.enter = enter;
-    $scope.toggleThumbVideos = toggleThumbVideos;
 
+    jhConfig.videoThumbnails = true;
     $scope.enter();
 
     $scope.$on('room.error', function(evt, error) {
@@ -47,10 +46,6 @@
       UserService.currentUser().then(function (user) {
         RoomService.enter(user.username);
       });
-    }
-
-    function toggleThumbVideos() {
-      $scope.data.thumbVideos = !$scope.data.thumbVideos;
     }
 
     hotkeys.bindTo($scope)

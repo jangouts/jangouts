@@ -9,22 +9,20 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .directive('jhThumbVideosButton', jhThumbVideosButtonDirective);
+    .directive('jhThumbnailsModeButton', jhThumbnailsModeButtonDirective);
 
-  function jhThumbVideosButtonDirective() {
+  jhThumbnailsModeButtonDirective.$inject = ['jhConfig', '$timeout'];
+
+  function jhThumbnailsModeButtonDirective(jhConfig, $timeout) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/components/videochat/jh-thumb-videos-button.html',
-      scope: {
-        clickFn: '&',
-        thumbVideos: '='
-      },
+      templateUrl: 'app/components/videochat/jh-thumbnails-mode-button.html',
       controllerAs: 'vm',
       bindToController: true,
-      controller: jhThumbVideosButtonCtrl
+      controller: jhThumbnailsModeButtonCtrl
     };
 
-    function jhThumbVideosButtonCtrl() {
+    function jhThumbnailsModeButtonCtrl() {
       /* jshint: validthis */
       var vm = this;
 
@@ -33,11 +31,13 @@
       vm.title = title;
 
       function click() {
-        vm.clickFn();
+        $timeout(function() {
+          jhConfig.videoThumbnails = !jhConfig.videoThumbnails;
+        });
       }
 
       function cssClass() {
-        if (vm.thumbVideos) {
+        if (jhConfig.videoThumbnails) {
           return "btn-default";
         } else {
           return "btn-danger";
@@ -45,7 +45,7 @@
       }
 
       function title() {
-        if (vm.thumbVideos) {
+        if (jhConfig.videoThumbnails) {
           return "Disable video for peer's thumbnails";
         } else {
           return "Enable video for peer's thumbnails";

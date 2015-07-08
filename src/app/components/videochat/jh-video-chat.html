@@ -12,7 +12,6 @@
     ng-repeat="f in vm.feeds() | orderBy:'+display'"
     click-fn="vm.toggleHighlightedFeed(f)"
     highlighted="vm.isHighlighted(f)"
-    highlighted-by-user="vm.isHighlightedByUser(f)"
-    thumb-videos="vm.thumbVideos">
+    highlighted-by-user="vm.isHighlightedByUser(f)">
   </div>
 </div>
