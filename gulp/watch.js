@@ -38,7 +38,7 @@ module.exports = function(options) {
     fs.exists(components_symlink, function (exists) {
       if (!exists) {
         gutil.log("Symlinking " + components_symlink + " -> bower_components");
-        fs.symlinkSync('../../../bower_components', components_symlink);
+        fs.symlinkSync('../../bower_components', components_symlink);
       }
     });
   });
