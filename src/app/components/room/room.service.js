@@ -31,17 +31,32 @@
     this.room = null;
     this.janus = null;
 
-    var wsProtocol = (window.location.protocol === "https:") ? "wss:" : "ws:";
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
     } else {
-      this.server = [
-        wsProtocol + '//' + window.location.hostname + '/janus/',
-        window.location.protocol + '//' + window.location.hostname + '/janus/'
-      ];
+      this.server = defaultJanusServer();
     }
+
     if (jhConfig.janusServerSSL && (window.location.protocol === "https:")) {
       this.server = jhConfig.janusServerSSL;
+    }
+
+    function defaultJanusServer() {
+      var wsProtocol;
+      var wsPort;
+
+      if (window.location.protocol === "https:") {
+        wsProtocol = "wss:";
+        wsPort = "8989";
+      } else {
+        wsProtocol = "ws:";
+        wsPort = "8188"
+      }
+
+      return [
+        wsProtocol + '//' + window.location.hostname + ':' + wsPort + '/janus/',
+        window.location.protocol + '//' + window.location.hostname + '/janus/'
+      ];
     }
 
     function connect() {
