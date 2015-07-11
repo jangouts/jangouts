@@ -10,8 +10,8 @@ set -x
 #
 sudo zypper ar -f --no-gpgcheck -r http://download.opensuse.org/repositories/home:/mlin7442:/hackweek11/openSUSE_13.2/home:mlin7442:hackweek11.repo
 # FIXME: we need this because of a conflict with libnice.
-sudo zypper -q -n remove patterns-openSUSE-minimal_base-conflicts
-sudo zypper -q -n in janus-gateway
+sudo zypper -n remove patterns-openSUSE-minimal_base-conflicts
+sudo zypper -n in janus-gateway
 
 #
 # Generating self-signed certificate for Janus Gateway
@@ -32,7 +32,7 @@ sudo systemctl enable janus.service
 #
 # Installing Janguts requirements
 #
-sudo zypper -q -n in git
+sudo zypper -n in git
 # FIXME: in the future, packages for openSUSE should be used.
 if [ ! -d /home/vagrant/.nvm ]
 then
