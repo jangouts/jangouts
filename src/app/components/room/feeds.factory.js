@@ -35,26 +35,21 @@
         return (this.isIgnored === false && !this.pluginHandle);
       };
 
-      this.setEnabledTrack = function(type, enabled) {
+      this.configure = function(config) {
         var that = this;
-        if (this.isPublisher) {
-          // We need to use $timeout function just to let AngularJS know
-          // about changes in the feed.
-          $timeout(function() {
-            var track = getTrack(type);
-            track.enabled = enabled;
-            that[type + "Enabled"] = enabled;
-            if (type === "audio" && enabled === false) {
-              that.speaking = false;
-            }
-            DataChannelService.sendStatus(that);
-          });
-        } else {
-          if (type === "audio" && enabled === false) {
-            DataChannelService.sendMuteRequest(this);
+
+        config.request = "configure";
+        $timeout(function() {
+          that.pluginHandle.send({"message": config});
+          if (config.video !== undefined && config.video !== null) {
+            that.videoEnabled = config.video;
           }
-        }
-      };
+          if (config.audio !== undefined && config.audio !== null) {
+            that.audioEnabled = config.audio;
+          }
+          DataChannelService.sendStatus(that);
+        });
+      }
 
       this.setSpeaking = function(speaking) {
         var that = this;
@@ -90,29 +85,6 @@
           _.assign(that, attrs);
         });
       };
-
-      this.hasAudio = function() {
-        return (getTrack('audio') !== null);
-      };
-
-      this.hasVideo = function() {
-        return (getTrack('video') !== null);
-      };
-
-      function getTrack(type) {
-        if(that.stream === null || that.stream === undefined) {
-          return null;
-        }
-        var func = "get" + _.capitalize(type) + "Tracks";
-        if(that.stream[func]() === null || that.stream[func]() === undefined) {
-          return null;
-        }
-        var track = that.stream[func]()[0];
-        if(track === undefined) {
-          return null;
-        }
-        return track;
-      }
     };
   }
 })();
