@@ -1,17 +1,18 @@
-<div
-  id="main-video"
-  jh-main-feed="true"
-  feed="vm.highlightedFeed()"
-  ng-class="{mirrored: vm.mirrored()}"
-  >
-</div>
-<div id="thumbnails">
+<div id="videochat-playroom">
   <div
-    jh-feed="true"
-    feed="f"
-    ng-repeat="f in vm.feeds() | orderBy:'+display'"
-    click-fn="vm.toggleHighlightedFeed(f)"
-    highlighted="vm.isHighlighted(f)"
-    highlighted-by-user="vm.isHighlightedByUser(f)">
+     id="main-video"
+     jh-main-feed="true"
+     feed="vm.highlightedFeed()"
+     ng-class="{mirrored: vm.mirrored()}">
+  </div>
+  <div id="thumbnails">
+    <div
+       jh-feed="true"
+       feed="f"
+       ng-repeat="f in vm.feeds() | orderBy:'+display'"
+       click-fn="vm.toggleHighlightedFeed(f)"
+       highlighted="vm.isHighlighted(f)"
+       highlighted-by-user="vm.isHighlightedByUser(f)">
+    </div>
   </div>
 </div>
