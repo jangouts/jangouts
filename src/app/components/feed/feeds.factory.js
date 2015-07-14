@@ -11,13 +11,13 @@
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
-  feedFactory.$inject = ['$timeout', 'DataChannelService'];
+  feedFactory.$inject = ['$timeout', 'DataChannelService', 'Notifier'];
 
   /**
    * Factory representing a janus feed
    * @constructor
    */
-  function feedFactory($timeout, DataChannelService) {
+  function feedFactory($timeout, DataChannelService, Notifier) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -142,6 +142,11 @@
         var that = this;
         $timeout(function() {
           if (that.isEnabled("audio") === false) {
+            if (val) {
+              // TODO: introduce some timeout or any other mechanism to avoid
+              // repeating the notification over and over for the same speech
+              Notifier.info("Looks like you are trying to say something... but you are muted.");
+            }
             val = false;
           }
           if (speaking !== val) {
