@@ -26,19 +26,20 @@
       this.isDataOpen = attrs.isDataOpen || false;
       this.isLocalScreen = attrs.isLocalScreen || false;
       this.isIgnored = attrs.ignored || false;
+      this.audioEnabled = attrs.audioEnabled || false;
+      this.videoEnabled = attrs.videoEnabled || false;
 
-      this.audioEnabled = true;
-      this.videoEnabled = true;
       this.speaking = false;
 
       this.waitingForHandle = function() {
         return (this.isIgnored === false && !this.pluginHandle);
       };
 
-      this.configure = function(config) {
+      this.configure = function(config, jsep) {
         var that = this;
 
         config.request = "configure";
+        if (jsep) { config.jsep = jsep };
         $timeout(function() {
           that.pluginHandle.send({"message": config});
           if (config.video !== undefined && config.video !== null) {

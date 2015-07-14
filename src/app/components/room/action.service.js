@@ -25,12 +25,14 @@
     this.publishScreen = publishScreen;
     this.toggleChannel = toggleChannel;
 
-    function enterRoom(feedId, display, mainHandle) {
+    function enterRoom(feedId, display, mainHandle, publishingFromStart) {
       var feed = new Feed({
         display: display,
         pluginHandle: mainHandle,
         id: feedId,
-        isPublisher: true
+        isPublisher: true,
+        audioEnabled: publishingFromStart,
+        videoEnabled: publishingFromStart
       });
       FeedsService.add(feed, {main: true});
     }

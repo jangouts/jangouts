@@ -36,6 +36,7 @@
       vm.username = null;
       vm.room = null;
       vm.rooms = [];
+      vm.hiddenOnStart = false;
       vm.signin = signin;
 
       RoomService.connect().then(function() {
@@ -44,10 +45,10 @@
         });
       });
 
-      function signin(username, room) {
-        if (room) {
-          RoomService.setRoom(room);
-          UserService.signin(username).then(function (user) {
+      function signin() {
+        if (vm.room) {
+          RoomService.setConfig({ room: vm.room, publishingFromStart: !vm.hiddenOnStart });
+          UserService.signin(vm.username).then(function (user) {
             if (user) {
               $state.go('home');
             }
