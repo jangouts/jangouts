@@ -224,8 +224,7 @@
     function publishMainFeed(useVideo) {
       console.log("publishMainFeed called: " + useVideo);
       var that = this;
-      var mainFeed = FeedsService.findMain();
-      var handle = mainFeed.pluginHandle;
+      var handle = FeedsService.findMain().pluginHandle;
       handle.createOffer({
         media: { // Publishers are sendonly
           videoRecv: false,
@@ -237,7 +236,8 @@
         success: function(jsep) {
           console.log("Got publisher SDP!");
           console.log(jsep);
-          mainFeed.configure({ audio: that.publishingFromStart, video: that.publishingFromStart }, jsep)
+          var publish = { "request": "configure", "audio": that.publishingFromStart, "video": that.publishingFromStart };
+          handle.send({"message": publish, "jsep": jsep});
         },
         error: function(error) {
           console.error("WebRTC error:" + error);
