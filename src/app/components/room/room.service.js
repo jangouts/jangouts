@@ -19,7 +19,7 @@
     this.enter = enter;
     this.leave = leave;
     this.getAvailableRooms = getAvailableRooms;
-    this.setRoom = setRoom;
+    this.setConfig = setConfig;
     this.getRoom = getRoom;
     this.publishScreen = publishScreen;
     this.unPublishFeed = unPublishFeed;
@@ -27,7 +27,9 @@
     this.stopIgnoringFeed = stopIgnoringFeed;
     this.subscribeToFeeds = subscribeToFeeds;
     this.subscribeToFeed = subscribeToFeed;
+    this.publishMainFeed = publishMainFeed;
     this.toggleChannel = toggleChannel;
+    this.publishingFromStart = true;
     this.room = null;
     this.janus = null;
 
@@ -133,10 +135,10 @@
           // Step 2. Response from janus confirming we joined
           if (event === "joined") {
             console.log("Successfully joined room " + msg.room);
-            ActionService.enterRoom(msg.id, username, _handle);
+            ActionService.enterRoom(msg.id, username, _handle, that.publishingFromStart);
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
-            publishMainFeed(true);
+            that.publishMainFeed(true);
 
             // Step 5. Attach to existing feeds, if any
             if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
@@ -205,8 +207,10 @@
       return deferred.promise;
     }
 
-    function setRoom(room) {
-      this.room = room;
+    function setConfig(config) {
+      config = config || {};
+      this.room = config.room;
+      this.publishingFromStart = config.publishingFromStart || false;
     }
 
     function getRoom() {
@@ -219,7 +223,9 @@
     // server.
     function publishMainFeed(useVideo) {
       console.log("publishMainFeed called: " + useVideo);
-      var handle = FeedsService.findMain().pluginHandle;
+      var that = this;
+      var mainFeed = FeedsService.findMain();
+      var handle = mainFeed.pluginHandle;
       handle.createOffer({
         media: { // Publishers are sendonly
           videoRecv: false,
@@ -231,13 +237,12 @@
         success: function(jsep) {
           console.log("Got publisher SDP!");
           console.log(jsep);
-          var publish = { "request": "configure", "audio": true, "video": useVideo };
-          handle.send({"message": publish, "jsep": jsep});
+          mainFeed.configure({ audio: that.publishingFromStart, video: that.publishingFromStart }, jsep)
         },
         error: function(error) {
           console.error("WebRTC error:" + error);
           if (useVideo) {
-            publishMainFeed(false);
+            that.publishMainFeed(false);
           } else {
             console.error("WebRTC error... " + JSON.stringify(error));
             console.error(error);

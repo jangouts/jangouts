@@ -82,7 +82,7 @@
 
       function thumbnailTag() {
         if (vm.highlighted || vm.feed.isIgnored) { return "placeholder"; }
-        if (!vm.feed.videoEnabled || !vm.feed.hasVideo()) { return "placeholder"; }
+        if (!vm.feed.videoEnabled) { return "placeholder"; }
         if (vm.feed.isPublisher) { return "video"; }
 
         if (jhConfig.videoThumbnails || vm.feed.speaking) {
@@ -93,23 +93,23 @@
       }
 
       function showsEnableAudio() {
-        return (vm.feed.isPublisher && vm.feed.hasAudio() && !vm.feed.audioEnabled);
+        return (vm.feed.isPublisher && !vm.feed.audioEnabled);
       }
 
       function showsDisableAudio() {
-        return (!vm.feed.isIgnored && vm.feed.audioEnabled && vm.feed.hasAudio());
+        return (!vm.feed.isIgnored && vm.feed.audioEnabled);
       }
 
       function showsAudioOff() {
-        return (!vm.feed.isPublisher && !vm.feed.isIgnored && vm.feed.hasAudio && vm.feed.hasAudio() && !vm.feed.audioEnabled);
+        return (!vm.feed.isPublisher && !vm.feed.isIgnored && !vm.feed.audioEnabled);
       }
 
       function showsEnableVideo() {
-        return (vm.feed.isPublisher && vm.feed.hasVideo() && !vm.feed.videoEnabled);
+        return (vm.feed.isPublisher && !vm.feed.videoEnabled);
       }
 
       function showsDisableVideo() {
-        return (vm.feed.isPublisher && vm.feed.hasVideo() && vm.feed.videoEnabled);
+        return (vm.feed.isPublisher && vm.feed.videoEnabled);
       }
 
       function ignore() {

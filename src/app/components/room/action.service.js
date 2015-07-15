@@ -25,12 +25,14 @@
     this.publishScreen = publishScreen;
     this.toggleChannel = toggleChannel;
 
-    function enterRoom(feedId, display, mainHandle) {
+    function enterRoom(feedId, display, mainHandle, publishingFromStart) {
       var feed = new Feed({
         display: display,
         pluginHandle: mainHandle,
         id: feedId,
-        isPublisher: true
+        isPublisher: true,
+        audioEnabled: publishingFromStart,
+        videoEnabled: publishingFromStart
       });
       FeedsService.add(feed, {main: true});
     }
@@ -124,11 +126,13 @@
         var entry = new LogEntry("muteRequest", {source: FeedsService.findMain(), target: feed});
         LogService.add(entry);
       }
+      var o = {};
       if (feed[type + "Enabled"]) {
-        feed.setEnabledTrack(type, false);
+        o[type] = false;
       } else {
-        feed.setEnabledTrack(type, true);
+        o[type] = true;
       }
+      feed.configure(o);
     }
   }
 }());

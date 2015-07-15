@@ -5,7 +5,7 @@
   </div>
 </div>
 <div class="row">
-  <form class="form-signin" ng-submit="vm.signin(vm.username, vm.room)">
+  <form class="form-signin" ng-submit="vm.signin()">
     <div class="form-group">
       <label class="sr-only" for="inputUsername">Username</label>
       <input
@@ -27,6 +27,13 @@
         ng-options="room.label for room in vm.rooms">
         <option value="" disabled selected>Select a room</option>
       </select>
+    </div>
+    <div class="checkbox">
+      <label>
+          <input id="inputHiddenOnStart"
+                 type="checkbox"
+                 ng-model="vm.hiddenOnStart">Start hidden</input>
+      </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
   </form>

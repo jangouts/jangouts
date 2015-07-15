@@ -34,7 +34,7 @@
       } else if (type === "muteRequest") {
         feed = FeedsService.find(content.target);
         if (feed.isPublisher) {
-          feed.setEnabledTrack("audio", false);
+          feed.configure({audio: false});
         }
         // Log the event
         logEntry = new LogEntry("muteRequest", {source: FeedsService.find(remoteId), target: feed});
