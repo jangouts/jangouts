@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhVideoChat', jhVideoChatDirective);
 
-  jhVideoChatDirective.$inject = ['$window', 'FeedsService'];
+  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService'];
 
-  function jhVideoChatDirective($window, FeedsService) {
+  function jhVideoChatDirective($window, LogService, FeedsService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -25,9 +25,9 @@
     };
 
     function jhVideoChatLink(scope) {
-      $(window).on('resize', function() {
+      angular.element($window).on('resize', function() {
         console.log('Adjusting');
-        scope.vm.adjustScreenHeight ();
+        scope.vm.adjustScreenHeight();
       });
     }
 
@@ -51,6 +51,7 @@
       vm.toggleHighlightedFeed = toggleHighlightedFeed;
       vm.isHighlighted = isHighlighted;
       vm.isHighlightedByUser = isHighlightedByUser;
+      vm.logEntries = logEntries;
       vm.adjustScreenHeight = adjustScreenHeight;
 
       function feeds() {
@@ -91,12 +92,14 @@
         return f === vm.highlight.byUser;
       }
 
+      function logEntries() {
+        return LogService.allEntries();
+      }
+
       // FIXME: Please, relocate this script if it does not belong here.
       // Lets take the screen size and adjust the size of the video
       // if the user resizes the screen, adjust it again
-      function adjustScreenHeight () {
-        'use strict';
-
+      function adjustScreenHeight() {
         var windowHeight;
         var headerHeight;
         var footerHeight;

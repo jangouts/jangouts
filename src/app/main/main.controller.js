@@ -12,14 +12,9 @@
     .controller('MainCtrl',  MainCtrl);
 
   MainCtrl.$inject = ['$scope', 'blockUI', 'UserService', 'RoomService',
-    'LogService', 'hotkeys', 'jhConfig'];
+    'hotkeys', 'jhConfig'];
 
-  function MainCtrl($scope, blockUI, UserService, RoomService, LogService, hotkeys, jhConfig) {
-    $scope.data = {
-      logEntries: function() {
-        return LogService.allEntries();
-      }
-    };
+  function MainCtrl($scope, blockUI, UserService, RoomService, hotkeys, jhConfig) {
     $scope.enter = enter;
 
     jhConfig.videoThumbnails = true;

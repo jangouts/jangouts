@@ -1,4 +1,4 @@
-<div id="videochat-playroom">
+<div class="col-xs-8 col-md-9 col-no-padding" id="videochat-playroom">
   <div
      id="main-video"
      jh-main-feed="true"
@@ -15,4 +15,16 @@
        highlighted-by-user="vm.isHighlightedByUser(f)">
     </div>
   </div>
+</div>
+<div id="chat-playroom" class="col-xs-4 col-md-3 aside-chat">
+  <div class="share-help-btn">
+    <jh-screen-share-button></jh-screen-share-button>
+    <button
+      class="btn btn-default pull-right"
+      ng-click="hotkeys.toggleCheatSheet()"
+      title="Keyboard shortcuts">
+      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+    </button>
+  </div>
+  <jh-chat messages="vm.logEntries()"></jh-chat>
 </div>
