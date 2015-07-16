@@ -17,6 +17,7 @@
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-thumbnails-mode-button.html',
+      scope: {},
       controllerAs: 'vm',
       bindToController: true,
       controller: jhThumbnailsModeButtonCtrl
