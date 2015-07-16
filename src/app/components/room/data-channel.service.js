@@ -34,7 +34,7 @@
       } else if (type === "muteRequest") {
         feed = FeedsService.find(content.target);
         if (feed.isPublisher) {
-          feed.configure({audio: false});
+          feed.setEnabledChannel("audio", false);
         }
         // Log the event
         logEntry = new LogEntry("muteRequest", {source: FeedsService.find(remoteId), target: feed});
@@ -57,10 +57,10 @@
       sendMessage("muteRequest", content);
     }
 
-    function sendStatus(feed) {
+    function sendStatus(feed, statusOptions) {
       var content = {
         source: feed.id,
-        status: feed.getStatus()
+        status: feed.getStatus(statusOptions)
       };
 
       sendMessage("statusUpdate", content);

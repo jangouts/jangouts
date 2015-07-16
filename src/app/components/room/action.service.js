@@ -126,13 +126,11 @@
         var entry = new LogEntry("muteRequest", {source: FeedsService.findMain(), target: feed});
         LogService.add(entry);
       }
-      var o = {};
       if (feed[type + "Enabled"]) {
-        o[type] = false;
+        feed.setEnabledChannel(type, false);
       } else {
-        o[type] = true;
+        feed.setEnabledChannel(type, true);
       }
-      feed.configure(o);
     }
   }
 }());

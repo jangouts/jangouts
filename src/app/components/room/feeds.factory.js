@@ -29,27 +29,40 @@
       this.audioEnabled = attrs.audioEnabled || false;
       this.videoEnabled = attrs.videoEnabled || false;
 
+      this.picture = null;
       this.speaking = false;
 
       this.waitingForHandle = function() {
         return (this.isIgnored === false && !this.pluginHandle);
       };
 
-      this.configure = function(config, jsep) {
+      this.configure = function(config) {
+        if (this.pluginHandle) {
+          config.request = "configure";
+          this.pluginHandle.send({"message": config});
+        }
+      }
+
+      this.setEnabledChannel = function(type, enabled) {
         var that = this;
 
-        config.request = "configure";
-        if (jsep) { config.jsep = jsep };
-        $timeout(function() {
-          that.pluginHandle.send({"message": config});
-          if (config.video !== undefined && config.video !== null) {
-            that.videoEnabled = config.video;
-          }
-          if (config.audio !== undefined && config.audio !== null) {
-            that.audioEnabled = config.audio;
-          }
-          DataChannelService.sendStatus(that);
-        });
+        if (this.isPublisher) {
+          $timeout(function() {
+            // Stop/start sending the information on the channel
+            var config = {}
+            config[type] = enabled;
+            that.configure(config);
+            // Update the status information
+            that[type+'Enabled'] = enabled;
+            if (type === 'audio' && enabled === false) {
+              that.speaking = false;
+            }
+            // Send the new status to remote peers
+            DataChannelService.sendStatus(that, {exclude: "picture"});
+          });
+        } else if (type === "audio" && enabled === false) {
+          DataChannelService.sendMuteRequest(this);
+        }
       }
 
       this.setSpeaking = function(speaking) {
@@ -62,18 +75,33 @@
           }
           if (that.speaking !== speaking) {
             that.speaking = speaking;
-            DataChannelService.sendStatus(that);
+            DataChannelService.sendStatus(that, {exclude: "picture"});
           }
         });
       };
 
-      this.getStatus = function() {
-        return {
-          audioEnabled: that.audioEnabled,
-          videoEnabled: that.videoEnabled,
-          speaking:     that.speaking,
-          display:      that.display
-        };
+      this.updatePic = function(data) {
+        var that = this;
+
+        $timeout(function() {
+          that.picture = data;
+          DataChannelService.sendStatus(that);
+        });
+      }
+
+      this.getStatus = function(options) {
+        if (!options) { options = {}; }
+        if (!options.exclude) { options.exclude = []; }
+
+        var attrs = ["audioEnabled", "videoEnabled", "speaking", "display", "picture"];
+        var status = {};
+
+        _.forEach(attrs, function(attr) {
+          if (!_.includes(options.exclude, attr)) {
+            status[attr] = that[attr];
+          }
+        });
+        return status;
       };
 
       // Update local representation of the feed (used to process

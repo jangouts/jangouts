@@ -39,8 +39,11 @@
         }
       });
 
-      scope.vm.initPics(element);
-      $interval(scope.vm.takePic, 5000);
+      if (scope.vm.feed.isPublisher) {
+        scope.vm.initPics(element);
+        scope.vm.takePic();
+        $interval(scope.vm.takePic, 5000);
+      }
     }
 
     function JhFeedCtrl() {
@@ -88,7 +91,11 @@
         if (jhConfig.videoThumbnails || vm.feed.speaking) {
           return "video";
         } else {
-          return "picture";
+          if (vm.feed.picture) {
+            return "picture";
+          } else {
+            return "placeholder";
+          }
         }
       }
 
@@ -150,16 +157,14 @@
       }
 
       function takePic() {
-        if (jhConfig.videoThumbnails) { return; }
-
-        var width = vm.picCanvas[0].width;
+        var canvas = vm.picCanvas[0];
+        var width = canvas.width;
         // Skip the rest if the video has no dimensions yet
         if (vm.picSource[0].videoHeight) {
           var height = width * vm.picSource[0].videoHeight / vm.picSource[0].videoWidth;
-          vm.picCanvas[0].height = height;
+          canvas.height = height;
           vm.picContext.drawImage(vm.picSource[0], 0, 0, width, height);
-          // Prepare for next step: sending the picture
-          //vm.feed.updatePic(picCanvas.toDataURL('image/jpeg',0.4));
+          vm.feed.updatePic(canvas.toDataURL('image/jpeg',0.4));
         }
       }
     }

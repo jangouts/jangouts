@@ -322,6 +322,8 @@
                 console.log(jsep);
                 var body = { "request": "start", "room": that.room.id };
                 _handle.send({"message": body, "jsep": jsep});
+                var config = { "request": "configure", "video": jhConfig.videoThumbnails };
+                _handle.send({"message": config});
               },
               error: function(error) {
                 console.error("WebRTC error:" + error);
