@@ -26,6 +26,7 @@
 
     function jhChatLink(scope) {
       scope.$watch('vm.messages.length', function(newVal) {
+        /* Update messages */
         if (newVal !== undefined) {
           // Scroll to bottom of messages list.
           var messagesList = document.getElementById('jh-chat-messages');

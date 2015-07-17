@@ -26,8 +26,20 @@
 
     function jhVideoChatLink(scope) {
       angular.element($window).on('resize', function() {
-        console.log('Adjusting');
         scope.vm.adjustScreenHeight();
+      });
+
+      /* Maybe it's not responsability for this directive */
+      scope.$watch('vm.logEntries().length', function(newVal, oldVal) {
+        if (!scope.vm.isChatActive) {
+          scope.vm.pendingEntries += (newVal - oldVal);
+        }
+      });
+
+      scope.$watch('vm.isChatActive', function(newVal) {
+        if (newVal === true) {
+          scope.vm.pendingEntries = 0;
+        }
       });
     }
 
@@ -43,6 +55,8 @@
         // automatically (if byUser is null)
         current: null
       };
+      vm.isChatActive = false;
+      vm.pendingEntries = 0;
 
       /* Functions */
       vm.feeds = feeds;
