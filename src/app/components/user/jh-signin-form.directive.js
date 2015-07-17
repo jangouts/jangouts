@@ -28,6 +28,7 @@
       setTimeout(function() {
         $('#inputUsername', element).focus();
       }, 100);
+      adjustScreenHeight()
     }
 
     function JhSigninFormCtrl() {

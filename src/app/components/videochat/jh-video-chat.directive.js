@@ -139,6 +139,10 @@ function adjustScreenHeight() {
     height: finalHeight + 'px'
   });
 
+  $("#signin").css({
+    height: finalHeight + 'px'
+  });
+
   $("#chat-playroom").css({
     height: finalHeight + 'px'
   });
