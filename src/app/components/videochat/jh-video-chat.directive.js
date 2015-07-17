@@ -26,6 +26,7 @@
 
     function jhVideoChatLink(scope) {
       angular.element($window).on('resize', function() {
+        //resize the screen to adjust the video and chat
         scope.vm.adjustScreenHeight();
       });
 
@@ -41,8 +42,6 @@
           scope.vm.pendingEntries = 0;
         }
       });
-      //resize the screen to adjust the video and chat
-      adjustScreenHeight()
     }
 
     function jhVideoChatCtrl() {

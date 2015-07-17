@@ -29,6 +29,9 @@
         $('#inputUsername', element).focus();
       }, 100);
       adjustScreenHeight()
+      $(window).on("resize", function() {
+        adjustScreenHeight()
+      })
     }
 
     function JhSigninFormCtrl() {
