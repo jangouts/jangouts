@@ -1,5 +1,22 @@
+//colour variables
+$jangouts-bg:  #e1dcbd;
+
+/* Colour pallete */
+$color1: #44b4eb;
+$color2: #e93eae;
+$color3: #6e49cb;
+$color4: #068d9d;
+$color5: #2F2D2E;
+
 body {
-  background: #333;
+  background: $jangouts-bg;
+}
+
+.jangouts-logo-login {
+  margin: 3em 0;
+}
+.login-msg {
+  margin-top: 5em
 }
 #videochat-playroom {
   position: relative;
@@ -124,12 +141,7 @@ footer {
   }
 }
 
-/* Colour pallete */
-$color1: #44b4eb;
-$color2: #e93eae;
-$color3: #6e49cb;
-$color4: #068d9d;
-$color5: #2F2D2E;
+
 
 //styles by sections
 #signin {

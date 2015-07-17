@@ -1,4 +1,4 @@
-<div ng-if="vm.visible()" class="alert alert-info" role="alert">
+<small ng-if="vm.visible()">
   <span ng-if="vm.usingSSL()">
     If you wish to use the screen sharing functionality, make sure you have
     understood <a class="alert-link" href="#" ng-click="vm.showHelp()">these instructions</a>.
@@ -9,4 +9,4 @@
     <a class="alert-link" ng-href="{{vm.httpsUrl()}}">HTTPS version</a> of this
     site.
   </span>
-</div>
+</small>
