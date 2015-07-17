@@ -114,6 +114,16 @@ body div.block-ui-container {
   }
 }
 
+header {
+  background: $color3;
+  padding: 13px 0;
+  button {
+    color: $color1;
+    background: transparent;
+    border: 0px;
+  }
+}
+
 footer {
   background: #fff;
   font-size: 12px;
@@ -179,9 +189,10 @@ footer {
 #main-chat-session {
   .aside-chat {
     background: #fff;
-    padding-top: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
     .share-help-btn {
-      padding-bottom: 15px;
+      padding: 15px;
       height: 50px;
     }
   }
@@ -196,6 +207,7 @@ footer {
     height: 100%;
   }
 }
+
 
 // Overriding of bootstrap's default negative margin, just a hack actually
 .row {

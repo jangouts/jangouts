@@ -1,4 +1,4 @@
-<div class="col-xs-8 col-md-9 col-no-padding" id="videochat-playroom">
+<div class="col-sm-8 col-no-padding" id="videochat-playroom">
   <div
      id="main-video"
      jh-main-feed="true"
@@ -7,16 +7,28 @@
   </div>
 </div>
 
-<div id="chat-playroom" class="col-xs-4 col-md-3 aside-chat">
+<div id="chat-playroom" class="col-sm-4 aside-chat">
+  <header>
+    <div class="row">
+      <div class="col-xs-6">
+        <img src="images/jangouts-logo.png" class="img-responsive" />
+      </div>
+      <div class="col-xs-6 text-right">
+        <jh-user-panel></jh-user-panel>
+        <button
+           class="pull-right"
+           ng-click="hotkeys.toggleCheatSheet()"
+           title="Keyboard shortcuts">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+
+  </header>
   <div class="share-help-btn">
     <jh-screen-share-button></jh-screen-share-button>
     <jh-thumbnails-mode-button></jh-thumbnails-mode-button>
-    <button
-       class="btn btn-default pull-right"
-       ng-click="hotkeys.toggleCheatSheet()"
-       title="Keyboard shortcuts">
-      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-    </button>
+
   </div>
 
   <tabset>
