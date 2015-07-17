@@ -6,8 +6,9 @@
       poster="assets/images/placeholder.png"
       ng-show="vm.thumbnailTag() === 'video'">
     </video>
-    <canvas
+    <img
       class="thumb"
+      src="{{vm.feed.picture}}"
       ng-class="{mirrored: vm.mirrored}"
       ng-show="vm.thumbnailTag() === 'picture'">
     </canvas>
@@ -17,6 +18,10 @@
       ng-class="{mirrored: vm.mirrored}"
       ng-show="vm.thumbnailTag() === 'placeholder'">
     </img>
+    <canvas
+      class="thumb"
+      ng-show="false">
+    </canvas>
     <figcaption>
       {{ vm.feed.display }}
 

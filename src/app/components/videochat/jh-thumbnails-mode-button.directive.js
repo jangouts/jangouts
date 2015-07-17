@@ -11,12 +11,13 @@
   angular.module('janusHangouts')
     .directive('jhThumbnailsModeButton', jhThumbnailsModeButtonDirective);
 
-  jhThumbnailsModeButtonDirective.$inject = ['jhConfig', '$timeout'];
+  jhThumbnailsModeButtonDirective.$inject = ['jhConfig', '$timeout', 'FeedsService'];
 
-  function jhThumbnailsModeButtonDirective(jhConfig, $timeout) {
+  function jhThumbnailsModeButtonDirective(jhConfig, $timeout, FeedsService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-thumbnails-mode-button.html',
+      scope: {},
       controllerAs: 'vm',
       bindToController: true,
       controller: jhThumbnailsModeButtonCtrl
@@ -33,6 +34,13 @@
       function click() {
         $timeout(function() {
           jhConfig.videoThumbnails = !jhConfig.videoThumbnails;
+          // If we are not going to display the remote videos, simply stop
+          // receiving them (and the other way around)
+          _.forEach(FeedsService.allFeeds(), function(feed) {
+            if (!feed.isPublisher) {
+              feed.configure({video: jhConfig.videoThumbnails});
+            }
+          });
         });
       }
 
