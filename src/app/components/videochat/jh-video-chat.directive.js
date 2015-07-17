@@ -122,7 +122,6 @@
 // if the user resizes the screen, adjust it again
 function adjustScreenHeight() {
   var windowHeight;
-  var headerHeight;
   var footerHeight;
   var finalHeight;
   var shareBtnHeight;
@@ -131,7 +130,6 @@ function adjustScreenHeight() {
 
   windowHeight = $(window).outerHeight();
   footerHeight = $("footer").outerHeight();
-  shareBtnHeight = $(".share-help-btn").outerHeight();
 
   finalHeight = windowHeight - footerHeight;
 
@@ -150,8 +148,14 @@ function adjustScreenHeight() {
   //for the chat room the number needs to rest the share button div. 30 for the paddings.
 
   footerChatHeight = $("#chat-form-footer").outerHeight();
+  shareBtnHeight = $(".share-help-btn").outerHeight();
+  tabsHeight = $(".ng-isolate-scope .nav-tabs").outerHeight();
 
-  finalHeightChat = finalHeight - shareBtnHeight - footerChatHeight - 35;
+  //FIX: I cannot detect the height of footerChatHeight. For now the workaround is to add the 40px manually.
+  paddingTopChatPlayroom = 15;
+  paddingBottom = 15; //lets add a padding/margin so its not stuck to the footer.
+
+  finalHeightChat = finalHeight - shareBtnHeight - 40 - tabsHeight - paddingTopChatPlayroom - paddingBottom;
 
   $("#jh-chat-messages").css({
     height: finalHeightChat + 'px'

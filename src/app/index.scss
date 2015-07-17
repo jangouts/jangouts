@@ -70,10 +70,14 @@ body {
   -webkit-transform:rotateY(180deg); /* Safari and Chrome */
   -moz-transform:rotateY(180deg); /* Firefox */
 }
-
+#jh-chat-messages {
+  height: 40px;
+}
+.jh-chat.panel.panel-default {
+  margin-bottom: 0;
+}
 .jh-chat {
   font-size: 12px;
-
   .panel-body {
     height: 60vh;
     overflow: auto;
@@ -114,7 +118,7 @@ footer {
   background: #fff;
   font-size: 12px;
   border-top: #dedede 1px solid;
-  height: 30px;
+  height: 37px;
   padding: 7px 0;
 }
 
@@ -177,8 +181,8 @@ footer {
     background: #fff;
     padding-top: 15px;
     .share-help-btn {
-      margin-bottom: 15px;
-      height: 35px;
+      padding-bottom: 15px;
+      height: 50px;
     }
   }
 }
