@@ -5,27 +5,40 @@
      feed="vm.highlightedFeed()"
      ng-class="{mirrored: vm.mirrored()}">
   </div>
-  <div id="thumbnails">
-    <div
-       jh-feed="true"
-       feed="f"
-       ng-repeat="f in vm.feeds() | orderBy:'+display'"
-       click-fn="vm.toggleHighlightedFeed(f)"
-       highlighted="vm.isHighlighted(f)"
-       highlighted-by-user="vm.isHighlightedByUser(f)">
-    </div>
-  </div>
 </div>
+
 <div id="chat-playroom" class="col-xs-4 col-md-3 aside-chat">
   <div class="share-help-btn">
     <jh-screen-share-button></jh-screen-share-button>
     <jh-thumbnails-mode-button></jh-thumbnails-mode-button>
     <button
-      class="btn btn-default pull-right"
-      ng-click="hotkeys.toggleCheatSheet()"
-      title="Keyboard shortcuts">
+       class="btn btn-default pull-right"
+       ng-click="hotkeys.toggleCheatSheet()"
+       title="Keyboard shortcuts">
       <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
     </button>
   </div>
-  <jh-chat messages="vm.logEntries()"></jh-chat>
+
+  <tabset>
+    <tab heading="People">
+      <div id="thumbnails">
+        <div
+           jh-feed="true"
+           feed="f"
+           ng-repeat="f in vm.feeds() | orderBy:'+display'"
+           click-fn="vm.toggleHighlightedFeed(f)"
+           highlighted="vm.isHighlighted(f)"
+           highlighted-by-user="vm.isHighlightedByUser(f)">
+        </div>
+      </div>
+    </tab>
+
+    <tab active="vm.isChatActive">
+      <tab-heading>
+        Chat
+        <span class="badge" ng-show="vm.pendingEntries != 0">{{vm.pendingEntries}}</span>
+      </tab-heading>
+      <jh-chat messages="vm.logEntries()"></jh-chat>
+    </tab>
+  </tabset>
 </div>
