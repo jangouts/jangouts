@@ -31,6 +31,7 @@
 
       this.picture = null;
       this.speaking = false;
+      this.silentSince = Date.now();
 
       this.waitingForHandle = function() {
         return (this.isIgnored === false && !this.pluginHandle);
@@ -75,6 +76,7 @@
           }
           if (that.speaking !== speaking) {
             that.speaking = speaking;
+            if (speaking === false) { that.silentSince = Date.now(); }
             DataChannelService.sendStatus(that, {exclude: "picture"});
           }
         });
@@ -111,9 +113,17 @@
         // about changes in the feed.
         var that = this;
         $timeout(function() {
+          if (that.speaking === true && attrs.speaking === false) {
+            that.silentSince = Date.now();
+          }
           _.assign(that, attrs);
         });
       };
+
+      this.isSilent = function(threshold) {
+        if (!threshold) { threshold = 6000; }
+        return !this.speaking && this.silentSince < (Date.now() - threshold);
+      }
     };
   }
 })();

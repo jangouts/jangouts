@@ -39,6 +39,13 @@
         }
       });
 
+      if (!scope.vm.feed.isPublisher) {
+        scope.$watch('vm.feed.isSilent(6000)', function(silent) {
+          var video = scope.vm.feed.highlighted || !silent || jhConfig.videoThumbnails;
+          scope.vm.feed.configure({"video": video});
+        });
+      }
+
       if (scope.vm.feed.isPublisher) {
         scope.vm.initPics(element);
         scope.vm.takePic();
