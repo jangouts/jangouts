@@ -41,6 +41,8 @@
           scope.vm.pendingEntries = 0;
         }
       });
+      //resize the screen to adjust the video and chat
+      adjustScreenHeight()
     }
 
     function jhVideoChatCtrl() {
@@ -110,45 +112,44 @@
         return LogService.allEntries();
       }
 
-      // FIXME: Please, relocate this script if it does not belong here.
-      // Lets take the screen size and adjust the size of the video
-      // if the user resizes the screen, adjust it again
-      function adjustScreenHeight() {
-        var windowHeight;
-        var headerHeight;
-        var footerHeight;
-        var finalHeight;
-        var shareBtnHeight;
-        var footerChatHeight;
-        var finalHeightChat;
-
-        windowHeight = $(window).outerHeight();
-        headerHeight = $("header").outerHeight();
-        footerHeight = $("footer").outerHeight();
-        shareBtnHeight = $(".share-help-btn").outerHeight();
-
-        finalHeight = windowHeight - headerHeight - footerHeight;
-
-        $("#videochat-playroom").css({
-          height: finalHeight + 'px'
-        });
-
-        $("#chat-playroom").css({
-          height: finalHeight + 'px'
-        });
-
-        //for the chat room the number needs to rest the share button div. 30 for the paddings.
-
-        footerChatHeight = $("#chat-form-footer").outerHeight();
-
-        finalHeightChat = finalHeight - shareBtnHeight - footerChatHeight - 35;
-
-        $("#jh-chat-messages").css({
-          height: finalHeightChat + 'px'
-        });
-      }
     }
   }
 
 
 })();
+
+// Lets take the screen size and adjust the size of the video
+// if the user resizes the screen, adjust it again
+function adjustScreenHeight() {
+  var windowHeight;
+  var headerHeight;
+  var footerHeight;
+  var finalHeight;
+  var shareBtnHeight;
+  var footerChatHeight;
+  var finalHeightChat;
+
+  windowHeight = $(window).outerHeight();
+  footerHeight = $("footer").outerHeight();
+  shareBtnHeight = $(".share-help-btn").outerHeight();
+
+  finalHeight = windowHeight - footerHeight;
+
+  $("#videochat-playroom").css({
+    height: finalHeight + 'px'
+  });
+
+  $("#chat-playroom").css({
+    height: finalHeight + 'px'
+  });
+
+  //for the chat room the number needs to rest the share button div. 30 for the paddings.
+
+  footerChatHeight = $("#chat-form-footer").outerHeight();
+
+  finalHeightChat = finalHeight - shareBtnHeight - footerChatHeight - 35;
+
+  $("#jh-chat-messages").css({
+    height: finalHeightChat + 'px'
+  });
+}

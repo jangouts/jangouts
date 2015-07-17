@@ -35,6 +35,8 @@
           }, 100);
         }
       });
+      //resize the screen to adjust the video and chat
+      adjustScreenHeight()
     }
 
     function JhChatCtrl() {
