@@ -1,12 +1,12 @@
-//colour variables
-$jangouts-bg:  #e1dcbd;
-
 /* Colour pallete */
-$color1: #44b4eb;
-$color2: #e93eae;
-$color3: #6e49cb;
-$color4: #068d9d;
-$color5: #2F2D2E;
+$color1: #f15a5c;
+$color2: #09414f;
+$color3: #e1dcbd;
+
+//colour variables
+$jangouts-bg:  $color3;
+$jangouts-video-bg: $color2;
+
 
 body {
   background: $jangouts-bg;
@@ -21,6 +21,7 @@ body {
 #videochat-playroom {
   position: relative;
   overflow: hidden;
+  background: $jangouts-video-bg;
 }
 #thumbnails {
   display: flex;
