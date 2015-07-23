@@ -11,9 +11,6 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
                'janusHangouts.config', 'cfp.hotkeys'])
   .config(function ($stateProvider, $urlRouterProvider) {
-    var authenticated = ['$q', '$state', 'UserService', function($q, $state, UserService) {
-      return UserService.currentUser();
-    }];
 
     $stateProvider
       .state('signin', {
@@ -23,15 +20,12 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
         controllerAs: 'vm'
       })
       .state('home', {
-        url: '/',
+        url: '/:user/:room',
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl',
-        resolve: {
-          authenticated: authenticated,
-        }
-      });
+        controller: 'MainCtrl'
+      })
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/sign_in');
   })
   .config(function(blockUIConfig) {
     blockUIConfig.templateUrl = 'app/components/room/consent-dialog.html';
