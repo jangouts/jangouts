@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhSigninForm', jhSigninFormDirective);
 
-  jhSigninFormDirective.$inject = ['$location', 'UserService', 'RoomService'];
+  jhSigninFormDirective.$inject = ['$location', 'RoomService'];
 
-  function jhSigninFormDirective($state, $location, UserService, RoomService) {
+  function jhSigninFormDirective($location, RoomService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/user/jh-signin-form.html',

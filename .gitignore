@@ -2,6 +2,7 @@ node_modules
 bower_components
 .sass-cache/
 .tmp/
+.idea/
 dist/
 src/app/config.local.json
 src/app/config.js
