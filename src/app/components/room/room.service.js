@@ -20,7 +20,6 @@
     this.leave = leave;
     this.getAvailableRooms = getAvailableRooms;
     this.setConfig = setConfig;
-    this.getRoom = getRoom;
     this.getRoomById = getRoomById;
     this.publishScreen = publishScreen;
     this.unPublishFeed = unPublishFeed;
@@ -212,10 +211,6 @@
       config = config || {};
       this.room = config.room;
       this.publishingFromStart = config.publishingFromStart || false;
-    }
-
-    function getRoom() {
-      return this.room;
     }
 
     function getRoomById(roomId) {
