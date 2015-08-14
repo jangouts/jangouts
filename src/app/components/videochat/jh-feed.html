@@ -8,7 +8,7 @@
     </video>
     <img
       class="thumb"
-      src="{{vm.feed.picture}}"
+      src="{{vm.feed.getPicture()}}"
       ng-class="{mirrored: vm.mirrored}"
       ng-show="vm.thumbnailTag() === 'picture'">
     </canvas>
@@ -38,7 +38,7 @@
         <button
           type="button"
           class="btn btn-xs"
-          ng-class="{'btn-primary': vm.feed.speaking, 'btn-default': !vm.feed.speaking}"
+          ng-class="{'btn-primary': vm.feed.getSpeaking(), 'btn-default': !vm.feed.getSpeaking()}"
           ng-click="vm.toggleAudio()"
           title="Disable audio"
           ng-show="vm.showsDisableAudio()">

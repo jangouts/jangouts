@@ -39,7 +39,7 @@
 
       this.chatMsgText = function() {
         return $sanitize(this.content.text).trim();
-      }
+      };
 
       this.publishScreenText = function() {
         return "Screen sharing started";

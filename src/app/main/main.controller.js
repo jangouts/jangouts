@@ -25,7 +25,7 @@
       alert("Janus error: " + error);
     });
 
-    $scope.$on('user.unset', function(evt) {
+    $scope.$on('user.unset', function() {
       RoomService.leave();
     });
 

@@ -12,9 +12,11 @@
     .service('RoomService',  RoomService);
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
-      'DataChannelService', 'ActionService', 'jhConfig', 'ScreenShareService'];
+      'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
+      'ScreenShareService'];
 
-  function RoomService($q, $rootScope, $timeout, FeedsService, Room, DataChannelService, ActionService, jhConfig, ScreenShareService) {
+  function RoomService($q, $rootScope, $timeout, FeedsService, Room,
+      FeedConnection, DataChannelService, ActionService, jhConfig, ScreenShareService) {
     this.connect = connect;
     this.enter = enter;
     this.leave = leave;
@@ -27,7 +29,6 @@
     this.stopIgnoringFeed = stopIgnoringFeed;
     this.subscribeToFeeds = subscribeToFeeds;
     this.subscribeToFeed = subscribeToFeed;
-    this.publishMainFeed = publishMainFeed;
     this.toggleChannel = toggleChannel;
     this.publishingFromStart = true;
     this.room = null;
@@ -52,7 +53,7 @@
         wsPort = "8989";
       } else {
         wsProtocol = "ws:";
-        wsPort = "8188"
+        wsPort = "8188";
       }
 
       return [
@@ -88,30 +89,27 @@
     function enter(username) {
       var that = this;
       var $$rootScope = $rootScope;
-      var _handle = null;
+      var connection = null;
 
       // Create new session
       this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
-          _handle = pluginHandle;
-          console.log("Plugin attached! (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
           // Step 1. Right after attaching to the plugin, we send a
           // request to join
-          var register = { "request": "join", "room": that.room.id, "ptype": "publisher", "display": username };
-          pluginHandle.send({"message": register});
-          console.log("  -- This is a publisher/manager");
+          connection = new FeedConnection(pluginHandle, that.room.id, "main");
+          connection.register(username);
         },
         error: function(error) {
           console.error("Error attaching plugin... " + error);
         },
         consentDialog: function(on) {
           console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
-          $$rootScope.$broadcast('consentDialog.changed', on); /*XXX*/
+          $$rootScope.$broadcast('consentDialog.changed', on);
         },
-        ondataopen: function(data) {
+        ondataopen: function() {
           console.log("The publisher DataChannel is available");
-          FeedsService.findMain().isDataOpen = true;
+          connection.onDataOpen();
           DataChannelService.sendStatus(FeedsService.findMain());
         },
         onlocalstream: function(stream) {
@@ -135,10 +133,20 @@
           // Step 2. Response from janus confirming we joined
           if (event === "joined") {
             console.log("Successfully joined room " + msg.room);
-            ActionService.enterRoom(msg.id, username, _handle, that.publishingFromStart);
+            ActionService.enterRoom(msg.id, username, connection);
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
-            that.publishMainFeed(true);
+            connection.publish({
+              noAudioOnStart: !that.publishingFromStart,
+              noVideoOnStart: !that.publishingFromStart,
+              error: function() {
+                connection.publish({
+                  noAudioOnStart: !that.publishingFromStart,
+                  noVideoOnStart: !that.publishingFromStart,
+                  noCamera: true
+                });
+              }
+            });
 
             // Step 5. Attach to existing feeds, if any
             if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
@@ -147,7 +155,7 @@
             // The room has been destroyed
           } else if(event === "destroyed") {
             console.log("The room has been destroyed!");
-            $$rootScope.$broadcast('room.destroy'); /*XXX*/
+            $$rootScope.$broadcast('room.destroy');
           } else if(event === "event") {
             // Any new feed to attach to?
             if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
@@ -163,14 +171,12 @@
               // The server reported an error
             } else if(msg.error !== undefined && msg.error !== null) {
               console.log("Error message from server" + msg.error);
-              $$rootScope.$broadcast('room.error', msg.error); /*XXX*/
+              $$rootScope.$broadcast('room.error', msg.error);
             }
           }
 
           if (jsep !== undefined && jsep !== null) {
-            console.log("Handling SDP as well...");
-            console.log(jsep);
-            _handle.handleRemoteJsep({jsep: jsep});
+            connection.handleRemoteJsep(jsep);
           }
         }
       });
@@ -217,40 +223,6 @@
       return this.room;
     }
 
-    // Negotiates WebRTC by creating a webRTC offer for sharing the audio and
-    // (optionally) video with the janus server. On success (the stream is
-    // created and accepted), publishes the corresponding feed on the janus
-    // server.
-    function publishMainFeed(useVideo) {
-      console.log("publishMainFeed called: " + useVideo);
-      var that = this;
-      var handle = FeedsService.findMain().pluginHandle;
-      handle.createOffer({
-        media: { // Publishers are sendonly
-          videoRecv: false,
-          videoSend: useVideo,
-          audioRecv: false,
-          audioSend: true,
-          data: true
-        },
-        success: function(jsep) {
-          console.log("Got publisher SDP!");
-          console.log(jsep);
-          var publish = { "request": "configure", "audio": that.publishingFromStart, "video": that.publishingFromStart };
-          handle.send({"message": publish, "jsep": jsep});
-        },
-        error: function(error) {
-          console.error("WebRTC error:" + error);
-          if (useVideo) {
-            that.publishMainFeed(false);
-          } else {
-            console.error("WebRTC error... " + JSON.stringify(error));
-            console.error(error);
-          }
-        }
-      });
-    }
-
     function subscribeToFeeds(list) {
       console.log("Got a list of available publishers/feeds:");
       console.log(list);
@@ -259,7 +231,7 @@
         var display = list[f].display;
         console.log("  >> [" + id + "] " + display);
         var feed = FeedsService.find(id);
-        if (feed === null || feed.waitingForHandle()) {
+        if (feed === null || feed.waitingForConnection()) {
           this.subscribeToFeed(id, display);
         }
       }
@@ -268,7 +240,7 @@
     function subscribeToFeed(id, display) {
       var that = this;
       var feed = FeedsService.find(id);
-      var _handle = null;
+      var connection = null;
 
       if (feed) {
         display = feed.display;
@@ -277,12 +249,8 @@
       this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
-          _handle = pluginHandle;
-          console.log("Plugin attached! (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
-          console.log("  -- This is a subscriber");
-          // We wait for the plugin to send us an offer
-          var listen = { "request": "join", "room": that.room.id, "ptype": "listener", "feed": id };
-          pluginHandle.send({"message": listen});
+          connection = new FeedConnection(pluginHandle, that.room.id, "subscriber");
+          connection.listen(id);
         },
         error: function(error) {
           console.error("  -- Error attaching plugin... " + error);
@@ -296,39 +264,20 @@
             // Subscriber created and attached
             $timeout(function() {
               if (feed) {
-                ActionService.stopIgnoringFeed(id, _handle);
+                ActionService.stopIgnoringFeed(id, connection);
               } else {
-                ActionService.remoteJoin(id, display, _handle);
+                ActionService.remoteJoin(id, display, connection);
               }
               console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
             });
-          } else {
-            // What has just happened?
+          } else if (!msg.configured) {
+            // Ignore the 'configured' events here, they are already processed
+            // by ConnectionConfig
+            console.log("What has just happened?!");
           }
 
           if(jsep !== undefined && jsep !== null) {
-            console.log("Handling SDP as well...");
-            console.log(jsep);
-            // Answer and attach
-            _handle.createAnswer({
-              jsep: jsep,
-              media: { // We want recvonly audio/video
-                audioSend: false,
-                videoSend: false,
-                data: true
-              },
-              success: function(jsep) {
-                console.log("Got SDP!");
-                console.log(jsep);
-                var body = { "request": "start", "room": that.room.id };
-                _handle.send({"message": body, "jsep": jsep});
-                var config = { "request": "configure", "video": jhConfig.videoThumbnails };
-                _handle.send({"message": config});
-              },
-              error: function(error) {
-                console.error("WebRTC error:" + error);
-              }
-            });
+            connection.subscribe(jsep, {withVideo: jhConfig.videoThumnails});
           }
         },
         onremotestream: function(stream) {
@@ -337,9 +286,9 @@
             feed.stream = stream;
           });
         },
-        ondataopen: function(data) {
+        ondataopen: function() {
           console.log("The subscriber DataChannel is available");
-          FeedsService.find(id).isDataOpen = true;
+          connection.onDataOpen();
           // Send status information of all our feeds to inform the newcommer
           FeedsService.publisherFeeds().forEach(function (p) {
             DataChannelService.sendStatus(p);
@@ -350,9 +299,7 @@
           DataChannelService.receiveMessage(data, id);
         },
         oncleanup: function() {
-          $timeout(function () {
-            console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
-          });
+          console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
         }
       });
     }
@@ -360,28 +307,22 @@
     function publishScreen() {
       var display = FeedsService.findMain().display;
       var that = this;
-      var _handle;
-      var _id;
+      var connection;
+      var id;
 
       this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
-          console.log("Screen sharing plugin attached");
-          var register = {
-            "request": "join",
-            "room": that.room.id,
-            "ptype": "publisher",
-            "display": display };
-          pluginHandle.send({"message": register});
+          connection = new FeedConnection(pluginHandle, that.room.id, "screen");
+          connection.register(display);
           ScreenShareService.setInProgress(true);
-          _handle = pluginHandle;
         },
         error: function(error) {
           console.error("  -- Error attaching screen plugin... " + error);
         },
         onlocalstream: function(stream) {
           console.log(" ::: Got the screen stream :::");
-          var feed = FeedsService.find(_id);
+          var feed = FeedsService.find(id);
           $timeout(function () {
             feed.stream = stream;
           });
@@ -392,16 +333,25 @@
           var event = msg.videoroom;
 
           if (event === "joined") {
-            _id = msg.id;
-            ActionService.publishScreen(_id, display, _handle);
-            publishScreenFeed(FeedsService.find(_id));
+            id = msg.id;
+            ActionService.publishScreen(id, display, connection);
+
+            connection.publish({
+              success: function() {
+                ScreenShareService.setInProgress(false);
+              },
+              error: function(error) {
+                console.log(error);
+                unPublishFeed(id);
+                ScreenShareService.setInProgress(false);
+                ScreenShareService.showHelp();
+              }
+            });
           } else {
             console.log("Unexpected event for screen");
           }
           if (jsep !== undefined && jsep !== null) {
-            console.log("Handling SDP as well...");
-            console.log(jsep);
-            _handle.handleRemoteJsep({jsep: jsep});
+            connection.handleRemoteJsep(jsep);
           }
         }
       });
@@ -419,42 +369,15 @@
       this.subscribeToFeed(feedId);
     }
 
-    function publishScreenFeed(feed) {
-      console.log("publishScreenFeed called");
-      var handle = feed.pluginHandle;
-
-      handle.createOffer({
-        media: {
-          videoRecv: false,
-          audio: false,
-          video: "screen",
-          data: false
-        },
-        success: function(jsep) {
-          console.log("Got publisher SDP!");
-          console.log(jsep);
-          var publish = { "request": "configure", "audio": false, "video": true };
-          handle.send({"message": publish, "jsep": jsep});
-          ScreenShareService.setInProgress(false);
-        },
-        error: function(error) {
-          console.error(error);
-          unPublishFeed(feed.id);
-          ScreenShareService.setInProgress(false);
-          ScreenShareService.showHelp();
-        }
-      });
-    }
-
     function observeAudio(feed) {
       var speech = hark(feed.stream);
       speech.on('speaking', function() {
         $timeout(function() {
-          feed.setSpeaking(true);
+          feed.updateLocalSpeaking(true);
         });
       });
       speech.on('stopped_speaking', function() {
-        feed.setSpeaking(false);
+        feed.updateLocalSpeaking(false);
       });
     }
 

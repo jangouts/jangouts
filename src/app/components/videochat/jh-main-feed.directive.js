@@ -35,9 +35,6 @@
       });
     }
 
-    function JhMainFeedCtrl() {
-      /* jshint validthis:true */
-      var vm = this;
-    }
+    function JhMainFeedCtrl() {} 
   }
 })();

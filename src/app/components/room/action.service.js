@@ -25,14 +25,12 @@
     this.publishScreen = publishScreen;
     this.toggleChannel = toggleChannel;
 
-    function enterRoom(feedId, display, mainHandle, publishingFromStart) {
+    function enterRoom(feedId, display, connection) {
       var feed = new Feed({
         display: display,
-        pluginHandle: mainHandle,
+        connection: connection,
         id: feedId,
-        isPublisher: true,
-        audioEnabled: publishingFromStart,
-        videoEnabled: publishingFromStart
+        isPublisher: true
       });
       FeedsService.add(feed, {main: true});
     }
@@ -45,10 +43,10 @@
       });
     }
 
-    function publishScreen(feedId, display, handle) {
+    function publishScreen(feedId, display, connection) {
       var feed = new Feed({
         display: display,
-        pluginHandle: handle,
+        connection: connection,
         id: feedId,
         isPublisher: true,
         isLocalScreen: true
@@ -59,10 +57,10 @@
       LogService.add(entry);
     }
 
-    function remoteJoin(feedId, display, pluginHandle) {
+    function remoteJoin(feedId, display, connection) {
       var feed = new Feed({
         display: display,
-        pluginHandle: pluginHandle,
+        connection: connection,
         id: feedId,
         isPublisher: false
       });
@@ -75,8 +73,8 @@
     function destroyFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      if (feed.pluginHandle) {
-        feed.pluginHandle.detach();
+      if (feed.connection) {
+        feed.connection.destroy();
       }
       $timeout(function () {
         FeedsService.destroy(feedId);
@@ -90,18 +88,18 @@
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
       feed.isIgnored = true;
-      feed.pluginHandle.detach();
-      feed.pluginHandle = null;
+      feed.connection.destroy();
+      feed.connection = null;
       // Log the event
       var entry = new LogEntry("ignoreFeed", {feed: feed});
       LogService.add(entry);
     }
 
-    function stopIgnoringFeed(feedId, handle) {
+    function stopIgnoringFeed(feedId, connection) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
       feed.isIgnored = false;
-      feed.pluginHandle = handle;
+      feed.connection = connection;
       // Log the event
       var entry = new LogEntry("stopIgnoringFeed", {feed: feed});
       LogService.add(entry);
@@ -126,7 +124,7 @@
         var entry = new LogEntry("muteRequest", {source: FeedsService.findMain(), target: feed});
         LogService.add(entry);
       }
-      if (feed[type + "Enabled"]) {
+      if (feed.isEnabled(type)) {
         feed.setEnabledChannel(type, false);
       } else {
         feed.setEnabledChannel(type, true);
