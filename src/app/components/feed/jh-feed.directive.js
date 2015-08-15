@@ -16,7 +16,7 @@
   function jhFeed(RoomService, $interval, jhConfig) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/components/videochat/jh-feed.html',
+      templateUrl: 'app/components/feed/jh-feed.html',
       scope: {
         feed: '=',
         clickFn: '&',
