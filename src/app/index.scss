@@ -218,13 +218,12 @@ footer {
   padding: 0px;
 }
 
-// Overraging Bootstrap's buttons
-.btn-primary {
+#signInButton {
   color: #fff;
   background-color: $color1;
   border-color: darken($color1, 10%);
 }
-.btn-primary:hover {
+#signInButton:hover {
   color: #fff;
   background-color: darken($color1, 10%);
   border-color: darken($color1, 15%);
