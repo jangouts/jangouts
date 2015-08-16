@@ -38,7 +38,7 @@
         }
       });
 
-      scope.vm.adjustHeight()
+      scope.vm.adjustHeight();
       angular.element($window).on('resize', function() {
         scope.vm.adjustHeight();
       });
