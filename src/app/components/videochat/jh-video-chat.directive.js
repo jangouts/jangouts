@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhVideoChat', jhVideoChatDirective);
 
-  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService'];
+  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'hotkeys'];
 
-  function jhVideoChatDirective($window, LogService, FeedsService) {
+  function jhVideoChatDirective($window, LogService, FeedsService, hotkeys) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -69,6 +69,7 @@
       vm.isHighlightedByUser = isHighlightedByUser;
       vm.logEntries = logEntries;
       vm.adjustHeight = adjustHeight;
+      vm.showHotkeys = showHotkeys;
 
       function feeds() {
         return FeedsService.allFeeds();
@@ -117,6 +118,10 @@
         $("#videochat-playroom").css({
           height: height + 'px'
         });
+      }
+
+      function showHotkeys() {
+        hotkeys.toggleCheatSheet();
       }
     }
   }
