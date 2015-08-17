@@ -277,7 +277,7 @@
           }
 
           if(jsep !== undefined && jsep !== null) {
-            connection.subscribe(jsep, {withVideo: jhConfig.videoThumnails});
+            connection.subscribe(jsep, {withVideo: jhConfig.videoThumbnails});
           }
         },
         onremotestream: function(stream) {
