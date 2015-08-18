@@ -1,6 +1,7 @@
 {
-  "name": "janusHangouts",
+  "name": "jangouts",
   "version": "0.3.4",
+  "license": "MIT",
   "dependencies": {},
   "repository": "ancorgs/jangouts",
   "scripts": {
