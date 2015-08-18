@@ -22,7 +22,7 @@
     this.leave = leave;
     this.getAvailableRooms = getAvailableRooms;
     this.setConfig = setConfig;
-    this.getRoom = getRoom;
+    this.getRoomById = getRoomById;
     this.publishScreen = publishScreen;
     this.unPublishFeed = unPublishFeed;
     this.ignoreFeed = ignoreFeed;
@@ -219,8 +219,21 @@
       this.publishingFromStart = config.publishingFromStart || false;
     }
 
-    function getRoom() {
-      return this.room;
+    function getRoomById(roomId) {
+      var deferred = $q.defer();
+      var that = this;
+
+      that.connect().then(function () {
+        that.getAvailableRooms().then(function (rooms) {
+          var result = _.find(rooms, function(room) { return room.id == roomId; });
+          if(result){
+            deferred.resolve(result);
+          }else{
+            deferred.reject('Room not found!');
+          }
+        });
+      });
+      return deferred.promise;
     }
 
     function subscribeToFeeds(list) {
