@@ -16,7 +16,7 @@
   function jhFeed(RoomService, $interval, jhConfig) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/components/videochat/jh-feed.html',
+      templateUrl: 'app/components/feed/jh-feed.html',
       scope: {
         feed: '=',
         clickFn: '&',
@@ -39,17 +39,20 @@
         }
       });
 
-      if (!scope.vm.feed.isPublisher) {
-        scope.$watch('vm.feed.isSilent(6000)', function(silent) {
-          var video = scope.vm.feed.highlighted || !silent || jhConfig.videoThumbnails;
-          scope.vm.feed.configure({"video": video});
-        });
-      }
-
-      if (scope.vm.feed.isPublisher) {
-        scope.vm.initPics(element);
-        scope.vm.takePic();
-        $interval(scope.vm.takePic, 5000);
+      var vm = scope.vm;
+      var feed = vm.feed;
+      // If it's a publisher feed, we have to constantly send video and photos
+      // Otherwise, we have to manage the video subscription
+      if (feed.isPublisher) {
+        vm.initPics(element);
+        vm.takePic();
+        $interval(vm.takePic, 5000);
+      } else {
+        feed.setVideoSubscription(jhConfig.videoThumbnails || vm.highlighted);
+        scope.$watch(
+          function() { return jhConfig.videoThumbnails || vm.highlighted || !vm.feed.isSilent(); },
+          function(video) { feed.setVideoSubscription(video); }
+        );
       }
     }
 
@@ -92,13 +95,13 @@
 
       function thumbnailTag() {
         if (vm.highlighted || vm.feed.isIgnored) { return "placeholder"; }
-        if (!vm.feed.videoEnabled) { return "placeholder"; }
+        if (!vm.feed.getVideoEnabled()) { return "placeholder"; }
         if (vm.feed.isPublisher) { return "video"; }
 
-        if (jhConfig.videoThumbnails || vm.feed.speaking) {
+        if (vm.feed.getVideoSubscription()) {
           return "video";
         } else {
-          if (vm.feed.picture) {
+          if (vm.feed.getPicture()) {
             return "picture";
           } else {
             return "placeholder";
@@ -107,23 +110,23 @@
       }
 
       function showsEnableAudio() {
-        return (vm.feed.isPublisher && !vm.feed.audioEnabled);
+        return (vm.feed.isPublisher && !vm.feed.getAudioEnabled());
       }
 
       function showsDisableAudio() {
-        return (!vm.feed.isIgnored && vm.feed.audioEnabled);
+        return (!vm.feed.isIgnored && vm.feed.getAudioEnabled());
       }
 
       function showsAudioOff() {
-        return (!vm.feed.isPublisher && !vm.feed.isIgnored && !vm.feed.audioEnabled);
+        return (!vm.feed.isPublisher && !vm.feed.isIgnored && !vm.feed.getAudioEnabled());
       }
 
       function showsEnableVideo() {
-        return (vm.feed.isPublisher && !vm.feed.videoEnabled);
+        return (vm.feed.isPublisher && !vm.feed.getVideoEnabled());
       }
 
       function showsDisableVideo() {
-        return (vm.feed.isPublisher && vm.feed.videoEnabled);
+        return (vm.feed.isPublisher && vm.feed.getVideoEnabled());
       }
 
       function ignore() {
@@ -171,7 +174,7 @@
           var height = width * vm.picSource[0].videoHeight / vm.picSource[0].videoWidth;
           canvas.height = height;
           vm.picContext.drawImage(vm.picSource[0], 0, 0, width, height);
-          vm.feed.updatePic(canvas.toDataURL('image/jpeg',0.4));
+          vm.feed.updateLocalPic(canvas.toDataURL('image/jpeg',0.4));
         }
       }
     }

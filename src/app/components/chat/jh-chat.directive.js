@@ -11,7 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhChat', jhChatDirective);
 
-  function jhChatDirective() {
+  jhChatDirective.$inject = ['$window'];
+
+  function jhChatDirective($window) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/chat/jh-chat.html',
@@ -35,13 +37,54 @@
           }, 100);
         }
       });
-      //resize the screen to adjust the video and chat
-      adjustScreenHeight()
+
+      scope.vm.adjustHeight();
+      angular.element($window).on('resize', function() {
+        scope.vm.adjustHeight();
+      });
     }
 
     function JhChatCtrl() {
       /* jshint validthis:true */
       var vm = this;
+      vm.adjustHeight = adjustHeight;
+
+      function adjustHeight() {
+        var windowHeight;
+        var footerHeight;
+        var finalHeight;
+        var shareBtnHeight;
+        var footerChatHeight;
+        var finalHeightChat;
+        var tabsHeight;
+        var headerHeight;
+        var paddingBottom;
+
+        windowHeight = $(window).outerHeight();
+        footerHeight = $("footer").outerHeight();
+
+        finalHeight = windowHeight - footerHeight;
+
+        $("#chat-playroom").css({
+          height: finalHeight + 'px'
+        });
+
+        //for the chat room the number needs to rest the share button div. 30 for the paddings.
+        footerChatHeight = $("#chat-form-footer").outerHeight();
+        shareBtnHeight = $(".share-help-btn").outerHeight();
+        tabsHeight = $(".ng-isolate-scope .nav-tabs").outerHeight();
+        headerHeight = $("header").outerHeight();
+
+        //FIX: I cannot detect the height of footerChatHeight. For now the workaround is to add the 40px manually.
+
+        paddingBottom = 15; //lets add a padding/margin so its not stuck to the footer.
+
+        finalHeightChat = finalHeight - shareBtnHeight - 40 - tabsHeight - paddingBottom - headerHeight;
+
+        $("#jh-chat-messages").css({
+          height: finalHeightChat + 'px'
+        });
+      }
     }
   }
 })();

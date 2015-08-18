@@ -64,7 +64,7 @@
 
     function speakingFeed() {
       return _.detect(this.allFeeds(), function (f) {
-        return f.speaking;
+        return f.getSpeaking();
       });
     }
   }

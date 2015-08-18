@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhVideoChat', jhVideoChatDirective);
 
-  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService'];
+  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'hotkeys'];
 
-  function jhVideoChatDirective($window, LogService, FeedsService) {
+  function jhVideoChatDirective($window, LogService, FeedsService, hotkeys) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -25,9 +25,10 @@
     };
 
     function jhVideoChatLink(scope) {
+      //resize the screen to adjust the video
+      scope.vm.adjustHeight();
       angular.element($window).on('resize', function() {
-        //resize the screen to adjust the video and chat
-        scope.vm.adjustScreenHeight();
+        scope.vm.adjustHeight();
       });
 
       /* Maybe it's not responsability for this directive */
@@ -67,7 +68,8 @@
       vm.isHighlighted = isHighlighted;
       vm.isHighlightedByUser = isHighlightedByUser;
       vm.logEntries = logEntries;
-      vm.adjustScreenHeight = adjustScreenHeight;
+      vm.adjustHeight = adjustHeight;
+      vm.showHotkeys = showHotkeys;
 
       function feeds() {
         return FeedsService.allFeeds();
@@ -111,53 +113,16 @@
         return LogService.allEntries();
       }
 
+      function adjustHeight() {
+        var height = $(window).outerHeight() - $("footer").outerHeight();
+        $("#videochat-playroom").css({
+          height: height + 'px'
+        });
+      }
+
+      function showHotkeys() {
+        hotkeys.toggleCheatSheet();
+      }
     }
   }
-
-
 })();
-
-// Lets take the screen size and adjust the size of the video
-// if the user resizes the screen, adjust it again
-function adjustScreenHeight() {
-  var windowHeight;
-  var footerHeight;
-  var finalHeight;
-  var shareBtnHeight;
-  var footerChatHeight;
-  var finalHeightChat;
-
-  windowHeight = $(window).outerHeight();
-  footerHeight = $("footer").outerHeight();
-
-  finalHeight = windowHeight - footerHeight;
-
-  $("#videochat-playroom").css({
-    height: finalHeight + 'px'
-  });
-
-  $("#signin").css({
-    height: finalHeight + 'px'
-  });
-
-  $("#chat-playroom").css({
-    height: finalHeight + 'px'
-  });
-
-  //for the chat room the number needs to rest the share button div. 30 for the paddings.
-
-  footerChatHeight = $("#chat-form-footer").outerHeight();
-  shareBtnHeight = $(".share-help-btn").outerHeight();
-  tabsHeight = $(".ng-isolate-scope .nav-tabs").outerHeight();
-  headerHeight = $("header").outerHeight();
-
-  //FIX: I cannot detect the height of footerChatHeight. For now the workaround is to add the 40px manually.
-
-  paddingBottom = 15; //lets add a padding/margin so its not stuck to the footer.
-
-  finalHeightChat = finalHeight - shareBtnHeight - 40 - tabsHeight - paddingBottom - headerHeight;
-
-  $("#jh-chat-messages").css({
-    height: finalHeightChat + 'px'
-  });
-}

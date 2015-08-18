@@ -14,7 +14,7 @@
   function jhMainFeedDirective() {
     return {
       restrict: 'EA',
-      templateUrl: 'app/components/videochat/jh-main-feed.html',
+      templateUrl: 'app/components/feed/jh-main-feed.html',
       scope: {
         feed: '=',
         message: '@'
@@ -35,9 +35,6 @@
       });
     }
 
-    function JhMainFeedCtrl() {
-      /* jshint validthis:true */
-      var vm = this;
-    }
+    function JhMainFeedCtrl() {} 
   }
 })();

@@ -11,8 +11,5 @@
   angular.module('janusHangouts')
     .controller('SigninController', SigninController);
 
-  function SigninController() {
-    /* jshint: validthis */
-    var vm = this;
-  }
+  function SigninController() {}
 })();

@@ -28,10 +28,10 @@
       setTimeout(function() {
         $('#inputUsername', element).focus();
       }, 100);
-      adjustScreenHeight()
+      scope.vm.adjustHeight();
       $(window).on("resize", function() {
-        adjustScreenHeight()
-      })
+        scope.vm.adjustHeight();
+      });
     }
 
     function JhSigninFormCtrl() {
@@ -42,6 +42,7 @@
       vm.rooms = [];
       vm.hiddenOnStart = false;
       vm.signin = signin;
+      vm.adjustHeight = adjustHeight;
 
       RoomService.connect().then(function() {
         RoomService.getAvailableRooms().then(function(rooms) {
@@ -58,6 +59,13 @@
             }
           });
         }
+      }
+
+      function adjustHeight() {
+        var height = $(window).outerHeight() - $("footer").outerHeight();
+        $("#signin").css({
+          height: height + 'px'
+        });
       }
     }
   }

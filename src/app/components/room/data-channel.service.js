@@ -77,12 +77,12 @@
       });
       var mainFeed = FeedsService.findMain();
       if (mainFeed === null) { return; }
-      if (!mainFeed.isDataOpen) {
+      if (!mainFeed.isDataOpen()) {
         console.log("Data channel not open yet. Skipping");
         return;
       }
-      var handle = mainFeed.pluginHandle;
-      handle.data({
+      var connection = mainFeed.connection;
+      connection.sendData({
         text: text,
         error: function(reason) { alert(reason); },
         success: function() { console.log("Data sent: " + type); }
