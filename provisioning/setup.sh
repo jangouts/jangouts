@@ -11,6 +11,7 @@ set -x
 sudo zypper ar -f --no-gpgcheck -r http://download.opensuse.org/repositories/home:/mlin7442:/hackweek11/openSUSE_13.2/home:mlin7442:hackweek11.repo
 # FIXME: we need this because of a conflict with libnice.
 sudo zypper -n remove patterns-openSUSE-minimal_base-conflicts
+sudo zypper -n in -t pattern devel_C_C++
 sudo zypper -n in janus-gateway
 
 #
