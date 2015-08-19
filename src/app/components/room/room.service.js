@@ -225,7 +225,7 @@
 
       that.connect().then(function () {
         that.getAvailableRooms().then(function (rooms) {
-          var result = _.find(rooms, function(room) { return room.id == roomId; });
+          var result = _.find(rooms, function(room) { return room.id === roomId; });
           if(result){
             deferred.resolve(result);
           }else{
