@@ -23,7 +23,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
         url: '/:user/:room',
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
-      })
+      });
 
     $urlRouterProvider.otherwise('/sign_in');
   })
