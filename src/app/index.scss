@@ -19,8 +19,6 @@ body {
   margin-top: 5em
 }
 #videochat-playroom {
-  position: relative;
-  overflow: hidden;
   background: $jangouts-video-bg;
 }
 #thumbnails {
@@ -28,8 +26,6 @@ body {
   flex-flow: row wrap;
   margin: 0 auto;
   width: 100%;
-  background: rgba(0,0,0,0.3);
-  padding: 15px;
   figure {
     margin: 1px;
     /* Resizing with min-width and max-width is not working due to something
@@ -48,7 +44,6 @@ body {
     figcaption {
       line-height: 1;
       font-size: 13px;
-      color: #fff;
       padding: 1px 3px 3px 3px;
       border-radius: 0 0 4px 4px;
       .buttons {
@@ -59,6 +54,7 @@ body {
 
     &.own-feed {
       figcaption {
+        color: #fff;
         background: rgba(0,0,0,0.3);
       }
     }
@@ -103,7 +99,6 @@ body {
   .panel-footer {
     padding: 3px;
   }
-
 }
 
 body div.block-ui-container {
@@ -116,7 +111,10 @@ body div.block-ui-container {
 
 header {
   background: $color3;
-  padding: 13px 0;
+  padding: 6px 0;
+  #logo {
+    height: 30px;
+  }
   button {
     color: $color1;
     background: transparent;
@@ -132,30 +130,10 @@ footer {
   padding: 7px 0;
 }
 
-.navbar-no-margin {
-  margin-bottom: 0;
-  border-bottom: 0 transparent;
-  position: absolute;
-  &.navbar-default {
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 100%;
-  }
-  .navbar-right {
-    margin: 0;
-    padding-right: 15px;
-    padding-top: 8px;
-  }
-}
-
 .container-no-padding {
   padding-left: 0;
   padding-right: 0;
-  .navbar-header {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
 }
-
 
 
 //styles by sections
@@ -186,26 +164,10 @@ footer {
   }
 }
 
-#main-chat-session {
-  .aside-chat {
-    background: #fff;
-    padding-left: 0px;
-    padding-right: 0px;
-    .share-help-btn {
-      padding: 15px;
-      height: 50px;
-    }
-  }
-}
-
 #main-video {
-  display: flex;
-  margin: 0 auto;
-  height: 100%;
-  video {
-    width: 100%;
-    height: 100%;
-  }
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 
@@ -216,6 +178,10 @@ footer {
 }
 .col-no-padding {
   padding: 0px;
+}
+
+.gridster-item {
+  background: white;
 }
 
 #signInButton {
@@ -229,9 +195,7 @@ footer {
   border-color: darken($color1, 15%);
 }
 
-
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */
 // injector
 // endinjector
-

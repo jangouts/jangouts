@@ -9,7 +9,7 @@
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
-               'janusHangouts.config', 'cfp.hotkeys'])
+               'janusHangouts.config', 'cfp.hotkeys', 'gridster'])
   .config(function ($stateProvider, $urlRouterProvider) {
 
     $stateProvider

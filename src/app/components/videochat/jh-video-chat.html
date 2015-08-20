@@ -1,17 +1,8 @@
-<div class="col-sm-8 col-no-padding" id="videochat-playroom">
-  <div
-     id="main-video"
-     jh-main-feed="true"
-     feed="vm.highlightedFeed()"
-     ng-class="{mirrored: vm.mirrored()}">
-  </div>
-</div>
-
-<div id="chat-playroom" class="col-sm-4 aside-chat">
+<div class="row">
   <header>
     <div class="row">
       <div class="col-xs-6">
-        <img src="images/jangouts-logo.png" class="img-responsive" />
+        <img src="images/jangouts-logo.png" id="logo" />
       </div>
       <div class="col-xs-6 text-right">
         <jh-user-panel></jh-user-panel>
@@ -21,36 +12,47 @@
            title="Keyboard shortcuts">
           <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
         </button>
+        <jh-screen-share-button></jh-screen-share-button>
+        <jh-thumbnails-mode-button></jh-thumbnails-mode-button>
       </div>
     </div>
-
   </header>
-  <div class="share-help-btn">
-    <jh-screen-share-button></jh-screen-share-button>
-    <jh-thumbnails-mode-button></jh-thumbnails-mode-button>
+</div>
 
-  </div>
-
-  <tabset>
-    <tab heading="People">
-      <div id="thumbnails">
+<div class="row">
+  <div gridster="vm.gridsterOpts" id="videochat-playroom">
+    <ul>
+      <li gridster-item
+          row="item.position[0]" col="item.position[1]"
+          size-x="item.size[0]" size-y="item.size[1]"
+          ng-repeat="item in vm.gridsterItems">
         <div
-           jh-feed="true"
-           feed="f"
-           ng-repeat="f in vm.feeds() | orderBy:'+display'"
-           click-fn="vm.toggleHighlightedFeed(f)"
-           highlighted="vm.isHighlighted(f)"
-           highlighted-by-user="vm.isHighlightedByUser(f)">
+          ng-if="item.content === 'Speaker'"
+          class="grid-item-content"
+          id="main-video"
+          jh-main-feed="true"
+          feed="vm.highlightedFeed()"
+          ng-class="{mirrored: vm.mirrored()}">
         </div>
-      </div>
-    </tab>
-
-    <tab active="vm.isChatActive">
-      <tab-heading>
-        Chat
-        <span class="badge" ng-show="vm.pendingEntries != 0">{{vm.pendingEntries}}</span>
-      </tab-heading>
-      <jh-chat messages="vm.logEntries()"></jh-chat>
-    </tab>
-  </tabset>
+        <div
+          ng-if="item.content === 'Participants'"
+          class="grid-item-content"
+          id="thumbnails">
+          <div
+            jh-feed="true"
+            feed="f"
+            ng-repeat="f in vm.feeds() | orderBy:'+display'"
+            click-fn="vm.toggleHighlightedFeed(f)"
+            highlighted="vm.isHighlighted(f)"
+            highlighted-by-user="vm.isHighlightedByUser(f)">
+          </div>
+        </div>
+        <div
+          ng-if="item.content === 'Chat'"
+          class="grid-item-content">
+          <jh-chat messages="vm.logEntries()"></jh-chat>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>

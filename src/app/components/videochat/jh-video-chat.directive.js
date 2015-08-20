@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhVideoChat', jhVideoChatDirective);
 
-  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'hotkeys'];
+  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'hotkeys', '$timeout'];
 
-  function jhVideoChatDirective($window, LogService, FeedsService, hotkeys) {
+  function jhVideoChatDirective($window, LogService, FeedsService, hotkeys, $timeout) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -25,29 +25,60 @@
     };
 
     function jhVideoChatLink(scope) {
-      //resize the screen to adjust the video
-      scope.vm.adjustHeight();
-      angular.element($window).on('resize', function() {
-        scope.vm.adjustHeight();
+      scope.$on('gridster-resized', function() {
+        scope.vm.adjustAllSizes();
       });
-
-      /* Maybe it's not responsability for this directive */
-      scope.$watch('vm.logEntries().length', function(newVal, oldVal) {
-        if (!scope.vm.isChatActive) {
-          scope.vm.pendingEntries += (newVal - oldVal);
-        }
-      });
-
-      scope.$watch('vm.isChatActive', function(newVal) {
-        if (newVal === true) {
-          scope.vm.pendingEntries = 0;
-        }
-      });
+      // 'gridster-item-initialized' is not working for us,
+      // let's workaround the problem
+      $timeout(function() { scope.vm.adjustAllSizes(); }, 600);
     }
 
     function jhVideoChatCtrl() {
       /* jshint: validthis */
       var vm = this;
+      var cols = 16;
+      // Window width minus the paddings
+      var gridWidth = $(window).width() - 25;
+      // Window height minus header and footer
+      var gridHeight = $(window).height() - 45 - 37;
+      // Items are square, i.e. width == height
+      var itemHeight = gridWidth / cols;
+      // How many rows do we have room for?
+      var rows = Math.floor(gridHeight / itemHeight);
+      if (rows < 6) { rows = 6; }
+
+      // Adjust the layout depending on the vertical space
+      var feedsH, chatH, chatR, chatC;
+      if (rows < 10) {
+        // Not enough space under the speaker (which is always 8x6) for the chat
+        feedsH = Math.ceil(rows/2);
+        chatH = Math.floor(rows/2);
+        chatR = feedsH;
+        chatC = 8;
+      } else {
+        // Chat below the speaker
+        feedsH = rows;
+        chatH = rows - 6;
+        chatR = 6
+        chatC = 0;
+      }
+
+      vm.gridsterItems = [
+        { size: [8, 6], position: [0, 0], content: "Speaker" },
+        { size: [8, feedsH], position: [0, 8], content: "Participants" },
+        { size: [8, chatH], position: [chatR, chatC], content: "Chat" }
+      ];
+      vm.gridsterOpts = {
+        columns: cols,
+        resizable: {
+          stop: function(event, $element) {
+            // 'gridster-item-transition-end' is not working for us, so we have
+            // to use this callback and wait some extra time for the animations
+            // to finish
+            $timeout(function() { vm.adjustSize($element); }, 600);
+          }
+        }
+      };
 
       /* Data */
       vm.highlight = {
@@ -57,8 +88,6 @@
         // automatically (if byUser is null)
         current: null
       };
-      vm.isChatActive = false;
-      vm.pendingEntries = 0;
 
       /* Functions */
       vm.feeds = feeds;
@@ -68,7 +97,8 @@
       vm.isHighlighted = isHighlighted;
       vm.isHighlightedByUser = isHighlightedByUser;
       vm.logEntries = logEntries;
-      vm.adjustHeight = adjustHeight;
+      vm.adjustSize = adjustSize;
+      vm.adjustAllSizes = adjustAllSizes;
       vm.showHotkeys = showHotkeys;
 
       function feeds() {
@@ -113,10 +143,27 @@
         return LogService.allEntries();
       }
 
-      function adjustHeight() {
-        var height = $(window).outerHeight() - $("footer").outerHeight();
-        $("#videochat-playroom").css({
-          height: height + 'px'
+      function adjustSize($element) {
+        var width = $element.innerWidth();
+        var height = $element.innerHeight();
+        var inner;
+
+        // Is this the video grid item?
+        inner = $("#main-video video", $element);
+        if (inner.length) {
+          inner.css({height: height + "px", width: width + "px"});
+        }
+
+        // Is this the chat grid item?
+        inner = $("#jh-chat-messages", $element);
+        if (inner.length) {
+          inner.css({height: height - 40 + "px"});
+        }
+      }
+
+      function adjustAllSizes() {
+        $(".gridster-item").each(function(index, e) {
+          vm.adjustSize($(e));
         });
       }
 
