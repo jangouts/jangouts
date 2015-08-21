@@ -39,8 +39,8 @@
       var cols = 16;
       // Window width minus the paddings
       var gridWidth = $(window).width() - 25;
-      // Window height minus header and footer
-      var gridHeight = $(window).height() - 45 - 37;
+      // Window height minus header and footer (and some safety pixels)
+      var gridHeight = $(window).height() - 33 - 20 - 5;
       // Items are square, i.e. width == height
       var itemHeight = gridWidth / cols;
       // How many rows do we have room for?
@@ -59,7 +59,7 @@
         // Chat below the speaker
         feedsH = rows;
         chatH = rows - 6;
-        chatR = 6
+        chatR = 6;
         chatC = 0;
       }
 

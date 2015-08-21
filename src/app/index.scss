@@ -1,7 +1,7 @@
 /* Colour pallete */
-$color1: #f15a5c;
-$color2: #09414f;
-$color3: #e1dcbd;
+$color1: #f15a5c; // Red-ish
+$color2: #09414f; // Blue-ish
+$color3: #e1dcbd; // Brown-ish
 
 //colour variables
 $jangouts-bg:  $color3;
@@ -111,9 +111,9 @@ body div.block-ui-container {
 
 header {
   background: $color3;
-  padding: 6px 0;
+  padding: 2px 0;
   #logo {
-    height: 30px;
+    height: 33px;
   }
   button {
     color: $color1;
@@ -123,11 +123,10 @@ header {
 }
 
 footer {
-  background: #fff;
+  background: $color3;
   font-size: 12px;
-  border-top: #dedede 1px solid;
-  height: 37px;
-  padding: 7px 0;
+  border: 0;
+  padding: 3px 0 0 0;
 }
 
 .container-no-padding {
