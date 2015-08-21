@@ -1,8 +1,10 @@
-<div style="display: inline-block;" tooltip="{{vm.title()}}">
+<div style="display: inline-block;"
+     tooltip="{{vm.title()}}"
+     tooltip-placement="bottom">
   <button
-    class="btn btn-default"
+    class="btn"
     ng-disabled="!vm.enabled()"
     ng-click="vm.click()">
-    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Screen
+    <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
   </button>
 </div>
