@@ -26,92 +26,15 @@
       {{ vm.feed.display }}
 
       <div class="buttons">
-        <button
-          type="button"
-          class="btn btn-xs btn-default"
-          ng-click="vm.unPublish()"
-          title="Stop sharing"
-          ng-show="vm.showsUnPublish()">
-          <span class="glyphicon glyphicon-remove"></span>
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-xs"
-          ng-class="{'btn-primary': vm.feed.getSpeaking(), 'btn-default': !vm.feed.getSpeaking()}"
-          ng-click="vm.toggleAudio()"
-          title="Disable audio"
-          ng-show="vm.showsDisableAudio()">
-          <span class="glyphicon glyphicon-volume-up"></span>
-        </button>
-        <button
-          type="button"
-          class="btn btn-xs btn-danger"
-          ng-click="vm.toggleAudio()"
-          title="Enable audio"
-          ng-show="vm.showsEnableAudio()">
-          <span class="glyphicon glyphicon-volume-off"></span>
-        </button>
-        <button
-          type="button"
-          disabled
-          class="btn btn-xs btn-danger"
-          title="Audio disabled"
-          ng-show="vm.showsAudioOff()">
-          <span class="glyphicon glyphicon-volume-off"></span>
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-xs btn-default"
-          ng-click="vm.clickFn()"
-          title="Highlight feed"
-          ng-show="!vm.highlightedByUser && !vm.feed.isIgnored">
-          <span class="glyphicon glyphicon-arrow-up"></span>
-        </button>
-        <button
-          type="button"
-          class="btn btn-xs btn-danger"
-          ng-click="vm.clickFn()"
-          title="Un-highlight feed"
-          ng-show="vm.highlightedByUser">
-          <span class="glyphicon glyphicon-arrow-up"></span>
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-xs btn-default"
-          ng-click="vm.toggleVideo()"
-          title="Disable video"
-          ng-show="vm.showsDisableVideo()">
-          <span class="glyphicon glyphicon-eye-open"></span>
-        </button>
-        <button
-          type="button"
-          class="btn btn-xs btn-danger"
-          ng-click="vm.toggleVideo()"
-          title="Enable video"
-          ng-show="vm.showsEnableVideo()">
-          <span class="glyphicon glyphicon-eye-close"></span>
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-xs btn-default"
-          ng-click="vm.ignore()"
-          title="Ignore"
-          ng-show="vm.showsIgnore()">
-          <span class="glyphicon glyphicon-ban-circle"></span>
-        </button>
-        <button
-          type="button"
-          class="btn btn-xs btn-danger"
-          ng-click="vm.stopIgnoring()"
-          title="Stop ignoring"
-          ng-show="vm.showsStopIgnoring()">
-          <span class="glyphicon glyphicon-ban-circle"></span>
-        </button>
-
+        <jh-unpublish-button feed="vm.feed"></jh-unpublish-button>
+        &nbsp;
+        <jh-audio-button feed="vm.feed"></jh-audio-button>
+        &nbsp;
+        <jh-sticky-button feed="vm.feed" click-fn="vm.toggleHighlightFn()" highlighted="vm.highlighted" sticky="vm.highlightedByUser"></jh-sticky-button>
+        &nbsp;
+        <jh-video-button feed="vm.feed"></jh-video-button>
+        &nbsp;
+        <jh-ignore-button feed="vm.feed"></jh-ignore-button>
       </div>
     </figcaption>
 </figure>
