@@ -159,6 +159,13 @@
         if (inner.length) {
           inner.css({height: height - 40 + "px"});
         }
+
+        // Is this the list of feeds item?
+        inner = $("#thumbnails", $element);
+        if (inner.length) {
+          inner.css({height: height + "px", width: width + "px"});
+        }
+
       }
 
       function adjustAllSizes() {

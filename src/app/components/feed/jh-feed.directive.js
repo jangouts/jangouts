@@ -19,7 +19,7 @@
       templateUrl: 'app/components/feed/jh-feed.html',
       scope: {
         feed: '=',
-        clickFn: '&',
+        toggleHighlightFn: '&',
         highlighted: '=',
         highlightedByUser: '='
       },
@@ -60,38 +60,9 @@
       /* jshint: validthis */
       var vm = this;
       vm.mirrored = (vm.feed.isPublisher && !vm.feed.isLocalScreen);
-      vm.toggleAudio = toggleAudio;
-      vm.toggleVideo = toggleVideo;
       vm.thumbnailTag = thumbnailTag;
-      vm.showsEnableAudio = showsEnableAudio;
-      vm.showsDisableAudio = showsDisableAudio;
-      vm.showsAudioOff = showsAudioOff;
-      vm.showsEnableVideo =showsEnableVideo;
-      vm.showsDisableVideo = showsDisableVideo;
-      vm.unPublish = unPublish;
-      vm.showsUnPublish = showsUnPublish;
-      vm.ignore = ignore;
-      vm.stopIgnoring = stopIgnoring;
-      vm.showsIgnore = showsIgnore;
-      vm.showsStopIgnoring = showsStopIgnoring;
       vm.initPics = initPics;
       vm.takePic = takePic;
-
-      function toggleAudio() {
-        RoomService.toggleChannel("audio", vm.feed);
-      }
-
-      function toggleVideo() {
-        RoomService.toggleChannel("video", vm.feed);
-      }
-
-      function unPublish() {
-        RoomService.unPublishFeed(vm.feed.id);
-      }
-
-      function showsUnPublish() {
-        return (vm.feed.isPublisher && vm.feed.isLocalScreen);
-      }
 
       function thumbnailTag() {
         if (vm.highlighted || vm.feed.isIgnored) { return "placeholder"; }
@@ -107,42 +78,6 @@
             return "placeholder";
           }
         }
-      }
-
-      function showsEnableAudio() {
-        return (vm.feed.isPublisher && !vm.feed.getAudioEnabled());
-      }
-
-      function showsDisableAudio() {
-        return (!vm.feed.isIgnored && vm.feed.getAudioEnabled());
-      }
-
-      function showsAudioOff() {
-        return (!vm.feed.isPublisher && !vm.feed.isIgnored && !vm.feed.getAudioEnabled());
-      }
-
-      function showsEnableVideo() {
-        return (vm.feed.isPublisher && !vm.feed.getVideoEnabled());
-      }
-
-      function showsDisableVideo() {
-        return (vm.feed.isPublisher && vm.feed.getVideoEnabled());
-      }
-
-      function ignore() {
-        RoomService.ignoreFeed(vm.feed.id);
-      }
-
-      function showsIgnore() {
-        return (!vm.feed.isPublisher && !vm.feed.isIgnored);
-      }
-
-      function stopIgnoring() {
-        RoomService.stopIgnoringFeed(vm.feed.id);
-      }
-
-      function showsStopIgnoring() {
-        return vm.feed.isIgnored;
       }
 
       function initPics(element) {
