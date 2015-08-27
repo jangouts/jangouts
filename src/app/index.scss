@@ -27,28 +27,45 @@ body {
   margin: 0 auto;
   width: 100%;
   figure {
-    margin: 1px;
-    /* Resizing with min-width and max-width is not working due to something
-     * related to the <video> tag. Let's enforce a static width until we find
-     * out what the problem is
-     min-width: 85px;
-     max-width: 120px;
-     */
-    width: 100px;
-    transition: all .5s ease;
-    .thumb {
-      width: 100%;
-      height: auto;
-      border-radius: 4px 4px 0 0
+    margin: 0px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: all .4s ease;
+
+    .buttons {
+      z-index: 10;
+      position: absolute;
     }
-    figcaption {
-      line-height: 1;
-      font-size: 13px;
-      padding: 1px 3px 3px 3px;
-      border-radius: 0 0 4px 4px;
+
+    .thumb {
+      position: relative;
+      img, video, canvas {
+        vertical-align: middle;
+        width: 100px;
+        height: 75px;
+      }
       .buttons {
-        text-align: center;
-        margin-top: 5px;
+        top: 50%;
+        width: 100%;
+        padding: 0px 7px 0px 7px;
+        margin-top: -10px;
+      }
+    }
+
+    figcaption {
+      line-height: 1.4;
+      font-size: 13px;
+      padding: 2px 3px 3px 3px;
+      height: 26px;
+      position: relative;
+      .buttons {
+        top: 2px;
+        right: 2px;
+      }
+      .caption {
+        overflow: hidden;
+        position: absolute;
+        width: 80%;
       }
     }
 
@@ -57,6 +74,9 @@ body {
         color: #fff;
         background: rgba(0,0,0,0.3);
       }
+    }
+    &.sticky {
+      border-color: $color1;
     }
   }
 }
