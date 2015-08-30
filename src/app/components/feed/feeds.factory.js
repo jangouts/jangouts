@@ -29,6 +29,7 @@
       this.isPublisher = attrs.isPublisher || false;
       this.isLocalScreen = attrs.isLocalScreen || false;
       this.isIgnored = attrs.ignored || false;
+      this.notifierTimeout = 0;
 
       var picture = null;
       var speaking = false;
@@ -140,12 +141,14 @@
        */
       this.updateLocalSpeaking = function(val) {
         var that = this;
+        var oneMinute = 60000;
+        var now = new Date().getTime();
+
         $timeout(function() {
           if (that.isEnabled("audio") === false) {
-            if (val) {
-              // TODO: introduce some timeout or any other mechanism to avoid
-              // repeating the notification over and over for the same speech
+            if (val && that.notifierTimeout + oneMinute < now) {
               Notifier.info("Looks like you are trying to say something... but you are muted.");
+              that.notifierTimeout = now;
             }
             val = false;
           }
