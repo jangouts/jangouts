@@ -20,7 +20,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
         controllerAs: 'vm'
       })
       .state('home', {
-        url: '/:user/:room',
+        url: '/:user/:room?startHidden',
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
       });

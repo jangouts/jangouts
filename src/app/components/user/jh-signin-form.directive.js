@@ -52,7 +52,12 @@
 
       function signin() {
         if (vm.room && vm.username){
-            $location.path("/" + vm.username + "/" + vm.room.id);
+          var path = "/" + vm.username + "/" + vm.room.id;
+          if(vm.hiddenOnStart){
+            $location.path(path).search("startHidden", "true");
+          }else{
+            $location.path(path);
+          }
         }
       }
 

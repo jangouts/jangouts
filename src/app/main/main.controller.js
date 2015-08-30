@@ -44,9 +44,10 @@
 
     function setRoomAndUser(){
       var deferred = $q.defer();
+      var startHidden = $stateParams.startHidden || false;
       RoomService.getRoomById(parseInt($stateParams.room)).then(function(room){
         if(room && $stateParams.user){
-          RoomService.setConfig({ room: room, publishingFromStart: true });
+          RoomService.setConfig({ room: room, publishingFromStart: !startHidden });
           UserService.signin($stateParams.user);
           deferred.resolve("Room and User set!");
         } else {
