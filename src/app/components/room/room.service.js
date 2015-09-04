@@ -65,7 +65,7 @@
     function connect() {
       var deferred = $q.defer();
 
-      Janus.init({debug: false});
+      Janus.init({debug: jhConfig.janusDebug});
       this.janus = new Janus({
         server: this.server,
         success: function() {

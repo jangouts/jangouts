@@ -1,6 +1,7 @@
 {
   "janusServer": null,
   "janusServerSSL": null,
+  "janusDebug": false,
   "httpsAvailable": true,
   "httpsUrl": null,
   "videoThumbnails": null
