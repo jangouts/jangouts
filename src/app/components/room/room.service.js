@@ -153,22 +153,25 @@
               that.subscribeToFeeds(msg.publishers, that.room.id);
             }
             // The room has been destroyed
-          } else if(event === "destroyed") {
+          } else if (event === "destroyed") {
             console.log("The room has been destroyed!");
             $$rootScope.$broadcast('room.destroy');
-          } else if(event === "event") {
+          } else if (event === "event") {
             // Any new feed to attach to?
             if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
               that.subscribeToFeeds(msg.publishers, that.room.id);
-              // One of the publishers has gone away?
+            // One of the publishers has gone away?
             } else if(msg.leaving !== undefined && msg.leaving !== null) {
               var leaving = msg.leaving;
               ActionService.destroyFeed(leaving);
-              // One of the publishers has unpublished?
+            // One of the publishers has unpublished?
             } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
               var unpublished = msg.unpublished;
               ActionService.destroyFeed(unpublished);
-              // The server reported an error
+            // Reply to a configure request
+            } else if (msg.configured) {
+              connection.confirmConfig();
+            // The server reported an error
             } else if(msg.error !== undefined && msg.error !== null) {
               console.log("Error message from server" + msg.error);
               $$rootScope.$broadcast('room.error', msg.error);
@@ -273,7 +276,7 @@
           console.log(JSON.stringify(msg));
           var event = msg.videoroom;
           console.log("Event: " + event);
-          if(event === "attached") {
+          if (event === "attached") {
             // Subscriber created and attached
             $timeout(function() {
               if (feed) {
@@ -283,9 +286,9 @@
               }
               console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
             });
-          } else if (!msg.configured) {
-            // Ignore the 'configured' events here, they are already processed
-            // by ConnectionConfig
+          } else if (msg.configured) {
+            connection.confirmConfig();
+          } else {
             console.log("What has just happened?!");
           }
 
@@ -360,6 +363,9 @@
                 ScreenShareService.showHelp();
               }
             });
+          // Reply to a configure request
+          } else if (msg.configured) {
+            connection.confirmConfig();
           } else {
             console.log("Unexpected event for screen");
           }

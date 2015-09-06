@@ -118,7 +118,7 @@
           config[type] = enabled;
           this.connection.setConfig({
             values: config,
-            success: function() {
+            ok: function() {
               $timeout(function() {
                 if (type === 'audio' && enabled === false) {
                   speaking = false;
