@@ -28,25 +28,27 @@
     function JhAudioButtonCtrl() {
       /* jshint: validthis */
       var vm = this;
+      var feed = vm.feed;
+
       vm.toggle = toggle;
       vm.showsEnable = showsEnable;
       vm.showsDisable = showsDisable;
       vm.showsAudioOff = showsAudioOff;
 
       function toggle() {
-        RoomService.toggleChannel("audio", vm.feed);
+        RoomService.toggleChannel("audio", feed);
       }
 
       function showsEnable() {
-        return (vm.feed.isPublisher && !vm.feed.getAudioEnabled());
+        return (feed.isPublisher && !feed.isLocalScreen && !feed.getAudioEnabled());
       }
 
       function showsDisable() {
-        return (!vm.feed.isIgnored && vm.feed.getAudioEnabled());
+        return (!feed.isIgnored && feed.getAudioEnabled());
       }
 
       function showsAudioOff() {
-        return (!vm.feed.isPublisher && !vm.feed.isIgnored && !vm.feed.getAudioEnabled());
+        return (!feed.isPublisher && !feed.isIgnored && !feed.getAudioEnabled());
       }
     }
   }
