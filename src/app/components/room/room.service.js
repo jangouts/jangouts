@@ -206,6 +206,7 @@
               var rooms = _.map(result.list, function(r) {
                 return new Room(r);
               });
+              rooms = _.sortBy(rooms, "label");
               deferred.resolve(rooms);
             } else {
               deferred.reject();
