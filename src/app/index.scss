@@ -22,6 +22,7 @@ body {
 #thumbnails {
   display: flex;
   flex-flow: row wrap;
+  align-content: flex-start;
   margin: 0 auto;
   overflow: auto;
   figure {
