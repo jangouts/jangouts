@@ -46,7 +46,7 @@
       if (feed.isPublisher) {
         vm.initPics(element);
         vm.takePic();
-        $interval(vm.takePic, 5000);
+        $interval(vm.takePic, 20000);
       } else {
         feed.setVideoSubscription(jhConfig.videoThumbnails || vm.highlighted);
         scope.$watch(
