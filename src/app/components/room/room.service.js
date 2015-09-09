@@ -110,7 +110,7 @@
         ondataopen: function() {
           console.log("The publisher DataChannel is available");
           connection.onDataOpen();
-          DataChannelService.sendStatus(FeedsService.findMain());
+          sendStatus();
         },
         onlocalstream: function(stream) {
           // Step 4b (parallel with 4a).
@@ -307,9 +307,7 @@
           console.log("The subscriber DataChannel is available");
           connection.onDataOpen();
           // Send status information of all our feeds to inform the newcommer
-          FeedsService.publisherFeeds().forEach(function (p) {
-            DataChannelService.sendStatus(p);
-          });
+          sendStatus();
         },
         ondata: function(data) {
           console.log(" ::: Got info in the data channel (subscriber) :::");
@@ -403,6 +401,21 @@
 
     function toggleChannel(type, feed) {
       ActionService.toggleChannel(type, feed);
+    }
+
+    /**
+     * Broadcast status information of all our feeds when a data channel is
+     * established.
+     *
+     * To increase the chances of the info to be received, it sends the most
+     * important information right away and the whole status some seconds after.
+     * Hacky and dirty, we know.
+     */
+    function sendStatus() {
+      FeedsService.publisherFeeds().forEach(function (p) {
+        DataChannelService.sendStatus(p, {exclude: "picture"});
+        $timeout(function() { DataChannelService.sendStatus(p); }, 4000);
+      });
     }
   }
 }());
