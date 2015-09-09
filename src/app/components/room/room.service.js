@@ -73,9 +73,11 @@
         },
         error: function(error) {
           var msg = "Janus error: " + error;
-          console.error(msg);
-          alert(msg);
+          msg += "\nDo you want to reload in order to retry?";
           deferred.reject();
+          if (window.confirm(msg)) {
+            window.location.reload();
+          }
         },
         destroyed: function() {
           console.log("Janus object destroyed");

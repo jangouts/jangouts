@@ -27,7 +27,7 @@
 
     $scope.$on('room.error', function(evt, error) {
       // FIXME: do something neat
-      alert("Janus error: " + error);
+      alert("Janus server reported the following error:\n" + error);
     });
 
     $scope.$on('user.unset', function() {
