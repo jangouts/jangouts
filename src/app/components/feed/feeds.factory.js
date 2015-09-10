@@ -11,13 +11,13 @@
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
-  feedFactory.$inject = ['$timeout', 'DataChannelService'];
+  feedFactory.$inject = ['$timeout', 'DataChannelService', 'Notifier'];
 
   /**
    * Factory representing a janus feed
    * @constructor
    */
-  function feedFactory($timeout, DataChannelService) {
+  function feedFactory($timeout, DataChannelService, Notifier) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -29,6 +29,7 @@
       this.isPublisher = attrs.isPublisher || false;
       this.isLocalScreen = attrs.isLocalScreen || false;
       this.isIgnored = attrs.ignored || false;
+      this.notifierTimeout = 0;
 
       var picture = null;
       var speaking = false;
@@ -140,8 +141,15 @@
        */
       this.updateLocalSpeaking = function(val) {
         var that = this;
+        var oneMinute = 60000;
+        var now = new Date().getTime();
+
         $timeout(function() {
           if (that.isEnabled("audio") === false) {
+            if (val && that.notifierTimeout + oneMinute < now) {
+              Notifier.info("Looks like you are trying to say something... but you are muted.");
+              that.notifierTimeout = now;
+            }
             val = false;
           }
           if (speaking !== val) {
