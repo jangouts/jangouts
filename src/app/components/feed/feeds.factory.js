@@ -33,8 +33,8 @@
       var picture = null;
       var speaking = false;
       var silentSince = Date.now();
-      var videoRemoteEnabled = null;
-      var audioRemoteEnabled = null;
+      var videoRemoteEnabled = true;
+      var audioRemoteEnabled = true;
 
       /**
        * Checks if a given channel is enabled
@@ -118,7 +118,7 @@
           config[type] = enabled;
           this.connection.setConfig({
             values: config,
-            success: function() {
+            ok: function() {
               $timeout(function() {
                 if (type === 'audio' && enabled === false) {
                   speaking = false;

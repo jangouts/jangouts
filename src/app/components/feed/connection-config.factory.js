@@ -21,14 +21,12 @@
    * keeping the number of requests to a minimum.
    */
   function connectionConfigFactory($timeout) {
-    return function(pluginHandle, wanted, jsep) {
-      var that = this;
-
-      this.pluginHandle = pluginHandle;
-      this.current = {};
-      this.requested = null;
-      this.wanted = {audio: true, video: true};
-      _.assign(this.wanted, wanted);
+    return function(pluginHandle, wantedInit, jsep) {
+      var current = {};
+      var requested = null;
+      var wanted = {audio: true, video: true};
+      var okCallback = null;
+      _.assign(wanted, wantedInit);
       // Initial configure
       configure({jsep: jsep});
 
@@ -38,7 +36,7 @@
        * @returns {object} values of the audio and video flags
        */
       this.get = function() {
-        return this.current;
+        return current;
       };
 
       /**
@@ -49,62 +47,61 @@
        *
        * @param {object} options - object containing
        *        * values: object with the wanted values for the flags
-       *        * success: callback
-       *        * error: callback
+       *        * ok: callback to execute on confirmation from Janus
        */
       this.set = function(options) {
         options = options || {};
         options.values = options.values || {};
         var oldWanted = {};
-        _.assign(oldWanted, this.current, this.wanted);
-        _.assign(this.wanted, this.current, options.values);
+        _.assign(oldWanted, current, wanted);
+        _.assign(wanted, current, options.values);
 
-        if (that.requested === null && differsFromWanted(oldWanted)) {
-          configure({success: options.success, error: options.error});
+        if (requested === null && differsFromWanted(oldWanted)) {
+          configure({ok: options.ok});
         }
       };
 
-      function success() {
+      /**
+       * Processes the confirmation (received from Janus) of the ongoing
+       * config request
+       */
+      this.confirm = function() {
         $timeout(function() {
-          that.current = that.requested;
-          that.requested = null;
-          if (differsFromWanted(that.current)) {
-            configure();
+          if (requested === null) {
+            console.error("I haven't sent a config. Where does this confirmation come from?");
+          } else {
+            current = requested;
+            requested = null;
+            console.log("Connection configured", current);
+            if (okCallback) { okCallback(); }
+            if (differsFromWanted(current)) {
+              configure();
+            }
           }
         });
-      }
-
-      function error() {
-        $timeout(function() {
-          that.requested = null;
-          if (differsFromWanted(that.current)) {
-            configure();
-          }
-        });
-      }
+      };
 
       function differsFromWanted(obj) {
-        return (obj.video !== that.wanted.video || obj.audio !== that.wanted.audio);
+        return (obj.video !== wanted.video || obj.audio !== wanted.audio);
       }
 
       function configure(options) {
         options = options || {};
         var config = {request: "configure"};
-        that.requested = {};
+        requested = {};
 
-        _.assign(that.requested, that.current, that.wanted);
-        _.assign(config, that.requested);
+        _.assign(requested, current, wanted);
+        _.assign(config, requested);
 
-        that.pluginHandle.send({
+        pluginHandle.send({
           "message": config,
           jsep: options.jsep,
           success: function() {
-            success();
-            if (options.success) { options.success(); }
+            okCallback = options.ok;
           },
           error: function() {
-            error();
-            if (options.error) { options.error(); }
+            requested = null;
+            console.error("Config request not sent");
           }
         });
       }

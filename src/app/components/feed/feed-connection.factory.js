@@ -16,8 +16,6 @@
   /**
    * Manages the connection of a feed to the Janus server
    *
-   * TODO: most of the code in room.service could be moved to callbacks here
-   *
    * @constructor
    */
   function feedConnectionFactory(ConnectionConfig) {
@@ -148,7 +146,7 @@
        * @param {object} values - values for the audio and video flags
        */
       this.setConfig = function(values) {
-        if (this.config) { 
+        if (this.config) {
           this.config.set(values);
         }
       };
@@ -159,8 +157,18 @@
        * @returns {object} values of the audio and video flags
        */
       this.getConfig = function() {
-        if (this.config) { 
+        if (this.config) {
           return this.config.get();
+        }
+      };
+
+      /**
+       * Processes the confirmation (received from Janus) of the ongoing
+       * config request
+       */
+      this.confirmConfig = function() {
+        if (this.config) {
+          return this.config.confirm();
         }
       };
 

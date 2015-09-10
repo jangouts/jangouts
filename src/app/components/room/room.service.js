@@ -65,7 +65,7 @@
     function connect() {
       var deferred = $q.defer();
 
-      Janus.init({debug: false});
+      Janus.init({debug: jhConfig.janusDebug});
       this.janus = new Janus({
         server: this.server,
         success: function() {
@@ -73,9 +73,11 @@
         },
         error: function(error) {
           var msg = "Janus error: " + error;
-          console.error(msg);
-          alert(msg);
+          msg += "\nDo you want to reload in order to retry?";
           deferred.reject();
+          if (window.confirm(msg)) {
+            window.location.reload();
+          }
         },
         destroyed: function() {
           console.log("Janus object destroyed");
@@ -110,7 +112,7 @@
         ondataopen: function() {
           console.log("The publisher DataChannel is available");
           connection.onDataOpen();
-          DataChannelService.sendStatus(FeedsService.findMain());
+          sendStatus();
         },
         onlocalstream: function(stream) {
           // Step 4b (parallel with 4a).
@@ -153,22 +155,25 @@
               that.subscribeToFeeds(msg.publishers, that.room.id);
             }
             // The room has been destroyed
-          } else if(event === "destroyed") {
+          } else if (event === "destroyed") {
             console.log("The room has been destroyed!");
             $$rootScope.$broadcast('room.destroy');
-          } else if(event === "event") {
+          } else if (event === "event") {
             // Any new feed to attach to?
             if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
               that.subscribeToFeeds(msg.publishers, that.room.id);
-              // One of the publishers has gone away?
+            // One of the publishers has gone away?
             } else if(msg.leaving !== undefined && msg.leaving !== null) {
               var leaving = msg.leaving;
               ActionService.destroyFeed(leaving);
-              // One of the publishers has unpublished?
+            // One of the publishers has unpublished?
             } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
               var unpublished = msg.unpublished;
               ActionService.destroyFeed(unpublished);
-              // The server reported an error
+            // Reply to a configure request
+            } else if (msg.configured) {
+              connection.confirmConfig();
+            // The server reported an error
             } else if(msg.error !== undefined && msg.error !== null) {
               console.log("Error message from server" + msg.error);
               $$rootScope.$broadcast('room.error', msg.error);
@@ -203,6 +208,7 @@
               var rooms = _.map(result.list, function(r) {
                 return new Room(r);
               });
+              rooms = _.sortBy(rooms, "label");
               deferred.resolve(rooms);
             } else {
               deferred.reject();
@@ -273,7 +279,7 @@
           console.log(JSON.stringify(msg));
           var event = msg.videoroom;
           console.log("Event: " + event);
-          if(event === "attached") {
+          if (event === "attached") {
             // Subscriber created and attached
             $timeout(function() {
               if (feed) {
@@ -283,9 +289,9 @@
               }
               console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
             });
-          } else if (!msg.configured) {
-            // Ignore the 'configured' events here, they are already processed
-            // by ConnectionConfig
+          } else if (msg.configured) {
+            connection.confirmConfig();
+          } else {
             console.log("What has just happened?!");
           }
 
@@ -303,9 +309,7 @@
           console.log("The subscriber DataChannel is available");
           connection.onDataOpen();
           // Send status information of all our feeds to inform the newcommer
-          FeedsService.publisherFeeds().forEach(function (p) {
-            DataChannelService.sendStatus(p);
-          });
+          sendStatus();
         },
         ondata: function(data) {
           console.log(" ::: Got info in the data channel (subscriber) :::");
@@ -360,6 +364,9 @@
                 ScreenShareService.showHelp();
               }
             });
+          // Reply to a configure request
+          } else if (msg.configured) {
+            connection.confirmConfig();
           } else {
             console.log("Unexpected event for screen");
           }
@@ -396,6 +403,21 @@
 
     function toggleChannel(type, feed) {
       ActionService.toggleChannel(type, feed);
+    }
+
+    /**
+     * Broadcast status information of all our feeds when a data channel is
+     * established.
+     *
+     * To increase the chances of the info to be received, it sends the most
+     * important information right away and the whole status some seconds after.
+     * Hacky and dirty, we know.
+     */
+    function sendStatus() {
+      FeedsService.publisherFeeds().forEach(function (p) {
+        DataChannelService.sendStatus(p, {exclude: "picture"});
+        $timeout(function() { DataChannelService.sendStatus(p); }, 4000);
+      });
     }
   }
 }());

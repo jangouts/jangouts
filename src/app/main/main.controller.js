@@ -12,11 +12,10 @@
     .controller('MainCtrl',  MainCtrl);
 
   MainCtrl.$inject = ['$q', '$scope', '$state', '$stateParams', 'blockUI', 'UserService', 'RoomService',
-    'hotkeys', 'jhConfig'];
+    'hotkeys'];
 
-  function MainCtrl($q, $scope, $state, $stateParams, blockUI, UserService, RoomService, hotkeys, jhConfig) {
+  function MainCtrl($q, $scope, $state, $stateParams, blockUI, UserService, RoomService, hotkeys) {
     $scope.enter = enter;
-    jhConfig.videoThumbnails = true;
 
     setRoomAndUser().then(function(){
       $scope.enter();
@@ -27,7 +26,7 @@
 
     $scope.$on('room.error', function(evt, error) {
       // FIXME: do something neat
-      alert("Janus error: " + error);
+      alert("Janus server reported the following error:\n" + error);
     });
 
     $scope.$on('user.unset', function() {

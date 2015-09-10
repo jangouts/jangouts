@@ -22,6 +22,7 @@ body {
 #thumbnails {
   display: flex;
   flex-flow: row wrap;
+  align-content: flex-start;
   margin: 0 auto;
   overflow: auto;
   figure {
@@ -137,6 +138,11 @@ header {
     color: $color1;
     background: transparent;
     border: 0px;
+  }
+  div.checkbox {
+    top: 2px;
+    margin: 0 12px 0 12px;
+    display: inline;
   }
 }
 

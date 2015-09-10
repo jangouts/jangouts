@@ -28,8 +28,7 @@
       var vm = this;
 
       vm.click = click;
-      vm.cssClass = cssClass;
-      vm.title = title;
+      vm.isChecked = isChecked;
 
       function click() {
         $timeout(function() {
@@ -37,20 +36,8 @@
         });
       }
 
-      function cssClass() {
-        if (jhConfig.videoThumbnails) {
-          return "btn-default";
-        } else {
-          return "btn-danger";
-        }
-      }
-
-      function title() {
-        if (jhConfig.videoThumbnails) {
-          return "Disable video for peer's thumbnails";
-        } else {
-          return "Enable video for peer's thumbnails";
-        }
+      function isChecked() {
+        return jhConfig.videoThumbnails;
       }
     }
   }
