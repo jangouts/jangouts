@@ -114,7 +114,7 @@
        */
       this.setEnabledChannel = function(type, enabled, options) {
         var that = this;
-        if (!options) { options = {}; }
+        options = options || {};
 
         if (this.isPublisher) {
           var config = {};
@@ -178,7 +178,7 @@
        * @returns {object} attribute values
        */
       this.getStatus = function(options) {
-        if (!options) { options = {}; }
+        options = options || {};
         if (!options.exclude) { options.exclude = []; }
 
         var attrs = ["audioEnabled", "videoEnabled", "speaking", "picture"];
