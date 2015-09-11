@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .service('DataChannelService', DataChannelService);
 
-  DataChannelService.$inject = ['FeedsService', 'LogEntry', 'LogService'];
+  DataChannelService.$inject = ['FeedsService', 'LogEntry', 'LogService', '$rootScope'];
 
-  function DataChannelService(FeedsService, LogEntry, LogService) {
+  function DataChannelService(FeedsService, LogEntry, LogService, $rootScope) {
     this.sendStatus = sendStatus;
     this.sendMuteRequest = sendMuteRequest;
     this.sendChatMessage = sendChatMessage;
@@ -34,7 +34,9 @@
       } else if (type === "muteRequest") {
         feed = FeedsService.find(content.target);
         if (feed.isPublisher) {
-          feed.setEnabledChannel("audio", false);
+          feed.setEnabledChannel("audio", false, {after:
+            function() { $rootScope.$broadcast('muted.byRequest'); }
+          });
         }
         // Log the event
         logEntry = new LogEntry("muteRequest", {source: FeedsService.find(remoteId), target: feed});

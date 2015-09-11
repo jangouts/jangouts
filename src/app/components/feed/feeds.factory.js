@@ -109,9 +109,12 @@
        *
        * @param {string} type - "audio" or "video"
        * @param {boolean} enabled
+       * @param {object} options - use the 'after' key to specify a callback
+       *        that will be called after configuring the connection.
        */
-      this.setEnabledChannel = function(type, enabled) {
+      this.setEnabledChannel = function(type, enabled, options) {
         var that = this;
+        options = options || {};
 
         if (this.isPublisher) {
           var config = {};
@@ -123,6 +126,7 @@
                 if (type === 'audio' && enabled === false) {
                   speaking = false;
                 }
+                if (options.after) { options.after(); }
                 // Send the new status to remote peers
                 DataChannelService.sendStatus(that, {exclude: "picture"});
               });
@@ -174,7 +178,7 @@
        * @returns {object} attribute values
        */
       this.getStatus = function(options) {
-        if (!options) { options = {}; }
+        options = options || {};
         if (!options.exclude) { options.exclude = []; }
 
         var attrs = ["audioEnabled", "videoEnabled", "speaking", "picture"];

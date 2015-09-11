@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhFeed', jhFeed);
 
-  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig'];
+  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'Notifier'];
 
-  function jhFeed(RoomService, $interval, jhConfig) {
+  function jhFeed(RoomService, $interval, jhConfig, Notifier) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/feed/jh-feed.html',
@@ -41,18 +41,49 @@
 
       var vm = scope.vm;
       var feed = vm.feed;
-      // If it's a publisher feed, we have to constantly send video and photos
-      // Otherwise, we have to manage the video subscription
+
+      // For publisher feeds, we have to constantly send video and photos
       if (feed.isPublisher) {
         vm.initPics(element);
         vm.takePic();
         $interval(vm.takePic, 20000);
+
+        // In addition, the main feed also displays notifications to the user
+        if (!feed.isLocalScreen) {
+          // Until this timeout is reached, the "you are muted" notification
+          // will not be displayed again
+          var mutedWarningTimeout = now();
+          scope.$on('muted.byRequest', function() {
+            mutedWarningTimeout = secondsFromNow(3);
+            Notifier.info("You have been muted");
+          });
+          scope.$on('muted.byUser', function() {
+            // Reset the warning timeout
+            mutedWarningTimeout = now();
+          });
+          scope.$on('speaking.started', function() {
+            // Display warning only if muted and the timeout has been reached
+            if (!feed.getAudioEnabled() && now() > mutedWarningTimeout) {
+              Notifier.info("Trying to say something? Unmute first");
+              mutedWarningTimeout = secondsFromNow(60);
+            }
+          });
+        }
+      // For subscribers we have to manage the video subscription
       } else {
         feed.setVideoSubscription(jhConfig.videoThumbnails || vm.highlighted);
         scope.$watch(
           function() { return jhConfig.videoThumbnails || vm.highlighted || !vm.feed.isSilent(); },
           function(video) { feed.setVideoSubscription(video); }
         );
+      }
+
+      function secondsFromNow(sec) {
+        return Date.now() + sec*1000;
+      }
+
+      function now() {
+        return secondsFromNow(0);
       }
     }
 

@@ -12,9 +12,9 @@
     .service('ActionService', ActionService);
 
   ActionService.$inject = ['$timeout', 'Feed', 'FeedsService', 'LogEntry',
-    'LogService', 'DataChannelService'];
+    'LogService', 'DataChannelService', '$rootScope'];
 
-  function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataChannelService) {
+  function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataChannelService, $rootScope) {
     this.enterRoom = enterRoom;
     this.leaveRoom = leaveRoom;
     this.remoteJoin = remoteJoin;
@@ -125,7 +125,13 @@
         LogService.add(entry);
       }
       if (feed.isEnabled(type)) {
-        feed.setEnabledChannel(type, false);
+        var callback = null;
+        // If we are muting the main feed (the only publisher that can be
+        // actually muted) raise a signal
+        if (type === "audio" && feed.isPublisher) {
+          callback = function() { $rootScope.$broadcast('muted.byUser'); };
+        }
+        feed.setEnabledChannel(type, false, {after: callback});
       } else {
         feed.setEnabledChannel(type, true);
       }
