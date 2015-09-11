@@ -11,13 +11,13 @@
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
-  feedFactory.$inject = ['$timeout', 'DataChannelService', 'Notifier'];
+  feedFactory.$inject = ['$timeout', 'DataChannelService'];
 
   /**
    * Factory representing a janus feed
    * @constructor
    */
-  function feedFactory($timeout, DataChannelService, Notifier) {
+  function feedFactory($timeout, DataChannelService) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -29,7 +29,6 @@
       this.isPublisher = attrs.isPublisher || false;
       this.isLocalScreen = attrs.isLocalScreen || false;
       this.isIgnored = attrs.ignored || false;
-      this.notifierTimeout = 0;
 
       var picture = null;
       var speaking = false;
@@ -110,9 +109,12 @@
        *
        * @param {string} type - "audio" or "video"
        * @param {boolean} enabled
+       * @param {object} options - use the 'after' key to specify a callback
+       *        that will be called after configuring the connection.
        */
-      this.setEnabledChannel = function(type, enabled) {
+      this.setEnabledChannel = function(type, enabled, options) {
         var that = this;
+        if (!options) { options = {}; }
 
         if (this.isPublisher) {
           var config = {};
@@ -124,6 +126,7 @@
                 if (type === 'audio' && enabled === false) {
                   speaking = false;
                 }
+                if (options.after) { options.after(); }
                 // Send the new status to remote peers
                 DataChannelService.sendStatus(that, {exclude: "picture"});
               });
@@ -141,15 +144,8 @@
        */
       this.updateLocalSpeaking = function(val) {
         var that = this;
-        var oneMinute = 60000;
-        var now = new Date().getTime();
-
         $timeout(function() {
           if (that.isEnabled("audio") === false) {
-            if (val && that.notifierTimeout + oneMinute < now) {
-              Notifier.info("Looks like you are trying to say something... but you are muted.");
-              that.notifierTimeout = now;
-            }
             val = false;
           }
           if (speaking !== val) {

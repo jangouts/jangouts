@@ -394,10 +394,12 @@
       speech.on('speaking', function() {
         $timeout(function() {
           feed.updateLocalSpeaking(true);
+          $rootScope.$broadcast('speaking.started');
         });
       });
       speech.on('stopped_speaking', function() {
         feed.updateLocalSpeaking(false);
+        $rootScope.$broadcast('speaking.stopped');
       });
     }
 

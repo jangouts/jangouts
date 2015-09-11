@@ -19,7 +19,10 @@
 
     function info(text) {
       bell.play();
-      toastr.info('', text);
+      toastr.info(text, {
+        onShown: function() { bell.play(); },
+        timeOut: 3000
+      });
     }
   }
 }());
