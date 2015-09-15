@@ -57,9 +57,8 @@
        * created and accepted), publishes the corresponding feed on the janus
        * server.
        *
-       * @param {object} options - object with some boolean flags (noCamera,
-       *        noAudioOnStart, noVideoOnStart) and some callbacks
-       *        (success, error)
+       * @param {object} options - object with the noCamera boolean flag and
+       *        some callbacks (success, error)
        */
       this.publish = function(options) {
         options = options || {};
@@ -73,8 +72,6 @@
           } else {
             media.videoSend = true;
           }
-          if (options.noAudioOnStart) { cfg.audio = false; }
-          if (options.noVideoOnStart) { cfg.video = false; }
           media.audioSend = true;
           media.data = true;
         } else {

@@ -40,7 +40,6 @@
       vm.username = null;
       vm.room = null;
       vm.rooms = [];
-      vm.hiddenOnStart = false;
       vm.signin = signin;
       vm.adjustHeight = adjustHeight;
 

@@ -45,7 +45,7 @@
       var deferred = $q.defer();
       RoomService.getRoomById(parseInt($stateParams.room)).then(function(room){
         if(room && $stateParams.user){
-          RoomService.setConfig({ room: room, publishingFromStart: true });
+          RoomService.setRoom(room);
           UserService.signin($stateParams.user);
           deferred.resolve("Room and User set!");
         } else {

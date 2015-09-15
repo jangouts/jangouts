@@ -21,7 +21,7 @@
     this.enter = enter;
     this.leave = leave;
     this.getAvailableRooms = getAvailableRooms;
-    this.setConfig = setConfig;
+    this.setRoom = setRoom;
     this.getRoomById = getRoomById;
     this.publishScreen = publishScreen;
     this.unPublishFeed = unPublishFeed;
@@ -30,7 +30,6 @@
     this.subscribeToFeeds = subscribeToFeeds;
     this.subscribeToFeed = subscribeToFeed;
     this.toggleChannel = toggleChannel;
-    this.publishingFromStart = true;
     this.room = null;
     this.janus = null;
 
@@ -139,15 +138,7 @@
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
             connection.publish({
-              noAudioOnStart: !that.publishingFromStart,
-              noVideoOnStart: !that.publishingFromStart,
-              error: function() {
-                connection.publish({
-                  noAudioOnStart: !that.publishingFromStart,
-                  noVideoOnStart: !that.publishingFromStart,
-                  noCamera: true
-                });
-              }
+              error: function() { connection.publish({noCamera: true}); }
             });
 
             // Step 5. Attach to existing feeds, if any
@@ -219,10 +210,8 @@
       return deferred.promise;
     }
 
-    function setConfig(config) {
-      config = config || {};
-      this.room = config.room;
-      this.publishingFromStart = config.publishingFromStart || false;
+    function setRoom(room) {
+      this.room = room;
     }
 
     function getRoomById(roomId) {
