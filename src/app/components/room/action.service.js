@@ -73,10 +73,8 @@
     function destroyFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      if (feed.connection) {
-        feed.connection.destroy();
-      }
       $timeout(function () {
+        feed.disconnect();
         FeedsService.destroy(feedId);
       });
       // Log the event
@@ -87,9 +85,7 @@
     function ignoreFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      feed.isIgnored = true;
-      feed.connection.destroy();
-      feed.connection = null;
+      feed.ignore();
       // Log the event
       var entry = new LogEntry("ignoreFeed", {feed: feed});
       LogService.add(entry);
@@ -98,8 +94,7 @@
     function stopIgnoringFeed(feedId, connection) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      feed.isIgnored = false;
-      feed.connection = connection;
+      feed.stopIgnoring(connection);
       // Log the event
       var entry = new LogEntry("stopIgnoringFeed", {feed: feed});
       LogService.add(entry);

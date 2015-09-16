@@ -91,6 +91,43 @@
       };
 
       /**
+       * Checks if the feed is connected to janus.
+       *
+       * @returns {boolean}
+       */
+      this.isConnected = function() {
+        return (this.connection !== null);
+      };
+
+      /**
+       * Disconnects from janus
+       */
+      this.disconnect = function() {
+        if (this.connection) {
+          this.connection.destroy();
+        }
+        this.connection = null;
+      };
+
+      /**
+       * Starts ignoring the feed
+       */
+      this.ignore = function() {
+        this.isIgnored = true;
+        this.disconnect();
+      };
+
+      /**
+       * Stops ignoring the feed
+       *
+       * @param {FeedConnection} connection - new connection to Janus
+       */
+      this.stopIgnoring = function(connection) {
+        this.isIgnored = false;
+        this.connection = connection;
+      };
+
+      /**
        * Checks if the feed is waiting for the connection to janus to be set
        *
        * @returns {boolean}
@@ -232,7 +269,7 @@
        * @returns {boolean}
        */
       this.getVideoSubscription = function() {
-        return this.connection.getConfig().video;
+        return this.connection && this.connection.getConfig().video;
       };
     };
   }
