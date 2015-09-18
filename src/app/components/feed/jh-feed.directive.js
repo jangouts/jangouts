@@ -62,8 +62,9 @@
             mutedWarningTimeout = now();
           });
           scope.$on('speaking.started', function() {
-            // Display warning only if muted and the timeout has been reached
-            if (!feed.getAudioEnabled() && now() > mutedWarningTimeout) {
+            // Display warning only if muted (check for false, undefined means
+            // still connecting) and the timeout has been reached
+            if (feed.getAudioEnabled() === false && now() > mutedWarningTimeout) {
               Notifier.info("Trying to say something? Unmute first");
               mutedWarningTimeout = secondsFromNow(60);
             }
