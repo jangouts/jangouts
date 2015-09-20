@@ -30,7 +30,7 @@
     };
 
     function jhFeedLink(scope, element) {
-      scope.$watch('vm.feed.stream', function(newVal) {
+      scope.$watch('vm.feed.getStream()', function(newVal) {
         if (newVal !== undefined) {
           var video = $('video', element)[0];
           // Mute video of the local stream
@@ -61,10 +61,10 @@
             // Reset the warning timeout
             mutedWarningTimeout = now();
           });
-          scope.$on('speaking.started', function() {
+          scope.$watch('vm.feed.isVoiceDetected()', function(newVal) {
             // Display warning only if muted (check for false, undefined means
             // still connecting) and the timeout has been reached
-            if (feed.getAudioEnabled() === false && now() > mutedWarningTimeout) {
+            if (newVal && feed.getAudioEnabled() === false && now() > mutedWarningTimeout) {
               Notifier.info("Trying to say something? Unmute first");
               mutedWarningTimeout = secondsFromNow(60);
             }
@@ -122,7 +122,7 @@
         canvasTag.width = canvas.width();
         canvasTag.height = Math.round(canvasTag.width * 0.75);
 
-        var placeholder = new Image();
+        var placeholder = new window.Image();
         placeholder.src = "assets/images/placeholder.png";
         placeholder.onload = function() {
           context.drawImage(placeholder, 0, 0, canvasTag.width, canvasTag.height);

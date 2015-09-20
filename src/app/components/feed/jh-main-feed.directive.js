@@ -26,7 +26,7 @@
     };
 
     function jhMainFeedLink(scope, element) {
-      scope.$watch('vm.feed.stream', function(newVal) {
+      scope.$watch('vm.feed.getStream()', function(newVal) {
         if (newVal !== undefined) {
           var video = $('video', element)[0];
           video.muted = true;

@@ -11,13 +11,13 @@
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
-  feedFactory.$inject = ['$timeout', 'DataChannelService'];
+  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver'];
 
   /**
    * Factory representing a janus feed
    * @constructor
    */
-  function feedFactory($timeout, DataChannelService) {
+  function feedFactory($timeout, DataChannelService, SpeakObserver) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -25,7 +25,6 @@
       this.id = attrs.id || 0;
       this.display = attrs.display || null;
       this.connection = attrs.connection || null;
-      this.stream = attrs.stream || null;
       this.isPublisher = attrs.isPublisher || false;
       this.isLocalScreen = attrs.isLocalScreen || false;
       this.isIgnored = attrs.ignored || false;
@@ -35,6 +34,8 @@
       var silentSince = Date.now();
       var videoRemoteEnabled = true;
       var audioRemoteEnabled = true;
+      var stream = null;
+      var speakObserver = null;
 
       /**
        * Checks if a given channel is enabled
@@ -60,6 +61,22 @@
 
       this.getPicture = function() { return picture; };
 
+      this.setStream = function(val) {
+        if (this.isPublisher && !this.isLocalVideo) {
+          speakObserver = new SpeakObserver(val, {
+            start: function() {
+              updateLocalSpeaking(true);
+            },
+            stop: function() {
+              updateLocalSpeaking(false);
+            }
+          });
+        }
+        stream = val;
+      };
+
+      this.getStream = function() { return stream; };
+
       this.setSpeaking = function(val) {
         speaking = val;
       };
@@ -80,6 +97,15 @@
 
       this.getVideoEnabled = function() {
         return this.isEnabled("video");
+      };
+
+      /*
+       * Checks if audio is being currently detected in the local feed
+       *
+       * @returns {Boolean}
+       */
+      this.isVoiceDetected = function() {
+        return speakObserver && speakObserver.isSpeaking();
       };
 
       this.isDataOpen = function() {
@@ -105,6 +131,9 @@
       this.disconnect = function() {
         if (this.connection) {
           this.connection.destroy();
+        }
+        if (speakObserver) {
+          speakObserver.destroy();
         }
         this.connection = null;
       };
@@ -179,8 +208,7 @@
        * honoring the value of audioEnabled and notifying changes to the
        * remote peers if needed.
        */
-      this.updateLocalSpeaking = function(val) {
-        var that = this;
+      function updateLocalSpeaking(val) {
         $timeout(function() {
           if (that.isEnabled("audio") === false) {
             val = false;
@@ -191,7 +219,7 @@
             DataChannelService.sendStatus(that, {exclude: "picture"});
           }
         });
-      };
+      }
 
       /**
        * Sets the value of the picture attribute for this publisher feed,

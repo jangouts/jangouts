@@ -119,10 +119,7 @@
           // some element of the local DOM
           console.log(" ::: Got a local stream :::");
           var feed = FeedsService.findMain();
-          $timeout(function () {
-            feed.stream = stream;
-            observeAudio(feed);
-          });
+          feed.setStream(stream);
         },
         oncleanup: function () {
           console.log(" ::: Got a cleanup notification: we are unpublished now :::");
@@ -289,10 +286,8 @@
           }
         },
         onremotestream: function(stream) {
-          $timeout(function() {
-            var feed = FeedsService.find(id);
-            feed.stream = stream;
-          });
+          var feed = FeedsService.find(id);
+          feed.setStream(stream);
         },
         ondataopen: function() {
           console.log("The subscriber DataChannel is available");
@@ -329,9 +324,7 @@
         onlocalstream: function(stream) {
           console.log(" ::: Got the screen stream :::");
           var feed = FeedsService.find(id);
-          $timeout(function () {
-            feed.stream = stream;
-          });
+          feed.setStream(stream);
         },
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (screen) :::");
@@ -376,20 +369,6 @@
 
     function stopIgnoringFeed(feedId) {
       this.subscribeToFeed(feedId);
-    }
-
-    function observeAudio(feed) {
-      var speech = hark(feed.stream);
-      speech.on('speaking', function() {
-        $timeout(function() {
-          feed.updateLocalSpeaking(true);
-          $rootScope.$broadcast('speaking.started');
-        });
-      });
-      speech.on('stopped_speaking', function() {
-        feed.updateLocalSpeaking(false);
-        $rootScope.$broadcast('speaking.stopped');
-      });
     }
 
     function toggleChannel(type, feed) {
