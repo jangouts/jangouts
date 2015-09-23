@@ -23,7 +23,7 @@
   function speakObserverFactory($interval) {
     return function(stream, options) {
       options = options || {};
-      var interval = options.interval || 50;
+      var interval = options.interval || 65;
       var threshold = options.threshold || -50;
 
       var AudioContextType = window.AudioContext || window.webkitAudioContext;
