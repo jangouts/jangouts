@@ -21,14 +21,14 @@
    * keeping the number of requests to a minimum.
    */
   function connectionConfigFactory($timeout) {
-    return function(pluginHandle, wantedInit, jsep) {
+    return function(pluginHandle, wantedInit, jsep, ok) {
       var current = {};
       var requested = null;
       var wanted = {audio: true, video: true};
       var okCallback = null;
       _.assign(wanted, wantedInit);
       // Initial configure
-      configure({jsep: jsep});
+      configure({jsep: jsep, ok: ok});
 
       /**
        * Gets the current value of the configuration flags

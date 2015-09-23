@@ -297,7 +297,11 @@
        * @returns {boolean}
        */
       this.getVideoSubscription = function() {
-        return this.connection && this.connection.getConfig().video;
+        if (this.connection && this.connection.getConfig()) {
+          return this.connection.getConfig().video;
+        } else {
+          return null;
+        }
       };
     };
   }

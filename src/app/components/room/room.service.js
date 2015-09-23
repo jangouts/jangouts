@@ -277,12 +277,15 @@
             });
           } else if (msg.configured) {
             connection.confirmConfig();
+          } else if (msg.started) {
+            // Initial setConfig, needed to complete all the initializations
+            connection.setConfig({values: {audio: true, video: jhConfig.videoThumbnails}});
           } else {
             console.log("What has just happened?!");
           }
 
           if(jsep !== undefined && jsep !== null) {
-            connection.subscribe(jsep, {withVideo: jhConfig.videoThumbnails});
+            connection.subscribe(jsep);
           }
         },
         onremotestream: function(stream) {
