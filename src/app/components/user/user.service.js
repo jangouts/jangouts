@@ -11,14 +11,16 @@
   angular.module('janusHangouts')
     .service('UserService', UserService);
 
-  UserService.$inject = ['$q', '$state', '$rootScope'];
+  UserService.$inject = ['$q', '$state', '$rootScope', 'RemoteLoggingService'];
 
-  function UserService($q, $state, $rootScope) {
+  function UserService($q, $state, $rootScope, RemoteLoggingService) {
     this.user = null;
 
     this.signin = function (username) {
       var d = $q.defer();
       this.user = { username: username };
+      RemoteLoggingService.setSource(username);
+      RemoteLoggingService.info("logged in");
       d.resolve(this.user);
       return d.promise;
     };
