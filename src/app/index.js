@@ -35,4 +35,9 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     $rootScope.$on('$stateChangeError', function () {
       $state.go('signin');
     });
+  })
+  .run(function (RemoteLoggingService, jhConfig) {
+    if (typeof jhConfig.remoteLogger === 'string') {
+      RemoteLoggingService.setUrl(jhConfig.remoteLogger);
+    }
   });

@@ -1,0 +1,16 @@
+{
+  "name": "jangouts-logger",
+  "version": "0.0.1",
+  "description": "Logger for Jangouts",
+  "main": "jangouts-logger.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "good": "^6.4.0",
+    "good-console": "^5.1.0",
+    "hapi": "^10.0.1"
+  }
+}

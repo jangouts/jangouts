@@ -4,5 +4,6 @@
   "janusDebug": false,
   "httpsAvailable": true,
   "httpsUrl": null,
-  "videoThumbnails": true
+  "videoThumbnails": true,
+  "remoteLogger": "http://192.168.1.95:9000"
 }
