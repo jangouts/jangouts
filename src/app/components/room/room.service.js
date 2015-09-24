@@ -289,8 +289,11 @@
           }
         },
         onremotestream: function(stream) {
-          var feed = FeedsService.find(id);
-          feed.setStream(stream);
+          FeedsService.waitFor(id).then(function (feed) {
+            feed.setStream(stream);
+          }, function (reason) {
+            console.error(reason);
+          });
         },
         ondataopen: function() {
           console.log("The subscriber DataChannel is available");
