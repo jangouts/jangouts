@@ -11,7 +11,9 @@
   angular.module('janusHangouts')
     .service('FeedsService', FeedsService);
 
-  function FeedsService() {
+  FeedsService.$inject = ['$q'];
+
+  function FeedsService($q) {
     this.mainFeed = null;
     this.feeds = {};
 
@@ -23,6 +25,7 @@
     this.publisherFeeds = publisherFeeds;
     this.localScreenFeeds = localScreenFeeds;
     this.speakingFeed = speakingFeed;
+    this.waitFor = waitFor;
 
     function find(id) {
       return (this.feeds[id] || null);
@@ -30,6 +33,40 @@
 
     function findMain() {
       return this.mainFeed;
+    }
+
+    /**
+     * Find a feed but, if not found, waits until it appears
+     *
+     * @param {string} id       Feed's id
+     * @param {number} attempts Max number of attempts
+     * @return {Object}         Promise to be resolved when the feed is found.
+     */
+    function waitFor(id, attempts) {
+      var deferred = $q.defer();
+      var feed = this.find(id);
+      var that = this;
+      attempts = attempts || 3;
+
+      if (feed === null) { // If feed is not found, set an interval to check again.
+        var interval = setInterval(function () {
+          feed = that.find(id);
+          if (feed === null) { // The feed was not found this time
+            attempts -= 1;
+          } else { // The feed was finally found
+            clearInterval(interval);
+            deferred.resolve(feed);
+          }
+          if (attempts === 0) { // No more attempts left and feed was not found
+            clearInterval(interval);
+            deferred.reject("feed with id " + id + " was not found");
+          }
+        }, 2000);
+      } else {
+        deferred.resolve(feed);
+      }
+
+      return deferred.promise;
     }
 
     function add(feed, options) {
