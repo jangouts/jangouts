@@ -11,7 +11,7 @@
   angular.module('janusHangouts')
     .factory('ConnectionConfig', connectionConfigFactory);
 
-  connectionConfigFactory.$inject = ['$timeout'];
+  connectionConfigFactory.$inject = ['$timeout', 'RemoteLoggingService'];
 
   /**
    * Handles the status of the configuration flags (audio and video) of the
@@ -20,7 +20,7 @@
    * It handles correctly several consequent changes of the flag values
    * keeping the number of requests to a minimum.
    */
-  function connectionConfigFactory($timeout) {
+  function connectionConfigFactory($timeout, log) {
     return function(pluginHandle, wantedInit, jsep, ok) {
       var current = {};
       var requested = null;
@@ -68,11 +68,11 @@
       this.confirm = function() {
         $timeout(function() {
           if (requested === null) {
-            console.error("I haven't sent a config. Where does this confirmation come from?");
+            log.error("I haven't sent a config. Where does this confirmation come from?");
           } else {
             current = requested;
             requested = null;
-            console.log("Connection configured", current);
+            log.debug("Connection configured: " + JSON.stringify(current));
             if (okCallback) { okCallback(); }
             if (differsFromWanted(current)) {
               configure();
@@ -101,7 +101,7 @@
           },
           error: function() {
             requested = null;
-            console.error("Config request not sent");
+            log.error("Config request not sent");
           }
         });
       }

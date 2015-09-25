@@ -13,10 +13,10 @@
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
-      'ScreenShareService'];
+      'ScreenShareService', 'RemoteLoggingService'];
 
-  function RoomService($q, $rootScope, $timeout, FeedsService, Room,
-      FeedConnection, DataChannelService, ActionService, jhConfig, ScreenShareService) {
+  function RoomService($q, $rootScope, $timeout, FeedsService, Room, FeedConnection,
+      DataChannelService, ActionService, jhConfig, ScreenShareService, log) {
     this.connect = connect;
     this.enter = enter;
     this.leave = leave;
@@ -79,7 +79,7 @@
           }
         },
         destroyed: function() {
-          console.log("Janus object destroyed");
+          log.debug("Janus object destroyed");
         }
       });
 
@@ -102,14 +102,14 @@
           connection.register(username);
         },
         error: function(error) {
-          console.error("Error attaching plugin... " + error);
+          log.error("Error attaching plugin... " + error);
         },
         consentDialog: function(on) {
-          console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
+          log.debug("Consent dialog should be " + (on ? "on" : "off") + " now");
           $$rootScope.$broadcast('consentDialog.changed', on);
         },
         ondataopen: function() {
-          console.log("The publisher DataChannel is available");
+          log.debug("The publisher DataChannel is available");
           connection.onDataOpen();
           sendStatus();
         },
@@ -117,20 +117,20 @@
           // Step 4b (parallel with 4a).
           // Send the created stream to the UI, so it can be attached to
           // some element of the local DOM
-          console.log(" ::: Got a local stream :::");
+          log.debug(" ::: Got a local stream :::");
           var feed = FeedsService.findMain();
           feed.setStream(stream);
         },
         oncleanup: function () {
-          console.log(" ::: Got a cleanup notification: we are unpublished now :::");
+          log.debug(" ::: Got a cleanup notification: we are unpublished now :::");
         },
         onmessage: function (msg, jsep) {
           var event = msg.videoroom;
-          console.log("Event: " + event);
+          log.debug("Event: " + event);
 
           // Step 2. Response from janus confirming we joined
           if (event === "joined") {
-            console.log("Successfully joined room " + msg.room);
+            log.debug("Successfully joined room " + msg.room);
             ActionService.enterRoom(msg.id, username, connection);
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
@@ -144,7 +144,7 @@
             }
             // The room has been destroyed
           } else if (event === "destroyed") {
-            console.log("The room has been destroyed!");
+            log.debug("The room has been destroyed!");
             $$rootScope.$broadcast('room.destroy');
           } else if (event === "event") {
             // Any new feed to attach to?
@@ -163,7 +163,7 @@
               connection.confirmConfig();
             // The server reported an error
             } else if(msg.error !== undefined && msg.error !== null) {
-              console.log("Error message from server" + msg.error);
+              log.error("Error message from server" + msg.error);
               $$rootScope.$broadcast('room.error', msg.error);
             }
           }
@@ -186,7 +186,7 @@
       this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
-          console.log("getAvailableRooms plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
+          log.debug("getAvailableRooms plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
           var request = { "request": "list" };
           pluginHandle.send({"message": request, success: function(result) {
             // Free the resource (it looks safe to do it here)
@@ -229,12 +229,12 @@
     }
 
     function subscribeToFeeds(list) {
-      console.log("Got a list of available publishers/feeds:");
-      console.log(list);
+      log.debug("Got a list of available publishers/feeds:");
+      log.debug(list);
       for(var f in list) {
         var id = list[f].id;
         var display = list[f].display;
-        console.log("  >> [" + id + "] " + display);
+        log.debug("  >> [" + id + "] " + display);
         var feed = FeedsService.find(id);
         if (feed === null || feed.waitingForConnection()) {
           this.subscribeToFeed(id, display);
@@ -258,13 +258,12 @@
           connection.listen(id);
         },
         error: function(error) {
-          console.error("  -- Error attaching plugin... " + error);
+          log.error("  -- Error attaching plugin... " + error);
         },
         onmessage: function(msg, jsep) {
-          console.log(" ::: Got a message (listener) :::");
-          console.log(JSON.stringify(msg));
+          log.debug(" ::: Got a message (listener) :::");
+          log.debug(JSON.stringify(msg));
           var event = msg.videoroom;
-          console.log("Event: " + event);
           if (event === "attached") {
             // Subscriber created and attached
             $timeout(function() {
@@ -273,7 +272,7 @@
               } else {
                 ActionService.remoteJoin(id, display, connection);
               }
-              console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
+              log.debug("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
             });
           } else if (msg.configured) {
             connection.confirmConfig();
@@ -281,7 +280,7 @@
             // Initial setConfig, needed to complete all the initializations
             connection.setConfig({values: {audio: true, video: jhConfig.videoThumbnails}});
           } else {
-            console.log("What has just happened?!");
+            log.debug("What has just happened?!");
           }
 
           if(jsep !== undefined && jsep !== null) {
@@ -292,21 +291,21 @@
           FeedsService.waitFor(id).then(function (feed) {
             feed.setStream(stream);
           }, function (reason) {
-            console.error(reason);
+            log.error(reason);
           });
         },
         ondataopen: function() {
-          console.log("The subscriber DataChannel is available");
+          log.debug("The subscriber DataChannel is available");
           connection.onDataOpen();
           // Send status information of all our feeds to inform the newcommer
           sendStatus();
         },
         ondata: function(data) {
-          console.log(" ::: Got info in the data channel (subscriber) :::");
+          log.debug(" ::: Got info in the data channel (subscriber) :::");
           DataChannelService.receiveMessage(data, id);
         },
         oncleanup: function() {
-          console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
+          log.debug(" ::: Got a cleanup notification (remote feed " + id + ") :::");
         }
       });
     }
@@ -325,16 +324,16 @@
           ScreenShareService.setInProgress(true);
         },
         error: function(error) {
-          console.error("  -- Error attaching screen plugin... " + error);
+          log.error("  -- Error attaching screen plugin... " + error);
         },
         onlocalstream: function(stream) {
-          console.log(" ::: Got the screen stream :::");
+          log.debug(" ::: Got the screen stream :::");
           var feed = FeedsService.find(id);
           feed.setStream(stream);
         },
         onmessage: function(msg, jsep) {
-          console.log(" ::: Got a message (screen) :::");
-          console.log(msg);
+          log.debug(" ::: Got a message (screen) :::");
+          log.debug(msg);
           var event = msg.videoroom;
 
           if (event === "joined") {
@@ -346,7 +345,7 @@
                 ScreenShareService.setInProgress(false);
               },
               error: function(error) {
-                console.log(error);
+                log.error(error);
                 unPublishFeed(id);
                 ScreenShareService.setInProgress(false);
                 ScreenShareService.showHelp();
@@ -356,7 +355,7 @@
           } else if (msg.configured) {
             connection.confirmConfig();
           } else {
-            console.log("Unexpected event for screen");
+            log.debug("Unexpected event for screen");
           }
           if (jsep !== undefined && jsep !== null) {
             connection.handleRemoteJsep(jsep);

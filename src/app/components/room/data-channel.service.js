@@ -47,7 +47,7 @@
           feed.setStatus(content.status);
         }
       } else {
-        console.log("Unknown data type: " + type);
+        console.debug("Unknown data type: " + type);
       }
     }
 
@@ -80,14 +80,14 @@
       var mainFeed = FeedsService.findMain();
       if (mainFeed === null) { return; }
       if (!mainFeed.isDataOpen()) {
-        console.log("Data channel not open yet. Skipping");
+        console.debug("Data channel not open yet. Skipping");
         return;
       }
       var connection = mainFeed.connection;
       connection.sendData({
         text: text,
         error: function(reason) { alert(reason); },
-        success: function() { console.log("Data sent: " + type); }
+        success: function() { console.debug("Data sent: " + type); }
       });
     }
   }

@@ -11,14 +11,14 @@
   angular.module('janusHangouts')
     .factory('FeedConnection', feedConnectionFactory);
 
-  feedConnectionFactory.$inject = ['ConnectionConfig'];
+  feedConnectionFactory.$inject = ['ConnectionConfig', 'RemoteLoggingService'];
 
   /**
    * Manages the connection of a feed to the Janus server
    *
    * @constructor
    */
-  function feedConnectionFactory(ConnectionConfig) {
+  function feedConnectionFactory(ConnectionConfig, log) {
     return function(pluginHandle, roomId, role) {
       var that = this;
 
@@ -26,7 +26,7 @@
       this.role = role || "subscriber";
       this.isDataOpen = false;
       this.config = null;
-      console.log(this.role + " plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
+      log.debug(this.role + " plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
 
       this.destroy = function() {
         this.config = null;
@@ -83,15 +83,15 @@
         pluginHandle.createOffer({
           media: media,
           success: function(jsep) {
-            console.log("Got publisher SDP!");
-            console.log(jsep);
+            log.debug("Got publisher SDP!");
+            log.debug(jsep);
             that.config = new ConnectionConfig(pluginHandle, cfg, jsep);
             // Call the provided callback for extra actions
             if (options.success) { options.success(); }
           },
           error: function(error) {
-            console.error("WebRTC error publishing");
-            console.error(error);
+            log.error("WebRTC error publishing");
+            log.error(error);
             // Call the provided callback for extra actions
             if (options.error) { options.error(); }
           }
@@ -111,14 +111,14 @@
             data: true
           },
           success: function(jsep) {
-            console.log("Got SDP!");
-            console.log(jsep);
+            log.debug("Got SDP!");
+            log.debug(jsep);
             var start = { "request": "start", "room": roomId };
             pluginHandle.send({message: start, jsep: jsep});
           },
           error: function(error) {
-            console.error("WebRTC error subscribing");
-            console.error(error);
+            log.error("WebRTC error subscribing");
+            log.error(error);
           }
         });
       };
