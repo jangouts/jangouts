@@ -20,7 +20,7 @@
       var d = $q.defer();
       this.user = { username: username };
       RemoteLoggingService.setSource(username);
-      RemoteLoggingService.info("logged in");
+      RemoteLoggingService.debug("logged in");
       d.resolve(this.user);
       return d.promise;
     };
