@@ -124,8 +124,8 @@
           log.debug(" ::: Got a cleanup notification: we are unpublished now :::");
         },
         onmessage: function (msg, jsep) {
+          log.debug("Got a message (publisher): " + JSON.stringify(msg));
           var event = msg.videoroom;
-          log.debug("Event: " + event);
 
           // Step 2. Response from janus confirming we joined
           if (event === "joined") {
@@ -260,8 +260,7 @@
           log.error("  -- Error attaching plugin... " + error);
         },
         onmessage: function(msg, jsep) {
-          log.debug(" ::: Got a message (listener) :::");
-          log.debug(JSON.stringify(msg));
+          log.debug("Got a message (listener): " + JSON.stringify(msg));
           var event = msg.videoroom;
           if (event === "attached") {
             // Subscriber created and attached
@@ -330,8 +329,7 @@
           feed.setStream(stream);
         },
         onmessage: function(msg, jsep) {
-          log.debug(" ::: Got a message (screen) :::");
-          log.debug(msg);
+          log.debug("Got a message (screen): " + JSON.stringify(msg));
           var event = msg.videoroom;
 
           if (event === "joined") {
