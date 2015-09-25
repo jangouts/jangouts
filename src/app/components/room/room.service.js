@@ -105,7 +105,6 @@
           log.error("Error attaching plugin... " + error);
         },
         consentDialog: function(on) {
-          log.debug("Consent dialog should be " + (on ? "on" : "off") + " now");
           $$rootScope.$broadcast('consentDialog.changed', on);
         },
         ondataopen: function() {
@@ -301,7 +300,6 @@
           sendStatus();
         },
         ondata: function(data) {
-          log.debug(" ::: Got info in the data channel (subscriber) :::");
           DataChannelService.receiveMessage(data, id);
         },
         oncleanup: function() {
