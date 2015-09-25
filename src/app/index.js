@@ -30,6 +30,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
   .config(function(blockUIConfig) {
     blockUIConfig.templateUrl = 'app/components/room/consent-dialog.html';
     blockUIConfig.cssClass = 'block-ui block-ui-anim-fade consent-dialog';
+    blockUIConfig.autoBlock = false;
   })
   .run(function ($rootScope, $state) {
     $rootScope.$on('$stateChangeError', function () {
