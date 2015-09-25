@@ -40,13 +40,15 @@
      *
      * @param {string} id       Feed's id
      * @param {number} attempts Max number of attempts
+     * @param {number} timeout  Time (in miliseconds) between attempts
      * @return {Object}         Promise to be resolved when the feed is found.
      */
-    function waitFor(id, attempts) {
+    function waitFor(id, attempts, timeout) {
       var deferred = $q.defer();
       var feed = this.find(id);
       var that = this;
-      attempts = attempts || 3;
+      attempts = attempts || 10;
+      timeout = timeout || 1000;
 
       if (feed === null) { // If feed is not found, set an interval to check again.
         var interval = setInterval(function () {
@@ -61,7 +63,7 @@
             clearInterval(interval);
             deferred.reject("feed with id " + id + " was not found");
           }
-        }, 2000);
+        }, timeout);
       } else {
         deferred.resolve(feed);
       }
