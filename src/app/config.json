@@ -5,5 +5,5 @@
   "httpsAvailable": true,
   "httpsUrl": null,
   "videoThumbnails": true,
-  "remoteLogger": "http://192.168.1.95:9000"
+  "remoteLogger": null
 }

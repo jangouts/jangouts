@@ -18,9 +18,10 @@
 
     this.setUrl = setUrl;
     this.setSource = setSource;
-    this.debug = debug;
+    this.error = error;
     this.warn = warn;
     this.info = info;
+    this.debug = debug;
     this.write = write;
 
     function setUrl(url) {
@@ -29,6 +30,10 @@
 
     function setSource(source) {
       this.source = source;
+    }
+
+    function error(message) {
+      this.write("error", message);
     }
 
     function info(message) {
@@ -44,12 +49,15 @@
     }
 
     function write(severity, message) {
-      if (this.url === null) { return false; }
-      var payload = { severity: severity, content: message };
-      if (this.source) {
-        payload.source = this.source;
+      if (this.url === null) {
+        console[severity](message);
+      } else {
+        var payload = { severity: severity, content: message };
+        if (this.source) {
+          payload.source = this.source;
+        }
+        $http.post(this.url + '/messages', payload);
       }
-      $http.post(this.url + '/messages', payload);
     }
   }
 }());
