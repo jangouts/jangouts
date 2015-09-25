@@ -11,13 +11,13 @@
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
-  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver'];
+  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver', 'RemoteLoggingService'];
 
   /**
    * Factory representing a janus feed
    * @constructor
    */
-  function feedFactory($timeout, DataChannelService, SpeakObserver) {
+  function feedFactory($timeout, DataChannelService, SpeakObserver, log) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -72,6 +72,7 @@
             }
           });
         }
+        log.debug("Stream set for " + this.display);
         stream = val;
       };
 
