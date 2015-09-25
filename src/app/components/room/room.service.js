@@ -229,7 +229,7 @@
 
     function subscribeToFeeds(list) {
       log.debug("Got a list of available publishers/feeds:");
-      log.debug(list);
+      log.debug(JSON.stringify(list));
       for(var f in list) {
         var id = list[f].id;
         var display = list[f].display;
