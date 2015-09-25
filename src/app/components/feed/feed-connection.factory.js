@@ -101,13 +101,8 @@
       /**
        * Negotiates WebRTC by creating a WebRTC answer for subscribing to
        * to a feed from the janus server.
-       *
-       * @param {object} options - object with one boolean flags (withVideo, to
-       *        decide the initial config) and some callbacks (success, error)
        */
-      this.subscribe = function(jsep, options) {
-        options = options || {};
-
+      this.subscribe = function(jsep) {
         pluginHandle.createAnswer({
           jsep: jsep,
           media: {
@@ -120,19 +115,10 @@
             console.log(jsep);
             var start = { "request": "start", "room": roomId };
             pluginHandle.send({message: start, jsep: jsep});
-            // Is it ok to send the configure without waiting for
-            // the response to the start command?
-            var config = {audio: true, video: false};
-            if (options.withVideo) { config.video = true; }
-            that.config = new ConnectionConfig(pluginHandle, config, jsep);
-            // Call the provided callback for extra actions
-            if (options.success) { options.success(); }
           },
           error: function(error) {
             console.error("WebRTC error subscribing");
             console.error(error);
-            // Call the provided callback for extra actions
-            if (options.error) { options.error(); }
           }
         });
       };
@@ -140,11 +126,15 @@
       /**
        * Sets the configuration flags
        *
-       * @param {object} values - values for the audio and video flags
+       * @param {object} options - object containing
+       *        * values: object with the wanted values for the flags
+       *        * ok: callback to execute on confirmation from Janus
        */
-      this.setConfig = function(values) {
+      this.setConfig = function(options) {
         if (this.config) {
-          this.config.set(values);
+          this.config.set(options);
+        } else {
+          this.config = new ConnectionConfig(pluginHandle, options.values, null, options.ok);
         }
       };
 

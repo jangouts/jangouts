@@ -119,10 +119,7 @@
           // some element of the local DOM
           console.log(" ::: Got a local stream :::");
           var feed = FeedsService.findMain();
-          $timeout(function () {
-            feed.stream = stream;
-            observeAudio(feed);
-          });
+          feed.setStream(stream);
         },
         oncleanup: function () {
           console.log(" ::: Got a cleanup notification: we are unpublished now :::");
@@ -280,18 +277,22 @@
             });
           } else if (msg.configured) {
             connection.confirmConfig();
+          } else if (msg.started) {
+            // Initial setConfig, needed to complete all the initializations
+            connection.setConfig({values: {audio: true, video: jhConfig.videoThumbnails}});
           } else {
             console.log("What has just happened?!");
           }
 
           if(jsep !== undefined && jsep !== null) {
-            connection.subscribe(jsep, {withVideo: jhConfig.videoThumbnails});
+            connection.subscribe(jsep);
           }
         },
         onremotestream: function(stream) {
-          $timeout(function() {
-            var feed = FeedsService.find(id);
-            feed.stream = stream;
+          FeedsService.waitFor(id).then(function (feed) {
+            feed.setStream(stream);
+          }, function (reason) {
+            console.error(reason);
           });
         },
         ondataopen: function() {
@@ -329,9 +330,7 @@
         onlocalstream: function(stream) {
           console.log(" ::: Got the screen stream :::");
           var feed = FeedsService.find(id);
-          $timeout(function () {
-            feed.stream = stream;
-          });
+          feed.setStream(stream);
         },
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (screen) :::");
@@ -376,20 +375,6 @@
 
     function stopIgnoringFeed(feedId) {
       this.subscribeToFeed(feedId);
-    }
-
-    function observeAudio(feed) {
-      var speech = hark(feed.stream);
-      speech.on('speaking', function() {
-        $timeout(function() {
-          feed.updateLocalSpeaking(true);
-          $rootScope.$broadcast('speaking.started');
-        });
-      });
-      speech.on('stopped_speaking', function() {
-        feed.updateLocalSpeaking(false);
-        $rootScope.$broadcast('speaking.stopped');
-      });
     }
 
     function toggleChannel(type, feed) {

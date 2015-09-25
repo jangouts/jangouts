@@ -109,7 +109,15 @@
         if (vm.highlight.byUser !== null) {
           vm.highlight.current = vm.highlight.byUser;
         } else {
-          vm.highlight.current = FeedsService.speakingFeed() || vm.highlight.current || FeedsService.findMain();
+          var current = vm.highlight.current;
+          // The current one disconnected
+          if (current && !current.isConnected()) {
+            current = null;
+          }
+          // If current one is still speaking, there is no need to change
+          if ( !(current && current.getSpeaking()) ) {
+            vm.highlight.current = FeedsService.speakingFeed() || current || FeedsService.findMain();
+          }
         }
         return vm.highlight.current;
       }
