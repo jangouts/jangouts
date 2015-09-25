@@ -115,7 +115,7 @@
             current = null;
           }
           // If current one is still speaking, there is no need to change
-          if (!current || !current.getSpeaking()) {
+          if ( !(current && current.getSpeaking()) ) {
             vm.highlight.current = FeedsService.speakingFeed() || current || FeedsService.findMain();
           }
         }
