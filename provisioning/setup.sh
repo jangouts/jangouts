@@ -39,8 +39,8 @@ if [ ! -d /home/vagrant/.nvm ]
 then
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.25.4/install.sh | bash
   source ~/.nvm/nvm.sh
-  nvm install stable
-  nvm alias default stable
+  nvm install 0.12
+  nvm alias default 0.12
   npm install -g bower gulp
 fi
 
