@@ -29,7 +29,6 @@ body {
     margin: 0px;
     border: 2px solid transparent;
     border-radius: 4px;
-    transition: all .4s ease;
 
     .buttons {
       z-index: 10;
@@ -38,10 +37,12 @@ body {
 
     .thumb {
       position: relative;
-      img, video, canvas {
+      .face {
         vertical-align: middle;
-        width: 100px;
-        height: 75px;
+        width: 64px;
+        height: 48px;
+        // This transition causes some artifacts in some corner cases
+        // transition: width .3s, height .3s;
       }
       .buttons {
         top: 50%;
@@ -65,6 +66,7 @@ body {
         overflow: hidden;
         position: absolute;
         width: 80%;
+        height: 20px;
       }
     }
 
