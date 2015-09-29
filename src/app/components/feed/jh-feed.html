@@ -6,17 +6,20 @@
   <div class="thumb">
     <video
       autoplay
+      class="face"
       ng-class="{mirrored: vm.mirrored}"
       poster="assets/images/placeholder.png"
       ng-show="vm.thumbnailTag() === 'video'">
     </video>
     <img
       src="{{vm.feed.getPicture()}}"
+      class="face"
       ng-class="{mirrored: vm.mirrored}"
       ng-show="vm.thumbnailTag() === 'picture'">
     </img>
     <img
       ng-src="assets/images/placeholder.png"
+      class="face"
       ng-class="{mirrored: vm.mirrored}"
       ng-show="vm.thumbnailTag() === 'placeholder'">
     </img>

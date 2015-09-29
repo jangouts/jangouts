@@ -24,13 +24,18 @@
       controller: jhVideoChatCtrl
     };
 
-    function jhVideoChatLink(scope) {
+    function jhVideoChatLink(scope, element) {
       scope.$on('gridster-resized', function() {
         scope.vm.adjustAllSizes();
       });
       // 'gridster-item-initialized' is not working for us,
       // let's workaround the problem
       $timeout(function() { scope.vm.adjustAllSizes(); }, 600);
+
+      scope.$watch(
+        function() { return $("#thumbnails .thumb", element).size(); },
+        function() { scope.vm.adjustFeedsSizes(); }
+      );
     }
 
     function jhVideoChatCtrl() {
@@ -99,6 +104,7 @@
       vm.logEntries = logEntries;
       vm.adjustSize = adjustSize;
       vm.adjustAllSizes = adjustAllSizes;
+      vm.adjustFeedsSizes = adjustFeedsSizes;
       vm.showHotkeys = showHotkeys;
 
       function feeds() {
@@ -172,8 +178,8 @@
         inner = $("#thumbnails", $element);
         if (inner.length) {
           inner.css({height: height + "px", width: width + "px"});
+          adjustFeedsSizes();
         }
-
       }
 
       function adjustAllSizes() {
@@ -184,6 +190,34 @@
 
       function showHotkeys() {
         hotkeys.toggleCheatSheet();
+      }
+
+      function adjustFeedsSizes() {
+        var div = $('#thumbnails');
+        var w = div.innerWidth();
+        var h = div.innerHeight();
+        var feedW = thumbnailWidth($(".thumb", div).size(), h, w);
+        $(".face", div).css({height: feedW * 0.75 + "px", width: feedW + "px"});
+      }
+
+      function thumbnailWidth(qty, totalHeight, totalWidth) {
+        var extraWidth = 1; // borders, margins, etc.
+        var extraHeight = 33; // name, margins, etc.
+        // Just in case we have scrollbars
+        totalHeight -= 17;
+        totalWidth -= 17;
+        var feedWidth, perRow, rowHeight, numRows;
+
+        for (var width = 128; width > 64; width -= 4) {
+          feedWidth = width + extraWidth;
+          rowHeight = width * 0.75 + extraHeight;
+          perRow = Math.floor(totalWidth / feedWidth);
+          numRows = Math.ceil(qty / perRow);
+          if (numRows * rowHeight <= totalHeight) {
+            return width;
+          }
+        }
+        return 64;
       }
     }
   }
