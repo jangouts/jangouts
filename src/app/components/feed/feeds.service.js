@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .service('FeedsService', FeedsService);
 
-  FeedsService.$inject = ['$q'];
+  FeedsService.$inject = ['$q', '$window'];
 
-  function FeedsService($q) {
+  function FeedsService($q, $window) {
     this.mainFeed = null;
     this.feeds = {};
 
@@ -51,16 +51,16 @@
       timeout = timeout || 1000;
 
       if (feed === null) { // If feed is not found, set an interval to check again.
-        var interval = setInterval(function () {
+        var interval = $window.setInterval(function () {
           feed = that.find(id);
           if (feed === null) { // The feed was not found this time
             attempts -= 1;
           } else { // The feed was finally found
-            clearInterval(interval);
+            $window.clearInterval(interval);
             deferred.resolve(feed);
           }
           if (attempts === 0) { // No more attempts left and feed was not found
-            clearInterval(interval);
+            $window.clearInterval(interval);
             deferred.reject("feed with id " + id + " was not found");
           }
         }, timeout);
