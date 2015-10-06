@@ -231,7 +231,7 @@
     function subscribeToFeeds(list) {
       console.log("Got a list of available publishers/feeds:");
       console.log(list);
-      for(var f in list) {
+      for (var f = 0; f < list.length; f++) {
         var id = list[f].id;
         var display = list[f].display;
         console.log("  >> [" + id + "] " + display);
