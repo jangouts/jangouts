@@ -16,7 +16,9 @@
     </div>
     <div class="form-group">
       <label class="sr-only" for="inputRoom">Room</label>
+      <span ng-if="vm.showRoom()">{{ vm.room.label }}</span>
       <select
+        ng-if="vm.showRoomsList()"
         id="inputRoom"
         class="form-control input-lg"
         ng-model="vm.room"
@@ -34,4 +36,3 @@
     <jh-screen-share-hint></jh-screen-share-hint>
   </div>
 </div>
-

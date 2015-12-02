@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhSigninForm', jhSigninFormDirective);
 
-  jhSigninFormDirective.$inject = ['$location', 'RoomService'];
+  jhSigninFormDirective.$inject = ['$state', 'StatesService', 'RoomService', 'UserService'];
 
-  function jhSigninFormDirective($location, RoomService) {
+  function jhSigninFormDirective($state, StatesService, RoomService, UserService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/user/jh-signin-form.html',
@@ -37,22 +37,43 @@
     function JhSigninFormCtrl() {
       /* jshint: validthis */
       var vm = this;
+
+      vm.signin = signin;
+      vm.adjustHeight = adjustHeight;
+      vm.showRoomsList = showRoomsList;
+      vm.showRoom = showRoom;
+
       vm.username = null;
       vm.room = null;
       vm.rooms = [];
-      vm.signin = signin;
-      vm.adjustHeight = adjustHeight;
+      vm.listRooms = null;
 
-      RoomService.connect().then(function() {
-        RoomService.getAvailableRooms().then(function(rooms) {
+      StatesService.setRoomAndUser().then(function() {
+        RoomService.getRooms().then(function(rooms) {
+          vm.room = RoomService.getRoom();
           vm.rooms = rooms;
+          vm.listRooms = vm.room === null;
+
+          if (UserService.getUser() !== null) {
+            vm.username = UserService.getUser().username;
+          }
         });
       });
 
       function signin() {
         if (vm.room && vm.username){
-            $location.path("/" + vm.username + "/" + vm.room.id);
+          $state.go('room', {room: vm.room.id, user: vm.username});
         }
+      }
+
+      function showRoomsList() {
+        // Return false if it's still null
+        return vm.listRooms === true;
+      }
+
+      function showRoom() {
+        // Return false if it's still null
+        return vm.listRooms === false;
       }
 
       function adjustHeight() {
