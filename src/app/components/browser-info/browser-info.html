@@ -27,12 +27,11 @@
   is recommended (see exception below).
   </p>
   <p>
-  Chromium 46 has been reported to crash when entering a Jangouts room. Those
-  crashes seems to be caused by one of the several Chromium bugs related to
-  the usage of data channels (like
-  <a href="https://code.google.com/p/chromium/issues/detail?id=537189">this
-  one</a>). If Chrome or Chromium crashes when entering a room, please try
-  a different version, there is not much Jangouts can do about it.
+  There is a known bug in Chromium 46 that causes it to crash during
+  initialization of WebRTC connections when running in sandbox mode (which
+  is the default). If Chromium crashes when entering a Jangouts room, close it
+  and execute it again adding the <code>--no-sandbox</code> parameter to the
+  command line.
   </p>
 </div>
 <div class="modal-footer">
