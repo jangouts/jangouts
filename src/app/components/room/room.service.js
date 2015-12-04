@@ -17,12 +17,11 @@
 
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       FeedConnection, DataChannelService, ActionService, jhConfig, ScreenShareService) {
-    this.connect = connect;
     this.enter = enter;
     this.leave = leave;
-    this.getAvailableRooms = getAvailableRooms;
     this.setRoom = setRoom;
-    this.getRoomById = getRoomById;
+    this.getRoom = getRoom;
+    this.getRooms = getRooms;
     this.publishScreen = publishScreen;
     this.unPublishFeed = unPublishFeed;
     this.ignoreFeed = ignoreFeed;
@@ -31,7 +30,10 @@
     this.subscribeToFeed = subscribeToFeed;
     this.toggleChannel = toggleChannel;
     this.room = null;
+    this.rooms = null;
     this.janus = null;
+
+    var that = this;
 
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
@@ -64,36 +66,38 @@
     function connect() {
       var deferred = $q.defer();
 
-      Janus.init({debug: jhConfig.janusDebug});
-      this.janus = new Janus({
-        server: this.server,
-        success: function() {
-          deferred.resolve();
-        },
-        error: function(error) {
-          var msg = "Janus error: " + error;
-          msg += "\nDo you want to reload in order to retry?";
-          deferred.reject();
-          if (window.confirm(msg)) {
-            window.location.reload();
+      if (that.janus === null) {
+        Janus.init({debug: jhConfig.janusDebug});
+        that.janus = new Janus({
+          server: that.server,
+          success: function() {
+            deferred.resolve();
+          },
+          error: function(error) {
+            var msg = "Janus error: " + error;
+            msg += "\nDo you want to reload in order to retry?";
+            deferred.reject();
+            if (window.confirm(msg)) {
+              window.location.reload();
+            }
+          },
+          destroyed: function() {
+            console.log("Janus object destroyed");
           }
-        },
-        destroyed: function() {
-          console.log("Janus object destroyed");
-        }
-      });
+        });
+      } else {
+        deferred.resolve();
+      }
 
       return deferred.promise;
     }
 
-    // Enter the room
-    function enter(username) {
-      var that = this;
+    function doEnter(username) {
       var $$rootScope = $rootScope;
       var connection = null;
 
       // Create new session
-      this.janus.attach({
+      that.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           // Step 1. Right after attaching to the plugin, we send a
@@ -175,15 +179,11 @@
       });
     }
 
-    function leave() {
-      ActionService.leaveRoom();
-    }
-
-    function getAvailableRooms() {
+    function doGetRooms() {
       var deferred = $q.defer();
 
       // Create a new session just to get the list
-      this.janus.attach({
+      that.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           console.log("getAvailableRooms plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
@@ -207,24 +207,42 @@
       return deferred.promise;
     }
 
+    // Enter the room
+    function enter(username) {
+      var deferred = $q.defer();
+
+      connect().then(function () {
+        doEnter(username);
+        deferred.resolve();
+      });
+      return deferred.promise;
+    }
+
+    function leave() {
+      ActionService.leaveRoom();
+    }
+
     function setRoom(room) {
       this.room = room;
     }
 
-    function getRoomById(roomId) {
-      var deferred = $q.defer();
-      var that = this;
+    function getRoom() {
+      return this.room;
+    }
 
-      that.connect().then(function () {
-        that.getAvailableRooms().then(function (rooms) {
-          var result = _.find(rooms, function(room) { return room.id === roomId; });
-          if(result){
-            deferred.resolve(result);
-          }else{
-            deferred.reject('Room not found!');
-          }
+    function getRooms() {
+      var deferred = $q.defer();
+
+      if (this.rooms === null) {
+        connect().then(function () {
+          doGetRooms().then(function (rooms) {
+            that.rooms = rooms;
+            deferred.resolve(rooms);
+          });
         });
-      });
+      } else {
+        deferred.resolve(this.rooms);
+      }
       return deferred.promise;
     }
 
@@ -243,7 +261,6 @@
     }
 
     function subscribeToFeed(id, display) {
-      var that = this;
       var feed = FeedsService.find(id);
       var connection = null;
 
@@ -313,7 +330,6 @@
 
     function publishScreen() {
       var display = FeedsService.findMain().display;
-      var that = this;
       var connection;
       var id;
 

@@ -11,28 +11,31 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
                'janusHangouts.config', 'cfp.hotkeys', 'gridster', 'toastr', 'ngAudio'])
   .config(function ($stateProvider, $urlRouterProvider) {
-
     $stateProvider
       .state('signin', {
-        url: '/sign_in',
+        url: '/sign_in?room',
         templateUrl: 'app/signin/signin.html',
         controller: 'SigninController',
         controllerAs: 'vm'
       })
-      .state('home', {
-        url: '/:user/:room',
-        templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+      .state('room', {
+        url: '/rooms/:room?user',
+        templateUrl: 'app/room/room.html',
+        controller: 'RoomCtrl'
       });
 
     $urlRouterProvider.otherwise('/sign_in');
   })
   .config(function(blockUIConfig) {
-    blockUIConfig.templateUrl = 'app/components/room/consent-dialog.html';
+    blockUIConfig.templateUrl = 'app/room/consent-dialog.html';
     blockUIConfig.cssClass = 'block-ui block-ui-anim-fade consent-dialog';
     blockUIConfig.autoBlock = false;
   })
-  .run(function ($rootScope, $state) {
+  .run(function ($rootScope, $state, RoomService) {
+    $rootScope.$on('$stateChangeStart', function () {
+      // Before changing state, cleanup feeds
+      RoomService.leave();
+    });
     $rootScope.$on('$stateChangeError', function () {
       $state.go('signin');
     });
