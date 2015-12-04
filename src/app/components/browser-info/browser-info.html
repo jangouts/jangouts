@@ -24,12 +24,15 @@
   <p>
   Jangouts has been successfully tested with Chromium 41. It will probably work
   with older versions as well, but the usage of a version as recent as possible
-  is recommended.
+  is recommended (see exception below).
   </p>
   <p>
-  Under certain circumstances, some versions of Chromium has been reported to
-  cause an excessive CPU usage in the Janus server powering Jangouts. This
-  problem has not been observed with recent versions of Janus and Chromium.
+  Chromium 46 has been reported to crash when entering a Jangouts room. Those
+  crashes seems to be caused by one of the several Chromium bugs related to
+  the usage of data channels (like
+  <a href="https://code.google.com/p/chromium/issues/detail?id=537189">this
+  one</a>). If Chrome or Chromium crashes when entering a room, please try
+  a different version, there is not much Jangouts can do about it.
   </p>
 </div>
 <div class="modal-footer">
