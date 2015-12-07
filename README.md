@@ -36,7 +36,7 @@ you can use OpenSSL:
 ```sh
 cd /usr/share/janus/certs
 sudo openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
-  -keyout server.key -out server.crt
+  -keyout mycert.key -out mycert.pem
 ```
 
 In (open)SUSE, the gateway can be then started (after adjusting the list of
@@ -118,7 +118,7 @@ webserver. Just type:
 gulp serve
 ```
 
-Now you must be able to access with your browser through the URL
+Now you should be able to access with your browser through the URL
 `http://localhost:3000/`.
 
 ## A note about screen sharing
@@ -128,6 +128,17 @@ connections not using SSL. Thus, to allow users of your Jangouts
 instance to use the screen sharing functionality you will have to
 provide HTTPS access to both the files and the Janus gateway, like shown
 in the [deployment instructions](DEPLOYMENT.md).
+
+## Troubleshooting
+
+When jangouts server do not work, there is wide variety of ways how to ways how to debug it.
+Usually the easiest one is to use browser debug tools.
+
+### unreachable janus
+When error reported is something like _cannot establish connection to server at ws://.../janus_
+then it indicate problem with janus. So check if janus is running with
+```sudo systemctl status janus.service```. If it is failed, then check for possible reasons in
+```journalctl --unit janus.service```.
 
 ## Acknowledgments
 
