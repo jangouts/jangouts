@@ -32,6 +32,7 @@
      * @returns {object} An object representing the user like
      */
     this.signin = function(username) {
+      this.setSetting('lastUsername', username);
       this.user = { username: username };
     };
 

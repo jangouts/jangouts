@@ -43,7 +43,7 @@
       vm.showRoomsList = showRoomsList;
       vm.showRoom = showRoom;
 
-      vm.username = UserSettings.read('username');
+      vm.username = UserService.getSetting('lastUsername');
       vm.room = null;
       vm.rooms = [];
       vm.listRooms = null;
