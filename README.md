@@ -45,6 +45,7 @@ command:
 
 ```sh
 sudo systemctl start janus.service
+sudo systemctl enable janus.service # to start it also after reboot
 ```
 
 ### Step 2. Configure Jangouts
