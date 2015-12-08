@@ -198,6 +198,12 @@
               });
             }
           });
+          if (type === "video") {
+            var track = stream.getVideoTracks();
+            if (track !== null && track !== undefined){
+              track[0].enabled = enabled;
+            }
+          }
         } else if (type === "audio" && enabled === false) {
           DataChannelService.sendMuteRequest(this);
         }
