@@ -1,7 +1,6 @@
 {
   "globalstrict": true,
   "bitwise": true,
-  "camelcase": true,
   "curly": true,
   "eqeqeq": true,
   "immed": true,
