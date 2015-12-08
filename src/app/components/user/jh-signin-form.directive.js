@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhSigninForm', jhSigninFormDirective);
 
-  jhSigninFormDirective.$inject = ['$state', 'StatesService', 'RoomService', 'UserService'];
+  jhSigninFormDirective.$inject = ['$state', 'RoomService', 'UserService'];
 
-  function jhSigninFormDirective($state, StatesService, RoomService, UserService) {
+  function jhSigninFormDirective($state, RoomService, UserService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/user/jh-signin-form.html',
@@ -43,21 +43,19 @@
       vm.showRoomsList = showRoomsList;
       vm.showRoom = showRoom;
 
-      vm.username = UserService.getSetting('lastUsername');
+      vm.username = null;
       vm.room = null;
       vm.rooms = [];
       vm.listRooms = null;
 
-      StatesService.setRoomAndUser().then(function() {
-        RoomService.getRooms().then(function(rooms) {
-          vm.room = RoomService.getRoom();
-          vm.rooms = rooms;
-          vm.listRooms = vm.room === null;
+      RoomService.getRooms().then(function(rooms) {
+        vm.room = RoomService.getRoom();
+        vm.rooms = rooms;
+        vm.listRooms = vm.room === null;
 
-          if (UserService.getUser() !== null) {
-            vm.username = UserService.getUser().username;
-          }
-        });
+        if (UserService.getUser() !== null) {
+          vm.username = UserService.getUser().username;
+        }
       });
 
       function signin() {
