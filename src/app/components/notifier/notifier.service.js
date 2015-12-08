@@ -19,9 +19,16 @@
 
     function info(text) {
       bell.play();
+      text = text +
+        '<div>' +
+          '<button id="unmute" ng-click="alert(\'unmute\')">Unmute</button>' +
+          '<button type="button" ng-click="alert(\'unmute\')")>Do not show again</button>' +
+        '</div>';
       toastr.info(text, {
         onShown: function() { bell.play(); },
-        timeOut: 3000
+        timeOut: 0, /*6000,*/
+        extendedTimeOut: 0,
+        allowHtml: true
       });
     }
   }
