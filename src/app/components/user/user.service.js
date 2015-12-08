@@ -40,7 +40,7 @@
      * Get all user settings.
      * @returns {object} An object containing all the settings.
      */
-    this.getSettings = function(username) {
+    this.getSettings = function() {
       return this.settings;
     };
 
