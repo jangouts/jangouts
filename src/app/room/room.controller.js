@@ -12,31 +12,29 @@
     .controller('RoomCtrl',  RoomCtrl);
 
   RoomCtrl.$inject = ['$scope', '$state', 'blockUI', 'UserService', 'RoomService',
-    'StatesService', 'hotkeys'];
+    'hotkeys'];
 
-  function RoomCtrl($scope, $state, blockUI, UserService, RoomService, StatesService, hotkeys) {
-    StatesService.setRoomAndUser().then(function() {
-      var room = RoomService.getRoom();
-      var user = UserService.getUser();
-      var params = {};
+  function RoomCtrl($scope, $state, blockUI, UserService, RoomService, hotkeys) {
+    var room = RoomService.getRoom();
+    var user = UserService.getUser();
+    var params = {};
 
-      if (room === null || user === null) {
-        // Redirect to signin making sure room is included in the url
-        if (room !== null) {
-          params.room = room.id;
-        }
-        $state.go('signin', params);
-      } else {
-        if ($state.params.user === undefined) {
-          // Make sure the url includes the user (to allow bookmarking)
-          params.room = room.id;
-          params.user = user.username;
-          $state.go($state.current.name, params, {location: 'replace'});
-        } else {
-          RoomService.enter(user.username);
-        }
+    if (room === null || user === null) {
+      // Redirect to signin making sure room is included in the url
+      if (room !== null) {
+        params.room = room.id;
       }
-    });
+      $state.go('signin', params);
+    } else {
+      if ($state.params.user === undefined) {
+        // Make sure the url includes the user (to allow bookmarking)
+        params.room = room.id;
+        params.user = user.username;
+        $state.go($state.current.name, params, {location: 'replace'});
+      } else {
+        RoomService.enter(user.username);
+      }
+    }
 
     $scope.$on('room.error', function(evt, error) {
       // FIXME: do something neat

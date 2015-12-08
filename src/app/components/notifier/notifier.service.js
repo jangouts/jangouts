@@ -16,7 +16,7 @@
 
   function MuteNotifier($animate, notifications, ngAudio, ActionService) {
     this.info = info;
-    var bell = ngAudio.load("assets/sounds/bell.mp3");
+    var bell = ngAudio.load("assets/sounds/bell.ogg");
     var noShow = {};
 
     function info(text) {

@@ -10,19 +10,35 @@
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
                'janusHangouts.config', 'cfp.hotkeys', 'gridster',
-               'angular-extended-notifications', 'ngAudio'])
+               'toastr', 'ngAudio', 'angular-extended-notifications',
+               'LocalStorageModule'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
         url: '/sign_in?room',
         templateUrl: 'app/signin/signin.html',
         controller: 'SigninController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        resolve: {
+          StatesService: 'StatesService',
+          setRoomAndService: function (StatesService, $state) {
+            return StatesService.setRoomAndUser($state.toParams);
+          }
+        }
       })
       .state('room', {
         url: '/rooms/:room?user',
         templateUrl: 'app/room/room.html',
-        controller: 'RoomCtrl'
+        controller: 'RoomCtrl',
+        resolve: {
+          StatesService: 'StatesService',
+          setRoomAndService: function (StatesService, $state) {
+            return StatesService.setRoomAndUser($state.toParams);
+          }
+        },
+        onEnter: function (UserService, RoomService) {
+          UserService.setSetting("lastRoom", RoomService.getRoom().id);
+        }
       });
 
     $urlRouterProvider.otherwise('/sign_in');
@@ -37,6 +53,21 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
       templatesDir: 'bower_components/angular-extended-notifications/templates/',
       faIcons: true,
       closeOnRouteChange: 'route'
+    });
+  })
+  .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
+    localStorageServiceProvider.setPrefix('jh');
+
+  }])
+  .config(function ($provide) {
+    // Decorate $state with parameters from the URL
+    // so they're available when 'resolving':
+    // http://stackoverflow.com/questions/22985988/angular-ui-router-get-state-info-of-tostate-in-resolve
+    $provide.decorator('$state', function ($delegate, $rootScope) {
+      $rootScope.$on('$stateChangeStart', function (event, state, params) {
+        $delegate.toParams = params;
+      });
+      return $delegate;
     });
   })
   .run(function ($rootScope, $state, RoomService) {
