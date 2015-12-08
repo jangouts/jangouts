@@ -35,8 +35,8 @@ you can use OpenSSL:
 
 ```sh
 cd /usr/share/janus/certs
-openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
-  -keyout server.key -out server.crt
+sudo openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
+  -keyout mycert.key -out mycert.pem
 ```
 
 In (open)SUSE, the gateway can be then started (after adjusting the list of
@@ -44,7 +44,8 @@ rooms at ```/etc/janus/janus.plugin.videoroom.cfg``` if desired) with the
 command:
 
 ```sh
-systemctl start janus.service
+sudo systemctl start janus.service
+sudo systemctl enable janus.service # to start it also after reboot
 ```
 
 ### Step 2. Configure Jangouts
@@ -53,6 +54,12 @@ The first step to configure Jangouts is to get a local copy of this repository:
 
 ```sh
 git clone https://github.com/jangouts/jangouts
+```
+
+If git command not found, then please install git from you packager. For example, if you
+are running (open)SUSE you could type:
+```sh
+sudo zypper in git
 ```
 
 Then you could adapt the configuration by creating a file called
@@ -69,15 +76,15 @@ For a development environment, the next configuration would be fine:
 
 ### Step 3. Install requirements
 
-In order to develop Jangouts, you need to install [Git](http://git-scm.com),
-[Node.js](http://nodejs.org), [npm](http://npmjs.com), [Bower](http://bower.io)
+In order to develop Jangouts, you need to install [Node.js](http://nodejs.org),
+ [npm](http://npmjs.com), [Bower](http://bower.io)
 and [Gulp.js](http://gulpjs.com).
 
-Git, Node.js and npm should be available in any Linux distribution. For example, if you’re
+Node.js and npm should be available in any Linux distribution. For example, if you’re
 running (open)SUSE you could type:
 
 ```sh
-zypper in git nodejs npm
+sudo zypper in nodejs nodejs-npm
 ```
 
 Take into account that, in some cases, npm is bundled in the same package as Node.js.
@@ -85,7 +92,7 @@ Take into account that, in some cases, npm is bundled in the same package as Nod
 If you prefer, you could use [Node Version
 Manager](https://github.com/creationix/nvm) to install Node.js and npm.
 
-Now, you must install Bower and Gulp.js through npm. Just type:
+Now, you must install Bower and Gulp.js globally through npm. Just type:
 
 ```sh
 sudo npm install -g bower gulp
@@ -112,7 +119,7 @@ webserver. Just type:
 gulp serve
 ```
 
-Now you must be able to access with your browser through the URL
+Now you should be able to access with your browser through the URL
 `http://localhost:3000/`.
 
 ## A note about screen sharing
@@ -122,6 +129,17 @@ connections not using SSL. Thus, to allow users of your Jangouts
 instance to use the screen sharing functionality you will have to
 provide HTTPS access to both the files and the Janus gateway, like shown
 in the [deployment instructions](DEPLOYMENT.md).
+
+## Troubleshooting
+
+When jangouts server do not work, there is wide variety of ways how to ways how to debug it.
+Usually the easiest one is to use browser debug tools.
+
+### unreachable janus
+When error reported is something like _cannot establish connection to server at ws://.../janus_
+then it indicate problem with janus. So check if janus is running with
+```sudo systemctl status janus.service```. If it is failed, then check for possible reasons in
+```journalctl --unit janus.service```.
 
 ## Acknowledgments
 
