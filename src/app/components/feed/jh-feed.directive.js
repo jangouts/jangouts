@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhFeed', jhFeed);
 
-  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'Notifier'];
+  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'MuteNotifier'];
 
-  function jhFeed(RoomService, $interval, jhConfig, Notifier) {
+  function jhFeed(RoomService, $interval, jhConfig, MuteNotifier) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/feed/jh-feed.html',
@@ -55,7 +55,7 @@
           var mutedWarningTimeout = now();
           scope.$on('muted.byRequest', function() {
             mutedWarningTimeout = secondsFromNow(3);
-            Notifier.info("You have been muted");
+            MuteNotifier.muted();
           });
           scope.$on('muted.byUser', function() {
             // Reset the warning timeout
@@ -65,7 +65,7 @@
             // Display warning only if muted (check for false, undefined means
             // still connecting) and the timeout has been reached
             if (newVal && feed.getAudioEnabled() === false && now() > mutedWarningTimeout) {
-              Notifier.info("Trying to say something? Unmute first");
+              MuteNotifier.speaking();
               mutedWarningTimeout = secondsFromNow(60);
             }
           });

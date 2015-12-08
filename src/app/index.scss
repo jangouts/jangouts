@@ -16,6 +16,15 @@ body {
   margin: 3em 0;
 }
 
+.global-notification.notification-info {
+  z-index: 1000;
+  overflow: visible;
+  position: fixed;
+  top: 35px;
+  left: 0px;
+  width: 100%;
+}
+
 #videochat-playroom {
   background: $jangouts-video-bg;
 }
