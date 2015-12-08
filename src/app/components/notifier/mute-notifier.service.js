@@ -11,13 +11,21 @@
   angular.module('janusHangouts')
     .service('MuteNotifier',  MuteNotifier);
 
-  MuteNotifier.$inject = ['$animate', 'notifications', 'ngAudio',
-    'ActionService'];
+  MuteNotifier.$inject = ['$animate', 'notifications', 'ngAudio', 'ActionService'];
 
   function MuteNotifier($animate, notifications, ngAudio, ActionService) {
-    this.info = info;
+    this.speaking = speaking;
+    this.muted = muted;
     var bell = ngAudio.load("assets/sounds/bell.ogg");
     var noShow = {};
+
+    function muted() {
+      info("You have been muted by another user.");
+    }
+
+    function speaking() {
+      info("Trying to say something? You are muted.");
+    }
 
     function info(text) {
       if (text in noShow)
@@ -27,7 +35,7 @@
       var notif = notifications.info("Muted", text, {
         shown: function() { bell.play(); },
         duration: 20000,
-        attachTo: $('#body'),
+        attachTo: $('#videochat-body'),
         actions: [{
           label: 'Unmute',
           className: 'btn btn-default',

@@ -55,7 +55,7 @@
           var mutedWarningTimeout = now();
           scope.$on('muted.byRequest', function() {
             mutedWarningTimeout = secondsFromNow(3);
-            MuteNotifier.info("You have been muted");
+            MuteNotifier.muted();
           });
           scope.$on('muted.byUser', function() {
             // Reset the warning timeout
@@ -65,7 +65,7 @@
             // Display warning only if muted (check for false, undefined means
             // still connecting) and the timeout has been reached
             if (newVal && feed.getAudioEnabled() === false && now() > mutedWarningTimeout) {
-              MuteNotifier.info("Trying to say something? You are muted.");
+              MuteNotifier.speaking();
               mutedWarningTimeout = secondsFromNow(60);
             }
           });
