@@ -21,8 +21,7 @@
       var deferred = $q.defer();
 
       // Set user
-      // TODO: Read userName from a cookie if not received as param
-      var userName = $stateParams.user;
+      var userName = $stateParams.user || UserService.getSetting("lastUsername");
       if (userName !== undefined) {
         UserService.signin(userName);
       }
