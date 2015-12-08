@@ -19,8 +19,6 @@
     var user = UserService.getUser();
     var params = {};
 
-    console.log(room);
-    console.log(user);
     if (room === null || user === null) {
       // Redirect to signin making sure room is included in the url
       if (room !== null) {
