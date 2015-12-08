@@ -34,6 +34,9 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
           setRoomAndService: function (StatesService, $state) {
             return StatesService.setRoomAndUser($state.toParams);
           }
+        },
+        onEnter: function (UserService, RoomService) {
+          UserService.setSetting("lastRoom", RoomService.getRoom().id);
         }
       });
 
