@@ -15,7 +15,7 @@
 
   function Notifier($animate, toastr, ngAudio) {
     this.info = info;
-    var bell = ngAudio.load("assets/sounds/bell.mp3");
+    var bell = ngAudio.load("assets/sounds/bell.ogg");
 
     function info(text) {
       bell.play();
