@@ -43,7 +43,7 @@
       vm.showRoomsList = showRoomsList;
       vm.showRoom = showRoom;
 
-      vm.username = null;
+      vm.username = UserSettings.read('username');
       vm.room = null;
       vm.rooms = [];
       vm.listRooms = null;

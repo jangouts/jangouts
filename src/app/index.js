@@ -9,7 +9,8 @@
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
-               'janusHangouts.config', 'cfp.hotkeys', 'gridster', 'toastr', 'ngAudio'])
+               'janusHangouts.config', 'cfp.hotkeys', 'gridster', 'toastr', 'ngAudio',
+               'LocalStorageModule'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
@@ -31,6 +32,10 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     blockUIConfig.cssClass = 'block-ui block-ui-anim-fade consent-dialog';
     blockUIConfig.autoBlock = false;
   })
+  .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
+    localStorageServiceProvider.setPrefix('jh');
+
+  }])
   .run(function ($rootScope, $state, RoomService) {
     $rootScope.$on('$stateChangeStart', function () {
       // Before changing state, cleanup feeds
