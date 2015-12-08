@@ -56,6 +56,13 @@
         if (UserService.getUser() !== null) {
           vm.username = UserService.getUser().username;
         }
+
+        if (vm.room === null) {
+          var lastRoomId = UserService.getSetting("lastRoom");
+          vm.room = _.find(rooms, function (room) {
+            return room.id === lastRoomId;
+          });
+        }
       });
 
       function signin() {

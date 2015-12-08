@@ -23,7 +23,7 @@
         class="form-control input-lg"
         ng-model="vm.room"
         required="true"
-        ng-options="room.label for room in vm.rooms">
+        ng-options="room.label for room in vm.rooms track by room.id">
         <option value="" disabled selected>Select a room</option>
       </select>
     </div>
