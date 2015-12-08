@@ -62,7 +62,7 @@
       this.getPicture = function() { return picture; };
 
       this.setStream = function(val) {
-        if (this.isPublisher && !this.isLocalVideo) {
+        if (this.isPublisher && !this.isLocalScreen) {
           speakObserver = new SpeakObserver(val, {
             start: function() {
               updateLocalSpeaking(true);
