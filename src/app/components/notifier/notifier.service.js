@@ -9,26 +9,35 @@
   'use strict';
 
   angular.module('janusHangouts')
-    .service('Notifier',  Notifier);
+    .service('MuteNotifier',  MuteNotifier);
 
-  Notifier.$inject = ['$animate', 'toastr', 'ngAudio'];
+  MuteNotifier.$inject = ['$animate', 'notifications', 'ngAudio',
+    'ActionService'];
 
-  function Notifier($animate, toastr, ngAudio) {
+  function MuteNotifier($animate, notifications, ngAudio, ActionService) {
     this.info = info;
     var bell = ngAudio.load("assets/sounds/bell.mp3");
+    var noShow = {};
 
     function info(text) {
-      bell.play();
-      text = text +
-        '<div>' +
-          '<button id="unmute" ng-click="alert(\'unmute\')">Unmute</button>' +
-          '<button type="button" ng-click="alert(\'unmute\')")>Do not show again</button>' +
-        '</div>';
-      toastr.info(text, {
-        onShown: function() { bell.play(); },
-        timeOut: 0, /*6000,*/
-        extendedTimeOut: 0,
-        allowHtml: true
+      if (text in noShow)
+      {
+        return;
+      }
+      var notif = notifications.info("Muted", text, {
+        shown: function() { bell.play(); },
+        duration: 20000,
+        attachTo: $('#body'),
+        actions: [{
+          label: 'Unmute',
+          className: 'btn btn-default',
+          fn: function() { ActionService.toggleChannel("audio"); notif.close(); }
+        },
+        {
+          label: 'Do not show again',
+          className: 'btn btn-default',
+          fn: function() { noShow[text] = true; notif.close(); }
+        }]
       });
     }
   }

@@ -18,7 +18,7 @@
     "ngEmbed": "git://github.com/ritz078/ngEmbed.git#a7048132d3cffd0ca39dec9e851762cb34102bb9",
     "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.5",
     "angular-gridster": "~0.13.5",
-    "angular-toastr": "~1.6.0",
+    "angular-extended-notifications": "~1.0.4",
     "angular-audio": "~1.7.0"
   },
   "devDependencies": {

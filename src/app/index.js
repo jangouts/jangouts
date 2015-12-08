@@ -9,7 +9,8 @@
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
-               'janusHangouts.config', 'cfp.hotkeys', 'gridster', 'toastr', 'ngAudio'])
+               'janusHangouts.config', 'cfp.hotkeys', 'gridster',
+               'angular-extended-notifications', 'ngAudio'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
@@ -30,6 +31,13 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     blockUIConfig.templateUrl = 'app/room/consent-dialog.html';
     blockUIConfig.cssClass = 'block-ui block-ui-anim-fade consent-dialog';
     blockUIConfig.autoBlock = false;
+  })
+  .config(function(notificationsProvider) {
+    notificationsProvider.setDefaults({
+      templatesDir: 'bower_components/angular-extended-notifications/templates/',
+      faIcons: true,
+      closeOnRouteChange: 'route'
+    });
   })
   .run(function ($rootScope, $state, RoomService) {
     $rootScope.$on('$stateChangeStart', function () {
