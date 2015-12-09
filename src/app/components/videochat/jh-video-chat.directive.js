@@ -76,12 +76,18 @@
       vm.gridsterOpts = {
         columns: cols,
         resizable: {
-          stop: function(event, $element) {
+          enabled: false,
+          stop: function (event, $element) {
             // 'gridster-item-transition-end' is not working for us, so we have
             // to use this callback and wait some extra time for the animations
             // to finish
-            $timeout(function() { vm.adjustSize($element); }, 600);
+            $timeout(function () {
+              vm.adjustSize($element);
+            }, 600);
           }
+        },
+        draggable: {
+          enabled: false,
         }
       };
 
@@ -106,6 +112,8 @@
       vm.adjustAllSizes = adjustAllSizes;
       vm.adjustFeedsSizes = adjustFeedsSizes;
       vm.showHotkeys = showHotkeys;
+      vm.windowResizeModeOn = false;
+      vm.toggleWindowResizeMode = toggleWindowResizeMode;
 
       function feeds() {
         return FeedsService.allFeeds();
@@ -195,6 +203,13 @@
 
       function showHotkeys() {
         hotkeys.toggleCheatSheet();
+      }
+
+      function toggleWindowResizeMode() {
+        var vm = this;
+        vm.windowResizeModeOn = !vm.windowResizeModeOn;
+        vm.gridsterOpts.resizable.enabled = vm.windowResizeModeOn;
+        vm.gridsterOpts.draggable.enabled = vm.windowResizeModeOn;
       }
 
       function adjustFeedsSizes() {
