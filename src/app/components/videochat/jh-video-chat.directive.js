@@ -76,7 +76,7 @@
         { size: [8, chatH], position: [chatR, chatC], content: "Chat" }
       ];
 
-      vm.gridsterItems = UserService.getSetting('gridsterItems', gridsterItems) || defaultGridsterItems;
+      vm.gridsterItems = UserService.getSetting('gridsterItems') || defaultGridsterItems;
 
       vm.gridsterOpts = {
         columns: cols,
