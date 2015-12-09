@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhVideoChat', jhVideoChatDirective);
 
-  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'hotkeys', '$timeout'];
+  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'UserService', 'hotkeys', '$timeout'];
 
-  function jhVideoChatDirective($window, LogService, FeedsService, hotkeys, $timeout) {
+  function jhVideoChatDirective($window, LogService, FeedsService, UserService, hotkeys, $timeout) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -27,6 +27,8 @@
     function jhVideoChatLink(scope, element) {
       scope.$on('gridster-resized', function() {
         scope.vm.adjustAllSizes();
+
+        UserService.setSetting('gridsterItems', scope.vm.gridsterItems);
       });
       // 'gridster-item-initialized' is not working for us,
       // let's workaround the problem
@@ -68,11 +70,14 @@
         chatC = 0;
       }
 
-      vm.gridsterItems = [
+      var defaultGridsterItems = [
         { size: [8, 6], position: [0, 0], content: "Speaker" },
         { size: [8, feedsH], position: [0, 8], content: "Participants" },
         { size: [8, chatH], position: [chatR, chatC], content: "Chat" }
       ];
+
+      vm.gridsterItems = UserService.getSetting('gridsterItems', gridsterItems) || defaultGridsterItems;
+
       vm.gridsterOpts = {
         columns: cols,
         resizable: {
