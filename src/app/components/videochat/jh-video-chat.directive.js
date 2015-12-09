@@ -124,7 +124,7 @@
           if ( !(current && current.getSpeaking() && current.getVideoEnabled()) ) {
             var speaking = FeedsService.speakingFeed();
             if (speaking && speaking.getVideoEnabled()){
-              vm.highlight.current = speaking();
+              vm.highlight.current = speaking;
             } else {
               vm.highlight.current = current || FeedsService.findMain();
             }
