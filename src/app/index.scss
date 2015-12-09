@@ -210,21 +210,6 @@ footer {
   text-align: center;
 }
 
-// Smaller gridster resize area to reduce overlapping with interactive
-// content such as scrollbars
-.gridster-item {
-  .handle-s, .handle-n {
-    height: 6px;
-  }
-  .handle-w, .handle-e {
-    width: 6px;
-  }
-  .handle-ne, .handle-nw, .handle-se, .handle-sw {
-    height: 6px;
-    width: 6px;
-  }
-}
-
 // Overriding of bootstrap's default negative margin, just a hack actually
 .row {
   margin-left: 0px;
