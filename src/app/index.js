@@ -51,7 +51,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     notificationsProvider.setDefaults({
       templatesDir: 'app/templates/',
       faIcons: true,
-      closeOnRouteChange: 'route'
+      closeOnRouteChange: 'state'
     });
   })
   .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
