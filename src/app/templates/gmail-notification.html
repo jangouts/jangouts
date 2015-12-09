@@ -1,0 +1,57 @@
+<div class="gmail-template">
+  <style scoped>
+    .gmail-template {
+      position: relative;
+      right: 0;
+      left: 0;
+      margin: 4px 0;
+      text-align: center;
+    }
+    .gmail-template div {
+      position: relative;
+      display: inline-block;
+      margin: 0 auto;
+
+      border:1px solid rgb(240, 195, 109);
+      background-color: rgb(249, 237, 190);
+      font-size: 13px;
+      font-weight: bold;
+      padding:2px 8px 2px 8px;
+
+      -webkit-transition: opacity 0.5s ease-out 4s;
+      -moz-transition: opacity 0.5s ease-out 4s;
+      -o-transition: opacity 0.5s ease-out 4s;
+      transition: opacity 0.5s ease-out 4s;
+    }
+    .gmail-template .gmail-template-error {
+      background-color: #DD8181;
+      border: 1px solid #D54B4B;
+    }
+    .gmail-template-close {
+      color: #9E9E9E;
+    }
+    .gmail-template-close:hover {
+      color: #505050;
+    }
+    .gmail-template-error .gmail-template-close {
+      color: #777777;
+    }
+    .gmail-template-error .gmail-template-close:hover {
+      color: #3B3B3B;
+    }
+    .gmail-template a {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+
+  <div ng-class="'gmail-template-' + data.type">
+    <i class="fa fa-fw" ng-class="data.faIcon" ng-if="data.faIcon"></i>
+    {{data.title}}: {{data.message}}
+    <a ng-repeat="action in data.actions" ng-click="action.fn()" ng-class="action.className">
+      {{action.label}} 
+    </a>
+    <i class="fa fa-fw fa-times gmail-template-close" ng-click="close()" ng-if="data.faIcon && data.closeButton"></i>
+    <span class="gmail-template-close" ng-click="close()" ng-if="!data.faIcon && data.closeButton">✖</span>
+  </div>
+</div>

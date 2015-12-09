@@ -1,0 +1,22 @@
+<style>
+  #global-notifications{position:fixed;z-index:1030;top:51px;left:0;text-align:center;background-color:#cfe1e9;color:#212121;width:100%;}
+  .global-notification{padding: 4px 10px;}
+  .global-notification .icon{margin-right:5px !important}
+  .global-notification .close-button{color:#777;margin-left:10px !important;cursor:pointer}
+  .global-notification .close-button:hover{color:#3b3b3b}
+  .global-notification.notification-warning{background-color:#ffe479}
+  .global-notification.notification-info{background-color:#9dd3eb}
+  .global-notification.notification-success{background-color:#C5ED73}
+  .global-notification.notification-error{background-color:#d9534f;color:#fff;}
+  .global-notification.notification-error .close-button{color:#fff}
+  .global-notification.notification-error .close-button:hover{color:#ff9898}
+</style>
+
+<div class="global-notification notification-{{data.type}}">
+  <i ng-class="data.faIcon" ng-if="data.faIcon" class="fa fa-fw icon"></i>
+  <strong ng-if="data.title">{{data.title}}:&nbsp;</strong><span ng-click="close()" ng-if="data.closeButton" class="close-button pull-right">✖</span>
+  <span>{{data.message}}</span>
+  <a ng-repeat="action in data.actions" ng-click="action.fn()" ng-class="action.className">
+    {{action.label}} 
+  </a>
+</div>

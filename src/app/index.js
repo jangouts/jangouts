@@ -49,7 +49,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
   })
   .config(function(notificationsProvider) {
     notificationsProvider.setDefaults({
-      templatesDir: 'bower_components/angular-extended-notifications/templates/',
+      templatesDir: 'app/templates/',
       faIcons: true,
       closeOnRouteChange: 'route'
     });
