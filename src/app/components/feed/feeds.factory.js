@@ -8,6 +8,10 @@
 (function () {
   'use strict';
 
+  /**
+   * Namespace for whole jangouts
+   * @module janusHangouts
+   */
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
@@ -16,6 +20,7 @@
   /**
    * Factory representing a janus feed
    * @constructor
+   * @memberof module:janusHnagouts
    */
   function feedFactory($timeout, DataChannelService, SpeakObserver) {
     return function(attrs) {
@@ -55,12 +60,24 @@
         }
       };
 
+      /**
+       * Sets picture for picture channel
+       * @param {string} val - path to picture
+       */
       this.setPicture = function(val) {
         picture = val;
       };
 
+      /**
+       * Gets picture for picture channel
+       * @return {string} path to picture
+       */
       this.getPicture = function() { return picture; };
 
+      /**
+       * Sets janus stream for the feed
+       * @param {object} val - janus stream
+       */
       this.setStream = function(val) {
         if (this.isPublisher && !this.isLocalScreen) {
           speakObserver = new SpeakObserver(val, {
@@ -75,12 +92,25 @@
         stream = val;
       };
 
+      /**
+       * Gets janus stream for the feed
+       * @return {object} janus stream
+       */
       this.getStream = function() { return stream; };
 
+
+      /**
+       * Sets speaking flag
+       * @param {boolean} val - true if feed speaking
+       */
       this.setSpeaking = function(val) {
         speaking = val;
       };
 
+      /**
+       * Gets feed speaking flag
+       * @return {boolean} true if feed speaking
+       */
       this.getSpeaking = function() { return speaking; };
 
       this.setAudioEnabled = function(val) {
@@ -99,7 +129,7 @@
         return this.isEnabled("video");
       };
 
-      /*
+      /**
        * Checks if audio is being currently detected in the local feed
        *
        * @returns {Boolean}
@@ -108,6 +138,10 @@
         return speakObserver && speakObserver.isSpeaking();
       };
 
+      /**
+       * Checks if data channel is open
+       * @returns {boolean}
+       */
       this.isDataOpen = function() {
         if (this.connection) {
           return this.connection.isDataOpen;
