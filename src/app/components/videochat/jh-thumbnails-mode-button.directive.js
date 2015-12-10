@@ -17,7 +17,12 @@
     return {
       restrict: 'EA',
       templateUrl: function(elem, attrs) {
-        return attrs.textTemplate ? 'app/components/videochat/jh-thumbnails-mode-button-with-text.html' : 'app/components/videochat/jh-thumbnails-mode-button.html'
+        var base = 'app/components/videochat/jh-thumbnails-mode-button';
+        if (attrs.textTemplate) {
+          return base + '-with-text.html';
+        } else {
+          return base + '.html';
+        }
       },
       scope: {},
       controllerAs: 'vm',
