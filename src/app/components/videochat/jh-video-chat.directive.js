@@ -228,30 +228,37 @@
 
       function adjustFeedsSizes() {
         var div = $('#thumbnails');
-        var w = div.innerWidth();
-        var h = div.innerHeight();
-        var feedW = thumbnailWidth($(".thumb", div).size(), h, w);
-        $(".face", div).css({height: feedW * 0.75 + "px", width: feedW + "px"});
-      }
-
-      function thumbnailWidth(qty, totalHeight, totalWidth) {
-        var extraWidth = 1; // borders, margins, etc.
+        var totalWidth = div.innerWidth();
+        var totalHeight = div.innerHeight();
+        var extraWidth = 4; // borders, margins, etc.
         var extraHeight = 33; // name, margins, etc.
-        // Just in case we have scrollbars
-        totalHeight -= 17;
-        totalWidth -= 17;
+        var qty = $(".thumb", div).size();
         var feedWidth, perRow, rowHeight, numRows;
+        // Due to some unexpected behavior in Mozilla, it's better to calculate
+        // whether we need the scrollbar than trusting "overflow: auto"
+        // See https://github.com/jangouts/jangouts/issues/77
+        var scrollbar = true;
 
-        for (var width = 128; width > 64; width -= 4) {
-          feedWidth = width + extraWidth;
-          rowHeight = width * 0.75 + extraHeight;
-          perRow = Math.floor(totalWidth / feedWidth);
+        // Do the calculations by trial and error
+        for (feedWidth = 128; feedWidth >= 64; feedWidth -= 4) {
+          rowHeight = feedWidth * 0.75 + extraHeight;
+          perRow = Math.floor(totalWidth / (feedWidth + extraWidth));
           numRows = Math.ceil(qty / perRow);
+          // It fits already, we don't need to keep trying
           if (numRows * rowHeight <= totalHeight) {
-            return width;
+            scrollbar = false;
+            break;
           }
         }
-        return 64;
+        if (feedWidth < 64) { feedWidth = 64; }
+
+        // Adjust the DOM elements
+        $(".face", div).css({height: feedWidth * 0.75 + "px", width: feedWidth + "px"});
+        if (scrollbar) {
+          div.css({"overflow-y": 'scroll'});
+        } else {
+          div.css({"overflow-y": 'hidden'});
+        }
       }
     }
   }
