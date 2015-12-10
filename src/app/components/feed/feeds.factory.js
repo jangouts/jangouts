@@ -20,20 +20,25 @@
   /**
    * Factory representing a janus feed
    * @constructor
-   * @memberof module:janusHnagouts
+   * @memberof module:janusHangouts
    */
   function feedFactory($timeout, DataChannelService, SpeakObserver) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
 
+      /** @var {integer} id of feed */
       this.id = attrs.id || 0;
+      /** @var {string} name of user streaming feed */
       this.display = attrs.display || null;
-      this.connection = attrs.connection || null;
+      /** @var {boolean} flag if feed is publishing one, so one that is send from this pc to others */
       this.isPublisher = attrs.isPublisher || false;
+      /** @var {boolean} flag if feed is local screen sharing feed */
       this.isLocalScreen = attrs.isLocalScreen || false;
+      /** @var {boolean} flag if feed is ignored */
       this.isIgnored = attrs.ignored || false;
 
+      var connection = attrs.connection || null;
       var picture = null;
       var speaking = false;
       var silentSince = Date.now();
@@ -113,18 +118,30 @@
        */
       this.getSpeaking = function() { return speaking; };
 
+      /**
+       * Sets if audio is enabled for this feed. Works only for remote ones.
+       */
       this.setAudioEnabled = function(val) {
         audioRemoteEnabled = val;
       };
 
+      /**
+       * Gets if audio is enabled for this feed
+       */
       this.getAudioEnabled = function() {
         return this.isEnabled("audio");
       };
 
+      /**
+       * Sets if video is enabled for this feed. Works only for remote ones.
+       */
       this.setVideoEnabled = function(val) {
         videoRemoteEnabled = val;
       };
 
+      /**
+       * Gets if video is enabled for this feed
+       */
       this.getVideoEnabled = function() {
         return this.isEnabled("video");
       };
