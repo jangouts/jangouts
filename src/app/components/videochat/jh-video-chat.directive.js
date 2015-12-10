@@ -117,6 +117,7 @@
       vm.showHotkeys = showHotkeys;
       vm.windowResizeModeOn = false;
       vm.toggleWindowResizeMode = toggleWindowResizeMode;
+      vm.setDefaultLayout = setDefaultLayout;
 
       function feeds() {
         return FeedsService.allFeeds();
@@ -218,6 +219,11 @@
           UserService.setSetting('gridsterItems', vm.gridsterItems);
           Notifier.info('Your layout has been successfully saved!');
         }
+      }
+
+      function setDefaultLayout() {
+        vm.gridsterItems = defaultGridsterItems;
+        UserService.setSetting('gridsterItems', defaultGridsterItems);
       }
 
       function adjustFeedsSizes() {
