@@ -16,7 +16,9 @@
   function jhThumbnailsModeButtonDirective(jhConfig, $timeout) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/components/videochat/jh-thumbnails-mode-button.html',
+      templateUrl: function(elem, attrs) {
+        return attrs.textTemplate ? 'app/components/videochat/jh-thumbnails-mode-button-with-text.html' : 'app/components/videochat/jh-thumbnails-mode-button.html'
+      },
       scope: {},
       controllerAs: 'vm',
       bindToController: true,
