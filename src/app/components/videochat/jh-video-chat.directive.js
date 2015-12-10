@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhVideoChat', jhVideoChatDirective);
 
-  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'UserService', 'hotkeys', '$timeout'];
+  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'UserService', 'Notifier', 'hotkeys', '$timeout'];
 
-  function jhVideoChatDirective($window, LogService, FeedsService, UserService, hotkeys, $timeout) {
+  function jhVideoChatDirective($window, LogService, FeedsService, UserService, Notifier, hotkeys, $timeout) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -27,8 +27,6 @@
     function jhVideoChatLink(scope, element) {
       scope.$on('gridster-resized', function() {
         scope.vm.adjustAllSizes();
-
-        UserService.setSetting('gridsterItems', scope.vm.gridsterItems);
       });
       // 'gridster-item-initialized' is not working for us,
       // let's workaround the problem
@@ -119,6 +117,7 @@
       vm.showHotkeys = showHotkeys;
       vm.windowResizeModeOn = false;
       vm.toggleWindowResizeMode = toggleWindowResizeMode;
+      vm.setDefaultLayout = setDefaultLayout;
 
       function feeds() {
         return FeedsService.allFeeds();
@@ -215,6 +214,16 @@
         vm.windowResizeModeOn = !vm.windowResizeModeOn;
         vm.gridsterOpts.resizable.enabled = vm.windowResizeModeOn;
         vm.gridsterOpts.draggable.enabled = vm.windowResizeModeOn;
+
+        if(!vm.windowResizeModeOn){
+          UserService.setSetting('gridsterItems', vm.gridsterItems);
+          Notifier.info('Your layout has been successfully saved!');
+        }
+      }
+
+      function setDefaultLayout() {
+        vm.gridsterItems = defaultGridsterItems;
+        UserService.setSetting('gridsterItems', defaultGridsterItems);
       }
 
       function adjustFeedsSizes() {
