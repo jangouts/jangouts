@@ -231,18 +231,21 @@
         var w = div.innerWidth();
         var h = div.innerHeight();
         var feedW = thumbnailWidth($(".thumb", div).size(), h, w);
+        if (feedW == 64) {
+          div.css({"overflow-y": 'auto'});
+        }
+        else {
+          div.css({"overflow-y": 'hidden'});
+        }
         $(".face", div).css({height: feedW * 0.75 + "px", width: feedW + "px"});
       }
 
       function thumbnailWidth(qty, totalHeight, totalWidth) {
         var extraWidth = 1; // borders, margins, etc.
         var extraHeight = 33; // name, margins, etc.
-        // Just in case we have scrollbars
-        totalHeight -= 17;
-        totalWidth -= 17;
         var feedWidth, perRow, rowHeight, numRows;
 
-        for (var width = 128; width > 64; width -= 4) {
+        for (var width = 128; width > 64; width -= 2) {
           feedWidth = width + extraWidth;
           rowHeight = width * 0.75 + extraHeight;
           perRow = Math.floor(totalWidth / feedWidth);
