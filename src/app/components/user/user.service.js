@@ -14,8 +14,9 @@
   UserService.$inject = ['localStorageService'];
 
   function UserService(localStorageService) {
+    var USER_SETTINGS_KEY = 'userSettings'; // 'const' is not available in all platforms.
     this.user = null;
-    this.settings = localStorageService.get('userSettings') || {};
+    this.settings = localStorageService.get(USER_SETTINGS_KEY) || {};
 
     /*
      * Returns the current (signed in) user.
@@ -54,13 +55,43 @@
     };
 
     /*
+     * Remove a user setting.
+     * @param   {string} key User setting key.
+     * @returns {boolean}    True if the element was removed.
+     */
+    this.removeSetting = function(key) {
+      delete this.settings[key];
+      this.storeSettings();
+    }
+
+    /*
+     * Clear user settings.
+     * @returns {boolean} True if storage was cleared.
+     */
+    this.clearSettings = function() {
+      this.settings = {};
+      return localStorageService.clearAll(USER_SETTINGS_KEY);
+    }
+
+    /*
      * Set the value for a given user setting.
      * @param   {string} key User setting key.
      * @param   {}       value User setting value.
      */
     this.setSetting = function(key, value) {
       this.settings[key] = value;
-      localStorageService.set('userSettings', this.settings);
+      this.storeSettings();
+    };
+
+    /*
+     * Store settings in the local storage.
+     *
+     * This function is not supposed to be called by users of the API.
+     *
+     * @private
+     */
+    this.storeSettings = function() {
+      localStorageService.set(USER_SETTINGS_KEY, this.settings);
     };
   }
 })();
