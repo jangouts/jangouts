@@ -62,7 +62,7 @@
     this.removeSetting = function(key) {
       delete this.settings[key];
       this.storeSettings();
-    }
+    };
 
     /*
      * Clear user settings.
@@ -71,7 +71,7 @@
     this.clearSettings = function() {
       this.settings = {};
       return localStorageService.clearAll(USER_SETTINGS_KEY);
-    }
+    };
 
     /*
      * Set the value for a given user setting.

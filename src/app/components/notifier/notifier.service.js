@@ -18,7 +18,7 @@
 
     function info(text) {
       notifications.info("Information", text, {
-        duration: 20000,
+        duration: 5000,
         attachTo: $('#videochat-body'),
       });
     }
