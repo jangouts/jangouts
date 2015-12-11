@@ -15,6 +15,11 @@
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
       'ScreenShareService'];
 
+  /**
+   * Service containing all rooms
+   * @constructor
+   * @memberof module:janusHangouts
+   */
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       FeedConnection, DataChannelService, ActionService, jhConfig, ScreenShareService) {
     this.enter = enter;
