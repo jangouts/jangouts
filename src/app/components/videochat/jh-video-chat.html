@@ -14,18 +14,18 @@
           <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
         </button>
         <button
-          ng-class="{ 'btn-danger': vm.windowResizeModeOn }"
-          class="btn"
-          ng-click="vm.toggleWindowResizeMode()"
-          title="Window resize mode">
-          <span class="glyphicon glyphicon-pushpin"  aria-hidden="true"></span>
-        </button>
-        <button
           ng-show="vm.windowResizeModeOn"
           class="btn"
           ng-click="vm.setDefaultLayout()"
           title="Reset layout to default">
           <span class="glyphicon glyphicon-trash"  aria-hidden="true"></span>
+        </button>
+        <button
+          ng-class="{ 'btn-danger': vm.windowResizeModeOn }"
+          class="btn"
+          ng-click="vm.toggleWindowResizeMode()"
+          title="Window resize mode">
+          <span class="glyphicon glyphicon-pushpin"  aria-hidden="true"></span>
         </button>
         <jh-leave-button></jh-leave-button>
       </div>

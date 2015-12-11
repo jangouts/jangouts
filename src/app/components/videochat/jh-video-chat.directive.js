@@ -32,6 +32,17 @@
       // let's workaround the problem
       $timeout(function() { scope.vm.adjustAllSizes(); }, 600);
 
+      // Gridster's event system is utterly faulty, it's safer to watch the data
+      scope.$watch("vm.gridsterItems", function() {
+        if (scope.vm.gridsterIgnoreNextChange) {
+          scope.vm.gridsterIgnoreNextChange = false;
+        } else {
+          scope.vm.gridsterDirtyBit = true;
+        }
+        // Wait 600ms for the animations to complete
+        $timeout(function() { scope.vm.adjustAllSizes(); }, 600);
+      }, true);
+
       scope.$watch(
         function() { return $("#thumbnails .thumb", element).size(); },
         function() { scope.vm.adjustFeedsSizes(); }
@@ -41,57 +52,15 @@
     function jhVideoChatCtrl() {
       /* jshint: validthis */
       var vm = this;
-      var cols = 16;
-      // Window width minus the paddings
-      var gridWidth = $(window).width() - 25;
-      // Window height minus header and footer (and some safety pixels)
-      var gridHeight = $(window).height() - 33 - 20 - 5;
-      // Items are square, i.e. width == height
-      var itemHeight = gridWidth / cols;
-      // How many rows do we have room for?
-      var rows = Math.floor(gridHeight / itemHeight);
-      if (rows < 6) { rows = 6; }
-
-      // Adjust the layout depending on the vertical space
-      var feedsH, chatH, chatR, chatC;
-      if (rows < 10) {
-        // Not enough space under the speaker (which is always 8x6) for the chat
-        feedsH = Math.ceil(rows/2);
-        chatH = Math.floor(rows/2);
-        chatR = feedsH;
-        chatC = 8;
-      } else {
-        // Chat below the speaker
-        feedsH = rows;
-        chatH = rows - 6;
-        chatR = 6;
-        chatC = 0;
-      }
-
-      var defaultGridsterItems = [
-        { size: [8, 6], position: [0, 0], content: "Speaker" },
-        { size: [8, feedsH], position: [0, 8], content: "Participants" },
-        { size: [8, chatH], position: [chatR, chatC], content: "Chat" }
-      ];
-
-      vm.gridsterItems = UserService.getSetting('gridsterItems') || defaultGridsterItems;
+      var GRIDSTER_COLS = 16;
+      vm.gridsterDirtyBit = false;
+      vm.gridsterIgnoreNextChange = true;
+      vm.gridsterItems = UserService.getSetting('gridsterItems') || defaultGridsterItems();
 
       vm.gridsterOpts = {
-        columns: cols,
-        resizable: {
-          enabled: false,
-          stop: function (event, $element) {
-            // 'gridster-item-transition-end' is not working for us, so we have
-            // to use this callback and wait some extra time for the animations
-            // to finish
-            $timeout(function () {
-              vm.adjustSize($element);
-            }, 600);
-          }
-        },
-        draggable: {
-          enabled: false,
-        }
+        columns: GRIDSTER_COLS,
+        resizable: { enabled: false },
+        draggable: { enabled: false }
       };
 
       /* Data */
@@ -111,13 +80,58 @@
       vm.isHighlighted = isHighlighted;
       vm.isHighlightedByUser = isHighlightedByUser;
       vm.logEntries = logEntries;
-      vm.adjustSize = adjustSize;
       vm.adjustAllSizes = adjustAllSizes;
       vm.adjustFeedsSizes = adjustFeedsSizes;
       vm.showHotkeys = showHotkeys;
       vm.windowResizeModeOn = false;
       vm.toggleWindowResizeMode = toggleWindowResizeMode;
       vm.setDefaultLayout = setDefaultLayout;
+
+      function defaultGridsterItems() {
+        // Window width minus the paddings
+        var gridWidth = $(window).width() - 25;
+        // Window height minus header and footer (and some safety pixels)
+        var gridHeight = $(window).height() - 33 - 20 - 5;
+        // Items are square, i.e. width == height
+        var itemHeight = gridWidth / GRIDSTER_COLS;
+        // How many rows do we have room for?
+        var rows = Math.floor(gridHeight / itemHeight);
+        if (rows < 6) { rows = 6; }
+
+        // Adjust the layout depending on the vertical space
+        var feedsH, chatH, chatR, chatC;
+        if (rows < 10) {
+          // Not enough space under the speaker (which is always 8x6) for the chat
+          feedsH = Math.ceil(rows/2);
+          chatH = Math.floor(rows/2);
+          chatR = feedsH;
+          chatC = 8;
+        } else {
+          // Chat below the speaker
+          feedsH = rows;
+          chatH = rows - 6;
+          chatR = 6;
+          chatC = 0;
+        }
+
+        return [
+          { size: [8, 6], position: [0, 0], content: "Speaker" },
+          { size: [8, feedsH], position: [0, 8], content: "Participants" },
+          { size: [8, chatH], position: [chatR, chatC], content: "Chat" }
+        ];
+      }
+
+      function storeGridster() {
+        if (vm.gridsterDirtyBit) {
+          UserService.setSetting('gridsterItems', vm.gridsterItems);
+          Notifier.info('Your layout has been successfully saved');
+        }
+        vm.gridsterDirtyBit = false;
+      }
+
+      function isDefaultLayout() {
+        return (!vm.gridsterDirtyBit && (UserService.getSetting('gridsterItems') === undefined));
+      }
 
       function feeds() {
         return FeedsService.allFeeds();
@@ -201,7 +215,7 @@
 
       function adjustAllSizes() {
         $(".gridster-item").each(function(index, e) {
-          vm.adjustSize($(e));
+          adjustSize($(e));
         });
       }
 
@@ -210,20 +224,22 @@
       }
 
       function toggleWindowResizeMode() {
-        var vm = this;
         vm.windowResizeModeOn = !vm.windowResizeModeOn;
         vm.gridsterOpts.resizable.enabled = vm.windowResizeModeOn;
         vm.gridsterOpts.draggable.enabled = vm.windowResizeModeOn;
 
-        if(!vm.windowResizeModeOn){
-          UserService.setSetting('gridsterItems', vm.gridsterItems);
-          Notifier.info('Your layout has been successfully saved!');
-        }
+        if (!vm.windowResizeModeOn) { storeGridster(); }
       }
 
       function setDefaultLayout() {
-        vm.gridsterItems = defaultGridsterItems;
-        UserService.setSetting('gridsterItems', defaultGridsterItems);
+        // A really ugly bug arises in my Firefox if we don't skip this case
+        if (!isDefaultLayout()) {
+          vm.gridsterIgnoreNextChange = true;
+          vm.gridsterDirtyBit = false;
+          vm.gridsterItems = defaultGridsterItems();
+          UserService.removeSetting('gridsterItems');
+          Notifier.info('Your layout preferences have been deleted');
+        }
       }
 
       function adjustFeedsSizes() {
