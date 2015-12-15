@@ -38,7 +38,8 @@
       /** @var {boolean} flag if feed is ignored */
       this.isIgnored = attrs.ignored || false;
 
-      var connection = attrs.connection || null;
+      this.connection = attrs.connection || null;
+
       var picture = null;
       var speaking = false;
       var silentSince = Date.now();

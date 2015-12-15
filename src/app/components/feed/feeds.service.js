@@ -36,14 +36,14 @@
      * @returns{Feed} gets feed with given id or null if not found
      */
     function find(id) {
-      return (this.feeds[id] || null);
+      return (feeds[id] || null);
     }
 
     /**
      * @returns {Feed} gets main feed or null if not found
      */
     function findMain() {
-      return this.mainFeed;
+      return mainFeed;
     }
 
     /**
@@ -90,9 +90,9 @@
      * @param {Boolean} options.main - if feed is main one
      */
     function add(feed, options) {
-      this.feeds[feed.id] = feed;
+      feeds[feed.id] = feed;
       if (options && options.main) {
-        this.mainFeed = feed;
+        mainFeed = feed;
       }
     }
 
@@ -100,9 +100,9 @@
      * Unregisters feed with given id.
      */
     function destroy(id) {
-      delete this.feeds[id];
-      if (this.mainFeed && (id === this.mainFeed.id)) {
-        this.mainFeed = null;
+      delete feeds[id];
+      if (mainFeed && (id === mainFeed.id)) {
+        mainFeed = null;
       }
     }
 
@@ -110,7 +110,7 @@
      * @returns {Array<Feed>} all registered feeds
      */
     function allFeeds() {
-      return _.values(this.feeds);
+      return _.values(feeds);
     }
 
     /**
@@ -132,7 +132,7 @@
     }
 
     /**
-     * @returns {Array<Feed>} all registered feeds that speaks
+     * @returns {Feed} registered feed that speaks or null
      */
     function speakingFeed() {
       return _.detect(this.allFeeds(), function (f) {
