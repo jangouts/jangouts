@@ -134,14 +134,15 @@ in the [deployment instructions](DEPLOYMENT.md).
 
 ## Troubleshooting
 
-When jangouts server do not work, there is wide variety of ways how to ways how to debug it.
+When Jangouts does not work, there is a wide variety of ways how to debug it.
 Usually the easiest one is to use browser debug tools.
 
 ### unreachable janus
-When error reported is something like _cannot establish connection to server at ws://.../janus_
-then it indicate problem with janus. So check if janus is running with
-```sudo systemctl status janus.service```. If it is failed, then check for possible reasons in
-```journalctl --unit janus.service```.
+
+When the reported error is something like _cannot establish connection to server at ws://.../janus_
+it usually means there is some problem with Janus. So check if Janus is running properly. If you are
+using systemd, e.g. using the mentioned (open)SUSE packages, use ```sudo systemctl status janus.service```.
+If the status is "failed", check for possible reasons in ```journalctl --unit janus.service```.
 
 ## Acknowledgments
 
@@ -151,3 +152,8 @@ then it indicate problem with janus. So check if janus is running with
 
 This software is released under the terms of the MIT License. See the
 [license file](LICENSE.txt) for more information.
+
+## Find us
+
+Jangouts developers can be usually found at
+[#jangouts IRC channel at Freenode](irc://irc.freenode.net/jangouts)
