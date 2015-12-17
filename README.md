@@ -8,6 +8,8 @@ solutions. Currently Jangouts supports conferences with video, audio, screen
 sharing and textual chat organized into an unlimited amount of conference rooms
 with a configurable limit of participants per room.
 
+![Example screen of Jangouts 0.4.0](screenshot.jpg?raw=true)
+
 ## Installation
 
 Jangouts is a JavaScript application running exclusively client-side (i.e. in
