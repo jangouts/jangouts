@@ -33,7 +33,7 @@
         return;
       }
       var notif = notifications.info("Muted", text, {
-        shown: function() { bell.play(); },
+        show: function() { bell.play(); },
         duration: 20000,
         attachTo: $('#videochat-body'),
         actions: [{
