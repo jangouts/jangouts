@@ -2,7 +2,7 @@
 
 Jangouts (for "Janus Hangouts") is a solution for videoconferencing based
 on WebRTC and the excellent [Janus Gateway](http://janus.conf.meetecho.com/)
-with a user interface heavily inspired by Google Hangouts. It aims to provide
+with a user interface loosely inspired by Google Hangouts. It aims to provide
 a completely self-hosted open source alternative to Google Hangouts and similar
 solutions. Currently Jangouts supports conferences with video, audio, screen
 sharing and textual chat organized into an unlimited amount of conference rooms
