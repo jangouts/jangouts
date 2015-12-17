@@ -8,7 +8,7 @@ solutions. Currently Jangouts supports conferences with video, audio, screen
 sharing and textual chat organized into an unlimited amount of conference rooms
 with a configurable limit of participants per room.
 
-![Example screen of Jangouts 0.4.0](screenshot.jpg?raw=true)
+![Example screen of Jangouts 0.4.0](screenshot.png?raw=true)
 
 ## Installation
 
