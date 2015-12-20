@@ -69,6 +69,18 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
       return $delegate;
     });
   })
+  .run(function($http, jhConfig) {
+    $http.get('/config.json').then(
+      function (response) {
+        angular.forEach(response.data, function(key, value) {
+          jhConfig[key] = value;
+        });
+      },
+      function () {
+        console.warn('No configuration found');
+      }
+    );
+  })
   .run(function ($rootScope, $state, RoomService) {
     $rootScope.$on('$stateChangeStart', function () {
       // Before changing state, cleanup feeds
