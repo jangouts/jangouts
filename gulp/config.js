@@ -1,38 +1,20 @@
 'use strict';
 
 var gulp = require('gulp');
+var file = require('gulp-file');
 var pkg = require('../package.json');
-var ngConstant = require('gulp-ng-constant');
-var rename = require('gulp-rename');
-var fs = require('fs');
 
 module.exports = function(options) {
-  function readConfig() {
-    var _ = require('lodash');
-    var localConfig = {};
-    var defaultConfig = require('../src/app/config.json');
-
-    try {
-      localConfig = require('../src/app/config.local.json');
-    }
-    catch(e) {
-      console.info("Local config not found");
-    }
-    return _.merge(defaultConfig, localConfig);
-  }
-
   gulp.task('config', function () {
-    var appConfig = readConfig();
+    var appConfig;
+    try {
+      appConfig = require('../src/config.json');
+    } catch (e) {
+      appConfig = {};
+    }
     appConfig.version = pkg.version;
 
-    return ngConstant({
-      name: 'janusHangouts.config',
-      constants: appConfig,
-      stream: true,
-      space: '  ',
-      templatePath: 'gulp/config.tpl.ejs'
-    })
-    .pipe(rename('config.js'))
-    .pipe(gulp.dest('src/app'));
+    file('config.json', JSON.stringify(appConfig, null, '  '), { str: true })
+      .pipe(gulp.dest('src'));
   });
 }
