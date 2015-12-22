@@ -70,7 +70,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     });
   })
   .run(function($http, jhConfig) {
-    $http.get('/config.json').then(
+    $http.get('config.json').then(
       function (response) {
         angular.forEach(response.data, function(key, value) {
           jhConfig[key] = value;
