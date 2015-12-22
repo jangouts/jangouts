@@ -4,7 +4,6 @@ bower_components
 .tmp/
 .idea/
 dist/
-src/app/config.local.json
-src/app/config.js
 Vagrantfile
 .vagrant/
+src/config.json

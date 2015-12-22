@@ -52,21 +52,20 @@ sudo systemctl enable janus.service # to start it also after reboot
 
 ### Step 2. Configure Jangouts
 
-The first step to configure Jangouts is to get a local copy of this repository:
+The first step to configure Jangouts is to get a local copy of its repository:
 
 ```sh
 git clone https://github.com/jangouts/jangouts
 ```
 
-If git command not found, then please install git from you packager. For example, if you
+If `git` is command not found, then install Git from you packager. For example, if you
 are running (open)SUSE you could type:
 ```sh
 sudo zypper in git
 ```
 
 Then you could adapt the configuration by creating a file called
-`src/app/config.local.json` overriding the default settings found in
-`src/app/config.json`.
+`src/config.json`. You have an sample file in `src/config.json.sample`.
 
 For a development environment, the next configuration would be fine:
 
