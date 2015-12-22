@@ -1,0 +1,9 @@
+{
+  "janusServer": null,
+  "janusServerSSL": null,
+  "janusDebug": false,
+  "httpsAvailable": true,
+  "httpsUrl": null,
+  "videoThumbnails": true,
+  "version": "0.4.1"
+}
