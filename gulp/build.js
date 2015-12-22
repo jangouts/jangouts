@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var estream = require('event-stream')
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
@@ -74,10 +75,21 @@ module.exports = function(options) {
   });
 
   gulp.task('other', function () {
+    // Avoid empty directories (http://stackoverflow.com/questions/23719731/gulp-copying-empty-directories)
+    var onlyFiles = function(stream) {
+      return stream.map(function(file, cb) {
+        if (file.stat.isFile()) {
+          return cb(null, file);
+        } else {
+          return cb();
+        }
+      });
+    };
     return gulp.src([
       options.src + '/**/*',
       '!' + options.src + '/**/*.{html,css,js,scss,jade,sample}'
     ])
+      .pipe(onlyFiles(estream))
       .pipe(gulp.dest(options.dist + '/'));
   });
 
