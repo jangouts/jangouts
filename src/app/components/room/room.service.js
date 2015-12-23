@@ -16,7 +16,7 @@
       'ScreenShareService'];
 
   /**
-   * Service containing all rooms
+   * Service to communication with janus room
    * @constructor
    * @memberof module:janusHangouts
    */
