@@ -11,20 +11,11 @@
   angular.module('janusHangouts')
     .directive('jhFooter', jhFooterDirective);
 
-  jhFooterDirective.$inject = ['jhConfig'];
-
-  function jhFooterDirective(jhConfig) {
+  function jhFooterDirective() {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/footer/jh-footer.html',
-      scope: true,
-      controller: JhFooterCtrl,
-      controllerAs: 'vm'
+      scope: true
     };
-
-    function JhFooterCtrl() {
-      /* jshint validthis:true */
-      this.version = jhConfig.version;
-    }
   }
 })();
