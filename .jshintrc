@@ -41,8 +41,8 @@
     "Janus": false,
     // Standard JavaScript
     "setTimeout": false,
+    "XMLHttpRequest": false,
     // lodash
     "_": false
-
   }
 }
