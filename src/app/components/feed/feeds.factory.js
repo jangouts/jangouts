@@ -8,6 +8,10 @@
 (function () {
   'use strict';
 
+  /**
+   * Namespace for whole jangouts
+   * @module janusHangouts
+   */
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
@@ -16,18 +20,25 @@
   /**
    * Factory representing a janus feed
    * @constructor
+   * @memberof module:janusHangouts
    */
   function feedFactory($timeout, DataChannelService, SpeakObserver) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
 
+      /** @var {integer} id of feed */
       this.id = attrs.id || 0;
+      /** @var {string} name of user streaming feed */
       this.display = attrs.display || null;
-      this.connection = attrs.connection || null;
+      /** @var {boolean} flag if feed is publishing one, so one that is send from this pc to others */
       this.isPublisher = attrs.isPublisher || false;
+      /** @var {boolean} flag if feed is local screen sharing feed */
       this.isLocalScreen = attrs.isLocalScreen || false;
+      /** @var {boolean} flag if feed is ignored */
       this.isIgnored = attrs.ignored || false;
+
+      this.connection = attrs.connection || null;
 
       var picture = null;
       var speaking = false;
@@ -55,12 +66,24 @@
         }
       };
 
+      /**
+       * Sets picture for picture channel
+       * @param {string} val - path to picture
+       */
       this.setPicture = function(val) {
         picture = val;
       };
 
+      /**
+       * Gets picture for picture channel
+       * @return {string} path to picture
+       */
       this.getPicture = function() { return picture; };
 
+      /**
+       * Sets janus stream for the feed
+       * @param {object} val - janus stream
+       */
       this.setStream = function(val) {
         if (this.isPublisher && !this.isLocalScreen) {
           speakObserver = new SpeakObserver(val, {
@@ -75,31 +98,56 @@
         stream = val;
       };
 
+      /**
+       * Gets janus stream for the feed
+       * @return {object} janus stream
+       */
       this.getStream = function() { return stream; };
 
+
+      /**
+       * Sets speaking flag
+       * @param {boolean} val - true if feed speaking
+       */
       this.setSpeaking = function(val) {
         speaking = val;
       };
 
+      /**
+       * Gets feed speaking flag
+       * @return {boolean} true if feed speaking
+       */
       this.getSpeaking = function() { return speaking; };
 
+      /**
+       * Sets if audio is enabled for this feed. Works only for remote ones.
+       */
       this.setAudioEnabled = function(val) {
         audioRemoteEnabled = val;
       };
 
+      /**
+       * Gets if audio is enabled for this feed
+       */
       this.getAudioEnabled = function() {
         return this.isEnabled("audio");
       };
 
+      /**
+       * Sets if video is enabled for this feed. Works only for remote ones.
+       */
       this.setVideoEnabled = function(val) {
         videoRemoteEnabled = val;
       };
 
+      /**
+       * Gets if video is enabled for this feed
+       */
       this.getVideoEnabled = function() {
         return this.isEnabled("video");
       };
 
-      /*
+      /**
        * Checks if audio is being currently detected in the local feed
        *
        * @returns {Boolean}
@@ -108,6 +156,10 @@
         return speakObserver && speakObserver.isSpeaking();
       };
 
+      /**
+       * Checks if data channel is open
+       * @returns {boolean}
+       */
       this.isDataOpen = function() {
         if (this.connection) {
           return this.connection.isDataOpen;

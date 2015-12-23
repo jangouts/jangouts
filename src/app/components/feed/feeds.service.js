@@ -13,9 +13,14 @@
 
   FeedsService.$inject = ['$q', '$window'];
 
+  /**
+   * Service containing all feeds
+   * @constructor
+   * @memberof module:janusHangouts
+   */
   function FeedsService($q, $window) {
-    this.mainFeed = null;
-    this.feeds = {};
+    var mainFeed = null;
+    var feeds = {};
 
     this.find = find;
     this.findMain = findMain;
@@ -27,21 +32,27 @@
     this.speakingFeed = speakingFeed;
     this.waitFor = waitFor;
 
+    /**
+     * @returns{Feed} gets feed with given id or null if not found
+     */
     function find(id) {
-      return (this.feeds[id] || null);
+      return (feeds[id] || null);
     }
 
+    /**
+     * @returns {Feed} gets main feed or null if not found
+     */
     function findMain() {
-      return this.mainFeed;
+      return mainFeed;
     }
 
     /**
      * Find a feed but, if not found, waits until it appears
      *
-     * @param {string} id       Feed's id
-     * @param {number} attempts Max number of attempts
-     * @param {number} timeout  Time (in miliseconds) between attempts
-     * @return {Object}         Promise to be resolved when the feed is found.
+     * @param {string} id             Feed's id
+     * @param {number} [attempts=10]  Max number of attempts
+     * @param {number} [timeout=1000] Time (in miliseconds) between attempts
+     * @return {Object}               Promise to be resolved when the feed is found.
      */
     function waitFor(id, attempts, timeout) {
       var deferred = $q.defer();
@@ -71,36 +82,58 @@
       return deferred.promise;
     }
 
+    /**
+     * Registers feed.
+     * @param {Feed} feed - to register
+     * @param {Integer} feed.id - id under which is id registered
+     * @param {Array} options - options with feed details
+     * @param {Boolean} options.main - if feed is main one
+     */
     function add(feed, options) {
-      this.feeds[feed.id] = feed;
+      feeds[feed.id] = feed;
       if (options && options.main) {
-        this.mainFeed = feed;
+        mainFeed = feed;
       }
     }
 
+    /**
+     * Unregisters feed with given id.
+     */
     function destroy(id) {
-      delete this.feeds[id];
-      if (this.mainFeed && (id === this.mainFeed.id)) {
-        this.mainFeed = null;
+      delete feeds[id];
+      if (mainFeed && (id === mainFeed.id)) {
+        mainFeed = null;
       }
     }
 
+    /**
+     * @returns {Array<Feed>} all registered feeds
+     */
     function allFeeds() {
-      return _.values(this.feeds);
+      return _.values(feeds);
     }
 
+    /**
+     * @returns {Array<Feed>} all registered publisher feeds
+     */
     function publisherFeeds() {
       return _.filter(this.allFeeds(), function (f) {
         return f.isPublisher;
       });
     }
 
+    /**
+     * @returns {Array<Feed>} all registered feeds sharing local screen
+     */
     function localScreenFeeds() {
       return _.filter(this.allFeeds(), function (f) {
         return f.isLocalScreen;
       });
     }
 
+    /**
+     * @returns {Feed} registered feed that speaks or null
+     */
     function speakingFeed() {
       return _.detect(this.allFeeds(), function (f) {
         return f.getSpeaking();
