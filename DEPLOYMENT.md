@@ -8,25 +8,22 @@ mandatory and the Janus gateway can be accessed directly by the clients without
 the intervention of the web server.
 
 The purpose of this documents is give some hints about deploying Jangouts using
-Apache to serve static files and proxy Janus gateway connections through
-websockets. Bear in mind that using websockets is not mandatory, although is
-recommended.
+Apache to serve the static files and proxy Janus gateway connections using SSL
+(i.e. HTTPS). As explained in the [README](README.md), the usage of SSL is
+highly recommended in most scenarios.
 
-## Generating static files
+## Configuring Jangouts
 
-By default, Jangouts will try to use websockets. It could be changed easily
-just setting the `janusServer` parameter in `src/app/config.local.json`, as
-shown in the [README](README.md).
-
-After configuration is set, execute the following command to generate the
-files:
-
-```bash
-gulp build
+As also explained in the [README](README.md), it's only necessary to serve the
+files that are contained in the `dist` directory of the Jangouts release.
+By default, Jangouts will try to use websockets to interact with Janus. That
+can be changed easily just setting the `janusServer` parameter in the
+`config.json` file present in the mentioned directory to something like:
+```json
+{
+  "janusServer": "https://example.com/janus"
+}
 ```
-
-That will result in a new `dist` folder containing all the files that must be
-served to the clients.
 
 ## Configuring Apache
 
@@ -61,8 +58,9 @@ standard Jangouts instance using virtual hosts with SSL support is shown below.
 </VirtualHost>
 ```
 
-Using websockets is not mandatory although is recommended. If you prefer using
-HTTP, just change the Jangouts configuration and set the proxy section to
+Using websockets to interact with Janus is not mandatory although is
+recommended. If you prefer using plain REST queries for any reason,
+just change the Jangouts configuration and set the proxy section to
 something like:
 
 ```
