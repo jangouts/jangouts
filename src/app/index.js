@@ -70,16 +70,17 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     });
   })
   .run(function($http, jhConfig) {
-    $http.get('/config.json').then(
-      function (response) {
-        angular.forEach(response.data, function(key, value) {
-          jhConfig[key] = value;
-        });
-      },
-      function () {
-        console.warn('No configuration found');
-      }
-    );
+    var request = new XMLHttpRequest();
+    request.open('GET', 'config.json', false);
+    request.send(null);
+    if (request.status === 200) {
+      var config = JSON.parse(request.responseText);
+      angular.forEach(config, function(value, key) {
+         jhConfig[key] = value;
+      });
+    } else {
+      console.warn('No configuration found');
+    }
   })
   .run(function ($rootScope, $state, RoomService) {
     $rootScope.$on('$stateChangeStart', function () {

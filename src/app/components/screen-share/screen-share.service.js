@@ -11,15 +11,13 @@
   angular.module('janusHangouts')
     .service('ScreenShareService', ScreenShareService);
 
-  ScreenShareService.$inject = ['$timeout', '$modal', 'jhConfig'];
+  ScreenShareService.$inject = ['$timeout', '$uibModal'];
 
-  function ScreenShareService($timeout, $modal, jhConfig) {
+  function ScreenShareService($timeout, $uibModal) {
     this.inProgress = false;
     this.setInProgress = setInProgress;
     this.getInProgress = getInProgress;
     this.showHelp = showHelp;
-    this.usingSSL = usingSSL;
-    this.httpsUrl = httpsUrl;
 
     function setInProgress(value) {
       var that = this;
@@ -32,24 +30,8 @@
       return this.inProgress;
     }
 
-    function usingSSL() {
-      return (window.location.protocol === 'https:');
-    }
-
-    function httpsUrl() {
-      if (jhConfig.httpsAvailable) {
-        if (jhConfig.httpsUrl) {
-          return jhConfig.httpsUrl;
-        } else {
-          return "https://" + window.location.hostname + window.location.pathname;
-        }
-      } else {
-        return null;
-      }
-    }
-
     function showHelp() {
-      $modal.open({
+      $uibModal.open({
         animation: true,
         templateUrl: 'app/components/screen-share/screen-share-help.html',
         controller: 'ScreenShareHelpCtrl',

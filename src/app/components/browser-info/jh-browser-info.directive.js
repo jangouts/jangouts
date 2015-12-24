@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhBrowserInfo', jhBrowserInfoDirective);
 
-  jhBrowserInfoDirective.$inject = ['$modal'];
+  jhBrowserInfoDirective.$inject = ['$uibModal'];
 
-  function jhBrowserInfoDirective($modal) {
+  function jhBrowserInfoDirective($uibModal) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/browser-info/jh-browser-info.html',
@@ -30,7 +30,7 @@
       vm.showHelp = showHelp;
 
       function showHelp() {
-        $modal.open({
+        $uibModal.open({
           animation: true,
           templateUrl: 'app/components/browser-info/browser-info.html',
           controller: 'BrowserInfoCtrl',

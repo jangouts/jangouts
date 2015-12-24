@@ -11,10 +11,16 @@ module.exports = function(options) {
       path.extname = '.html';
     }
 
+    var pkg = require('../package.json');
+
     return gulp.src(options.src + '/app/**/*.jade')
-      .pipe($.consolidate('jade', { basedir: options.src, doctype: 'html', pretty: '  ' })).on('error', options.errorHandler('Jade'))
+      .pipe($.consolidate('jade', {
+        basedir: options.src,
+        doctype: 'html',
+        pretty: '  ',
+        version: pkg.version })).on('error', options.errorHandler('Jade'))
       .pipe($.rename(renameToHtml))
       .pipe(gulp.dest(options.tmp + '/serve/app/'))
-      .pipe(browserSync.reload({ stream: true }));
+      .pipe(browserSync.reload({ stream: true }));
   });
 };

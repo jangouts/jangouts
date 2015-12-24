@@ -8,30 +8,20 @@ mandatory and the Janus gateway can be accessed directly by the clients without
 the intervention of the web server.
 
 The purpose of this documents is give some hints about deploying Jangouts using
-Apache to serve static files and proxy Janus gateway connections through
-websockets. Bear in mind that using websockets is not mandatory, although is
-recommended.
+Apache to serve the static files and proxy Janus gateway connections using SSL
+(i.e. HTTPS). As explained in the [README](README.md), the usage of SSL is
+highly recommended in most scenarios.
 
-## Generating static files
-
-By default, Jangouts will try to use websockets. It could be changed easily
-just setting the `janusServer` parameter in `src/app/config.local.json`, as
-shown in the [README](README.md).
-
-After configuration is set, execute the following command to generate the
-files:
-
-```bash
-gulp build
-```
-
-That will result in a new `dist` folder containing all the files that must be
-served to the clients.
+When following these instructions, please beware trailing slashes in the example
+URLs and don't omit them unless you know what you are doing. Often
+`http://example.url/dir` has a different meaning than `http://example.url/dir/`.
 
 ## Configuring Apache
 
 Any web server can be used. As a reference, the configuration of Apache2 for a
 standard Jangouts instance using virtual hosts with SSL support is shown below.
+As explained in the [README](README.md), it's only necessary to serve the static
+files that are contained in the `dist` directory of the Jangouts release.
 
 ```
 <VirtualHost _default_:443>
@@ -55,20 +45,33 @@ standard Jangouts instance using virtual hosts with SSL support is shown below.
   </Directory>
 
    # Set a proxy to Janus
+  ProxyRequests Off
   ProxyVia Off
   ProxyPass /janus/ ws://127.0.0.1:8188/janus/
-  ProxyPassReverse /janus/ ws://127.0.0.1:8188/janus
+  ProxyPassReverse /janus/ ws://127.0.0.1:8188/janus/
 </VirtualHost>
 ```
 
-Using websockets is not mandatory although is recommended. If you prefer using
-HTTP, just change the Jangouts configuration and set the proxy section to
+Using websockets to interact with Janus is not mandatory although is
+recommended. If you prefer using plain REST queries for any reason,
+just change the Jangouts configuration and set the proxy section to
 something like:
 
 ```
  ProxyRequests Off
  ProxyVia Off
- ProxyPass /janus http://127.0.0.1:8088/janus
- ProxyPassReverse /janus http://127.0.0.1:8088/janus
- ProxyRequests Off
+ ProxyPass /janus/ http://127.0.0.1:8088/janus/
+ ProxyPassReverse /janus/ http://127.0.0.1:8088/janus/
+```
+
+## Configuring Jangouts
+
+By default, Jangouts will try to connect directly to the Janus gateway. It's
+easy to force it to connect through the proxy instead by just setting the
+`janusServer` parameter in `/path/to/the/static/files/config.json` to something
+like:
+```json
+{
+  "janusServer": "https://example.com/janus/"
+}
 ```

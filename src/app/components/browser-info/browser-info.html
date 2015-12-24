@@ -27,11 +27,21 @@
   is recommended (see exception below).
   </p>
   <p>
-  There is a known bug in Chromium 46 that causes it to crash during
-  initialization of WebRTC connections when running in sandbox mode (which
-  is the default). If Chromium crashes when entering a Jangouts room, close it
-  and execute it again adding the <code>--no-sandbox</code> parameter to the
-  command line.
+  There is a known bug in Chromium 46 (and maybe other versions of both Chrome
+  and Chromium) that causes it to crash during initialization of WebRTC
+  connections when running in sandbox mode (which is the default). If
+  Chrom(e/ium) crashes when entering a Jangouts room, close it and execute it
+  again adding the <code>--no-sandbox</code> parameter to the command line.
+  </p>
+  <p>
+  Chrome and Chromium 47 (and probably more recent versions) seem to refuse to
+  send WebRTC content (neither audio or video) over plain HTTP.
+  <span ng-if="vm.usingSSL()">You should not be affected by that problem, since
+  you are using a SSL (HTTPS) connection.</span>
+  <span ng-if="!vm.usingSSL() && vm.httpsUrl()">
+  To avoid this and other problems, it's probably a good idea to access the
+  <a class="alert-link" ng-href="{{vm.httpsUrl()}}">SSL (HTTPS) version</a>
+  of this site.</span>
   </p>
 </div>
 <div class="modal-footer">

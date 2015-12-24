@@ -16,24 +16,23 @@ Jangouts is a JavaScript application running exclusively client-side (i.e. in
 the browser). The server simply needs to provide a bunch of static files
 through a web server.
 
-The following set up is aimed to be used in development environment. If you
-want to go to production, take a look at the [deployment
-instructions](DEPLOYMENT.md). Anyway, it's strongly recommended to set up the
-development environment to get in touch with Jangouts.
-
 ### Step 1. Janus Gateway
 
 All the server-side WebRTC handling is performed by Janus Gateway, so the first
-requirement is a running janus server with the videoroom plugin enabled and a
-valid list of rooms in the ```janus.plugin.videoroom.cfg``` file. For most Linux
-distributions that translates into installing the ```janus-gateway``` package.
-For (open)SUSE distributions, the package can be easily found at
+requirement is a running janus server with support for data channels compiled
+in, with the videoroom plugin enabled and with a valid list of rooms in the
+`janus.plugin.videoroom.cfg` file. For most Linux distributions that
+translates into installing the `janus` or `janus-gateway` package.
+Make sure those packages include data channels support. Compiling Janus Gateway
+from the sources is, of course, also an option.
+
+For (open)SUSE distributions, a proper package can be easily found at
 [software.opensuse.org](https://software.opensuse.org/package/janus-gateway) and
 installed using 1 Click Install.
 
-For security reasons, (open)SUSE package does not include SSL certificates
-shipped by default with Janus Gateway. To generate a self-signed certificate,
-you can use OpenSSL:
+For security reasons, the (open)SUSE package does not include the SSL
+certificates shipped by default with Janus Gateway. To generate a self-signed
+certificate, use OpenSSL:
 
 ```sh
 cd /usr/share/janus/certs
@@ -50,102 +49,61 @@ sudo systemctl start janus.service
 sudo systemctl enable janus.service # to start it also after reboot
 ```
 
-### Step 2. Configure Jangouts
+### Step 2. Download and configure Jangouts
 
-The first step to configure Jangouts is to get a local copy of its repository:
+The easiest way to get Jangouts is to download the latest archive from the
+[Jangouts releases page at Github](https://github.com/jangouts/jangouts/releases).
+For deployment purposes, the only relevant directory in that archive is
+the one called `dist`, which contains the files to be served by the HTTP
+server to the participants' browsers. That includes the file called
+`config.json` that can be tweaked to point the participants to any Janus
+server, to enable extra debugging, etc. The file already contains sensible
+defaults that should work out of the box for most cases. It's fine to have some
+configuration parameters set to `null` in that file, Jangouts will try to guess
+the proper value during runtime.
 
-```sh
-git clone https://github.com/jangouts/jangouts
-```
+### Step 3. Serve the `dist` folder
 
-If `git` is command not found, then install Git from you packager. For example, if you
-are running (open)SUSE you could type:
-```sh
-sudo zypper in git
-```
+Given than a Janus Gateway server is running and reachable and that
+`config.json` contains the proper values (usually just the default ones), all
+that needs to be done is to serve the content of the `dist` directory to the
+clients. Any web server, such as Apache, can be used for that purpose.
 
-Then you could adapt the configuration by creating a file called
-`src/config.json`. You have an sample file in `src/config.json.sample`.
+The simplest way (although not the cleanest) to do such thing in an (open)SUSE
+system would be:
 
-For a development environment, the next configuration would be fine:
+1. `sudo zypper in apache2`
+2. Copy the content of `dist` directly into `/srv/www/htdocs/`
+3. `sudo systemctl start apache2.service`
 
-```json
-{
-  "janusServer": "http://localhost:8088/janus"
-}
-```
+See the [deployment instructions](DEPLOYMENT.md) for more information about how
+to properly configure Apache.
 
-### Step 3. Install requirements
+## A note about security and browsers
 
-In order to develop Jangouts, you need to install [Node.js](http://nodejs.org),
- [npm](http://npmjs.com), [Bower](http://bower.io)
-and [Gulp.js](http://gulpjs.com).
-
-Node.js and npm should be available in any Linux distribution. For example, if you’re
-running (open)SUSE you could type:
-
-```sh
-sudo zypper in nodejs nodejs-npm
-```
-
-Take into account that, in some cases, npm is bundled in the same package as Node.js.
-
-If you prefer, you could use [Node Version
-Manager](https://github.com/creationix/nvm) to install Node.js and npm.
-
-Now, you must install Bower and Gulp.js globally through npm. Just type:
-
-```sh
-sudo npm install -g bower gulp
-```
-
-### Step 4. Install dependencies
-
-This project uses npm to manage development dependencies and Bower for runtime dependencies.
-Those dependencies are defined in `package.json` and `bower.json` files. To install them,
-just type:
-
-```sh
-npm install && bower install
-```
-
-Bear in mind that every time a new dependency is added, you must run this command again.
-
-### Step 5. Start the webserver
-
-If you only want to make some development, you don’t need to install any
-webserver. Just type:
-
-```sh
-gulp serve
-```
-
-Now you should be able to access with your browser through the URL
-`http://localhost:3000/`.
-
-## A note about screen sharing
-
-Browsers will refuse to allow screen sharing through WebRTC for
-connections not using SSL. Thus, to allow users of your Jangouts
-instance to use the screen sharing functionality you will have to
-provide HTTPS access to both the files and the Janus gateway, like shown
-in the [deployment instructions](DEPLOYMENT.md).
+Browsers will refuse to allow screen sharing through WebRTC for connections not
+using SSL. In some cases, they will even refuse to send any WebRTC content
+at all, neither video or audio. Thus, to allow users of your Jangouts instance
+to use the screen sharing functionality (or, in some cases, to use Jangouts at
+all) you will have to provide HTTPS access to both the files and the Janus
+gateway, like shown in the [deployment instructions](DEPLOYMENT.md).
 
 ## Troubleshooting
 
-When Jangouts does not work, there is a wide variety of ways how to debug it.
-Usually the easiest one is to use browser debug tools.
+If Jangouts does not work, please check the
+[troubleshooting guide](TROUBLES.md).
 
-### unreachable janus
+## Developing Jangouts
 
-When the reported error is something like _cannot establish connection to server at ws://.../janus_
-it usually means there is some problem with Janus. So check if Janus is running properly. If you are
-using systemd, e.g. using the mentioned (open)SUSE packages, use ```sudo systemctl status janus.service```.
-If the status is "failed", check for possible reasons in ```journalctl --unit janus.service```.
+In order to modify Jangouts, it's necessary to install some development tools.
+That setup is detailed in the [development instructions](DEVELOPMENT.md).
 
 ## Acknowledgments
 
-* [Janus Gateway](http://janus.conf.meetecho.com/)
+* [Janus Gateway](http://janus.conf.meetecho.com/) developers, for such a
+powerful and versatile tool.
+* [SUSE Linux](http://www.suse.com), for the awesome
+[Hackweek](http://hackweek.suse.com) initiative.
 
 ## License
 

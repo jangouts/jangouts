@@ -13,10 +13,16 @@
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
-      'ScreenShareService'];
+      'ScreenShareService', 'RequestService'];
 
+  /**
+   * Service to communication with janus room
+   * @constructor
+   * @memberof module:janusHangouts
+   */
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
-      FeedConnection, DataChannelService, ActionService, jhConfig, ScreenShareService) {
+      FeedConnection, DataChannelService, ActionService, jhConfig,
+      ScreenShareService, RequestService) {
     this.enter = enter;
     this.leave = leave;
     this.setRoom = setRoom;
@@ -41,7 +47,7 @@
       this.server = defaultJanusServer();
     }
 
-    if (jhConfig.janusServerSSL && (window.location.protocol === "https:")) {
+    if (jhConfig.janusServerSSL && RequestService.usingSSL()) {
       this.server = jhConfig.janusServerSSL;
     }
 
@@ -49,7 +55,7 @@
       var wsProtocol;
       var wsPort;
 
-      if (window.location.protocol === "https:") {
+      if (RequestService.usingSSL()) {
         wsProtocol = "wss:";
         wsPort = "8989";
       } else {
