@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhScreenShareHint', jhScreenShareHintDirective);
 
-  jhScreenShareHintDirective.$inject = ['ScreenShareService'];
+  jhScreenShareHintDirective.$inject = ['ScreenShareService', 'RequestService'];
 
-  function jhScreenShareHintDirective(ScreenShareService) {
+  function jhScreenShareHintDirective(ScreenShareService, RequestService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/screen-share/jh-screen-share-hint.html',
@@ -28,8 +28,8 @@
       var vm = this;
 
       vm.showHelp = function() { ScreenShareService.showHelp(); };
-      vm.usingSSL = function() { return ScreenShareService.usingSSL(); };
-      vm.httpsUrl = function() { return ScreenShareService.httpsUrl(); };
+      vm.usingSSL = function() { return RequestService.usingSSL(); };
+      vm.httpsUrl = function() { return RequestService.httpsUrl(); };
       vm.visible = visible;
 
       function visible() {

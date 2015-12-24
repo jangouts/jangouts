@@ -11,8 +11,12 @@
   angular.module('janusHangouts')
     .controller('BrowserInfoCtrl', BrowserInfoCtrl);
 
-  function BrowserInfoCtrl($uibModalInstance) {
+  BrowserInfoCtrl.$inject = ["$uibModalInstance", "RequestService"];
+
+  function BrowserInfoCtrl($uibModalInstance, RequestService) {
     var vm = this;
+    vm.usingSSL = function() { return RequestService.usingSSL(); };
+    vm.httpsUrl = function() { return RequestService.httpsUrl(); };
     vm.close = close;
 
     function close() {

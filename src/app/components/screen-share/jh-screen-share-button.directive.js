@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhScreenShareButton', jhScreenShareButtonDirective);
 
-  jhScreenShareButtonDirective.$inject = ['ScreenShareService', 'RoomService'];
+  jhScreenShareButtonDirective.$inject = ['ScreenShareService', 'RoomService', 'RequestService'];
 
-  function jhScreenShareButtonDirective(ScreenShareService, RoomService) {
+  function jhScreenShareButtonDirective(ScreenShareService, RoomService, RequestService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/screen-share/jh-screen-share-button.html',
@@ -37,7 +37,7 @@
       }
 
       function enabled() {
-        return (ScreenShareService.usingSSL() && !ScreenShareService.getInProgress());
+        return (RequestService.usingSSL() && !ScreenShareService.getInProgress());
       }
 
       function title() {
