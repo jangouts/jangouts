@@ -11,13 +11,13 @@
   angular.module('janusHangouts')
     .controller('ScreenShareHelpCtrl', ScreenShareHelpCtrl);
 
-  function ScreenShareHelpCtrl($modalInstance) {
+  function ScreenShareHelpCtrl($uibModalInstance) {
     var vm = this;
     vm.close = close;
     vm.hostname = hostname;
 
     function close() {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
     }
 
     function hostname() {

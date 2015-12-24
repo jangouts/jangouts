@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .service('ScreenShareService', ScreenShareService);
 
-  ScreenShareService.$inject = ['$timeout', '$modal', 'jhConfig'];
+  ScreenShareService.$inject = ['$timeout', '$uibModal', 'jhConfig'];
 
-  function ScreenShareService($timeout, $modal, jhConfig) {
+  function ScreenShareService($timeout, $uibModal, jhConfig) {
     this.inProgress = false;
     this.setInProgress = setInProgress;
     this.getInProgress = getInProgress;
@@ -49,7 +49,7 @@
     }
 
     function showHelp() {
-      $modal.open({
+      $uibModal.open({
         animation: true,
         templateUrl: 'app/components/screen-share/screen-share-help.html',
         controller: 'ScreenShareHelpCtrl',

@@ -11,12 +11,12 @@
   angular.module('janusHangouts')
     .controller('BrowserInfoCtrl', BrowserInfoCtrl);
 
-  function BrowserInfoCtrl($modalInstance) {
+  function BrowserInfoCtrl($uibModalInstance) {
     var vm = this;
     vm.close = close;
 
     function close() {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
     }
   }
 })();
