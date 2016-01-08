@@ -72,6 +72,14 @@ easy to force it to connect through the proxy instead by just setting the
 like:
 ```json
 {
-  "janusServer": "https://example.com/janus/"
+  "janusServer": "ws://example.com/janus/"
+}
+```
+
+If you're using the Janus REST interface, use `http`:
+
+```json
+{
+  "janusServer": "http://example.com/janus/"
 }
 ```
