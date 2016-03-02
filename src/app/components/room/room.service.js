@@ -149,7 +149,7 @@
             connection.publish({
               success: function() {
                   //start session unmuted?
-                  if(participants < 1){
+                  if(participants < 4){
                       toggleChannel('audio');
                   }
               },
