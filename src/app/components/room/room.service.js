@@ -13,7 +13,7 @@
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
-      'ScreenShareService', 'RequestService'];
+      'ScreenShareService', 'RequestService', 'MuteNotifier'];
 
   /**
    * Service to communication with janus room
@@ -22,7 +22,7 @@
    */
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       FeedConnection, DataChannelService, ActionService, jhConfig,
-      ScreenShareService, RequestService) {
+      ScreenShareService, RequestService, MuteNotifier) {
     this.enter = enter;
     this.leave = leave;
     this.setRoom = setRoom;
@@ -144,12 +144,23 @@
             ActionService.enterRoom(msg.id, username, connection);
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
+
+            var participants = 0;
             connection.publish({
+              success: function() {
+                  //start session unmuted?
+                  if(participants < 4){
+                      toggleChannel('audio');
+                  }else{
+                      MuteNotifier.speaking();
+                  }
+              },
               error: function() { connection.publish({noCamera: true}); }
             });
 
             // Step 5. Attach to existing feeds, if any
             if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
+              participants = msg.publishers.length;
               that.subscribeToFeeds(msg.publishers, that.room.id);
             }
             // The room has been destroyed

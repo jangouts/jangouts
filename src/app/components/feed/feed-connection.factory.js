@@ -64,7 +64,7 @@
         options = options || {};
 
         var media = {videoRecv: false, audioRecv: false};
-        var cfg = {video: true, audio: true};
+        var cfg = {video: true, audio: false};
         if (this.role === "main") {
           if (options.noCamera) {
             media.videoSend = false;
