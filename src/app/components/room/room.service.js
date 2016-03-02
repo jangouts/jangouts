@@ -13,7 +13,7 @@
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
-      'ScreenShareService', 'RequestService', 'MuteNotifier'];
+      'ScreenShareService', 'RequestService'];
 
   /**
    * Service to communication with janus room
@@ -22,7 +22,7 @@
    */
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       FeedConnection, DataChannelService, ActionService, jhConfig,
-      ScreenShareService, RequestService, MuteNotifier) {
+      ScreenShareService, RequestService) {
     this.enter = enter;
     this.leave = leave;
     this.setRoom = setRoom;
@@ -149,10 +149,8 @@
             connection.publish({
               success: function() {
                   //start session unmuted?
-                  if(participants < 4){
+                  if(participants < 1){
                       toggleChannel('audio');
-                  }else{
-                      MuteNotifier.speaking();
                   }
               },
               error: function() { connection.publish({noCamera: true}); }
