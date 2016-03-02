@@ -101,6 +101,9 @@
     function doEnter(username) {
       var $$rootScope = $rootScope;
       var connection = null;
+      
+      //max number of participants who will join session unmuted
+      var joinUnmutedLimit = 3; 
 
       // Create new session
       that.janus.attach({
@@ -145,11 +148,10 @@
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
 
-            var participants = 0;
             connection.publish({
               success: function() {
                   //start session unmuted?
-                  if(participants < 4){
+                  if (!(msg.publishers instanceof Array) || msg.publishers.length <= joinUnmutedLimit){
                       toggleChannel('audio');
                   }
               },
@@ -158,7 +160,6 @@
 
             // Step 5. Attach to existing feeds, if any
             if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
-              participants = msg.publishers.length;
               that.subscribeToFeeds(msg.publishers, that.room.id);
             }
             // The room has been destroyed
