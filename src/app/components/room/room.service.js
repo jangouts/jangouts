@@ -101,6 +101,9 @@
     function doEnter(username) {
       var $$rootScope = $rootScope;
       var connection = null;
+      
+      //max number of participants who will join session unmuted
+      var joinUnmutedLimit = 3; 
 
       // Create new session
       that.janus.attach({
@@ -144,7 +147,14 @@
             ActionService.enterRoom(msg.id, username, connection);
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
+
             connection.publish({
+              success: function() {
+                  //start session unmuted?
+                  if (!(msg.publishers instanceof Array) || msg.publishers.length <= joinUnmutedLimit){
+                      toggleChannel('audio');
+                  }
+              },
               error: function() { connection.publish({noCamera: true}); }
             });
 
