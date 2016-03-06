@@ -16,8 +16,11 @@
   function MuteNotifier($animate, notifications, ngAudio, ActionService) {
     this.speaking = speaking;
     this.muted = muted;
+    this.joinedMuted = joinedMuted;
+    this.dismissLastNotification = dismissLastNotification;
     var bell = ngAudio.load("assets/sounds/bell.ogg");
     var noShow = {};
+    var lastNotification = null;
 
     function muted() {
       info("You have been muted by another user.");
@@ -27,6 +30,16 @@
       info("Trying to say something? You are muted.");
     }
 
+    function joinedMuted(){
+      info("You're muted. Unmute yourself to join the conversation!");
+    }
+
+    function dismissLastNotification(){
+      if(lastNotification !== null) {
+        lastNotification.close();
+      }
+    }
+
     function info(text) {
       if (text in noShow)
       {
@@ -34,6 +47,7 @@
       }
       var notif = notifications.info("Muted", text, {
         show: function() { bell.play(); },
+        close: function() { lastNotification = null; },
         duration: 20000,
         attachTo: $('#videochat-body'),
         actions: [{
@@ -47,6 +61,7 @@
           fn: function() { noShow[text] = true; notif.close(); }
         }]
       });
+      lastNotification = notif;
     }
   }
 }());

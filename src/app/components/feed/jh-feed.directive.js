@@ -61,6 +61,10 @@
             // Reset the warning timeout
             mutedWarningTimeout = now();
           });
+          scope.$on('muted.Join', function() {
+            mutedWarningTimeout = secondsFromNow(60);
+            MuteNotifier.joinedMuted();
+          });
           scope.$watch('vm.feed.isVoiceDetected()', function(newVal) {
             // Display warning only if muted (check for false, undefined means
             // still connecting) and the timeout has been reached
