@@ -17,7 +17,6 @@
     "lodash": "~3.10.1",
     "ngEmbed": "ng-embed#~2.0.3",
     "angular-hotkeys": "devonzara/angular-hotkeys#18915a4fe83281a5f8a",
-    "mousetrap": "ccampbell/mousetrap#ebcf23aa6ebaa120b3641d11",
     "angular-gridster": "~0.13.5",
     "angular-extended-notifications": "~1.0.4",
     "angular-audio": "~1.7.1",
