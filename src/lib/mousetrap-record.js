@@ -5,6 +5,8 @@
  *
  * LICENSED UNDER APACHE 2.0 LICENSE
  * 
+ * Original source: https://github.com/ccampbell/mousetrap/blob/master/plugins/record/mousetrap-record.js#ebcf23aa6ebaa120b3641d11
+ *
  * Modifications: Copyright (C) 2015 SUSE Linux
  */
 
