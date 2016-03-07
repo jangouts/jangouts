@@ -24,6 +24,7 @@
     this.writeChatMessage = writeChatMessage;
     this.publishScreen = publishScreen;
     this.toggleChannel = toggleChannel;
+    this.setMainFeedChannel = setMainFeedChannel;
 
     function enterRoom(feedId, display, connection) {
       var feed = new Feed({
@@ -130,6 +131,13 @@
       } else {
         feed.setEnabledChannel(type, true);
       }
+    }
+
+    function setMainFeedChannel(type, boolval) {
+      var feed = FeedsService.findMain();
+      if (!feed) { return; }
+
+      feed.setEnabledChannel(type, boolval);
     }
   }
 }());

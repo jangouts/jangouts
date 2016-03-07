@@ -35,12 +35,14 @@
     this.subscribeToFeeds = subscribeToFeeds;
     this.subscribeToFeed = subscribeToFeed;
     this.toggleChannel = toggleChannel;
+    this.pushToTalk = pushToTalk;
     this.room = null;
     this.rooms = null;
     this.janus = null;
 
     var that = this;
     var startMuted = false;
+    var holdingKey = false;
 
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
@@ -414,6 +416,16 @@
 
     function toggleChannel(type, feed) {
       ActionService.toggleChannel(type, feed);
+    }
+
+    function pushToTalk(keyevent){
+      if(keyevent === 'keydown' && !holdingKey){
+        ActionService.setMainFeedChannel('audio',true);
+        holdingKey = true;
+      }else if(keyevent === 'keyup'){
+        ActionService.setMainFeedChannel('audio',false);
+        holdingKey = false;
+      }
     }
 
 
