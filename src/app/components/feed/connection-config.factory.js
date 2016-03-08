@@ -24,7 +24,7 @@
     return function(pluginHandle, wantedInit, jsep, ok) {
       var current = {};
       var requested = null;
-      var wanted = {audio: false, video: true};
+      var wanted = {audio: true, video: true};
       var okCallback = null;
       _.assign(wanted, wantedInit);
       // Initial configure

@@ -40,6 +40,7 @@
     this.janus = null;
 
     var that = this;
+    var startMuted = false;
 
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
@@ -101,9 +102,6 @@
     function doEnter(username) {
       var $$rootScope = $rootScope;
       var connection = null;
-      
-      //max number of participants who will join session unmuted
-      var joinUnmutedLimit = 3; 
 
       // Create new session
       that.janus.attach({
@@ -120,6 +118,12 @@
         consentDialog: function(on) {
           console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
           $$rootScope.$broadcast('consentDialog.changed', on);
+          if(!on){
+            //notify if joined muted
+            if (startMuted) {
+              $$rootScope.$broadcast('muted.Join');
+            }
+          }
         },
         ondataopen: function() {
           console.log("The publisher DataChannel is available");
@@ -148,14 +152,13 @@
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
 
+            if (jhConfig.joinUnmutedLimit !== undefined && jhConfig.joinUnmutedLimit !== null) {
+              startMuted = (msg.publishers instanceof Array) && msg.publishers.length > jhConfig.joinUnmutedLimit;
+            }
+
             connection.publish({
-              success: function() {
-                  //start session unmuted?
-                  if (!(msg.publishers instanceof Array) || msg.publishers.length <= joinUnmutedLimit){
-                      toggleChannel('audio');
-                  }
-              },
-              error: function() { connection.publish({noCamera: true}); }
+              muted: startMuted,
+              error: function() { connection.publish({noCamera: true, muted: startMuted}); }
             });
 
             // Step 5. Attach to existing feeds, if any
@@ -412,6 +415,7 @@
     function toggleChannel(type, feed) {
       ActionService.toggleChannel(type, feed);
     }
+
 
     /**
      * Broadcast status information of all our feeds when a data channel is

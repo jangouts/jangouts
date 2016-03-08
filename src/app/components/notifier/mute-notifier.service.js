@@ -11,13 +11,17 @@
   angular.module('janusHangouts')
     .service('MuteNotifier',  MuteNotifier);
 
-  MuteNotifier.$inject = ['$animate', 'notifications', 'ngAudio', 'ActionService'];
+  MuteNotifier.$inject = ['$animate', 'notifications', 'ngAudio', 'ActionService', "jhConfig"];
 
-  function MuteNotifier($animate, notifications, ngAudio, ActionService) {
+  function MuteNotifier($animate, notifications, ngAudio, ActionService, jhConfig) {
     this.speaking = speaking;
     this.muted = muted;
+    this.joinedMuted = joinedMuted;
+    this.dismissLastNotification = dismissLastNotification;
     var bell = ngAudio.load("assets/sounds/bell.ogg");
     var noShow = {};
+    var lastNotification = null;
+    var notifying = false;
 
     function muted() {
       info("You have been muted by another user.");
@@ -27,13 +31,36 @@
       info("Trying to say something? You are muted.");
     }
 
+    function joinedMuted(){
+      var notiftext = "You joined muted because ";
+      if(jhConfig.joinUnmutedLimit == 0){
+        notiftext += "everyone who joins is muted by default.";
+      }
+      else if(jhConfig.joinUnmutedLimit == 1){
+        notiftext +=  "there is more than one participant.";
+      }
+      else{
+        notiftext += "there are more than " + jhConfig.joinUnmutedLimit + " participants.";
+      }
+
+      info(notiftext);
+
+    }
+
+    function dismissLastNotification(){
+      if(lastNotification !== null) {
+        lastNotification.close();
+      }
+    }
+
     function info(text) {
-      if (text in noShow)
+      if (text in noShow || notifying)
       {
         return;
       }
       var notif = notifications.info("Muted", text, {
-        show: function() { bell.play(); },
+        show: function() { notifying = true; bell.play(); },
+        close: function() {notifying = false; lastNotification = null; },
         duration: 20000,
         attachTo: $('#videochat-body'),
         actions: [{
@@ -47,6 +74,7 @@
           fn: function() { noShow[text] = true; notif.close(); }
         }]
       });
+      lastNotification = notif;
     }
   }
 }());
