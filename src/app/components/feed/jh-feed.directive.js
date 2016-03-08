@@ -31,7 +31,7 @@
 
     function jhFeedLink(scope, element) {
       scope.$watch('vm.feed.getStream()', function(newVal) {
-        if (newVal !== undefined && newVal !== null) {
+        if (newVal !== undefined) {
           var video = $('video', element)[0];
           // Mute video of the local stream
           video.muted = scope.vm.feed.isPublisher;
