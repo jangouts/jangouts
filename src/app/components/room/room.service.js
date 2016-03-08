@@ -154,12 +154,12 @@
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
 
-			if (jhConfig.joinUnmutedLimit !== undefined && jhConfig.joinUnmutedLimit !== null) {
-				startMuted = (msg.publishers instanceof Array) && msg.publishers.length > jhConfig.joinUnmutedLimit;
-			}
+            if (jhConfig.joinUnmutedLimit !== undefined && jhConfig.joinUnmutedLimit !== null) {
+                startMuted = (msg.publishers instanceof Array) && msg.publishers.length > jhConfig.joinUnmutedLimit;
+            }
 
             connection.publish({
-			  muted: startMuted,
+              muted: startMuted,
               error: function() { connection.publish({noCamera: true, muted: startMuted}); }
             });
 

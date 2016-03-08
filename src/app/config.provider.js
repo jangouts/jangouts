@@ -10,7 +10,7 @@
         "httpsAvailable"  : true,
         "httpsUrl"        : null,
         "videoThumbnails" : true,
-		"joinUnmutedLimit": 3,
+        "joinUnmutedLimit": 3,
       };
 
       return {
