@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .service('MuteNotifier',  MuteNotifier);
 
-  MuteNotifier.$inject = ['$animate', 'notifications', 'ngAudio', 'ActionService'];
+  MuteNotifier.$inject = ['$animate', 'notifications', 'ngAudio', 'ActionService', "jhConfig"];
 
-  function MuteNotifier($animate, notifications, ngAudio, ActionService) {
+  function MuteNotifier($animate, notifications, ngAudio, ActionService, jhConfig) {
     this.speaking = speaking;
     this.muted = muted;
     this.joinedMuted = joinedMuted;
@@ -21,6 +21,7 @@
     var bell = ngAudio.load("assets/sounds/bell.ogg");
     var noShow = {};
     var lastNotification = null;
+    var notifying = false;
 
     function muted() {
       info("You have been muted by another user.");
@@ -31,7 +32,19 @@
     }
 
     function joinedMuted(){
-      info("You're muted. Unmute yourself to join the conversation!");
+      var notiftext = "You joined muted because ";
+      if(jhConfig.joinUnmutedLimit == 0){
+        notiftext += "everyone who joins is muted by default.";
+      }
+      else if(jhConfig.joinUnmutedLimit == 1){
+        notiftext +=  "there is more than one participant.";
+      }
+      else{
+        notiftext += "there are more than " + jhConfig.joinUnmutedLimit + " participants.";
+      }
+
+      info(notiftext);
+
     }
 
     function dismissLastNotification(){
@@ -41,13 +54,13 @@
     }
 
     function info(text) {
-      if (text in noShow)
+      if (text in noShow || notifying)
       {
         return;
       }
       var notif = notifications.info("Muted", text, {
-        show: function() { bell.play(); },
-        close: function() { lastNotification = null; },
+        show: function() { notifying = true; bell.play(); },
+        close: function() {notifying = false; lastNotification = null; },
         duration: 20000,
         attachTo: $('#videochat-body'),
         actions: [{

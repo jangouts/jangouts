@@ -62,7 +62,7 @@
             mutedWarningTimeout = now();
           });
           scope.$on('muted.Join', function() {
-            mutedWarningTimeout = secondsFromNow(60);
+            mutedWarningTimeout = now();
             MuteNotifier.joinedMuted();
           });
           scope.$watch('vm.feed.isVoiceDetected()', function(newVal) {
