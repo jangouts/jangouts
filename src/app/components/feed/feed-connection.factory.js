@@ -67,7 +67,7 @@
         var cfg = {video: true, audio: true};
         if (this.role === "main") {
           if (options.muted){
-          cfg.audio = false;
+            cfg.audio = false;
           }
           if (options.noCamera) {
             media.videoSend = false;

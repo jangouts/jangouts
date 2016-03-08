@@ -16,7 +16,7 @@
     "angular-block-ui": "~0.2.0",
     "lodash": "~3.10.1",
     "ngEmbed": "ng-embed#~2.0.3",
-    "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.6.0",
+    "angular-hotkeys": "devonzara/angular-hotkeys#18915a4fe83281a5f8a",
     "angular-gridster": "~0.13.5",
     "angular-extended-notifications": "~1.0.4",
     "angular-audio": "~1.7.1",

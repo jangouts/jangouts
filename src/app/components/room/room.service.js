@@ -35,12 +35,14 @@
     this.subscribeToFeeds = subscribeToFeeds;
     this.subscribeToFeed = subscribeToFeed;
     this.toggleChannel = toggleChannel;
+    this.pushToTalk = pushToTalk;
     this.room = null;
     this.rooms = null;
     this.janus = null;
 
     var that = this;
     var startMuted = false;
+    var holdingKey = false;
 
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
@@ -153,7 +155,7 @@
             // Step 4a (parallel with 4b). Publish our feed on server
 
             if (jhConfig.joinUnmutedLimit !== undefined && jhConfig.joinUnmutedLimit !== null) {
-              startMuted = (msg.publishers instanceof Array) && msg.publishers.length > jhConfig.joinUnmutedLimit;
+                startMuted = (msg.publishers instanceof Array) && msg.publishers.length > jhConfig.joinUnmutedLimit;
             }
 
             connection.publish({
@@ -414,6 +416,16 @@
 
     function toggleChannel(type, feed) {
       ActionService.toggleChannel(type, feed);
+    }
+
+    function pushToTalk(keyevent){
+      if(keyevent === 'keydown' && !holdingKey){
+        ActionService.setMainFeedChannel('audio',true);
+        holdingKey = true;
+      }else if(keyevent === 'keyup'){
+        ActionService.setMainFeedChannel('audio',false);
+        holdingKey = false;
+      }
     }
 
 
