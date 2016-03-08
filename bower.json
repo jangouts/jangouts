@@ -12,7 +12,7 @@
     "bootstrap-sass-official": "3.3 <= 3.3.4",
     "angular-bootstrap": "~0.14.3",
     "angular": "~1.4.8",
-    "janus-gateway": "git://github.com/meetecho/janus-gateway.git#9bd3a2f",
+    "janus-gateway": "git://github.com/meetecho/janus-gateway.git#2ef5bb8",
     "angular-block-ui": "~0.2.0",
     "lodash": "~3.10.1",
     "ngEmbed": "ng-embed#~2.0.3",

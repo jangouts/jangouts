@@ -27,7 +27,7 @@
 
     function jhMainFeedLink(scope, element) {
       scope.$watch('vm.feed.getStream()', function(newVal) {
-        if (newVal !== undefined) {
+        if (newVal !== undefined && newVal !== null) {
           var video = $('video', element)[0];
           video.muted = true;
           attachMediaStream(video, newVal);
