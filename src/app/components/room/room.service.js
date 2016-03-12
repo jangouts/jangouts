@@ -153,7 +153,7 @@
             // Step 4a (parallel with 4b). Publish our feed on server
 
             if (jhConfig.joinUnmutedLimit !== undefined && jhConfig.joinUnmutedLimit !== null) {
-              startMuted = (msg.publishers instanceof Array) && msg.publishers.length > jhConfig.joinUnmutedLimit;
+              startMuted = (msg.publishers instanceof Array) && msg.publishers.length >= jhConfig.joinUnmutedLimit;
             }
 
             connection.publish({

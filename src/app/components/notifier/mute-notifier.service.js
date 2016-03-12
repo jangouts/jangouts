@@ -33,10 +33,10 @@
 
     function joinedMuted(){
       var notiftext = "You joined muted because ";
-      if(jhConfig.joinUnmutedLimit == 0){
+      if(jhConfig.joinUnmutedLimit === 0){
         notiftext += "everyone who joins is muted by default.";
       }
-      else if(jhConfig.joinUnmutedLimit == 1){
+      else if(jhConfig.joinUnmutedLimit === 1){
         notiftext +=  "there is more than one participant.";
       }
       else{
