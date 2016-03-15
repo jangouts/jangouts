@@ -24,7 +24,7 @@
     this.writeChatMessage = writeChatMessage;
     this.publishScreen = publishScreen;
     this.toggleChannel = toggleChannel;
-    this.setMainFeedChannel = setMainFeedChannel;
+    this.setMedia = setMedia;
 
     function enterRoom(feedId, display, connection) {
       var feed = new Feed({
@@ -133,7 +133,12 @@
       }
     }
 
-    function setMainFeedChannel(type, boolval) {
+    /**
+     * Disable or enable audio or video for the main feed
+     * @param {channel type} type
+     * @param {Boolean} boolval
+     */
+    function setMedia(type, boolval) {
       var feed = FeedsService.findMain();
       if (!feed) { return; }
 

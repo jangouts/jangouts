@@ -418,12 +418,16 @@
       ActionService.toggleChannel(type, feed);
     }
 
+    /**
+     * Enable audio while holding key and disable audio when the key is released.
+     * @param keyevent Keyevent keydown or keyup
+     */
     function pushToTalk(keyevent){
       if(keyevent === 'keydown' && !holdingKey){
-        ActionService.setMainFeedChannel('audio',true);
+        ActionService.setMedia('audio',true);
         holdingKey = true;
       }else if(keyevent === 'keyup'){
-        ActionService.setMainFeedChannel('audio',false);
+        ActionService.setMedia('audio',false);
         holdingKey = false;
       }
     }
