@@ -1,8 +1,8 @@
-<button ng-class="{'btn-danger': vm.hotkeyActive }" class="btn" ng-click="vm.click()" title="{{vm.titleText}}">
+<button ng-class="{'btn-danger': vm.hotkeyActive }" class="btn" ng-click="vm.click($event)" title="{{vm.titleText}}">
   <span class="glyphicon glyphicon-bullhorn" aria-hidden="true">
   </span>
   <span ng-show="vm.showHotkey">
-    <kbd style="background-color:#f15a5c">
+    <kbd style="background-color:#f15a5c;line-height:16px;">
         {{vm.hotkey}}
     </kbd>
   </span>
