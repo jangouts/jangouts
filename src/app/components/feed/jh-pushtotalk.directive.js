@@ -37,7 +37,9 @@
             vm.click = click;
 
 
-            function click(){
+            function click($event){
+              $event.currentTarget.blur();
+
                 if(vm.hotkeyActive){
                     if(vm.hotkey !== null) {
                         setPushToTalk(null);
@@ -58,7 +60,7 @@
                     vm.toggleText = "";
                     var forbiddenShortcuts = ['shift+[','alt+m','alt+n','alt+q'];
 
-                    if(sequence !== undefined && sequence !== null && sequence[0].length > 0){
+                    if(sequence !== undefined && sequence !== null && sequence[0] !== undefined && sequence[0].length > 0){
 
                         if(forbiddenShortcuts.indexOf(sequence[0]) > -1) {
                             vm.toggleText ="This shortcut is already reserved!";
@@ -71,6 +73,8 @@
                             setPushToTalk(sequence[0]);
                         }
 
+                    }else{
+                      vm.hotkeyActive = false;
                     }
                 };
 
