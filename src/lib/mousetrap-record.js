@@ -75,10 +75,12 @@
         // remember this character if we're currently recording a sequence
         if (e.type == 'keydown') {
             if (character.length === 1 && _recordedCharacterKey) {
-                _recordCurrentCombo();
+                /*Modification Start*/
+               // _recordCurrentCombo();
+                /*Modification End*/
             }
 
-            for (i = 0; i < modifiers.length; ++i) {
+            for (var i = 0; i < modifiers.length; ++i) {
                 _recordKey(modifiers[i]);
             }
             _recordKey(character);
@@ -123,9 +125,9 @@
         _recordedSequence.push(_currentRecordedKeys);
         _currentRecordedKeys = [];
         _recordedCharacterKey = false;
-		/* Modification Start */
+        /* Modification Start */
         _finishRecording();
-		/* Modification End */
+        /* Modification End */
     }
 
     /**
@@ -210,15 +212,18 @@
         _handleKey.apply(self, arguments);
     };
 
-	/* Modification Start */
-	Mousetrap.prototype.abortRecord = function() {		 
-		_recordedSequenceCallback(null);
-		// reset all recorded state
+    /* Modification Start */
+    Mousetrap.prototype.abortRecord = function() {
+        if(_recordedSequenceCallback !== null){
+            _recordedSequenceCallback(null);
+        }
+        // reset all recorded state
         _recordedSequence = [];
         _recordedSequenceCallback = null;
         _currentRecordedKeys = [];
-	};
-	/* Modification End */
+
+    };
+    /* Modification End */
 
     Mousetrap.init();
 
