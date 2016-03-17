@@ -53,12 +53,12 @@
 
       /**
        * Negotiates WebRTC by creating a webRTC offer for sharing the audio and
-       * (optionally) video with the janus server. On success (the stream is
-       * created and accepted), publishes the corresponding feed on the janus
-       * server.
+       * (optionally) video with the janus server. The audio is optionally muted.
+       * On success (the stream is created and accepted), publishes the corresponding
+       * feed on the janus server.
        *
-       * @param {object} options - object with the noCamera boolean flag and
-       *        some callbacks (success, error)
+       * @param {object} options - object with the noCamera boolean flag, muted boolean flag,
+       * and some callbacks (success, error)
        */
       this.publish = function(options) {
         options = options || {};
@@ -66,6 +66,9 @@
         var media = {videoRecv: false, audioRecv: false};
         var cfg = {video: true, audio: true};
         if (this.role === "main") {
+          if (options.muted){
+          cfg.audio = false;
+          }
           if (options.noCamera) {
             media.videoSend = false;
             cfg.video = false;

@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhAudioButton', jhAudioButton);
 
-  jhAudioButton.$inject = ['RoomService'];
+  jhAudioButton.$inject = ['RoomService', 'MuteNotifier'];
 
-  function jhAudioButton(RoomService) {
+  function jhAudioButton(RoomService, MuteNotifier) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/feed/buttons/jh-audio-button.html',
@@ -37,6 +37,9 @@
 
       function toggle() {
         RoomService.toggleChannel("audio", feed);
+        if (feed.isPublisher && !feed.isLocalScreen && !feed.getAudioEnabled()) {
+          MuteNotifier.dismissLastNotification();
+        }
       }
 
       function showsEnable() {

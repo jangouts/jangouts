@@ -31,7 +31,7 @@
 
     function jhFeedLink(scope, element) {
       scope.$watch('vm.feed.getStream()', function(newVal) {
-        if (newVal !== undefined) {
+        if (newVal !== undefined && newVal !== null) {
           var video = $('video', element)[0];
           // Mute video of the local stream
           video.muted = scope.vm.feed.isPublisher;
@@ -60,6 +60,10 @@
           scope.$on('muted.byUser', function() {
             // Reset the warning timeout
             mutedWarningTimeout = now();
+          });
+          scope.$on('muted.Join', function() {
+            mutedWarningTimeout = now();
+            MuteNotifier.joinedMuted();
           });
           scope.$watch('vm.feed.isVoiceDetected()', function(newVal) {
             // Display warning only if muted (check for false, undefined means
