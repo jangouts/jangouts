@@ -27,6 +27,7 @@
         function jhPushToTalkButtonCtrl() {
             var titleText1 = "Set Push-to-talk hotkey or combination";
             var titleText2 =  "Disable Push-to-talk";
+            var ignoreClick = false;
 
             var vm = this;
             vm.hotkeyActive = false;
@@ -38,13 +39,16 @@
 
 
             function click($event){
+              if(ignoreClick)
+                 return;
+
               $event.currentTarget.blur();
 
                 if(vm.hotkeyActive){
                     if(vm.hotkey !== null) {
                         setPushToTalk(null);
                     }else{
-                        window.Mousetrap.abortRecord();
+                        window.Mousetrap.stopRecord();
                     }
                     vm.hotkeyActive = false;
                 }else {
@@ -64,9 +68,11 @@
 
                         if(forbiddenShortcuts.indexOf(sequence[0]) > -1) {
                             vm.toggleText ="This shortcut is already reserved!";
+                            ignoreClick = true;
                             var timeoutCallback = function(){
                                 vm.toggleText="";
                                 vm.hotkeyActive = false;
+                                ignoreClick = false;
                             };
                             $timeout(timeoutCallback, 3000);
                         }else{
@@ -78,7 +84,9 @@
                     }
                 };
 
-                window.Mousetrap.record(function(sequence) {
+                window.Mousetrap.record({
+                    recordSequence: false
+                }, function(sequence) {
                     recordCallback(sequence);
                 });
             }
