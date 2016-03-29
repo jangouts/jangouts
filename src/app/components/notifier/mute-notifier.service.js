@@ -32,15 +32,15 @@
     }
 
     function joinedMuted(){
-      var notiftext = "You joined muted because ";
-      if(jhConfig.joinUnmutedLimit == 0){
-        notiftext += "everyone who joins is muted by default.";
+      var notiftext = "You are muted because ";
+      if(jhConfig.joinUnmutedLimit === 0){
+        notiftext += "everyone who enters a room is muted by default.";
       }
-      else if(jhConfig.joinUnmutedLimit == 1){
-        notiftext +=  "there is more than one participant.";
+      else if(jhConfig.joinUnmutedLimit === 1){
+        notiftext +=  "there is already one participant in the room.";
       }
       else{
-        notiftext += "there are more than " + jhConfig.joinUnmutedLimit + " participants.";
+        notiftext += "there are already " + jhConfig.joinUnmutedLimit + " participants in the room.";
       }
 
       info(notiftext);
@@ -69,7 +69,7 @@
           fn: function() { ActionService.toggleChannel("audio"); notif.close(); }
         },
         {
-          label: 'Do not show again',
+          label: "Don't show again",
           className: 'btn btn-default',
           fn: function() { noShow[text] = true; notif.close(); }
         }]
