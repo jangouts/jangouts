@@ -36,8 +36,9 @@
 
 
             function click($event) {
-                if (ignoreClick)
+                if (ignoreClick) {
                     return;
+                }
 
                 $event.currentTarget.blur();
 
@@ -100,6 +101,7 @@
 
                 if (key !== null) {
                     var pttCallback = function(event) {
+                        event.preventDefault();
                         RoomService.pushToTalk(event.type);
                     };
 
