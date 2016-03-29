@@ -422,12 +422,12 @@
      * Enable audio while holding key and disable audio when the key is released.
      * @param keyevent Keyevent keydown or keyup
      */
-    function pushToTalk(keyevent){
-      if(keyevent === 'keydown' && !holdingKey){
-        ActionService.setMedia('audio',true);
+    function pushToTalk(keyevent) {
+      if (keyevent === 'keydown' && !holdingKey) {
+        ActionService.setMedia('audio', true);
         holdingKey = true;
-      }else if(keyevent === 'keyup'){
-        ActionService.setMedia('audio',false);
+      } else if (keyevent === 'keyup') {
+        ActionService.setMedia('audio', false);
         holdingKey = false;
       }
     }
