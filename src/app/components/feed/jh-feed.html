@@ -39,7 +39,11 @@
     </div>
   </div>
   <figcaption>
-    <span class="caption">{{ vm.feed.display }}</span>
+    <span class="caption" ng-dblclick="vm.isEditable()" ng-hide="vm.nameIsEditable">{{vm.feed.display}}</span>
+    <div class="caption" ng-show="vm.nameIsEditable" >
+      <input type="text" class="edit-textbox" ng-model="vm.feed.display">
+      <button class="btn btn-xs btn-danger edit-button" ng-click="vm.updateName()">OK</button>
+    </div>
     <div class="buttons">
       <jh-unpublish-button feed="vm.feed"></jh-unpublish-button>
       <jh-audio-button feed="vm.feed"></jh-audio-button>

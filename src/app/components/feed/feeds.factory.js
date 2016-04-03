@@ -293,6 +293,30 @@
       };
 
       /**
+       * notifying changes to the remote peers.
+       */
+      this.updateDisplay = function() {
+        var that = this;
+        $timeout(function() {
+          DataChannelService.sendStatus(that);
+        });
+      };
+
+      /**
+       * Sets display attribute for this feed. Works only for remote ones.
+       */
+      this.setDisplay = function(val) {
+        this.display = val;
+      }; 
+
+      /**
+       * Gets the display value for this feed
+       */
+      this.getDisplay = function() {
+        return this.display;
+      };
+
+      /**
        * Reads the representation of the local feed in order to send it to the
        * remote peers.
        *
@@ -304,7 +328,7 @@
         options = options || {};
         if (!options.exclude) { options.exclude = []; }
 
-        var attrs = ["audioEnabled", "videoEnabled", "speaking", "picture"];
+        var attrs = ["audioEnabled", "videoEnabled", "speaking", "picture", "display"];
         var status = {};
 
         _.forEach(attrs, function(attr) {

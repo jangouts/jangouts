@@ -75,7 +75,18 @@ body {
         overflow: hidden;
         position: absolute;
         width: 80%;
-        height: 20px;
+        height: 21px;
+        display: flex;
+        flex-wrap: wrap;      
+        .edit-textbox {
+          width: 60%;
+          color: black;
+          height: 21px;
+          order: 1;
+        }
+        .edit-button {
+          order: 2;
+        }
       }
     }
 
