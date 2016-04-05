@@ -23,6 +23,11 @@
     "angular-audio": "~1.7.1",
     "angular-local-storage": "~0.2.3"
   },
+  "overrides": {
+    "mousetrap": {
+        "main": "plugins/record/mousetrap-record.js"
+    }
+  },
   "devDependencies": {
     "angular-mocks": "~1.4.8"
   },
