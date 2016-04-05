@@ -10,9 +10,9 @@
     angular.module('janusHangouts')
         .directive('jhPushtotalkButton', jhPushToTalkButtonDirective);
 
-    jhPushToTalkButtonDirective.$inject = ['$state', 'RoomService', 'hotkeys', '$timeout'];
+    jhPushToTalkButtonDirective.$inject = ['RoomService', 'hotkeys', '$timeout'];
 
-    function jhPushToTalkButtonDirective($state, RoomService, hotkeys, $timeout) {
+    function jhPushToTalkButtonDirective(RoomService, hotkeys, $timeout) {
         return {
             restrict: 'E',
             templateUrl: 'app/components/feed/jh-pushtotalk-button.html',
