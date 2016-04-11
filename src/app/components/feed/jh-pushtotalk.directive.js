@@ -28,7 +28,6 @@
 
             var restrictedSupport = false;
             var origHandleKey = null;
-            var keyupDetected = false;
             var isCombination = false;
             var holding = true;
             var hooked = false;
