@@ -43,6 +43,7 @@
     var that = this;
     var startMuted = false;
     var holdingKey = false;
+    var muteTimer = null;
 
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
@@ -423,12 +424,24 @@
      * @param keyevent Keyevent keydown or keyup
      */
     function pushToTalk(keyevent) {
+      var disableAudio = function() {
+        ActionService.setMedia('audio', false);
+        holdingKey = false;
+      };
+      if (muteTimer) {
+        $timeout.cancel(muteTimer);
+      }
+      // we need this so the user is muted when he focuses another window while holding the key
+      muteTimer = $timeout(disableAudio, 1000);
+
+
       if (keyevent === 'keydown' && !holdingKey) {
         ActionService.setMedia('audio', true);
         holdingKey = true;
       } else if (keyevent === 'keyup') {
         ActionService.setMedia('audio', false);
         holdingKey = false;
+        $timeout.cancel(muteTimer);
       }
     }
 
