@@ -16,11 +16,17 @@
     "angular-block-ui": "~0.2.0",
     "lodash": "~3.10.1",
     "ngEmbed": "ng-embed#~2.0.3",
-    "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.6.0",
+    "angular-hotkeys": "devonzara/angular-hotkeys#18915a4fe83281a5f8a",
+    "mousetrap": "mousetrap-js/mousetrap#8236fbda90e2c50dfbfbe4",
     "angular-gridster": "~0.13.5",
     "angular-extended-notifications": "~1.0.4",
     "angular-audio": "~1.7.1",
     "angular-local-storage": "~0.2.3"
+  },
+  "overrides": {
+    "mousetrap": {
+        "main": "plugins/record/mousetrap-record.js"
+    }
   },
   "devDependencies": {
     "angular-mocks": "~1.4.8"
