@@ -22,7 +22,7 @@
     };
 
     function jhPushToTalkButtonCtrl() {
-      var titleText1 = "Set Push-to-talk hotkey or combination";
+      var titleText1 = "Set Push-to-talk hotkey";
       var titleText2 = "Disable Push-to-talk";
       var ignoreClick = false;
 
@@ -135,9 +135,9 @@
           vm.hotkey = key;
           vm.showHotkey = true;
           vm.titleText = titleText2;
-          UserService.setSetting("lastHotkey", key);
-
         }
+        
+        UserService.setSetting("lastHotkey", key);
       }
 
     }
