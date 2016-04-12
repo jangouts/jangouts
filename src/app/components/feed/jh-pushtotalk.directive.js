@@ -71,6 +71,8 @@
           vm.toggleText = "";
 
           if (sequence !== undefined && sequence !== null && sequence[0] !== undefined && sequence[0].length > 0) {
+			  //We don't want to support key combinations because the keyup event is not fired when the keys are released in wrong order.
+			  // This problem needs to be fixed in angular hotkeys / Mousetrap library. Second problem is broken support for the right super key.
               if (sequence[0].indexOf('+') > -1 && sequence[0].length !== 1 || sequence[0] === '\\') {
                 warn("Sorry, key combinations are not supported!");
               } else {
