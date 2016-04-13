@@ -24,7 +24,6 @@
     };
 
     function JhChatMessageCtrl() {
-      /* jshint validthis:true */
       var vm = this;
       vm.embedOptions = {
         link: true,

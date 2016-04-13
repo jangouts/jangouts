@@ -35,12 +35,15 @@
     this.subscribeToFeeds = subscribeToFeeds;
     this.subscribeToFeed = subscribeToFeed;
     this.toggleChannel = toggleChannel;
+    this.pushToTalk = pushToTalk;
     this.room = null;
     this.rooms = null;
     this.janus = null;
 
     var that = this;
     var startMuted = false;
+    var holdingKey = false;
+    var muteTimer = null;
 
     if (jhConfig.janusServer) {
       this.server = jhConfig.janusServer;
@@ -414,6 +417,32 @@
 
     function toggleChannel(type, feed) {
       ActionService.toggleChannel(type, feed);
+    }
+
+    /**
+     * Enable audio while holding key and disable audio when the key is released.
+     * @param keyevent Keyevent keydown or keyup
+     */
+    function pushToTalk(keyevent) {
+      var disableAudio = function() {
+        ActionService.setMedia('audio', false);
+        holdingKey = false;
+      };
+      if (muteTimer) {
+        $timeout.cancel(muteTimer);
+      }
+      // we need this so the user is muted when he focuses another window while holding the key
+      muteTimer = $timeout(disableAudio, 1000);
+
+
+      if (keyevent === 'keydown' && !holdingKey) {
+        ActionService.setMedia('audio', true);
+        holdingKey = true;
+      } else if (keyevent === 'keyup') {
+        ActionService.setMedia('audio', false);
+        holdingKey = false;
+        $timeout.cancel(muteTimer);
+      }
     }
 
 

@@ -24,7 +24,6 @@
     };
 
     function JhLogEntryCtrl() {
-      /* jshint validthis:true */
       var vm = this;
       vm.text = vm.message.text();
     }
