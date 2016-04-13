@@ -26,7 +26,6 @@
     };
 
     function JhChatFormCtrl() {
-      /* jshint validthis:true */
       var vm = this;
       vm.text = null;
       vm.submit = submit;
