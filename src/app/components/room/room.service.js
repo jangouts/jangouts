@@ -369,6 +369,12 @@
           console.log(" ::: Got the screen stream :::");
           var feed = FeedsService.find(id);
           feed.setStream(stream);
+
+          // Unpublish feed when screen sharing stops
+          stream.onended = function () {
+            unPublishFeed(id);
+          };
+
         },
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (screen) :::");
