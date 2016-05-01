@@ -373,6 +373,7 @@
           // Unpublish feed when screen sharing stops
           stream.onended = function () {
             unPublishFeed(id);
+            ScreenShareService.setInProgress(false);
           };
 
         },
