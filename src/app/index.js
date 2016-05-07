@@ -10,7 +10,8 @@
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
                'janusHangouts.config', 'cfp.hotkeys', 'gridster',
-               'ngAudio', 'angular-extended-notifications', 'LocalStorageModule'])
+               'ngAudio', 'angular-extended-notifications', 'LocalStorageModule',
+               'janusHangouts.actionService'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
