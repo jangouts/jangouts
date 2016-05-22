@@ -11,7 +11,7 @@
   angular.module('janusHangouts')
     .directive('jhFeed', jhFeed);
 
-  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'MuteNotifier'];
+  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'MuteNotifier', '$state'];
 
   function jhFeed(RoomService, $interval, jhConfig, MuteNotifier) {
     return {
@@ -92,13 +92,16 @@
       }
     }
 
-    function JhFeedCtrl() {
+    function JhFeedCtrl($state) {
       /* jshint: validthis */
       var vm = this;
       vm.mirrored = (vm.feed.isPublisher && !vm.feed.isLocalScreen);
       vm.thumbnailTag = thumbnailTag;
       vm.initPics = initPics;
       vm.takePic = takePic;
+      vm.updateName = updateName;
+      vm.nameIsEditable = false;
+      vm.isEditable = isEditable;
 
       function thumbnailTag() {
         if (vm.highlighted || vm.feed.isIgnored) { return "placeholder"; }
@@ -114,6 +117,20 @@
             return "placeholder";
           }
         }
+      }
+
+      function isEditable(){
+        if(vm.feed.isPublisher) {
+          vm.nameIsEditable = true;
+        }
+      }
+
+      function updateName() {
+        if(vm.feed.isPublisher) {
+          vm.feed.updateDisplay();
+        }
+        vm.nameIsEditable = false;
+        $state.go('room', {user: vm.feed.display}, {notify: false});
       }
 
       function initPics(element) {
