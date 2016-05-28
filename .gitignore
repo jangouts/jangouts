@@ -28,7 +28,7 @@ bower_components
 npm-debug.log
 
 # Typings
-Typings/
+typings/
 
 # Dist
 dist/
