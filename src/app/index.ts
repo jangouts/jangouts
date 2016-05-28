@@ -68,9 +68,9 @@ function routesConfig($stateProvider, $urlRouterProvider) {
       controllerAs: 'vm',
       resolve: {
         StatesService: 'StatesService',
-        setRoomAndService: function (StatesService, $state) {
+        setRoomAndService: ['StatesService', '$state', function (StatesService, $state) {
           return StatesService.setRoomAndUser($state.toParams);
-        }
+        }]
       }
     })
     .state('room', {
@@ -79,13 +79,13 @@ function routesConfig($stateProvider, $urlRouterProvider) {
       controller: 'RoomCtrl',
       resolve: {
         StatesService: 'StatesService',
-        setRoomAndService: function (StatesService, $state) {
+        setRoomAndService: ['StatesService', '$state', function (StatesService, $state) {
           return StatesService.setRoomAndUser($state.toParams);
-        }
+        }]
       },
-      onEnter: function (UserService, RoomService) {
+      onEnter: ['UserService', 'RoomService', function (UserService, RoomService) {
         UserService.setSetting("lastRoom", RoomService.getRoom().id);
-      }
+      }]
     });
 
   $urlRouterProvider.otherwise('/sign_in');
@@ -117,24 +117,21 @@ function decorators($provide) {
   // Decorate $state with parameters from the URL
   // so they're available when 'resolving':
   // http://stackoverflow.com/questions/22985988/angular-ui-router-get-state-info-of-tostate-in-resolve
-  $provide.decorator('$state', function ($delegate, $rootScope) {
+  $provide.decorator('$state', ['$delegate', '$rootScope', function ($delegate, $rootScope) {
     $rootScope.$on('$stateChangeStart', function (event, state, params) {
       $delegate.toParams = params;
     });
     return $delegate;
-  });
+  }]);
 }
 
 getConfig.$inject = ['$http', 'jhConfig'];
 function getConfig($http, jhConfig) {
-  //var request = new XMLHttpRequest();
-  //request.open('GET', 'config.json', false);
-  //request.send(null);
-  let config = require('json!../config.json');
-  //if (request.status === 200) {
-  if (config) {
-    //var config = JSON.parse(request.responseText);
-    //var config = JSON.parse(response);
+  var request = new XMLHttpRequest();
+  request.open('GET', 'config.json', false);
+  request.send(null);
+  if (request.status === 200) {
+    var config = JSON.parse(request.responseText);
     angular.forEach(config, function(value, key) {
        jhConfig[key] = value;
     });
@@ -154,4 +151,6 @@ function stateEvents($rootScope, $state, RoomService) {
   });
 }
 
-angular.bootstrap(document.documentElement, ['janusHangouts']);
+angular.bootstrap(document.documentElement, ['janusHangouts'], {
+  strictDi: true
+});

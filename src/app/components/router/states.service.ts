@@ -5,6 +5,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import * as _ from 'lodash';
+
 StatesService.$inject = ['$q', 'RoomService', 'UserService'];
 
 function StatesService($q, RoomService, UserService) {
@@ -23,12 +25,12 @@ function StatesService($q, RoomService, UserService) {
 
     // Set room
     var roomId = parseInt(stateParams.room);
-    if (Number.isNaN(roomId)) {
+    if (isNaN(roomId)) {
       RoomService.setRoom(null);
       deferred.resolve();
     } else {
       RoomService.getRooms().then(function(rooms) {
-        var result = _.find(rooms, function(room) { return room.id === roomId; });
+        var result = _.find(rooms, function(room: Room) { return room.id === roomId; });
         RoomService.setRoom(result || null);
         deferred.resolve();
       });

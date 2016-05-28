@@ -22,7 +22,7 @@ function jhMainFeedDirective() {
   function jhMainFeedLink(scope, element) {
     scope.$watch('vm.feed.getStream()', function(newVal) {
       if (newVal !== undefined && newVal !== null) {
-        var video = $('video', element)[0];
+        var video = <HTMLVideoElement>$('video', element)[0];
         video.muted = true;
         attachMediaStream(video, newVal);
       }

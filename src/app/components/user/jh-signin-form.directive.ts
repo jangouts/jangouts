@@ -55,7 +55,7 @@ function jhSigninFormDirective($state, RoomService, UserService) {
 
       if (vm.room === null) {
         var lastRoomId = UserService.getSetting("lastRoom");
-        vm.room = _.find(rooms, function (room) {
+        vm.room = _.find(rooms, function (room: Room) {
           return room.id === lastRoomId;
         });
       }

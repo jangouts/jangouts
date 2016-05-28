@@ -5,6 +5,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import * as _ from 'lodash';
+
 connectionConfigFactory.$inject = ['$timeout'];
 
 /**
@@ -79,7 +81,7 @@ function connectionConfigFactory($timeout) {
       return (obj.video !== wanted.video || obj.audio !== wanted.audio);
     }
 
-    function configure(options) {
+    function configure(options?: any) {
       options = options || {};
       var config = {request: "configure"};
       requested = {};

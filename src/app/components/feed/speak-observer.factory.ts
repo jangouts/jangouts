@@ -5,6 +5,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import * as _ from 'lodash';
+
 speakObserverFactory.$inject = ['$interval'];
 
 /**
@@ -77,7 +79,7 @@ function speakObserverFactory($interval) {
         }
       }
       history.shift();
-      history.push(0 + audioDetected);
+      history.push( audioDetected ? 1 : 0);
     }
 
     function isAudioDetected() {

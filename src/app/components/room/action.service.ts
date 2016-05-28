@@ -5,6 +5,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import * as _ from 'lodash';
+
 ActionService.$inject = ['$timeout', 'Feed', 'FeedsService', 'LogEntry',
   'LogService', 'DataChannelService', '$rootScope'];
 

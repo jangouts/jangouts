@@ -5,6 +5,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import * as _ from 'lodash';
+
 feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver'];
 
 /**
@@ -291,6 +293,8 @@ function feedFactory($timeout, DataChannelService, SpeakObserver) {
      * @returns {object} attribute values
      */
     this.getStatus = function(options) {
+      var that = this;
+
       options = options || {};
       if (!options.exclude) { options.exclude = []; }
 
@@ -299,7 +303,7 @@ function feedFactory($timeout, DataChannelService, SpeakObserver) {
 
       _.forEach(attrs, function(attr) {
         if (!_.includes(options.exclude, attr)) {
-          status[attr] = that["get"+_.capitalize(attr)]();
+          status[attr] = that["get"+_.upperFirst(attr)]();
         }
       });
       return status;
@@ -316,7 +320,7 @@ function feedFactory($timeout, DataChannelService, SpeakObserver) {
           silentSince = Date.now();
         }
         _.forEach(attrs, function(value, attr) {
-          that["set"+_.capitalize(attr)](value);
+          that["set"+_.upperFirst(attr)](value);
         });
       });
     };

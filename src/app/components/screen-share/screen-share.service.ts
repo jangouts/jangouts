@@ -5,9 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-ScreenShareService.$inject = ['$timeout', '$uibModal'];
+ScreenShareService.$inject = ['$timeout', '$modal'];
 
-function ScreenShareService($timeout, $uibModal) {
+function ScreenShareService($timeout, $modal) {
   this.inProgress = false;
   this.setInProgress = setInProgress;
   this.getInProgress = getInProgress;
@@ -25,7 +25,7 @@ function ScreenShareService($timeout, $uibModal) {
   }
 
   function showHelp() {
-    $uibModal.open({
+    $modal.open({
       animation: true,
       templateUrl: 'app/components/screen-share/screen-share-help.html',
       controller: 'ScreenShareHelpCtrl',

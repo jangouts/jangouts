@@ -26,7 +26,7 @@ function jhFeed(RoomService, $interval, jhConfig, MuteNotifier) {
   function jhFeedLink(scope, element) {
     scope.$watch('vm.feed.getStream()', function(newVal) {
       if (newVal !== undefined && newVal !== null) {
-        var video = $('video', element)[0];
+        var video = <HTMLVideoElement>$('video', element)[0];
         // Mute video of the local stream
         video.muted = scope.vm.feed.isPublisher;
         attachMediaStream(video, newVal);
@@ -111,8 +111,8 @@ function jhFeed(RoomService, $interval, jhConfig, MuteNotifier) {
     }
 
     function initPics(element) {
-      var canvas = $('canvas', element);
-      var canvasTag = canvas[0];
+      var canvas = $('canvas', element)
+      var canvasTag = <HTMLCanvasElement>canvas[0];
       var video = $('video', element).first();
       var context = canvasTag.getContext('2d');
 

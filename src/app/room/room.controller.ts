@@ -8,10 +8,15 @@
 RoomCtrl.$inject = ['$scope', '$state', 'blockUI', 'UserService', 'RoomService',
   'hotkeys'];
 
+interface RoomParameters {
+  room?: number
+  user?: string
+}
+
 function RoomCtrl($scope, $state, blockUI, UserService, RoomService, hotkeys) {
   var room = RoomService.getRoom();
   var user = UserService.getUser();
-  var params = {};
+  var params: RoomParameters = {};
 
   if (room === null || user === null) {
     // Redirect to signin making sure room is included in the url

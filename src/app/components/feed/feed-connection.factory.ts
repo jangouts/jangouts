@@ -57,7 +57,7 @@ function feedConnectionFactory(ConnectionConfig) {
     this.publish = function(options) {
       options = options || {};
 
-      var media = {videoRecv: false, audioRecv: false};
+      var media : Media = {videoRecv: false, audioRecv: false};
       var cfg = {video: true, audio: true};
       if (this.role === "main") {
         if (options.muted){

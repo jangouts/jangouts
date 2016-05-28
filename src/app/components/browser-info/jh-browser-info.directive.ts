@@ -5,9 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-jhBrowserInfoDirective.$inject = ['$uibModal'];
+jhBrowserInfoDirective.$inject = ['$modal'];
 
-function jhBrowserInfoDirective($uibModal) {
+function jhBrowserInfoDirective($modal) {
   return {
     restrict: 'EA',
     template: require('./jh-browser-info.html'),
@@ -24,7 +24,7 @@ function jhBrowserInfoDirective($uibModal) {
     vm.showHelp = showHelp;
 
     function showHelp() {
-      $uibModal.open({
+      $modal.open({
         animation: true,
         template: require('./browser-info.html'),
         controller: 'BrowserInfoCtrl',

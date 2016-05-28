@@ -5,8 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-  //angular.module('janusHangouts')
-    //.service('RoomService',  RoomService);
+import * as _ from 'lodash';
 
 RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
     'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',

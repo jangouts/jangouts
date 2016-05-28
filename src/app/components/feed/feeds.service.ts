@@ -5,6 +5,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import * as _ from 'lodash';
+
 FeedsService.$inject = ['$q', '$window'];
 
 /**
@@ -111,7 +113,7 @@ function FeedsService($q, $window) {
    * @returns {Array<Feed>} all registered publisher feeds
    */
   function publisherFeeds() {
-    return _.filter(this.allFeeds(), function (f) {
+    return _.filter(this.allFeeds(), function (f: Feed) {
       return f.isPublisher;
     });
   }
@@ -120,7 +122,7 @@ function FeedsService($q, $window) {
    * @returns {Array<Feed>} all registered feeds sharing local screen
    */
   function localScreenFeeds() {
-    return _.filter(this.allFeeds(), function (f) {
+    return _.filter(this.allFeeds(), function (f: Feed) {
       return f.isLocalScreen;
     });
   }
@@ -129,7 +131,7 @@ function FeedsService($q, $window) {
    * @returns {Feed} registered feed that speaks or null
    */
   function speakingFeed() {
-    return _.detect(this.allFeeds(), function (f) {
+    return _.find(this.allFeeds(), function (f: Feed) {
       return f.getSpeaking();
     });
   }

@@ -5,6 +5,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import * as _ from 'lodash';
+
 /**
  * Represents data about video chat room. Provides attributes from /etc/janus/janus.plugin.videoroom.cfg
  * @memberof module:janusHangouts
