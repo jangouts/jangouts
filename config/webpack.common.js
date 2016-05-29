@@ -11,7 +11,6 @@ var helpers = require('./helpers');
 var CopyWebpackPlugin = (CopyWebpackPlugin = require('copy-webpack-plugin'), CopyWebpackPlugin.default || CopyWebpackPlugin);
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-//var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 module.exports = {
   entry: {
@@ -27,24 +26,10 @@ module.exports = {
 
   module: {
     loaders: [
-      /*
-       * Typescript loader support for .ts and Angular 2 async routes via .async.ts
-       *
-       * See: https://github.com/s-panferov/awesome-typescript-loader
-       */
       {
         test: /\.ts$/,
-        loader: 'ts'
-        //exclude: [/\.(spec|e2e)\.ts$/]
-      },
-      /*
-       * Json loader support for *.json files.
-       *
-       * See: https://github.com/webpack/json-loader
-       */
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
+        loader: 'ts',
+        exclude: [/\.(spec|e2e)\.ts$/]
       },
       {
         test: /\.html$/,
@@ -54,11 +39,6 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico|ogg|mp3|wav)$/,
         loader: 'file?name=assets/[name].[hash].[ext]'
       },
-      //{
-        //test: /\.css$/,
-        //exclude: helpers.root('src', 'app'),
-        //loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
-      //},
       {
         test: /\.css$/,
         include: helpers.root('src', 'app'),
@@ -68,22 +48,10 @@ module.exports = {
         test: /\.scss$/,
         loaders: ["style", "css", "sass"]
       }
-      //{
-        //test: /\.scss$/,
-        //loaders: ["style", "css?sourceMap", "sass?sourceMap"]
-      //}
     ]
   },
 
   plugins: [
-    /*
-     * Plugin: ForkCheckerPlugin
-     * Description: Do type checking in a separate process, so webpack don't need to wait.
-     *
-     * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
-     */
-    //new ForkCheckerPlugin(),
-
     /*
      * Plugin: ResolverPlugin
      * Description: To use components from bower.
@@ -94,7 +62,15 @@ module.exports = {
         new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
     ),
 
-    new webpack.optimize.DedupePlugin(),
+    /*
+     * Plugin: OccurenceOrderPlugin
+     * Description: Varies the distribution of the ids to get the smallest id length
+     * for often used ids.
+     *
+     * See: https://webpack.github.io/docs/list-of-plugins.html#occurrenceorderplugin
+     * See: https://github.com/webpack/docs/wiki/optimization#minimize
+     */
+    new webpack.optimize.OccurenceOrderPlugin(true),
 
     /*
      * Plugin: CommonsChunkPlugin
@@ -112,7 +88,7 @@ module.exports = {
      * Plugin: CopyWebpackPlugin
      * Description: Copy files and directories in webpack.
      *
-     * Copies project static assets.
+     * Copies project config.
      *
      * See: https://www.npmjs.com/package/copy-webpack-plugin
      */
@@ -134,12 +110,19 @@ module.exports = {
       chunksSortMode: 'none'
     }),
 
+    /*
+     * Plugin: ProvidePlugin
+     * Description: Automatically loaded modules.
+     *
+     * Copies project config.
+     *
+     * See: https://webpack.github.io/docs/list-of-plugins.html#provideplugin
+     */
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
-      'window.jquery': 'jquery',
-      _: 'lodash'
+      'window.jquery': 'jquery'
     })
   ],
 

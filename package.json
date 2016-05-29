@@ -114,7 +114,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1",
-    "webpack-md5-hash": "^0.0.5",
+    "webpack-md5-hash": "0.0.5",
     "webpack-merge": "^0.12.0"
   },
   "repository": {

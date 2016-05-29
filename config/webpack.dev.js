@@ -6,11 +6,6 @@ var webpackMerge = require('webpack-merge');
 var commonConfig = require('./webpack.common.js');
 
 /*
- * Webpack Plugins
- */
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-/*
  * Webpack configuration
  */
 module.exports = webpackMerge(commonConfig, {
@@ -18,18 +13,15 @@ module.exports = webpackMerge(commonConfig, {
   debug: true,
 
   // Developer tool to enhance debugging
-  devtool: 'source-map',
+  devtool: 'cheap-module-eval-source-map',
 
   // Options affecting the output of the compilation
   output: {
     path: helpers.root('dist'),
     filename: '[name].js',
+    sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
   },
-
-  //plugins: [
-    //new ExtractTextPlugin('[name].css')
-  //],
 
   /*
    * Static analysis linter for TypeScript advanced options configuration
@@ -55,10 +47,6 @@ module.exports = webpackMerge(commonConfig, {
     port: 4000,
     host: 'localhost',
     historyApiFallback: true,
-    //watchOptions: {
-      //aggregateTimeout: 300,
-      //poll: 1000
-    //},
     outputPath: helpers.root('dist')
   },
 
