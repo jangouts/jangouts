@@ -30,6 +30,9 @@ npm-debug.log
 # Typings
 typings/
 
+# Doc
+doc/
+
 # Dist
 dist/
 .sass-cache/
