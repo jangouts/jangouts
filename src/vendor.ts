@@ -14,7 +14,7 @@ import "angular-bootstrap";
 import "angular-hotkeys";
 import "angular-block-ui";
 import "angular-gridster";
-import "angular-extended-notifications";
+import "angular-extended-notifications/angular-extended-notifications.min";
 import "angular-local-storage";
 import "ngEmbed/dist/ng-embed.min";
 

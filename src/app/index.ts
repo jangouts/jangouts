@@ -5,6 +5,10 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import 'zone.js';
+import 'reflect-metadata';
+import { UpgradeAdapter } from '@angular/upgrade';
+
 require('./vendor.scss');
 require('./index.scss');
 
@@ -151,6 +155,9 @@ function stateEvents($rootScope, $state, RoomService) {
   });
 }
 
-angular.bootstrap(document.documentElement, ['janusHangouts'], {
-  strictDi: true
+// Upgrade to Angular2 (Hybrid Application)
+const upgradeAdapter = new UpgradeAdapter();
+
+upgradeAdapter.bootstrap(document.documentElement, ['janusHangouts'], {
+	strictDi: true
 });
