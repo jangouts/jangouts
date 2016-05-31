@@ -9,7 +9,7 @@
     "server": "npm run server:dev",
     "server:dev": "webpack-dev-server --watch --inline --progress --profile --colors --display-error-details -display-cached --port 4000",
     "server:dev:hmr": "npm run server:dev -- --hot",
-    "server:prod": "http-server dist --cors -p 5000",
+    "server:prod": "http-server dist --cors -p 4000",
     "clean": "npm cache clean && npm run rimraf -- node_modules bower_components doc typings coverage dist",
     "clean:dist": "npm run rimraf -- dist",
     "preclean:install": "npm run clean",
