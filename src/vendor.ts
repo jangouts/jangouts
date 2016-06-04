@@ -1,4 +1,3 @@
-//require("script!jquery");  // require instead import for support janus
 import 'jquery';
 
 import "mousetrap";
@@ -13,7 +12,7 @@ import "angular-ui-router";
 import "angular-bootstrap";
 import "angular-hotkeys";
 import "angular-block-ui";
-import "angular-gridster";
+import "angular-gridster/src/angular-gridster";  // Use non minified version to prevent issues in production build
 import "angular-extended-notifications/angular-extended-notifications.min";
 import "angular-local-storage";
 import "ngEmbed/dist/ng-embed.min";

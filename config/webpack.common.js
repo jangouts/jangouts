@@ -80,7 +80,7 @@ module.exports = {
      * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
      * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
      */
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.[hash].js'),
 
     /*
      * Plugin: CopyWebpackPlugin
