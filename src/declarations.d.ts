@@ -8,6 +8,8 @@ interface Room {
 
 declare var Janus: any;
 
+declare const VERSION: string;
+
 interface Window {
   AudioContext?: any,
   webkitAudioContext?: any,

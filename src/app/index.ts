@@ -7,7 +7,7 @@
 
 import 'zone.js';
 import 'reflect-metadata';
-import { UpgradeAdapter } from '@angular/upgrade';
+import { upgradeAdapter } from './adapter';
 
 require('./vendor.scss');
 require('./index.scss');
@@ -26,6 +26,7 @@ import routerComponent from './components/router/index';
 import screenShareComponent from './components/screen-share/index';
 import userComponent from './components/user/index';
 import videochatComponent from './components/videochat/index';
+import footerComponent from './components/footer/index';
 
 angular.module('janusHangouts', [
     'ngAnimate',
@@ -53,6 +54,7 @@ angular.module('janusHangouts', [
     screenShareComponent.name,
     userComponent.name,
     videochatComponent.name,
+		footerComponent.name
   ])
   .config(routesConfig)
   .config(blockUIConfig)
@@ -155,8 +157,6 @@ function stateEvents($rootScope, $state, RoomService) {
   });
 }
 
-// Upgrade to Angular2 (Hybrid Application)
-const upgradeAdapter = new UpgradeAdapter();
 
 upgradeAdapter.bootstrap(document.documentElement, ['janusHangouts'], {
 	strictDi: true
