@@ -33,6 +33,7 @@
     "e2e:live": "npm run e2e -- --elementExplorer",
     "pretest": "npm run lint",
     "test": "karma start",
+    "test:watch": "npm run test -- --auto-watch --no-single-run",
     "ci": "npm test && npm run e2e",
     "rimraf": "$(npm bin)/rimraf",
     "tslint": "$(npm bin)/tslint",
