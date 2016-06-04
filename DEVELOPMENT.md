@@ -1,74 +1,173 @@
-# Setting up the development environment
+# Building and testing Jangouts
 
-## Step 1. Getting and configuring Jangouts
+This document describes how to set up your development environment to build and
+test Jangouts. It also explains the basic mechanics of using `git`, `node`, and
+`npm`.
 
-The first step to develop Jangouts is to get a local copy of its repository:
+* [Prerequisite Software](#prerequisite-software)
+* [Getting the Sources](#getting-the-sources)
+* [Installing NPM Modules](#installing-npm-modules)
+* [Installing Janus](#installing-janus)
+* [Build commands](#build-commands)
+* [Running Tests Locally](#running-tests-locally)
+* [Code Style](#code-style)
+* [Project Information](#project-information)
+* [CI using Travis](#ci-using-travis)
+* [Debugging](#debugging)
+
+See the [contribution guidelines](/CONTRIBUTING.md) if you'd like to contribute
+to Jangouts.
+
+## Prerequisite Software
+
+Before you can build and test Jangouts, you must install and configure the
+following products on your development machine:
+
+* [Git](http://git-scm.com) and/or the **GitHub app** (for [Mac](http://mac.github.com)
+  or [Windows](http://windows.github.com)); [GitHub's Guide to Installing
+  Git](https://help.github.com/articles/set-up-git) is a good source of information.
+
+* [Node.js](http://nodejs.org), (version `>=5.4.1 <6`) which is used to run a
+  development web server, run tests, and generate distributable files. We also
+  use Node's Package Manager, `npm` (version `>=3.5.3 <4.0`), which comes with
+  Node. Depending on your system, you can install Node either from source or as
+  a pre-packaged bundle.
+
+* [Janus-Gateway](http://janus.conf.meetecho.com/) is the server-side WebRTC
+  handling, so is necessary a running janus server with support fro data
+  channels compiled in, with the videoroom plugin enabled and with a valid list
+  of rooms in the `janus.plugin.videoroom.cfg` file. See more in [Installing
+  Janus](#installing-janus)
+
+* [Java Development Kit](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html)
+  which is used to execute the selenium standalone server for e2e testing.
+
+## Getting the Sources
+
+Fork and clone the Jangouts repository:
+
+1. Login to your GitHub account or create one by following the instructions
+   given [here](https://github.com/signup/free).
+2. [Fork](http://help.github.com/forking) the [main Jangouts
+   repository](https://github.com/jangouts/jangouts).
+3. Clone your fork of the Jangouts repository and define an `upstream` remote
+   pointing back to the Jangouts repository that you forked in the first place.
+
+```shell
+# Clone your GitHub repository:
+git clone git@github.com:<github username>/jangouts.git
+
+# Go to the Jangouts directory:
+cd jangouts
+
+# Add the main Jangouts repository as an upstream remote to your repository:
+git remote add upstream https://github.com/jangouts/jangouts.git
+```
+
+## Installing NPM Modules
+
+
+Next, install the JavaScript modules needed to build and test Jangouts:
+
+```shell
+# Install Jangouts project dependencies (package.json)
+npm install
+```
+
+## Installing Janus
+
+For most Linux distributions that
+translates into installing the `janus` or `janus-gateway` package.
+Make sure those packages include data channels support. Compiling Janus Gateway
+from the sources is, of course, also an option.
+
+For (open)SUSE distributions, a proper package can be easily found at
+[software.opensuse.org](https://software.opensuse.org/package/janus-gateway) and
+installed using 1 Click Install.
+
+For security reasons, the (open)SUSE package does not include the SSL
+certificates shipped by default with Janus Gateway. To generate a self-signed
+certificate, use OpenSSL:
 
 ```sh
-git clone https://github.com/jangouts/jangouts
+cd /usr/share/janus/certs
+sudo openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
+  -keyout mycert.key -out mycert.pem
 ```
 
-If `git` is command not found, then install Git from you packager. For example, if you
-are running (open)SUSE you could type:
-```sh
-sudo zypper in git
-```
-
-Then you could adapt the configuration by creating a file called
-`src/config.json`. You have an sample file in `src/config.json.sample`.
-
-For a development environment, the next configuration would be fine:
-
-```json
-{
-  "janusServer": "http://localhost:8088/janus"
-}
-```
-
-## Step 2. Install requirements
-
-In addition to fetching the Jangouts source code, you also need to install
-[Node.js](http://nodejs.org), [npm](http://npmjs.com), [Bower](http://bower.io)
-and [Gulp.js](http://gulpjs.com).
-
-Node.js and npm should be available in any Linux distribution. For example, if you’re
-running (open)SUSE you could type:
+In (open)SUSE, the gateway can be then started (after adjusting the list of
+rooms at ```/etc/janus/janus.plugin.videoroom.cfg``` if desired) with the
+command:
 
 ```sh
-sudo zypper in nodejs nodejs-npm
+sudo systemctl start janus.service
+sudo systemctl enable janus.service # to start it also after reboot
 ```
 
-Take into account that, in some cases, npm is bundled in the same package as Node.js.
+## Build commands
 
-If you prefer, you could use [Node Version
-Manager](https://github.com/creationix/nvm) to install Node.js and npm.
+After you have installed all dependencies you can now run the app. Run `npm run
+server` to start a local server using `webpack-dev-server` which will watch,
+build (in-memory), and reload for you. The port will be displayed to you as
+`http://0.0.0.0:4000` (or if you prefer IPv6, if you're using `express` server,
+then it's `http://[::1]:4000/`).
 
-Now, you must install Bower and Gulp.js globally through npm. Just type:
-
-```sh
-sudo npm install -g bower gulp
+### server
+```bash
+# development
+npm run server
+# production
+npm run build:prod
+npm run server:prod
 ```
 
-## Step 3. Install dependencies
+## Other commands
 
-This project uses npm to manage development dependencies and Bower for runtime dependencies.
-Those dependencies are defined in `package.json` and `bower.json` files. To install them,
-just type:
-
-```sh
-npm install && bower install
+### build files
+```bash
+# development
+npm run build:dev
+# production
+npm run build:prod
 ```
 
-Bear in mind that every time a new dependency is added, you must run this command again.
+## Running Tests Locally
 
-## Step 4. Start the webserver
-
-If you only want to make some development, you don’t need to install any
-webserver. Just type:
-
-```sh
-gulp serve
+### run tests
+```bash
+npm run test
 ```
 
-Now you should be able to access with your browser through the URL
-`http://localhost:3000/`.
+### run end-to-end tests
+```bash
+# make sure you have your server running in another terminal
+npm run e2e
+```
+
+### run webdriver (for end-to-end)
+```bash
+npm run webdriver:update
+npm run webdriver:start
+```
+
+### run Protractor's elementExplorer (for end-to-end)
+```bash
+npm run webdriver:start
+# in another terminal
+npm run e2e:live
+```
+
+## Code Style
+
+TODO
+
+## Project Information
+
+TODO
+
+## CI using Travis
+
+TODO
+
+
+
