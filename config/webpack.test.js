@@ -106,7 +106,7 @@ module.exports = {
        */
       {
         test: /\.ts$/,
-        loader: 'ts-loader',
+        loader: 'awesome-typescript-loader',
         query: {
           compilerOptions: {
 

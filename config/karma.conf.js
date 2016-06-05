@@ -33,12 +33,19 @@ module.exports = function(config) {
     webpack: testWebpackConfig,
 
     coverageReporter: {
-      dir : 'coverage/',
-      reporters: [
-        { type: 'text-summary' },
-        { type: 'json' },
-        { type: 'html' }
-      ]
+      dir: 'coverage/',
+      type: 'json',
+      subdir: '.',
+      file: 'coverage-final.json'
+    },
+    remapIstanbulReporter: {
+      src: 'coverage/coverage-final.json',
+      reports: {
+        html: 'coverage/html',
+        lcovonly: 'coverage/lcovonly'
+      },
+      timeoutNotCreated: 3000,
+      timeoutNoMoreFiles: 3000
     },
 
     // Webpack please don't spam the console when running in karma!
@@ -50,7 +57,7 @@ module.exports = function(config) {
      * possible values: 'dots', 'progress'
      * available reporters: https://npmjs.org/browse/keyword/karma-reporter
      */
-    reporters: [ 'mocha', 'coverage' ],
+    reporters: [ 'mocha', 'coverage', 'karma-remap-istanbul' ],
 
     // web server port
     port: 9876,
