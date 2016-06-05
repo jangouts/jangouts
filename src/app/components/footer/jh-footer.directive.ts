@@ -4,13 +4,17 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
+import { Component } from "@angular/core";
 
-function jhFooterDirective() {
-  return {
-    restrict: 'EA',
-    template: require('./jh-footer.html'),
-    scope: true
-  };
+@Component({
+  selector: "jh-footer",
+  template: require("./jh-footer.html")
+})
+export class FooterComponent {
+  public version: string;
+
+  constructor() {
+    this.version = VERSION;
+  }
+
 }
-
-export default jhFooterDirective;

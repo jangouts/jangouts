@@ -5,12 +5,14 @@
 var webpack = require('webpack');
 var helpers = require('./helpers');
 
+var PACKAGE = require('../package.json')
 /*
  * Webpack Plugins
  */
 var CopyWebpackPlugin = (CopyWebpackPlugin = require('copy-webpack-plugin'), CopyWebpackPlugin.default || CopyWebpackPlugin);
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var DefinePlugin = require('webpack/lib/DefinePlugin');
 
 module.exports = {
   entry: {
@@ -121,6 +123,20 @@ module.exports = {
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       'window.jquery': 'jquery'
+    }),
+
+    /**
+     * Plugin: DefinePlugin
+     * Description: Define free variables.
+     * Useful for having development builds with debug logging or adding global constants.
+     *
+     * Environment helpers
+     *
+     * See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
+     */
+    // NOTE: when adding more properties, make sure you include them in custom-typings.d.ts
+    new DefinePlugin({
+      VERSION: JSON.stringify(PACKAGE.version)
     })
   ],
 

@@ -1,4 +1,6 @@
-import jhFooterDirective from './jh-footer.directive';
+import { upgradeAdapter } from '../../adapter';
+import { FooterComponent } from './jh-footer.directive';
 
 export default angular.module('janusHangouts.footerComponent', [])
-  .directive('jhFooter', jhFooterDirective);
+  .directive('jhFooter',
+             <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(FooterComponent));
