@@ -6,6 +6,8 @@ import jhLeaveButtonDirective from './jh-leave-button.directive';
 import DataChannelService from './data-channel.service';
 import ActionService from './action.service';
 
+import { upgradeAdapter } from '../../adapter';
+
 export default angular.module('janusHangouts.roomComponent', [])
   .service('RoomService', RoomService)
   .factory('Room', roomFactory)
@@ -14,3 +16,5 @@ export default angular.module('janusHangouts.roomComponent', [])
   .directive('jhLeaveButton', jhLeaveButtonDirective)
   .service('DataChannelService', DataChannelService)
   .service('ActionService', ActionService);
+
+upgradeAdapter.upgradeNg1Provider('ActionService');

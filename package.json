@@ -106,6 +106,7 @@
     "karma-remap-istanbul": "^0.1.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "1.7.0",
+    "ng-embed": "^2.0.4",
     "node-sass": "^3.7.0",
     "parse5": "^1.5.1",
     "phantomjs-polyfill": "0.0.2",

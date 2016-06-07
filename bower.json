@@ -4,8 +4,7 @@
   "version": "0.4.4",
   "dependencies": {
     "bootstrap-sass-official": "3.3 <= 3.3.4",
-    "janus-gateway": "git://github.com/meetecho/janus-gateway.git#2ef5bb8",
-    "ngEmbed": "ng-embed#~2.0.3"
+    "janus-gateway": "git://github.com/meetecho/janus-gateway.git#2ef5bb8"
   },
   "devDependencies": {}
 }

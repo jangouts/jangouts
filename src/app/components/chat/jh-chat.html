@@ -2,7 +2,7 @@
   <div class="panel-body" id="jh-chat-messages">
     <ul>
       <li ng-repeat="m in vm.messages">
-        <jh-chat-message message="m" ng-if="m.type === 'chatMsg'"></jh-chat-message>
+        <jh-chat-message [message]="m" ng-if="m.type === 'chatMsg'"></jh-chat-message>
         <jh-log-entry message="m" ng-if="m.type !== 'chatMsg'"></jh-log-entry>
       </li>
     </ul>
