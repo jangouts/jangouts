@@ -34,7 +34,7 @@ following products on your development machine:
   a pre-packaged bundle.
 
 * [Janus-Gateway](http://janus.conf.meetecho.com/) is the server-side WebRTC
-  handling, so is necessary a running janus server with support fro data
+  handling, so is necessary a running Janus server with support for data
   channels compiled in, with the videoroom plugin enabled and with a valid list
   of rooms in the `janus.plugin.videoroom.cfg` file. See more in [Installing
   Janus](#installing-janus)
@@ -76,10 +76,9 @@ npm install
 
 ## Installing Janus
 
-For most Linux distributions that
-translates into installing the `janus` or `janus-gateway` package.
-Make sure those packages include data channels support. Compiling Janus Gateway
-from the sources is, of course, also an option.
+For most Linux distributions that translates into installing `janus` or
+`janus-gateway` package.  Make sure those packages include data channels
+support. Compiling Janus Gateway from the sources is, of course, also an option.
 
 For (open)SUSE distributions, a proper package can be easily found at
 [software.opensuse.org](https://software.opensuse.org/package/janus-gateway) and
