@@ -5,11 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import {
-  Component,
-  Inject,
-  ChangeDetectionStrategy
-} from "@angular/core";
+import { Component, Inject } from "@angular/core";
 
 import {
   Control,
@@ -25,8 +21,7 @@ import {
 
 @Component({
   selector: "jh-chat-form",
-  template: require("./jh-chat-form.html"),
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: require("./chat-form.component.html"),
   directives: [FORM_DIRECTIVES]
 })
 export class ChatFormComponent {

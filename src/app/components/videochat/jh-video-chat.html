@@ -65,7 +65,7 @@
         <div
           ng-if="item.content === 'Chat'"
           class="grid-item-content">
-          <jh-chat messages="vm.logEntries()"></jh-chat>
+          <jh-chat [messages]="vm.logEntries()"></jh-chat>
         </div>
       </li>
     </ul>

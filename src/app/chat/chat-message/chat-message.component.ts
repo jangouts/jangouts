@@ -5,12 +5,14 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, Input, ChangeDetectionStrategy } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
+//TODO: Reenable ngEmbed when angular adapter supports templateUrl functions
 //import { upgradeAdapter } from '../../adapter';
 
 // Upgrade ngEmbed directive
 //const NgEmbed = upgradeAdapter.upgradeNg1Component('ngEmbed');
+
 
 // Define interface for embedOptions
 interface IEmbedOptions {
@@ -34,8 +36,8 @@ interface IEmbedOptions {
 
 @Component({
   selector: "jh-chat-message",
-  template: require("./jh-chat-message.html"),
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: require("./chat-message.component.html"),
+  styles: [require("!raw!sass!./chat-message.component.scss")]
 })
 export class ChatMessageComponent {
 
