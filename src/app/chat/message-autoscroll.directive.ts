@@ -16,7 +16,7 @@ export class AutoScrollDirective {
     this.el = el.nativeElement;
   }
 
-  @Input('jhAutoScroll')
+  @Input("jhAutoScroll")
   set autoScroll(itemsList: Array<any>) {
     setTimeout((newValue) => {
       this.el.scrollTop = this.el.scrollHeight;

@@ -5,21 +5,21 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, Input } from "@angular/core"
+import { Component, Input, OnInit } from "@angular/core";
 
 @Component({
   selector: "jh-log-entry",
   template: require("./log-entry.component.html")
 })
-export class LogEntryComponent {
+export class LogEntryComponent implements OnInit {
 
-  @Input() message: any;
+  @Input() public message: any;
 
   public text: string;
 
   constructor () { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.text = this.message.text();
   }
 }

@@ -7,14 +7,14 @@
 
 import { Component, Input } from "@angular/core";
 
-//TODO: Reenable ngEmbed when angular adapter supports templateUrl functions
-//import { upgradeAdapter } from '../../adapter';
+// [TODO]: Reenable ngEmbed when angular adapter supports templateUrl functions
+// import { upgradeAdapter } from '../../adapter';
 
-// Upgrade ngEmbed directive
-//const NgEmbed = upgradeAdapter.upgradeNg1Component('ngEmbed');
+// upgrade ngEmbed directive
+// const NgEmbed = upgradeAdapter.upgradeNg1Component('ngEmbed');
 
 
-// Define interface for embedOptions
+// define interface for embedOptions
 interface IEmbedOptions {
   link: boolean;
   linkTarget: string;
@@ -41,11 +41,11 @@ interface IEmbedOptions {
 })
 export class ChatMessageComponent {
 
-  @Input() message: any;
+  @Input() public message: any;
 
   public embedOptions: IEmbedOptions = {
       link: true,
-      linkTarget: '_blank',
+      linkTarget: "_blank",
       image: {
         embed: true
       },

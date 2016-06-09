@@ -15,7 +15,7 @@ describe("Footer", () => {
     expect(footer.version).toBeDefined();
   }));
 
-  it("should have version defined", inject([ FooterComponent ], (footer) => {
+  it("should have the correct version", inject([ FooterComponent ], (footer) => {
     expect(footer.version).toEqual("0.4.4");
   }));
 });

@@ -12,12 +12,8 @@ import {
   ControlGroup,
   Validators,
   FORM_DIRECTIVES
-} from '@angular/common';
+} from "@angular/common";
 
-//import ActionService from '../room/action.service';
-
-
-//import ActionService from '../room/action.service';
 
 @Component({
   selector: "jh-chat-form",
@@ -26,10 +22,10 @@ import {
 })
 export class ChatFormComponent {
 
-  chatForm: ControlGroup;
-  actionService: any;
+  public chatForm: ControlGroup;
+  public actionService: any;
 
-  constructor(@Inject('ActionService') actionService: any) {
+  constructor(@Inject("ActionService") actionService: any) {
     this.actionService = actionService;
     this.chatForm = new ControlGroup({
       text: new Control(null, Validators.required)
@@ -37,8 +33,10 @@ export class ChatFormComponent {
   }
 
   public submit(): void {
+    let field: string = "text";
+
     this.actionService.writeChatMessage(this.chatForm.value.text);
-    (<Control>this.chatForm.controls['text']).updateValue(null);
+    (<Control>this.chatForm.controls[field]).updateValue(null);
   }
 
 }

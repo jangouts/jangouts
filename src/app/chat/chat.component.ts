@@ -25,7 +25,7 @@ import { AutoScrollDirective } from "./message-autoscroll.directive";
 })
 export class ChatComponent {
 
-  @Input() messages: any;
+  @Input() public messages: any;
 
   constructor () { }
 
