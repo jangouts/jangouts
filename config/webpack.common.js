@@ -52,6 +52,17 @@ module.exports = {
       }
     ]
   },
+  htmlLoader: {
+    minimize: false,
+    caseSensitive: true,
+    // Workaround Angular 2's html syntax => #id [bind] (event) *ngFor
+    customAttrSurround: [
+      [/#/, /(?:)/],
+      [/\*/, /(?:)/],
+      [/\[?\(?/, /(?:)/]
+    ],
+    customAttrAssign: [/\)?\]?=/]
+  },
 
   plugins: [
     /*
@@ -72,7 +83,7 @@ module.exports = {
      * See: https://webpack.github.io/docs/list-of-plugins.html#occurrenceorderplugin
      * See: https://github.com/webpack/docs/wiki/optimization#minimize
      */
-    new webpack.optimize.OccurenceOrderPlugin(true),
+    //new webpack.optimize.OccurenceOrderPlugin(true),
 
     /*
      * Plugin: CommonsChunkPlugin
@@ -107,7 +118,9 @@ module.exports = {
      */
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      chunksSortMode: 'none'
+      chunksSortMode: 'none',
+      minify: false,
+      cache: true
     }),
 
     /*

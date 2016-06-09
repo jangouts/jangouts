@@ -1,0 +1,13 @@
+<div class="jh-chat panel panel-default">
+  <div id="jh-chat-messages" [jhAutoScroll]="messages.length" class="panel-body">
+    <ul>
+      <li *ngFor="let m of messages">
+        <jh-chat-message [message]="m" *ngIf="m.type === 'chatMsg'"></jh-chat-message>
+        <jh-log-entry [message]="m" *ngIf="m.type !== 'chatMsg'"></jh-log-entry>
+      </li>
+    </ul>
+  </div>
+  <div id="chat-form-footer" class="panel-footer">
+    <jh-chat-form></jh-chat-form>
+  </div>
+</div>

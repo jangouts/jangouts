@@ -1,12 +1,4 @@
-/* Colour pallete */
-$color1: #f15a5c; // Red-ish
-$color2: #09414f; // Blue-ish
-$color3: #e1dcbd; // Brown-ish
-
-//colour variables
-$jangouts-bg:  $color3;
-$jangouts-video-bg: $color2;
-
+@import "variables";
 
 body {
   background: $jangouts-bg;
@@ -88,40 +80,6 @@ body {
   -webkit-transform:rotateY(180deg); /* Safari and Chrome */
   -moz-transform:rotateY(180deg); /* Firefox */
 }
-#jh-chat-messages {
-  height: 40px;
-}
-.jh-chat.panel.panel-default {
-  margin-bottom: 0;
-}
-.jh-chat {
-  font-size: 12px;
-  .panel-body {
-    height: 60vh;
-    overflow: auto;
-    padding: 8px;
-  }
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    li {
-      margin-bottom: 5px;
-      padding-bottom: 2px;
-      border-bottom: 1px dotted #aaa;
-
-      .log-entry {
-        font-style: oblique;
-        color: #3388AA;
-      }
-    }
-  }
-
-  .panel-footer {
-    padding: 3px;
-  }
-}
 
 body div.block-ui-container {
   background-color: black;
@@ -149,12 +107,7 @@ header {
   }
 }
 
-footer {
-  background: $color3;
-  font-size: 12px;
-  border: 0;
-  padding: 3px 0 0 0;
-}
+
 
 .container-no-padding {
   padding-left: 0;

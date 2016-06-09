@@ -13,20 +13,21 @@ require("./vendor.scss");
 require("./index.scss");
 
 import config from "./config.provider";
-import room from "./room/index";
-import signin from "./signin/index";
+import room from "./room";
+import signin from "./signin";
 
 // Components
-import roomComponent from "./components/room/index";
-import browserInfoComponent from "./components/browser-info/index";
-import chatComponent from "./components/chat/index";
-import feedComponent from "./components/feed/index";
-import notifierComponent from "./components/notifier/index";
-import routerComponent from "./components/router/index";
-import screenShareComponent from "./components/screen-share/index";
-import userComponent from "./components/user/index";
-import videochatComponent from "./components/videochat/index";
-import footerComponent from "./components/footer/index";
+import chatComponent from "./chat";
+import footerComponent from "./footer";
+
+import roomComponent from "./components/room";
+import browserInfoComponent from "./components/browser-info";
+import feedComponent from "./components/feed";
+import notifierComponent from "./components/notifier";
+import routerComponent from "./components/router";
+import screenShareComponent from "./components/screen-share";
+import userComponent from "./components/user";
+import videochatComponent from "./components/videochat";
 
 angular.module("janusHangouts", [
     "ngAnimate",
