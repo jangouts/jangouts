@@ -1,4 +1,5 @@
 <figure
+  ng-cloak
   ng-class="{'own-feed': vm.feed.isPublisher, sticky: vm.highlightedByUser}">
   <div class="thumb"
        ng-click="vm.toggleHighlightFn()">
@@ -6,21 +7,23 @@
       autoplay
       class="face"
       ng-class="{mirrored: vm.mirrored}"
-      poster="assets/images/placeholder.png"
       ng-show="vm.thumbnailTag() === 'video'">
     </video>
     <img
-      src="{{vm.feed.getPicture()}}"
+      ng-src="{{vm.feed.getPicture()}}"
       class="face"
       ng-class="{mirrored: vm.mirrored}"
       ng-show="vm.thumbnailTag() === 'picture'">
     </img>
     <img
-      ng-src="assets/images/placeholder.png"
+      src="../../../assets/images/placeholder.png"
       class="face"
       ng-class="{mirrored: vm.mirrored}"
       ng-show="vm.thumbnailTag() === 'placeholder'">
     </img>
+    <canvas
+      ng-show="false">
+    </canvas>
   </div>
   <figcaption>
     <span class="caption">{{ vm.feed.display }}</span>

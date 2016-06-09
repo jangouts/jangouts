@@ -1,6 +1,7 @@
 $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
-/* Do not remove this comments bellow. It's the markers used by wiredep to inject
-   sass dependencies when defined in the bower.json of your dependencies */
-// bower:scss
-// endbower
+@import "~../../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+/*@import "~../../bower_components/angular-bootstrap/ui-bootstrap-csp.css";*/
+@import "~../../node_modules/angular-block-ui/dist/angular-block-ui.css";
+@import "~../../node_modules/angular-gridster/dist/angular-gridster.min.css";
+
