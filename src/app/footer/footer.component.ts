@@ -8,7 +8,8 @@ import { Component } from "@angular/core";
 
 @Component({
   selector: "jh-footer",
-  template: require("./jh-footer.html")
+  template: require("./footer.component.html"),
+  styles: [require("!raw!sass!./footer.component.scss")]
 })
 export class FooterComponent {
   public version: string;

@@ -4,7 +4,7 @@ import {
   it
 } from "@angular/core/testing";
 
-import { FooterComponent } from "./jh-footer.directive";
+import { FooterComponent } from "./footer.component";
 
 describe("Footer", () => {
   beforeEachProviders(() => [

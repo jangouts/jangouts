@@ -1,0 +1,10 @@
+@import "../variables";
+
+:host {
+  footer {
+    background: $jangouts-bg;
+    font-size: 12px;
+    border: 0;
+    padding: 3px 0 0 0;
+  }
+}

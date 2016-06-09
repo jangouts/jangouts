@@ -1,12 +1,4 @@
-/* Colour pallete */
-$color1: #f15a5c; // Red-ish
-$color2: #09414f; // Blue-ish
-$color3: #e1dcbd; // Brown-ish
-
-//colour variables
-$jangouts-bg:  $color3;
-$jangouts-video-bg: $color2;
-
+@import "variables";
 
 body {
   background: $jangouts-bg;
@@ -115,12 +107,7 @@ header {
   }
 }
 
-footer {
-  background: $color3;
-  font-size: 12px;
-  border: 0;
-  padding: 3px 0 0 0;
-}
+
 
 .container-no-padding {
   padding-left: 0;

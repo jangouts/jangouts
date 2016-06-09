@@ -18,6 +18,7 @@ import signin from "./signin";
 
 // Components
 import chatComponent from "./chat";
+import footerComponent from "./footer";
 
 import roomComponent from "./components/room";
 import browserInfoComponent from "./components/browser-info";
@@ -27,7 +28,6 @@ import routerComponent from "./components/router";
 import screenShareComponent from "./components/screen-share";
 import userComponent from "./components/user";
 import videochatComponent from "./components/videochat";
-import footerComponent from "./components/footer";
 
 angular.module("janusHangouts", [
     "ngAnimate",
