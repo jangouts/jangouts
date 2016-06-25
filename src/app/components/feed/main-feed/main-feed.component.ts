@@ -7,8 +7,7 @@
 
 import { Component, Input } from "@angular/core";
 
-import { Feed } from "./shared";
-import { VideoStream } from "./shared";
+import { Feed, VideoStream } from "../shared";
 
 @Component({
   selector: "jh-main-feed",

@@ -12,7 +12,7 @@ export class VideoStream {
 
   private el: any;
 
-  @Input() public mutted: false;
+  @Input() public mutted: boolean = false;
 
   constructor (el: ElementRef) {
     this.el = el.nativeElement;
