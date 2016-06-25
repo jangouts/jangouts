@@ -26,7 +26,7 @@ export class SetVideoSubscription {
   @Input("jhSetVideoSubscription")
   set setVideoSubscription(video: boolean) {
     /* For subscribers we have to manage the video subscription */
-    if(!feed.isPublisher) {
+    if(!this.feed.isPublisher) {
       this.feed.setVideoSubscription(video);
     }
   }

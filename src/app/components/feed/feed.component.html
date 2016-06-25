@@ -11,21 +11,19 @@
       class="face"
       [ngClass]="{mirrored: mirrored}"
       [hidden]="humbnailTag() !== 'video'"
-      [VideoStream]="feed.getStream()"
+      [jhVideoStream]="feed.getStream()"
       [mutted]="feed.isPublisher">
     </video>
     <img
-      [src]="{{feed.getPicture()}}"
+      [src]="feed.getPicture()"
       class="face"
       [ngClass]="{mirrored: mirrored}"
       [hidden]="thumbnailTag() !== 'picture'">
-    </img>
     <img
       src="../../../assets/images/placeholder.png"
       class="face"
       [ngClass]="{mirrored: mirrored}"
       [hidden]="thumbnailTag() !== 'placeholder'">
-    </img>
     <canvas
       [hidden]="false">
     </canvas>

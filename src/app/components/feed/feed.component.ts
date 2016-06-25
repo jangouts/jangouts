@@ -12,7 +12,7 @@ import { SendPics } from "./send-pics.directive";
 import { SetVideoSubscription } from "./set-video-subscription.directive";
 
 import {
-  AudioButtonComponent
+  AudioButtonComponent,
   VideoButtonComponent,
   IgnoreButtonComponent,
   UnpublishButtonComponent
@@ -23,6 +23,7 @@ import {
   selector: "jh-feed",
   template: require("./feed.component.html"),
   directives: [
+    SendPics,
     VideoStream,
     SetVideoSubscription,
     AudioButtonComponent,
