@@ -1,15 +1,15 @@
 <button
   type="button"
   class="btn btn-xs btn-default"
-  ng-click="vm.ignore()"
+  (click)="ignore()"
   title="Ignore"
-  ng-show="vm.showsIgnore()">
+  [hidden]="!showsIgnore()">
   <span class="glyphicon glyphicon-ban-circle"></span>
 </button><button
   type="button"
   class="btn btn-xs btn-danger"
-  ng-click="vm.stopIgnoring()"
+  (click)="stopIgnoring()"
   title="Stop ignoring"
-  ng-show="vm.showsStopIgnoring()">
+  [hidden]="!showsStopIgnoring()">
   <span class="glyphicon glyphicon-ban-circle"></span>
 </button>

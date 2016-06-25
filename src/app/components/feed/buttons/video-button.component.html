@@ -1,15 +1,15 @@
 <button
   type="button"
   class="btn btn-xs btn-default"
-  ng-click="vm.toggle()"
+  (click)="toggle()"
   title="Disable video"
-  ng-show="vm.showsDisable()">
+  [hidden]="!showsDisable()">
   <span class="glyphicon glyphicon-eye-open"></span>
 </button><button
   type="button"
   class="btn btn-xs btn-danger"
-  ng-click="vm.toggle()"
+  (click)="toggle()"
   title="Enable video"
-  ng-show="vm.showsEnable()">
+  [hidden]="!showsEnable()">
   <span class="glyphicon glyphicon-eye-close"></span>
 </button>

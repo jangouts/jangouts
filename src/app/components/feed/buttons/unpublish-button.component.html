@@ -1,8 +1,8 @@
 <button
   type="button"
   class="btn btn-xs btn-default"
-  ng-click="vm.click()"
+  (click)="click()"
   title="Stop sharing"
-  ng-show="vm.isVisible()">
+  [hidden]="!isVisible()">
   <span class="glyphicon glyphicon-remove"></span>
 </button>

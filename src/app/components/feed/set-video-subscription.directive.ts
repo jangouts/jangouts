@@ -7,7 +7,7 @@
 
 import { Directive, ElementRef, Input } from "@angular/core";
 
-import { Feed } from "./feeds.factory";
+import { Feed } from "./shared";
 
 @Directive({ selector: "[jhSetVideoSubscription]" })
 export class SetVideoSubscription {

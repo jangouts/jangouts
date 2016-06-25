@@ -47,17 +47,17 @@ export class PushToTalkComponent implements OnInit {
       this.toggleText = "";
 
       if (sequence !== undefined && sequence !== null && sequence[0] !== undefined && sequence[0].length > 0) {
-      /*
-       * We don't want to support key combinations because the keyup event is
-       * not fired when the keys are released in wrong order. This problem
-       * needs to be fixed in angular hotkeys / Mousetrap library. Second
-       * problem is broken support for the right super key.
-       */
-          if (sequence[0].indexOf('+') > -1 && sequence[0].length !== 1 || sequence[0] === '\\') {
-            this.warn("Sorry, key combinations are not supported!");
-          } else {
-            this.setPushToTalk(sequence[0]);
-          }
+        /*
+         * We don't want to support key combinations because the keyup event is
+         * not fired when the keys are released in wrong order. This problem
+         * needs to be fixed in angular hotkeys / Mousetrap library. Second
+         * problem is broken support for the right super key.
+         */
+        if (sequence[0].indexOf("+") > -1 && sequence[0].length !== 1 || sequence[0] === "\\") {
+          this.warn("Sorry, key combinations are not supported!");
+        } else {
+          this.setPushToTalk(sequence[0]);
+        }
       } else {
         this.hotkeyActive = false;
       }
@@ -83,8 +83,8 @@ export class PushToTalkComponent implements OnInit {
 
   private setPushToTalk(key: string): void {
     if (this.hotkey !== null) {
-      this.hotkeys.del(this.hotkey, 'keydown');
-      this.hotkeys.del(this.hotkey, 'keyup');
+      this.hotkeys.del(this.hotkey, "keydown");
+      this.hotkeys.del(this.hotkey, "keyup");
 
       this.hotkey = null;
       this.showHotkey = false;
@@ -99,15 +99,15 @@ export class PushToTalkComponent implements OnInit {
 
       this.hotkeys.add({
         combo: key,
-        description: 'Push-to-talk',
+        description: "Push-to-talk",
         callback: pttCallback,
-        action: 'keydown'
+        action: "keydown"
       });
       this.hotkeys.add({
         combo: key,
-        description: 'Push-to-talk',
+        description: "Push-to-talk",
         callback: pttCallback,
-        action: 'keyup'
+        action: "keyup"
       });
 
       this.hotkey = key;

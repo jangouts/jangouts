@@ -7,15 +7,15 @@
 
 import { Component, Input } from "@angular/core";
 
-import { Feed } from "./feeds.service";
-import { VideoStream } from "./videostream.directive";
+import { Feed } from "./shared";
+import { VideoStream } from "./shared";
 
 @Component({
   selector: "jh-main-feed",
-   directives: [
+  directives: [
     VideoStream
-  ]
- templateUrl: "main-feed.component.html"
+  ],
+  template: require("./main-feed.component.html")
 })
 export class MainFeedComponent {
 
