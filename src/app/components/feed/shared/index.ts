@@ -1,12 +1,14 @@
 import { upgradeAdapter } from "../../adapter";
 
-import { FeedsService, Feed, FeedConnection } from "./shared";
+import { FeedsService } from "./feeds.service";
+import { Feed } from "./feeds.factory";
+import { FeedConnection } from "./feed-connection.factory";
+import { PushToTalkComponent } from "./pushtotalk.component";
 
-import { PushToTalkComponent } from "./pushtotalk";
-import { MainFeedComponent } from "./main-feed";
-
-import { FeedComponent } from "./feed.component";
-
+import jhFeed from "./jh-feed.directive";
+import jhMainFeedDirective from "./jh-main-feed.directive";
+//import jhPushToTalkButtonDirective from "./jh-pushtotalk.directive";
+//import speakObserverFactory from "./speak-observer.factory";
 import jhAudioButton from "./buttons/jh-audio-button.directive";
 import jhIgnoreButton from "./buttons/jh-ignore-button.directive";
 import jhUnpublishButton from "./buttons/jh-unpublish-button.directive";
@@ -23,10 +25,10 @@ export default angular.module("janusHangouts.feedComponent", [])
   .factory("Feed", upgradeAdapter.downgradeNg2Provider(Feed))
   .factory("FeedConnection", upgradeAdapter.downgradeNg2Provider(FeedConnection))
   .directive("jhPushtotalkButton", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(PushToTalkComponent))
-  .directive("jhFeed", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(FeedComponent))
-  .directive("jhMainFeed", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(MainFeedComponent))
-  //.directive("jhAudioButton", jhAudioButton)
-  //.directive("jhIgnoreButton", jhIgnoreButton)
-  //.directive("jhUnpublishButton", jhUnpublishButton)
-  //.directive("jhVideoButton", jhVideoButton);
+  .directive("jhFeed", jhFeed)
+  .directive("jhMainFeed", jhMainFeedDirective)
+  .directive("jhAudioButton", jhAudioButton)
+  .directive("jhIgnoreButton", jhIgnoreButton)
+  .directive("jhUnpublishButton", jhUnpublishButton)
+  .directive("jhVideoButton", jhVideoButton);
 
