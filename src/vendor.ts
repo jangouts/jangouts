@@ -1,6 +1,7 @@
 import "jquery";
 
 import "mousetrap";
+import "mousetrap/plugins/record/mousetrap-record";
 import "lodash";
 import "angular";
 import "angular-cookies";

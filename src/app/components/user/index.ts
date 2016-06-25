@@ -1,3 +1,5 @@
+import { upgradeAdapter } from "../../adapter";
+
 import jhSigninFormDirective from './jh-signin-form.directive';
 import UserService from './user.service';
 
