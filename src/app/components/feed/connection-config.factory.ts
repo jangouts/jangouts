@@ -5,9 +5,17 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
-connectionConfigFactory.$inject = ['$timeout'];
+export interface IWanted {
+  audio?: boolean;
+  video?: boolean;
+}
+
+export interface IOptions {
+  values?: IWanted;
+  ok?(): void;
+}
 
 /**
  * Handles the status of the configuration flags (audio and video) of the
@@ -16,92 +24,96 @@ connectionConfigFactory.$inject = ['$timeout'];
  * It handles correctly several consequent changes of the flag values
  * keeping the number of requests to a minimum.
  */
-function connectionConfigFactory($timeout) {
-  return function(pluginHandle, wantedInit, jsep, ok) {
-    var current = {};
-    var requested = null;
-    var wanted = {audio: true, video: true};
-    var okCallback = null;
-    _.assign(wanted, wantedInit);
-    // Initial configure
-    configure({jsep: jsep, ok: ok});
+export class ConnectionConfig {
 
-    /**
-     * Gets the current value of the configuration flags
-     *
-     * @returns {object} values of the audio and video flags
-     */
-    this.get = function() {
-      return current;
-    };
-
-    /**
-     * Sets the desired value of the configuration flags.
-     *
-     * It sends a configure request to the Janus server to sync the values
-     * if needed (and updates the local representation according).
-     *
-     * @param {object} options - object containing
-     *        * values: object with the wanted values for the flags
-     *        * ok: callback to execute on confirmation from Janus
-     */
-    this.set = function(options) {
-      options = options || {};
-      options.values = options.values || {};
-      var oldWanted = {};
-      _.assign(oldWanted, current, wanted);
-      _.assign(wanted, current, options.values);
-
-      if (requested === null && differsFromWanted(oldWanted)) {
-        configure({ok: options.ok});
-      }
-    };
-
-    /**
-     * Processes the confirmation (received from Janus) of the ongoing
-     * config request
-     */
-    this.confirm = function() {
-      $timeout(function() {
-        if (requested === null) {
-          console.error("I haven't sent a config. Where does this confirmation come from?");
-        } else {
-          current = requested;
-          requested = null;
-          console.log("Connection configured", current);
-          if (okCallback) { okCallback(); }
-          if (differsFromWanted(current)) {
-            configure();
-          }
-        }
-      });
-    };
-
-    function differsFromWanted(obj) {
-      return (obj.video !== wanted.video || obj.audio !== wanted.audio);
-    }
-
-    function configure(options?: any) {
-      options = options || {};
-      var config = {request: "configure"};
-      requested = {};
-
-      _.assign(requested, current, wanted);
-      _.assign(config, requested);
-
-      pluginHandle.send({
-        "message": config,
-        jsep: options.jsep,
-        success: function() {
-          okCallback = options.ok;
-        },
-        error: function() {
-          requested = null;
-          console.error("Config request not sent");
-        }
-      });
-    }
+  private pluginHandle: any;
+  private current: IWanted;
+  private requested: IWanted;
+  private wanted: IWanted = {
+    audio: true,
+    video: true
   };
-}
+  private okCallback: any;
 
-export default connectionConfigFactory;
+  constructor(pluginHandle: any, wantedInit: IWanted, jsep: any, ok?: any) {
+    this.pluginHandle = pluginHandle;
+    _.assign(this.wanted, wantedInit);
+
+    // initial configure
+    this.configure({jsep: jsep, ok: ok});
+  }
+
+  /**
+   * Gets the current value of the configuration flags
+   * @returns values of the audio and video flags
+   */
+  public get(): IWanted {
+    return this.current;
+  }
+
+  /**
+   * Sets the desired value of the configuration flags.
+   *
+   * It sends a configure request to the Janus server to sync the values
+   * if needed (and updates the local representation according).
+   *
+   * @param options object containing
+   *                * values: object with the wanted values for the flags
+   *                * ok: callback to execute on confirmation from Janus
+   */
+  public set(options: IOptions = {}): void {
+    options.values = options.values || {};
+
+    let oldWanted: any = {};
+    _.assign(oldWanted, this.current, this.wanted);
+    _.assign(this.wanted, this.current, options.values);
+
+    if (this.requested === null && this.differsFromWanted(oldWanted)) {
+      this.configure({ok: options.ok});
+    }
+  }
+
+  /**
+   * Processes the confirmation (received from Janus) of the ongoing config
+   * request
+   */
+  public confirm(): void {
+    if (this.requested === null) {
+      console.error("I haven't sent a config. Where does this confirmation come from?");
+    } else {
+      this.current = this.requested;
+      this.requested = null;
+      console.log("Connection configured", this.current);
+      if (this.okCallback) { this.okCallback(); }
+      if (this.differsFromWanted(this.current)) {
+        this.configure();
+      }
+    }
+  }
+
+  private differsFromWanted(obj: IWanted): boolean {
+    return (obj.video !== this.wanted.video || obj.audio !== this.wanted.audio);
+  }
+
+  private configure(options: {jsep?: any, ok?(): void } = {}): void {
+    let config: any = {request: "configure"};
+    this.requested = {};
+
+    _.assign(this.requested, this.current, this.wanted);
+    _.assign(config, this.requested);
+
+    this.pluginHandle.send({
+      message: config,
+      jsep: options.jsep,
+      success: (): void => {
+        this.okCallback = options.ok;
+      },
+      error: (): void => {
+        this.requested = null;
+        console.error("Config request not sent");
+      }
+    });
+  }
+
+
+}

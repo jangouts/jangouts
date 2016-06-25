@@ -7,8 +7,9 @@
 
 import * as _ from 'lodash';
 
-RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
-    'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
+import { FeedConnection } from "../feed/feed-connection.factory";
+
+RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room', 'DataChannelService', 'ActionService', 'jhConfig',
     'ScreenShareService', 'RequestService'];
 
 /**
@@ -17,7 +18,7 @@ RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
  * @memberof module:janusHangouts
  */
 function RoomService($q, $rootScope, $timeout, FeedsService, Room,
-    FeedConnection, DataChannelService, ActionService, jhConfig,
+    DataChannelService, ActionService, jhConfig,
     ScreenShareService, RequestService) {
   this.enter = enter;
   this.leave = leave;
@@ -100,7 +101,7 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
 
   function doEnter(username) {
     var $$rootScope = $rootScope;
-    var connection = null;
+    var connection = undefined;
 
     // Create new session
     that.janus.attach({
@@ -108,7 +109,8 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       success: function(pluginHandle) {
         // Step 1. Right after attaching to the plugin, we send a
         // request to join
-        connection = new FeedConnection(pluginHandle, that.room.id, "main");
+        connection = new FeedConnection();
+        connection.setAttrs(pluginHandle, that.room.id, "main");
         connection.register(username);
       },
       error: function(error) {
@@ -280,7 +282,7 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
 
   function subscribeToFeed(id, display) {
     var feed = FeedsService.find(id);
-    var connection = null;
+    var connection = undefined;
 
     if (feed) {
       display = feed.display;
@@ -289,7 +291,8 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
     this.janus.attach({
       plugin: "janus.plugin.videoroom",
       success: function(pluginHandle) {
-        connection = new FeedConnection(pluginHandle, that.room.id, "subscriber");
+        connection = new FeedConnection();
+        connection.setAttrs(pluginHandle, that.room.id, "subscriber");
         connection.listen(id);
       },
       error: function(error) {
@@ -348,13 +351,14 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
 
   function publishScreen() {
     var display = FeedsService.findMain().display;
-    var connection;
+    var connection = undefined;
     var id;
 
     this.janus.attach({
       plugin: "janus.plugin.videoroom",
       success: function(pluginHandle) {
-        connection = new FeedConnection(pluginHandle, that.room.id, "screen");
+        connection = new FeedConnection();
+        connection.setAttrs(pluginHandle, that.room.id, "screen");
         connection.register(display);
         ScreenShareService.setInProgress(true);
       },

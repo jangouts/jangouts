@@ -5,136 +5,125 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
-FeedsService.$inject = ['$q', '$window'];
+import { Injectable } from "@angular/core";
+import { Feed } from "./feeds.factory";
 
 /**
- * Service containing all feeds
- * @constructor
- * @memberof module:janusHangouts
+ * Feeds collection
  */
-function FeedsService($q, $window) {
-  var mainFeed = null;
-  var feeds = {};
+@Injectable()
+export class FeedsService {
 
-  this.find = find;
-  this.findMain = findMain;
-  this.add = add;
-  this.destroy = destroy;
-  this.allFeeds = allFeeds;
-  this.publisherFeeds = publisherFeeds;
-  this.localScreenFeeds = localScreenFeeds;
-  this.speakingFeed = speakingFeed;
-  this.waitFor = waitFor;
+  private mainFeed: Feed = null;
+  private feeds: any = {};
+
+  constructor () { }
+
 
   /**
-   * @returns{Feed} gets feed with given id or null if not found
+   * @param id  id of the feed to find
+   * @returns   gets feed with given id or null if not found
    */
-  function find(id) {
-    return (feeds[id] || null);
+  public find(id: number): Feed {
+    return (this.feeds[id] || null);
   }
 
   /**
-   * @returns {Feed} gets main feed or null if not found
+   * @returns gets main feed or null if not found
    */
-  function findMain() {
-    return mainFeed;
+  public findMain(): Feed {
+    return this.mainFeed;
   }
 
   /**
-   * Find a feed but, if not found, waits until it appears
-   *
-   * @param {string} id             Feed's id
-   * @param {number} [attempts=10]  Max number of attempts
-   * @param {number} [timeout=1000] Time (in miliseconds) between attempts
-   * @return {Object}               Promise to be resolved when the feed is found.
+   * @param id        Feed's id
+   * @param attempts  Max number of attempts
+   * @param timeout   Time (in miliseconds) between attempts
+   * @return          Promise to be resolved when te feed is found
    */
-  function waitFor(id, attempts, timeout) {
-    var deferred = $q.defer();
-    var feed = this.find(id);
-    var that = this;
-    attempts = attempts || 10;
-    timeout = timeout || 1000;
+  public waitFor(id: number, attempts: number = 10, timeout: number = 1000): any {
+    let promise: Promise<any> = new Promise<any>((resolve, reject) => {
+      let feed: Feed = this.find(id);
 
-    if (feed === null) { // If feed is not found, set an interval to check again.
-      var interval = $window.setInterval(function () {
-        feed = that.find(id);
-        if (feed === null) { // The feed was not found this time
-          attempts -= 1;
-        } else { // The feed was finally found
-          $window.clearInterval(interval);
-          deferred.resolve(feed);
-        }
-        if (attempts === 0) { // No more attempts left and feed was not found
-          $window.clearInterval(interval);
-          deferred.reject("feed with id " + id + " was not found");
-        }
-      }, timeout);
-    } else {
-      deferred.resolve(feed);
-    }
+      if (feed === null) { // if feed is not found, set an interval to check again
+        let interval: any = setInterval(() => {
+          feed = this.find(id);
+          if (feed === null) { // the feed was not found this time
+            attempts -= 1;
+          } else { // the feed was finally found
+            clearInterval(interval);
+            resolve(feed);
+          }
+          if (attempts === 0) { // no more attempts left and feed was not found
+            clearInterval(interval);
+            reject(`feed with id ${id} was not found`);
+          }
+        }, timeout);
+      } else {
+        resolve(feed);
+      }
 
-    return deferred.promise;
+    });
+    return promise;
   }
 
   /**
-   * Registers feed.
-   * @param {Feed} feed - to register
-   * @param {Integer} feed.id - id under which is id registered
-   * @param {Array} options - options with feed details
-   * @param {Boolean} options.main - if feed is main one
+   * Registers feed
+   * @param feed    feed to register
+   * @param options options with feed details
    */
-  function add(feed, options) {
-    feeds[feed.id] = feed;
+  public add(feed: Feed, options?: any): void {
+    this.feeds[feed.id] = feed;
     if (options && options.main) {
-      mainFeed = feed;
+      this.mainFeed = feed;
     }
   }
 
-  /**
+	/**
    * Unregisters feed with given id.
    */
-  function destroy(id) {
-    delete feeds[id];
-    if (mainFeed && (id === mainFeed.id)) {
-      mainFeed = null;
-    }
+  public destroy(id: number): void {
+  	delete this.feeds[id];
+    if (this.mainFeed && (id === this.mainFeed.id)) {
+    	this.mainFeed = null;
+  	}
+  }
+
+
+  /**
+   * @returns all registered feeds
+   */
+  public allFeeds(): Array<Feed> {
+    return <Array<Feed>>_.values(this.feeds);
   }
 
   /**
-   * @returns {Array<Feed>} all registered feeds
+   * @returns all registered publisher feeds
    */
-  function allFeeds() {
-    return _.values(feeds);
-  }
-
-  /**
-   * @returns {Array<Feed>} all registered publisher feeds
-   */
-  function publisherFeeds() {
-    return _.filter(this.allFeeds(), function (f: Feed) {
+  public publisherFeeds(): Array<Feed> {
+    return <Array<Feed>>_.filter(this.allFeeds(), (f: Feed) => {
       return f.isPublisher;
     });
   }
 
   /**
-   * @returns {Array<Feed>} all registered feeds sharing local screen
+   * @returns all registered feeds sharing local screen
    */
-  function localScreenFeeds() {
-    return _.filter(this.allFeeds(), function (f: Feed) {
+  public localScreenFeeds(): Array<Feed> {
+    return <Array<Feed>>_.filter(this.allFeeds(), (f: Feed) => {
       return f.isLocalScreen;
     });
   }
 
   /**
-   * @returns {Feed} registered feed that speaks or null
+   * @returns registered feed that speaks or null
    */
-  function speakingFeed() {
-    return _.find(this.allFeeds(), function (f: Feed) {
+  public speakingFeed(): Feed {
+    return <Feed>_.find(this.allFeeds(), (f: Feed) => {
       return f.getSpeaking();
     });
   }
-}
 
-export default FeedsService;
+}
