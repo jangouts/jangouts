@@ -140,3 +140,4 @@ function jhPushToTalkButtonDirective(RoomService, hotkeys, $timeout, UserService
 }
 
 export default jhPushToTalkButtonDirective;
+

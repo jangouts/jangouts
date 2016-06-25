@@ -18,20 +18,4 @@ interface Window {
   Float32Array?: any
 }
 
-interface Feed {
-  id?: number,
-  isPublisher?: boolean,
-  isLocalScreen?: boolean,
-  getSpeaking?(): any
-}
-
-interface Media {
-  videoRecv: boolean,
-  audioRecv: boolean,
-  videoSend?: boolean,
-  audioSend?: boolean,
-  data?: boolean,
-  video?: string
-}
-
 declare function attachMediaStream(video: any, newVal: any): void;

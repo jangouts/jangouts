@@ -5,12 +5,13 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
+import { Feed } from "../feed/feeds.factory"
 
-ActionService.$inject = ['$timeout', 'Feed', 'FeedsService', 'LogEntry',
-  'LogService', 'DataChannelService', '$rootScope'];
+ActionService.$inject = ["$timeout", "FeedsService", "LogEntry",
+  "LogService", "DataChannelService", "$rootScope"];
 
-function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataChannelService, $rootScope) {
+function ActionService($timeout, FeedsService, LogEntry, LogService, DataChannelService, $rootScope) {
   this.enterRoom = enterRoom;
   this.leaveRoom = leaveRoom;
   this.remoteJoin = remoteJoin;
@@ -23,11 +24,13 @@ function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataC
   this.setMedia = setMedia;
 
   function enterRoom(feedId, display, connection) {
-    var feed = new Feed({
+    var feed = new Feed();
+    feed.setAttrs({
       display: display,
       connection: connection,
       id: feedId,
-      isPublisher: true
+      isPublisher: true,
+      dataChannel: DataChannelService
     });
     FeedsService.add(feed, {main: true});
   }
@@ -41,12 +44,14 @@ function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataC
   }
 
   function publishScreen(feedId, display, connection) {
-    var feed = new Feed({
+    var feed = new Feed();
+    feed.setAttrs({
       display: display,
       connection: connection,
       id: feedId,
       isPublisher: true,
-      isLocalScreen: true
+      isLocalScreen: true,
+      dataChannel: DataChannelService
     });
     FeedsService.add(feed);
     // Log the event
@@ -55,11 +60,13 @@ function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataC
   }
 
   function remoteJoin(feedId, display, connection) {
-    var feed = new Feed({
+    var feed = new Feed();
+    feed.setAttrs({
       display: display,
       connection: connection,
       id: feedId,
-      isPublisher: false
+      isPublisher: false,
+      dataChannel: DataChannelService
     });
     FeedsService.add(feed);
     // Log the event
@@ -121,7 +128,7 @@ function ActionService($timeout, Feed, FeedsService, LogEntry, LogService, DataC
       // If we are muting the main feed (the only publisher that can be
       // actually muted) raise a signal
       if (type === "audio" && feed.isPublisher) {
-        callback = function() { $rootScope.$broadcast('muted.byUser'); };
+        callback = function() { $rootScope.$broadcast("muted.byUser"); };
       }
       feed.setEnabledChannel(type, false, {after: callback});
     } else {
