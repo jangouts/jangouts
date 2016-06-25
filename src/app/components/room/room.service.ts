@@ -7,7 +7,7 @@
 
 import * as _ from 'lodash';
 
-import { FeedConnection } from "../feed/feed-connection.factory";
+import { FeedConnection } from "../feed";
 
 RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room', 'DataChannelService', 'ActionService', 'jhConfig',
     'ScreenShareService', 'RequestService'];

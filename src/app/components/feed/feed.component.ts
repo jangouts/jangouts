@@ -5,13 +5,31 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 
-import { Feed } from "./feeds.factory";
+import { Feed, VideoStream } from "./shared";
+import { SendPics } from "./send-pics.directive";
+import { SetVideoSubscription } from "./set-video-subscription.directive";
+
+import {
+  AudioButtonComponent
+  VideoButtonComponent,
+  IgnoreButtonComponent,
+  UnpublishButtonComponent
+} from "./buttons";
+
 
 @Component({
-  selector: 'jh-feed',
-  templateUrl: 'feed.component.html'
+  selector: "jh-feed",
+  template: require("./feed.component.html"),
+  directives: [
+    VideoStream,
+    SetVideoSubscription,
+    AudioButtonComponent,
+    VideoButtonComponent,
+    IgnoreButtonComponent,
+    UnpublishButtonComponent
+  ]
 })
 export class FeedComponent implements OnInit {
 

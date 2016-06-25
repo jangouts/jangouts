@@ -7,7 +7,7 @@
 
 import { Directive, ElementRef, Input } from "@angular/core";
 
-import { Feed } from "./feeds.factory";
+import { Feed } from "./shared";
 
 @Directive({ selector: "[jhSendPics]" })
 export class SendPics {
@@ -31,10 +31,10 @@ export class SendPics {
   }
 
   public initPics(element): void {
-    let canvas = $('canvas', element)
+    let canvas = $("canvas", element)
     let canvasTag = <HTMLCanvasElement>canvas[0];
-    let video = $('video', element).first();
-    let context = canvasTag.getContext('2d');
+    let video = $("video", element).first();
+    let context = canvasTag.getContext("2d");
 
     // initially set it to 4:3 (fitting the placeholder image)
     canvasTag.width = canvas.width();
@@ -59,7 +59,7 @@ export class SendPics {
       let height = width * this.picSource[0].videoHeight / this.picSource[0].videoWidth;
       canvas.height = height;
       this.picContext.drawImage(this.picSource[0], 0, 0, width, height);
-      this.feed.updateLocalPic(canvas.toDataURL('image/jpeg', 0.4));
+      this.feed.updateLocalPic(canvas.toDataURL("image/jpeg", 0.4));
     }
   }
 
