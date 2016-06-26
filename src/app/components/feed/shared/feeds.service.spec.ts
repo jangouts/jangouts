@@ -11,6 +11,8 @@ import {
 import { FeedsService } from "./feeds.service";
 import { Feed } from "./feeds.factory";
 
+declare const spyOn;
+
 describe("Service: FeedsService", () => {
 
   let feeds: FeedsService;

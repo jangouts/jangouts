@@ -8,6 +8,9 @@ import {
 
 import { ConnectionConfig, IWanted } from "./connection-config.factory";
 
+declare const jasmine;
+declare const spyOn;
+
 describe("Service: ConnectionConfig", () => {
 
   let pluginHandle: any;
@@ -29,13 +32,14 @@ describe("Service: ConnectionConfig", () => {
       audio: true,
       video: true,
     };
-    new ConnectionConfig(
+    let cconfig = new ConnectionConfig(
       pluginHandle,
       config,
       {},
       undefined
     );
 
+    expect(cconfig).not.toBeDefined();
     expect(pluginHandle.send).toHaveBeenCalled();
   });
 

@@ -52,9 +52,9 @@
           ng-if="item.content === 'Participants'"
           class="grid-item-content"
           id="thumbnails">
-            <!--[toggle-highlight-fn]="vm.toggleHighlightedFeed(f)"-->
           <jh-feed
             [feed]="f"
+            (toggle-highlight)="vm.toggleHighlightedFeed($event)"
             [highlighted]="vm.isHighlighted(f)"
             [highlighted-by-user]="vm.isHighlightedByUser(f)"
             ng-repeat="f in vm.feeds() | orderBy:'+display'">

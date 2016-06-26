@@ -9,6 +9,8 @@ import {
 
 import { ChatMessageComponent } from "./chat-message.component";
 
+declare const jasmine;
+
 describe("ChatMessage", () => {
 
   beforeEachProviders(() => [

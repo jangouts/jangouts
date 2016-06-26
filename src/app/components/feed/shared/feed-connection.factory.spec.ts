@@ -1,5 +1,6 @@
 import {
   beforeEachProviders,
+  beforeEach,
   describe,
   expect,
   it
@@ -7,7 +8,10 @@ import {
 
 import { FeedConnection } from "./feed-connection.factory";
 
-fdescribe("Service: FeedConnection", () => {
+declare const jasmine;
+declare const spyOn;
+
+describe("Service: FeedConnection", () => {
 
   let pluginHandle: any;
 
@@ -125,26 +129,5 @@ fdescribe("Service: FeedConnection", () => {
 
     expect(pluginHandle.data).toHaveBeenCalledWith(data);
   });
-
-  it("should return undefined on call getConfig without config", () => {
-    let fConnection: FeedConnection = new FeedConnection();
-    fConnection.setAttrs(
-      pluginHandle,
-      1
-    );
-
-    expect(<any>fConnection.getConfig()).not.toBeDefined();<`2`>
-  });
-
-  it("should return undefined on call confirmConfig without config", () => {
-    let fConnection: FeedConnection = new FeedConnection();
-    fConnection.setAttrs(
-      pluginHandle,
-      1
-    );
-
-    expect(fConnection.confirmConfig()).not.toBeDefined();<`2`>
-  });
-
 
 });
