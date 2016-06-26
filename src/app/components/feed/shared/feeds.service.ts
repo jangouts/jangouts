@@ -81,14 +81,14 @@ export class FeedsService {
     }
   }
 
-	/**
+  /**
    * Unregisters feed with given id.
    */
   public destroy(id: number): void {
-  	delete this.feeds[id];
+    delete this.feeds[id];
     if (this.mainFeed && (id === this.mainFeed.id)) {
-    	this.mainFeed = null;
-  	}
+      this.mainFeed = null;
+    }
   }
 
 

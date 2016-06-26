@@ -10,6 +10,9 @@ import {
 
 import { SpeakObserver } from "./speak-observer.service";
 
+declare const jasmine;
+declare const spyOn;
+
 describe("Service: SpeakObserver", () => {
 
   let audioContextState: string = "running";
@@ -188,9 +191,5 @@ describe("Service: SpeakObserver", () => {
 
     speakObserver.destroy();
   }));
-
-
-
-
 
 });

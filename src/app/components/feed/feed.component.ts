@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Output, Input, EventEmitter } from "@angular/core";
 
 import { Feed, VideoStream } from "./shared";
 import { SendPics } from "./send-pics.directive";
@@ -31,20 +31,14 @@ import {
     VideoButtonComponent,
     IgnoreButtonComponent,
     UnpublishButtonComponent
-  ],
-  inputs: [
-    'feed',
-    'toggleHighlightFn',
-    'highlighted',
-    'highlightedByUser'
   ]
 })
 export class FeedComponent implements OnInit {
 
-  public feed: Feed;
-  public toggleHighlightFn: any;
-  public highlighted: boolean;
-  public highlightedByUser: boolean;
+  @Input() feed: Feed;
+  @Output() toggleHighlight = new EventEmitter<Feed>();
+  @Input() highlighted: boolean;
+  @Input() highlightedByUser: boolean;
 
   private mirrored: boolean = false;
 
@@ -99,6 +93,10 @@ export class FeedComponent implements OnInit {
         return "placeholder";
       }
     }
+  }
+
+  private click (): void {
+    this.toggleHighlight.emit(this.feed);
   }
 
 }

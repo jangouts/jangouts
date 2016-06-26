@@ -9,6 +9,9 @@ import {
 
 import { Feed } from "./feeds.factory";
 
+declare const jasmine;
+declare const spyOn;
+
 // [TODO]: Move to action-service/action-service.mock.ts when ActionService mirated to Angular 2
 import { provide, Provider } from "@angular/core";
 

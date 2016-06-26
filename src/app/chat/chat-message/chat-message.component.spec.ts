@@ -1,10 +1,14 @@
 import {
   beforeEachProviders,
   inject,
+  describe,
+  expect,
   it
 } from "@angular/core/testing";
 
 import { ChatMessageComponent } from "./chat-message.component";
+
+declare const jasmine;
 
 describe("ChatMessage", () => {
 

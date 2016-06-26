@@ -1,9 +1,15 @@
 import {
   beforeEachProviders,
+  describe,
+  expect,
   inject,
   it
 } from "@angular/core/testing";
+
 import { Control } from "@angular/common";
+
+declare const jasmine;
+declare const spyOn;
 
 import { ChatFormComponent } from "./chat-form.component";
 
