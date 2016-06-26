@@ -3,13 +3,13 @@
   class="btn btn-xs btn-default"
   (click)="ignore()"
   title="Ignore"
-  [hidden]="!showsIgnore()">
+  *ngIf="showsIgnore()">
   <span class="glyphicon glyphicon-ban-circle"></span>
 </button><button
   type="button"
   class="btn btn-xs btn-danger"
   (click)="stopIgnoring()"
   title="Stop ignoring"
-  [hidden]="!showsStopIgnoring()">
+  *ngIf="showsStopIgnoring()">
   <span class="glyphicon glyphicon-ban-circle"></span>
 </button>

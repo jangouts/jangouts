@@ -1,2 +1,2 @@
-<video autoplay [jhVideoStream]="feed.getStream()" [mutted]="true">
+<video autoplay *ngIf="feed" [jhVideoStream]="feed.getStream()" [mutted]="true">
 </video>

@@ -14,7 +14,8 @@ import { Feed, VideoStream } from "../shared";
   directives: [
     VideoStream
   ],
-  template: require("./main-feed.component.html")
+  template: require("./main-feed.component.html"),
+  styles: [require("!raw!sass!./main-feed.component.scss")]
 })
 export class MainFeedComponent {
 

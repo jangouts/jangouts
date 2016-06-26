@@ -1,0 +1,51 @@
+@import "../../variables";
+
+:host {
+  figure {
+    margin: 0px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+
+    .thumb {
+      position: relative;
+      cursor: pointer;
+      .face {
+        vertical-align: middle;
+        width: 64px;
+        height: 48px;
+        // This transition causes some artifacts in some corner cases
+        // transition: width .3s, height .3s;
+      }
+    }
+
+    figcaption {
+      line-height: 1.4;
+      font-size: 13px;
+      padding: 2px 3px 3px 3px;
+      height: 26px;
+      position: relative;
+      .buttons {
+        z-index: 10;
+        position: absolute;
+        top: 2px;
+        right: 2px;
+      }
+      .caption {
+        overflow: hidden;
+        position: absolute;
+        width: 80%;
+        height: 20px;
+      }
+    }
+
+    &.own-feed {
+      figcaption {
+        color: #fff;
+        background: rgba(0,0,0,0.3);
+      }
+    }
+    &.sticky {
+      border-color: $color1;
+    }
+  }
+}

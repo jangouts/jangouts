@@ -5,12 +5,12 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Directive, ElementRef, Input } from "@angular/core";
+import { Directive, ElementRef, Input, OnInit } from "@angular/core";
 
 import { Feed } from "./shared";
 
 @Directive({ selector: "[jhSetVideoSubscription]" })
-export class SetVideoSubscription {
+export class SetVideoSubscription implements OnInit {
 
   @Input() public feed: Feed;
   @Input() public initial: boolean;
@@ -19,7 +19,9 @@ export class SetVideoSubscription {
 
   constructor (el: ElementRef) {
     this.el = el.nativeElement;
+  }
 
+  ngOnInit() {
     this.feed.setVideoSubscription(this.initial);
   }
 

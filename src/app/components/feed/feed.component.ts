@@ -22,6 +22,7 @@ import {
 @Component({
   selector: "jh-feed",
   template: require("./feed.component.html"),
+  styles: [require("!raw!sass!./feed.component.scss")],
   directives: [
     SendPics,
     VideoStream,
@@ -30,14 +31,20 @@ import {
     VideoButtonComponent,
     IgnoreButtonComponent,
     UnpublishButtonComponent
+  ],
+  inputs: [
+    'feed',
+    'toggleHighlightFn',
+    'highlighted',
+    'highlightedByUser'
   ]
 })
 export class FeedComponent implements OnInit {
 
-  @Input() public feed: Feed;
-  @Input() public toggleHighlightFn: any;
-  @Input() public highlighted: boolean;
-  @Input() public highlightedByUser: boolean;
+  public feed: Feed;
+  public toggleHighlightFn: any;
+  public highlighted: boolean;
+  public highlightedByUser: boolean;
 
   private mirrored: boolean = false;
 
