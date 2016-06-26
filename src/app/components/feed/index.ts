@@ -12,6 +12,7 @@ upgradeAdapter.addProvider(Feed);
 upgradeAdapter.addProvider(FeedConnection);
 
 upgradeAdapter.upgradeNg1Provider("hotkeys"); // needed for pushToTalk
+upgradeAdapter.upgradeNg1Provider("MuteNotifier");
 
 export default angular.module("janusHangouts.feedComponent", [])
   .service("FeedsService", upgradeAdapter.downgradeNg2Provider(FeedsService))

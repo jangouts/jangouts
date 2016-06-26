@@ -4,20 +4,20 @@
   [ngClass]="{'btn-primary': feed.getSpeaking(), 'btn-default': !feed.getSpeaking()}"
   (click)="toggle()"
   title="Disable audio"
-  [hidden]="!showsDisable()">
+  *ngIf="showsDisable()">
   <span class="glyphicon glyphicon-volume-up"></span>
 </button><button
   type="button"
   class="btn btn-xs btn-danger"
   (click)="toggle()"
   title="Enable audio"
-  [hidden]="!showsEnable()">
+  *ngIf="showsEnable()">
   <span class="glyphicon glyphicon-volume-off"></span>
 </button><button
   type="button"
   disabled
   class="btn btn-xs btn-danger"
   title="Audio disabled"
-  [hidden]="!showsAudioOff()">
+  *ngIf="showsAudioOff()">
   <span class="glyphicon glyphicon-volume-off"></span>
 </button>

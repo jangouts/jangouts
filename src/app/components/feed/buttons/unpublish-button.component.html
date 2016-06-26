@@ -3,6 +3,6 @@
   class="btn btn-xs btn-default"
   (click)="click()"
   title="Stop sharing"
-  [hidden]="!isVisible()">
+  *ngIf="isVisible()">
   <span class="glyphicon glyphicon-remove"></span>
 </button>

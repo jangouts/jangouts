@@ -3,13 +3,13 @@
   class="btn btn-xs btn-default"
   (click)="toggle()"
   title="Disable video"
-  [hidden]="!showsDisable()">
+  *ngIf="showsDisable()">
   <span class="glyphicon glyphicon-eye-open"></span>
 </button><button
   type="button"
   class="btn btn-xs btn-danger"
   (click)="toggle()"
   title="Enable video"
-  [hidden]="!showsEnable()">
+  *ngIf="showsEnable()">
   <span class="glyphicon glyphicon-eye-close"></span>
 </button>
