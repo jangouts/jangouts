@@ -16,9 +16,5 @@
     "typings/main",
     "typings/main.d.ts",
     "bower_components"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "resolveGlobs": true,
-    "forkChecker": true
-  }
+  ]
 }
