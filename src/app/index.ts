@@ -5,7 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import "zone.js";
+//import "zone.js";
+import "zone.js/dist/zone";
+import "zone.js/dist/long-stack-trace-zone";
 import "reflect-metadata";
 import { upgradeAdapter } from "./adapter";
 
