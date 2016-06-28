@@ -133,6 +133,8 @@ npm run build:prod
 ## Running Tests Locally
 
 ### run tests
+This command will start and capture all configured browsers (by default only
+PhantomJS) and run tests.
 ```bash
 npm run test
 ```
