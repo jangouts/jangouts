@@ -1,65 +1,58 @@
 import {
+  beforeEach,
   beforeEachProviders,
+  describe,
+  expect,
   inject,
   it
 } from "@angular/core/testing";
+
 import { Control } from "@angular/common";
+
+declare const jasmine;
+declare const spyOn;
 
 import { ChatFormComponent } from "./chat-form.component";
 
-// [TODO]: Move to action-service/action-service.mock.ts when ActionService mirated to Angular 2
-import { provide, Provider } from "@angular/core";
 class MockActionService {
-  constructor() { }
   public writeChatMessage(text: string): void { }
-  public getProvider(): Provider {
-    return provide("ActionService", {useValue: this});
-  }
 }
-// end TODO
 
 describe("ChatForm", () => {
-  let mockActionService: MockActionService;
-
   beforeEachProviders(() => {
-    mockActionService = new MockActionService();
+    this.actionService = new MockActionService();
+
     return [
-      ChatFormComponent,
-      mockActionService.getProvider()
+      {provide: ChatFormComponent, useClass: ChatFormComponent},
+      {provide: "ActionService", useValue: this.actionService}
     ];
   });
 
-  it("should have chatForm defined", inject([ ChatFormComponent ], (chatForm) => {
-    expect(chatForm.chatForm).toBeDefined();
+  beforeEach(inject([ ChatFormComponent ], (chatForm)  => {
+    this.chatForm = chatForm;
+    this.ctrlGroup = chatForm.chatForm.value;
+    this.textField = <Control>this.chatForm.chatForm.controls["text"]
   }));
 
-  it("should have control text defined", inject([ ChatFormComponent ], (chatForm) => {
-    let field: string = "text";
+  it("should start with an empty text", () => {
+    expect(this.ctrlGroup.text).toBe(null);
+    expect(this.textField.value).toBe(null);
+  });
 
-    expect(chatForm.chatForm.controls[field]).toBeDefined();
-  }));
+  it("should reset text value on submit", () => {
+    this.textField.updateValue("manual input");
+    this.chatForm.submit();
 
-  it("should have control text defined as null", inject([ ChatFormComponent ], (chatForm) => {
-    expect(chatForm.chatForm.value.text).toBe(null);
-  }));
+    expect(this.ctrlGroup.text).toBe(null);
+    expect(this.textField.value).toBe(null);
+  });
 
-  it("should reset text value on submit", inject([ ChatFormComponent ], (chatForm) => {
-    let field: string = "text";
+  it("should use ActionService.writeChatMessage to send the message", () => {
+    spyOn(this.actionService, "writeChatMessage");
 
-    (<Control>chatForm.chatForm.controls[field]).updateValue("manual input");
-    chatForm.submit();
+    this.textField.updateValue("manual input");
+    this.chatForm.submit();
 
-    expect(chatForm.chatForm.value.text).toBe(null);
-  }));
-
-  it("should call ActionService.writeChatMessage on submit", inject([ ChatFormComponent ], (chatForm) => {
-    let field: string = "text";
-    spyOn(mockActionService, "writeChatMessage");
-
-    (<Control>chatForm.chatForm.controls[field]).updateValue("manual input");
-    chatForm.submit();
-
-    expect(mockActionService.writeChatMessage).toHaveBeenCalledWith("manual input");
-  }));
-
+    expect(this.actionService.writeChatMessage).toHaveBeenCalledWith("manual input");
+  });
 });
