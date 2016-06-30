@@ -1,18 +1,21 @@
 /* Colour pallete */
-$color1: #f15a5c; // Red-ish
-$color2: #09414f; // Blue-ish
-$color3: #e1dcbd; // Brown-ish
+$color1: #F2545B; // Red-ish
+$color2: #111111; // Black-ish
+$color3: #22AAA1; // Green-ish
 
 //colour variables
-$jangouts-bg:  $color3;
+$jangouts-bg:  $color2;
 $jangouts-video-bg: $color2;
+$white-text: #f1f1f1;
 
 body {
   background: $jangouts-bg;
+  background-repeat: repeat;
 }
 
 .jangouts-logo-login {
   margin: 3em 0;
+  width: 253px;
 }
 
 .global-notification.notification-info {
@@ -155,13 +158,13 @@ body div.block-ui-container {
 }
 
 header {
-  background: $color3;
-  padding: 1px 0;
+  background: $color1;
+  padding: 2px 0;
   #logo {
     height: 33px;
   }
-  button, .btn-default {
-    color: $color1;
+  button {
+    color: $color2;
     background: transparent;
     border-color: transparent;
 
@@ -197,10 +200,14 @@ header {
 }
 
 footer {
-  background: $color3;
   font-size: 12px;
+  color: $white-text;
   border: 0;
   padding: 3px 0 0 0;
+  height: 20px;
+  a {
+    color: $white-text;
+  }
 }
 
 .container-no-padding {
@@ -211,34 +218,61 @@ footer {
 
 //styles by sections
 #signin {
+  color: $white-text;
   width: 100%;
   min-height: 660px;
-  background: url('../images/login-bg.jpg') #000;
-  background-size: cover;
+  background: url('../images/login-bg.jpg') $color2 repeat;
+  background-size: 600px;
   padding-top: 80px;
+  margin-bottom: -20px;
   .form-signin {
     width: 320px;
     margin: 0 auto;
     padding: 0px;
-    .form-group:first-of-type {
-      input {
-        border-radius: 4px 4px 0px 0px;
+    .form-group {
+      input, select {
+        border-radius: 0px;
         border: 0px;
+        background: transparent;
+        border-bottom: 1px solid $white-text;
+        color: darken($white-text, 15%);
+        font-family: 'Raleway', sans-serif;
+        font-weight: 100;
+        font-size: 1.2em;
+        -webkit-appearance: none;
+        box-shadow: none !important;
+        padding: 0px;
+        margin-bottom: 1.5em;
+      }
+      select {
+        background: url('../images/carret.png') no-repeat;
+        background-size: 8px;
+        background-position: right;
       }
     }
-    .form-group:last-of-type select {
-      border-radius: 0px 0px 4px 4px;
-      border: 0px;
-      -webkit-border-radius: 0px 0px 4px 4px;
-      -webkit-appearance: none;
-      padding: 0 15px;
-    }
     .login-msg {
-      margin-top: 1em;
+      margin-top: 1.5em;
       hr {
         margin-top: 10px;
         margin-bottom: 7px;
       }
+    }
+    #signInButton {
+      color: #fff;
+      border-radius: 0px;
+      background-color: $color1;
+      border: none;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 100;
+      margin-top: 1.5em;
+      &:hover {
+        background-color: darken($color1, 5%);
+      }
+    }
+    .checkbox label {
+      font-size: .9em;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 100;
     }
   }
 }
@@ -260,17 +294,6 @@ footer {
 
 .gridster-item {
   background: white;
-}
-
-#signInButton {
-  color: #fff;
-  background-color: $color1;
-  border-color: darken($color1, 10%);
-}
-#signInButton:hover {
-  color: #fff;
-  background-color: darken($color1, 10%);
-  border-color: darken($color1, 15%);
 }
 
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
