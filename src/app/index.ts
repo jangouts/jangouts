@@ -5,9 +5,14 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+/*
+ * Error with the exported typings from zone.js
+ * https://github.com/angular/zone.js/issues/297#issuecomment-200912405
+ */
 //import "zone.js";
 import "zone.js/dist/zone";
 import "zone.js/dist/long-stack-trace-zone";
+
 import "reflect-metadata";
 import { upgradeAdapter } from "./adapter";
 
