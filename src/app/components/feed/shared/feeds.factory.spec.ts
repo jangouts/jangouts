@@ -3,8 +3,7 @@ import {
   beforeEach,
   describe,
   expect,
-  it,
-  xit
+  it
 } from "@angular/core/testing";
 
 import { Feed } from "./feeds.factory";
@@ -12,35 +11,18 @@ import { Feed } from "./feeds.factory";
 declare const jasmine;
 declare const spyOn;
 
-// [TODO]: Move to action-service/action-service.mock.ts when ActionService mirated to Angular 2
-import { provide, Provider } from "@angular/core";
-
-class MockDataChannelService {
-  constructor() { }
-  public sendMuteRequest(val: Feed): void { }
-  public sendStatus(a: Feed, b: any): void { }
-  public getProvider(): Provider {
-    return provide("DataChannelService", {useValue: this});
-  }
-}
-// end TODO
-
-
 describe("Service: Feed", () => {
-  let mockDataChannelService: MockDataChannelService;
 
   beforeEachProviders(() => {
-    mockDataChannelService = new MockDataChannelService();
     return [
-      Feed,
-      mockDataChannelService.getProvider()
+      {provide: Feed, useClass: Feed}
     ];
   });
 
   beforeEach(() => {
   });
 
-  it("should create new Feed with default attrs", () => {
+  it("should be created with default attrs", () => {
     let feed: Feed = new Feed();
 
     expect(feed.id).toBe(0);
@@ -51,7 +33,7 @@ describe("Service: Feed", () => {
     expect(feed.connection).toBe(null);
   });
 
-  it("should create new Feed with given attrs", () => {
+  it("should be created with given attrs", () => {
     let feed: Feed = new Feed();
     feed.setAttrs({
       id: 1,
@@ -342,21 +324,6 @@ describe("Service: Feed", () => {
       expect(feed.waitingForConnection()).toBe(false);
     });
 
-  });
-
-  describe("setEnabledChannel", () => {
-    xit("should call DataChannelService.sendMuteRequest when type audio, disabled and not publisher", () => {
-      let feed: Feed = new Feed();
-      feed.setAttrs({
-        isPublisher: false
-      });
-
-      spyOn(mockDataChannelService, "sendMuteRequest");
-
-      feed.setEnabledChannel("audio", false);
-
-      expect(mockDataChannelService.sendMuteRequest).toHaveBeenCalledWith(feed);
-    });
   });
 
 });

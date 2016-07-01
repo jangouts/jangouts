@@ -15,52 +15,26 @@ declare const spyOn;
 
 describe("Service: SpeakObserver", () => {
 
-  let audioContextState: string = "running";
-  let MediaStreamSource: any = {
-    connect: function (analyser: any): void { }
-  };
-
-  let Analyser: any = {
+  this.Analyser = {
     getFloatFrequencyData: function (fftBins: any): void { }
   };
 
-  let resume: any = jasmine.createSpy("resume");
-  let ctx: any = {};
-
   beforeEachProviders(() => [
-    SpeakObserver,
+    {provide: SpeakObserver, useClass: SpeakObserver}
   ]);
 
   beforeEach(() => {
-    audioContextState = "running";
-    ctx = {
-      resume: resume,
-      state: audioContextState,
-      createAnalyser: function (): any { return Analyser; },
+    this.context = {
+      resume: jasmine.createSpy("resume"),
+      state: "running",
+      createAnalyser: (): any => { return this.Analyser; },
       createMediaStreamSource: function (stream: any): any {
-        return MediaStreamSource;
+        return {
+          connect: function (analyser: any): void { }
+        };
       }
     };
-    window.AudioContext = function (): any {
-      return ctx;
-    };
-  });
-
-  it("should have destroy method defined", () => {
-    let speakObserver: SpeakObserver = new SpeakObserver({});
-
-    expect(speakObserver.destroy).toBeDefined();
-  });
-
-  it("should have destroy method defined with webkitAudioContext", () => {
-    delete window.AudioContext;
-    window.webkitAudioContext = function (): any {
-      return ctx;
-    };
-
-    let speakObserver: SpeakObserver = new SpeakObserver({});
-
-    expect(speakObserver.destroy).toBeDefined();
+    window.AudioContext = (): any => this.context;
   });
 
   it("should call clearInterval on execute destroy method", () => {
@@ -84,7 +58,7 @@ describe("Service: SpeakObserver", () => {
 
   it("should return speaking when sound", <any>fakeAsync((): void => {
     let speakObserver: SpeakObserver = new SpeakObserver({});
-    spyOn(Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
+    spyOn(this.Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
       for (let i: number = 0; i < 512; i++) {
         fftBins[i] = -5;
       };
@@ -105,13 +79,13 @@ describe("Service: SpeakObserver", () => {
 
     tick(65);
 
-    expect(resume).not.toHaveBeenCalled();
-    ctx.state = "suspended";
+    expect(this.context.resume).not.toHaveBeenCalled();
+    this.context.state = "suspended";
 
 
     tick(65);
 
-    expect(resume).toHaveBeenCalled();
+    expect(this.context.resume).toHaveBeenCalled();
 
     speakObserver.destroy();
   }));
@@ -119,7 +93,7 @@ describe("Service: SpeakObserver", () => {
   it("should return not speaking when sound stops", <any>fakeAsync((): void => {
     let speakObserver: SpeakObserver = new SpeakObserver({});
     let stopTalk: boolean = false;
-    spyOn(Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
+    spyOn(this.Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
       for (let i: number = 0; i < 512; i++) {
         fftBins[i] = stopTalk ? -100 : -5;
       };
@@ -148,7 +122,7 @@ describe("Service: SpeakObserver", () => {
     let speakObserver: SpeakObserver = new SpeakObserver({}, {
       start: start
     });
-    spyOn(Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
+    spyOn(this.Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
       for (let i: number = 0; i < 512; i++) {
         fftBins[i] = -5;
       };
@@ -170,7 +144,7 @@ describe("Service: SpeakObserver", () => {
       stop: stop
     });
     let stopTalk: boolean = false;
-    spyOn(Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
+    spyOn(this.Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
       for (let i: number = 0; i < 512; i++) {
         fftBins[i] = stopTalk ? -100 : -5;
       };
