@@ -13,16 +13,14 @@ declare const spyOn;
 
 describe("Service: ConnectionConfig", () => {
 
-  let pluginHandle: any;
-
   beforeEachProviders(() => {
     return [
-      ConnectionConfig
+      {provide: ConnectionConfig, useClass: ConnectionConfig}
     ];
   });
 
   beforeEach(() => {
-    pluginHandle = {
+    this.pluginHandle = {
       send: jasmine.createSpy(": voidpluginHandle.send")
     };
   });
@@ -33,14 +31,14 @@ describe("Service: ConnectionConfig", () => {
       video: true,
     };
     let cconfig = new ConnectionConfig(
-      pluginHandle,
+      this.pluginHandle,
       config,
       {},
       undefined
     );
 
-    expect(cconfig).not.toBeDefined();
-    expect(pluginHandle.send).toHaveBeenCalled();
+    expect(cconfig).toBeDefined();
+    expect(this.pluginHandle.send).toHaveBeenCalled();
   });
 
   it("should not be defined until confirm", () => {
@@ -49,7 +47,7 @@ describe("Service: ConnectionConfig", () => {
       video: true,
     };
     let cconfig: ConnectionConfig = new ConnectionConfig(
-      pluginHandle,
+      this.pluginHandle,
       config,
       {},
       undefined
@@ -68,12 +66,12 @@ describe("Service: ConnectionConfig", () => {
       video: true,
     };
 
-    pluginHandle.send = jasmine.createSpy("pluginHandle.send").and.callFake((options: any) => {
+    this.pluginHandle.send = jasmine.createSpy("pluginHandle.send").and.callFake((options: any) => {
       options.error();
     });
 
     let cconfig: ConnectionConfig = new ConnectionConfig(
-      pluginHandle,
+      this.pluginHandle,
       config,
       {},
       undefined
@@ -93,14 +91,14 @@ describe("Service: ConnectionConfig", () => {
       video: true,
     };
 
-    pluginHandle.send = jasmine.createSpy("pluginHandle.send").and.callFake((options: any) => {
+    this.pluginHandle.send = jasmine.createSpy("pluginHandle.send").and.callFake((options: any) => {
       options.success();
     });
 
     let ok: any = jasmine.createSpy("ok");
 
     let cconfig: ConnectionConfig = new ConnectionConfig(
-      pluginHandle,
+      this.pluginHandle,
       config,
       {},
       ok
@@ -119,7 +117,7 @@ describe("Service: ConnectionConfig", () => {
       video: true,
     };
 
-    pluginHandle.send = jasmine.createSpy("pluginHandle.send").and.callFake((options: any) => {
+    this.pluginHandle.send = jasmine.createSpy("pluginHandle.send").and.callFake((options: any) => {
       options.success();
     });
 
@@ -127,7 +125,7 @@ describe("Service: ConnectionConfig", () => {
     let newOk: any = jasmine.createSpy("newOk");
 
     let cconfig: ConnectionConfig = new ConnectionConfig(
-      pluginHandle,
+      this.pluginHandle,
       config,
       {},
       ok
@@ -148,10 +146,6 @@ describe("Service: ConnectionConfig", () => {
     cconfig.set({ ok: newOk});
     cconfig.confirm();
     expect(newOk).not.toHaveBeenCalled();
-
-    cconfig.set();
-    cconfig.confirm();
-
   });
 
 });

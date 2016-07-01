@@ -13,16 +13,14 @@ declare const spyOn;
 
 describe("Service: FeedConnection", () => {
 
-  let pluginHandle: any;
-
   beforeEachProviders(() => {
     return [
-      FeedConnection
+      {provide: FeedConnection, useClass: FeedConnection}
     ];
   });
 
   beforeEach(() => {
-    pluginHandle = {
+    this.pluginHandle = {
       getPlugin: jasmine.createSpy("getPlugin"),
       getId: jasmine.createSpy("getId"),
       detach: jasmine.createSpy("detach"),
@@ -39,7 +37,7 @@ describe("Service: FeedConnection", () => {
 
     let fConnection: FeedConnection = new FeedConnection();
     fConnection.setAttrs(
-      pluginHandle,
+      this.pluginHandle,
       1
     );
 
@@ -49,25 +47,25 @@ describe("Service: FeedConnection", () => {
   it("should call pluginHandle.detach on call destroy", () => {
     let fConnection: FeedConnection = new FeedConnection();
     fConnection.setAttrs(
-      pluginHandle,
+      this.pluginHandle,
       1
     );
 
     fConnection.destroy();
 
-    expect(pluginHandle.detach).toHaveBeenCalled();
+    expect(this.pluginHandle.detach).toHaveBeenCalled();
   });
 
   it("should call pluginHandle.send on call register", () => {
     let fConnection: FeedConnection = new FeedConnection();
     fConnection.setAttrs(
-      pluginHandle,
+      this.pluginHandle,
       1
     );
 
     fConnection.register("display");
 
-    expect(pluginHandle.send).toHaveBeenCalledWith(
+    expect(this.pluginHandle.send).toHaveBeenCalledWith(
       jasmine.objectContaining({
         message: {
           request: "join",
@@ -82,13 +80,13 @@ describe("Service: FeedConnection", () => {
   it("should call pluginHandle.send on call listen", () => {
     let fConnection: FeedConnection = new FeedConnection();
     fConnection.setAttrs(
-      pluginHandle,
+      this.pluginHandle,
       1
     );
 
     fConnection.listen(5);
 
-    expect(pluginHandle.send).toHaveBeenCalledWith(
+    expect(this.pluginHandle.send).toHaveBeenCalledWith(
       jasmine.objectContaining({
         message: {
           request: "join",
@@ -103,14 +101,14 @@ describe("Service: FeedConnection", () => {
   it("should call pluginHandle.handleRemoteJsep when call handleRemoteJsep", () => {
     let fConnection: FeedConnection = new FeedConnection();
     fConnection.setAttrs(
-      pluginHandle,
+      this.pluginHandle,
       1
     );
 
     let jsep: any = { id: 13 };
     fConnection.handleRemoteJsep(jsep);
 
-    expect(pluginHandle.handleRemoteJsep).toHaveBeenCalledWith(
+    expect(this.pluginHandle.handleRemoteJsep).toHaveBeenCalledWith(
       jasmine.objectContaining({
         jsep: jsep
       })
@@ -120,14 +118,14 @@ describe("Service: FeedConnection", () => {
   it("should call pluginHandle.data when call sendData", () => {
     let fConnection: FeedConnection = new FeedConnection();
     fConnection.setAttrs(
-      pluginHandle,
+      this.pluginHandle,
       1
     );
 
     let data = { id: 1 };
     fConnection.sendData(data);
 
-    expect(pluginHandle.data).toHaveBeenCalledWith(data);
+    expect(this.pluginHandle.data).toHaveBeenCalledWith(data);
   });
 
 });
