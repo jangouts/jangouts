@@ -8,7 +8,7 @@
 import * as _ from "lodash";
 
 import { Injectable } from "@angular/core";
-import { Feed } from "./feeds.factory";
+import { Feed } from "./feed.model";
 
 /**
  * Feeds collection

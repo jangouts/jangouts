@@ -41,7 +41,7 @@ export class SendPics implements OnInit {
     canvasTag.height = Math.round(canvasTag.width * 0.75);
 
     let placeholder = new window.Image();
-    placeholder.src = require("../../../assets/images/placeholder.png");
+    placeholder.src = require("../../assets/images/placeholder.png");
     placeholder.onload = function() {
       context.drawImage(placeholder, 0, 0, canvasTag.width, canvasTag.height);
     };
