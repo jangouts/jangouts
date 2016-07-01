@@ -1,4 +1,4 @@
-import { upgradeAdapter } from "../../adapter";
+import { upgradeAdapter } from "../adapter";
 
 import { FeedsService, Feed, FeedConnection } from "./shared";
 

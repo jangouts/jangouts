@@ -6,7 +6,7 @@ import {
   it
 } from "@angular/core/testing";
 
-import { ConnectionConfig, IWanted } from "./connection-config.factory";
+import { ConnectionConfig, IWanted } from "./connection-config.model";
 
 declare const jasmine;
 declare const spyOn;

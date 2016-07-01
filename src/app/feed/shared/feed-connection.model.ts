@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ConnectionConfig, IWanted, IOptions } from "./connection-config.factory";
+import { ConnectionConfig, IWanted, IOptions } from "./connection-config.model";
 
 interface IMedia {
   videoRecv: boolean;

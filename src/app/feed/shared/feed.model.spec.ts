@@ -6,7 +6,7 @@ import {
   it
 } from "@angular/core/testing";
 
-import { Feed } from "./feeds.factory";
+import { Feed } from "./feed.model";
 
 declare const jasmine;
 declare const spyOn;

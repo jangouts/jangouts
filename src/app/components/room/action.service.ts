@@ -6,7 +6,7 @@
  */
 
 import * as _ from "lodash";
-import { Feed } from "../feed"
+import { Feed } from "../../feed"
 
 ActionService.$inject = ["$timeout", "FeedsService", "LogEntry",
   "LogService", "DataChannelService", "$rootScope"];

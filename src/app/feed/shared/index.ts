@@ -1,4 +1,4 @@
 export { FeedsService } from "./feeds.service";
-export { Feed } from "./feeds.factory";
-export { FeedConnection } from "./feed-connection.factory";
+export { Feed } from "./feed.model";
+export { FeedConnection } from "./feed-connection.model";
 export { VideoStream } from "./videostream.directive";

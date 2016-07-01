@@ -26,10 +26,10 @@ import signin from "./signin";
 // Components
 import chatComponent from "./chat";
 import footerComponent from "./footer";
+import feedComponent from "./feed";
 
 import roomComponent from "./components/room";
 import browserInfoComponent from "./components/browser-info";
-import feedComponent from "./components/feed";
 import notifierComponent from "./components/notifier";
 import routerComponent from "./components/router";
 import screenShareComponent from "./components/screen-share";

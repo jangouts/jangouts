@@ -9,7 +9,7 @@ import {
 } from "@angular/core/testing";
 
 import { FeedsService } from "./feeds.service";
-import { Feed } from "./feeds.factory";
+import { Feed } from "./feed.model";
 
 declare const spyOn;
 
