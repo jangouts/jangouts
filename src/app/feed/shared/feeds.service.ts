@@ -21,7 +21,6 @@ export class FeedsService {
 
   constructor () { }
 
-
   /**
    * @param id  id of the feed to find
    * @returns   gets feed with given id or null if not found

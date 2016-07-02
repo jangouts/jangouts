@@ -32,6 +32,11 @@ export class Feed {
   private speakObserver: any = null;
   private dataChannel: any = null;
 
+  /*
+   * Constructor should only require injected parameters, this is the reason to
+   * has setAttrs method. When full app upgraded to Angular 2 DataChannel service
+   * should be injected in the consturctor.
+   */
   constructor () {}
 
   public setAttrs(attrs: any = {}): void {
