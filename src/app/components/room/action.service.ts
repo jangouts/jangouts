@@ -6,129 +6,126 @@
  */
 
 import * as _ from "lodash";
-import { Feed } from "../../feed"
 
-ActionService.$inject = ["$timeout", "FeedsService", "LogEntry",
-  "LogService", "DataChannelService", "$rootScope"];
+import { Injectable } from "@angular/core";
 
-function ActionService($timeout, FeedsService, LogEntry, LogService, DataChannelService, $rootScope) {
-  this.enterRoom = enterRoom;
-  this.leaveRoom = leaveRoom;
-  this.remoteJoin = remoteJoin;
-  this.destroyFeed = destroyFeed;
-  this.ignoreFeed = ignoreFeed;
-  this.stopIgnoringFeed = stopIgnoringFeed;
-  this.writeChatMessage = writeChatMessage;
-  this.publishScreen = publishScreen;
-  this.toggleChannel = toggleChannel;
-  this.setMedia = setMedia;
+import { Feed, FeedsService } from "../feed";
+import { DataChannelService } from "./data-channel.service";
+import { LogService } from "./log.service";
+import { LogEntry } from "./logentry.model";
 
-  function enterRoom(feedId, display, connection) {
-    var feed = new Feed();
+@Injectable()
+export class ActionService {
+
+  constructor(private feeds: FeedsService,
+              private dataChannel: DataChannelService,
+              private logService: LogService) { }
+
+  public enterRoom(feedId: number, display: any, connection: any): void {
+    let feed: Feed = new Feed();
     feed.setAttrs({
       display: display,
       connection: connection,
       id: feedId,
       isPublisher: true,
-      dataChannel: DataChannelService
+      dataChannel: this.dataChannel
     });
-    FeedsService.add(feed, {main: true});
+    this.feeds.add(feed, {main: true});
   }
 
-  function leaveRoom() {
-    var that = this;
-
-    _.forEach(FeedsService.allFeeds(), function(feed) {
-      that.destroyFeed(feed.id);
+  public leaveRoom(): void {
+    _.forEach(this.feeds.allFeeds(), (feed) => {
+      this.destroyFeed(feed.id);
     });
   }
 
-  function publishScreen(feedId, display, connection) {
-    var feed = new Feed();
+  public publishScreen(feedId: number, display: any, connection: any): void {
+    let feed: Feed = new Feed();
     feed.setAttrs({
       display: display,
       connection: connection,
       id: feedId,
       isPublisher: true,
       isLocalScreen: true,
-      dataChannel: DataChannelService
+      dataChannel: this.dataChannel
     });
-    FeedsService.add(feed);
-    // Log the event
-    var entry = new LogEntry("publishScreen");
-    LogService.add(entry);
+    this.feeds.add(feed);
+
+    this.log("publishScreen");
   }
 
-  function remoteJoin(feedId, display, connection) {
-    var feed = new Feed();
+  public remoteJoin(feedId: number, display: any, connection: any): void {
+    let feed: Feed = new Feed();
     feed.setAttrs({
       display: display,
       connection: connection,
       id: feedId,
       isPublisher: false,
-      dataChannel: DataChannelService
+      dataChannel: this.dataChannel
     });
-    FeedsService.add(feed);
-    // Log the event
-    var entry = new LogEntry("newRemoteFeed", {feed: feed});
-    LogService.add(entry);
+    this.feeds.add(feed);
+
+    this.log("newRemoteFeed", {feed: feed});
   }
 
-  function destroyFeed(feedId) {
-    var feed = FeedsService.find(feedId);
+  public destroyFeed(feedId: number): void {
+    let feed: Feed = this.feeds.find(feedId);
     if (feed === null) { return; }
-    $timeout(function () {
-      feed.disconnect();
-      FeedsService.destroy(feedId);
-    });
-    // Log the event
-    var entry = new LogEntry("destroyFeed", {feed: feed});
-    LogService.add(entry);
+
+    feed.disconnect();
+    this.feeds.destroy(feedId);
+
+    this.log("destroyFeed", {feed: feed});
   }
 
-  function ignoreFeed(feedId) {
-    var feed = FeedsService.find(feedId);
+  public ignoreFeed(feedId: number): void {
+    let feed: Feed = this.feeds.find(feedId);
     if (feed === null) { return; }
     feed.ignore();
-    // Log the event
-    var entry = new LogEntry("ignoreFeed", {feed: feed});
-    LogService.add(entry);
+
+    this.log("ignoreFeed", {feed: feed});
   }
 
-  function stopIgnoringFeed(feedId, connection) {
-    var feed = FeedsService.find(feedId);
+  public stopIgnoringFeed(feedId: number, connection: any): void {
+    let feed: Feed = this.feeds.find(feedId);
     if (feed === null) { return; }
     feed.stopIgnoring(connection);
-    // Log the event
-    var entry = new LogEntry("stopIgnoringFeed", {feed: feed});
-    LogService.add(entry);
+
+    this.log("stopIgnoringFeed", {feed: feed});
   }
 
-  function writeChatMessage(text) {
-    var entry = new LogEntry("chatMsg", {feed: FeedsService.findMain(), text: text});
+  public writeChatMessage(text: string): void {
+    let entry: LogEntry = new LogEntry("chatMsg", {feed: this.feeds.findMain(), text: text});
     if (entry.hasText()) {
-      LogService.add(entry);
-      DataChannelService.sendChatMessage(text);
+      this.logService.add(entry);
+      this.dataChannel.sendChatMessage(text);
     }
   }
 
-  function toggleChannel(type, feed) {
-    // If no feed is provided, we are muting ourselves
+  public toggleChannel(type: string, feed: Feed): void {
+    /*
+     * If no feed is provided, we are muting ourselves
+     */
     if (!feed) {
-      feed = FeedsService.findMain();
+      feed = this.feeds.findMain();
       if (!feed) { return; }
     }
+
     if (!feed.isPublisher) {
-      // Log the event
-      var entry = new LogEntry("muteRequest", {source: FeedsService.findMain(), target: feed});
-      LogService.add(entry);
+      this.log("muteRequest", {source: this.feeds.findMain(), target: feed});
     }
+
     if (feed.isEnabled(type)) {
-      var callback = null;
-      // If we are muting the main feed (the only publisher that can be
-      // actually muted) raise a signal
+      let callback: void = null;
+      /*
+       * If we are muting the main feed (the only publisher that can be
+       * actually muted) raise a signal
+       */
       if (type === "audio" && feed.isPublisher) {
-        callback = function() { $rootScope.$broadcast("muted.byUser"); };
+        callback = () => {
+          // [TODO] - Set broadcast for 'muted.byUser'
+          // $rootScope.$broadcast("muted.byUser");
+        };
       }
       feed.setEnabledChannel(type, false, {after: callback});
     } else {
@@ -138,15 +135,20 @@ function ActionService($timeout, FeedsService, LogEntry, LogService, DataChannel
 
   /**
    * Disable or enable audio or video for the main feed
-   * @param {channel type} type
-   * @param {Boolean} boolval
    */
-  function setMedia(type, boolval) {
-    var feed = FeedsService.findMain();
+  public setMedia(type: string, boolval: boolean): void {
+    let feed: Feed = this.feeds.findMain();
     if (!feed) { return; }
 
     feed.setEnabledChannel(type, boolval);
   }
-}
 
-export default ActionService;
+  private log(msg: string, extra?: any): void {
+    let entry: LogEntry = new LogEntry(msg, extra);
+    /*
+     * Log the event
+     */
+    LogService.add(entry);
+  }
+
+}

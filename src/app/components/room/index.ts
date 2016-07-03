@@ -1,22 +1,17 @@
-import RoomService from './room.service';
-import roomFactory from './rooms.factory';
-import LogService from './log.service';
-import LogEntryFactory from './log-entries.factory';
-import jhLeaveButtonDirective from './jh-leave-button.directive';
-import DataChannelService from './data-channel.service';
-import ActionService from './action.service';
+import { RoomService } from "./room.service";
+import { LogService } from "./log.service";
+import { LeaveButtonComponent } from "./leave-button.component";
+import { DataChannelService } from "./data-channel.service";
+import { ActionService } from "./action.service";
 
-import { upgradeAdapter } from '../../adapter';
+import { upgradeAdapter } from "../../adapter";
 
-export default angular.module('janusHangouts.roomComponent', [])
-  .service('RoomService', RoomService)
-  .factory('Room', roomFactory)
-  .service('LogService', LogService)
-  .factory('LogEntry', LogEntryFactory)
-  .directive('jhLeaveButton', jhLeaveButtonDirective)
-  .service('DataChannelService', DataChannelService)
-  .service('ActionService', ActionService);
+export default angular.module("janusHangouts.roomComponent", [])
+  .service("RoomService", upgradeAdapter.downgradeNg2Provider(RoomService))
+  .service("LogService", upgradeAdapter.downgradeNg2Provider(LogService))
+  .directive("jhLeaveButton", upgradeAdapter.downgradeNg2Component(LeaveButtonComponent))
+  .service("DataChannelService", upgradeAdapter.downgradeNg2Provider(DataChannelService))
+  .service("ActionService", upgradeAdapter.downgradeNg2Provider((ActionService));
 
-upgradeAdapter.upgradeNg1Provider('ActionService');
-upgradeAdapter.upgradeNg1Provider('RoomService');
-upgradeAdapter.upgradeNg1Provider('DataChannelService');
+export { Room } from "./room.model";
+export { LogEntry } from "./logentry.model";

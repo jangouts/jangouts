@@ -5,190 +5,197 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
-import { FeedConnection } from "../../feed";
+import { Injectable } from "@angular/core";
 
-RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room', 'DataChannelService', 'ActionService', 'jhConfig',
-    'ScreenShareService', 'RequestService'];
+import { Feed, FeedsService, FeedConnection } from "../feed";
+import { RequestService } from "../router";
+import { ScreenShareService } from "../screen-share";
+import { DataChannelService } from "./data-channel.service";
+import { ActionService } from "./action.service";
 
-/**
+/*
  * Service to communication with janus room
- * @constructor
- * @memberof module:janusHangouts
  */
-function RoomService($q, $rootScope, $timeout, FeedsService, Room,
-    DataChannelService, ActionService, jhConfig,
-    ScreenShareService, RequestService) {
-  this.enter = enter;
-  this.leave = leave;
-  this.setRoom = setRoom;
-  this.getRoom = getRoom;
-  this.getRooms = getRooms;
-  this.publishScreen = publishScreen;
-  this.unPublishFeed = unPublishFeed;
-  this.ignoreFeed = ignoreFeed;
-  this.stopIgnoringFeed = stopIgnoringFeed;
-  this.subscribeToFeeds = subscribeToFeeds;
-  this.subscribeToFeed = subscribeToFeed;
-  this.toggleChannel = toggleChannel;
-  this.pushToTalk = pushToTalk;
-  this.room = null;
-  this.rooms = null;
-  this.janus = null;
+@Injectable()
+export class RoomService {
 
-  var that = this;
-  var startMuted = false;
-  var holdingKey = false;
-  var muteTimer = null;
+  public room: Room = null;
+  public rooms: any = null;
+  public janus: any = null;
+  public startMuted: boolean = false;
+  public holdingKey: boolean = false;
+  public muteTimer: any = null;
 
-  if (jhConfig.janusServer) {
-    this.server = jhConfig.janusServer;
-  } else {
-    this.server = defaultJanusServer();
-  }
+  private server: Array<string>;
 
-  if (jhConfig.janusServerSSL && RequestService.usingSSL()) {
-    this.server = jhConfig.janusServerSSL;
-  }
+  constructor(private feeds: FeedsService,
+              private dataChannel: DataChannelService,
+              private actionService: ActionService,
+              private screenShareService: ScreenShareService,
+              private requestService: RequestService,
+              private config: Config) {
 
-  function defaultJanusServer() {
-    var wsProtocol;
-    var wsPort;
-
-    if (RequestService.usingSSL()) {
-      wsProtocol = "wss:";
-      wsPort = "8989";
+    if (this.config.janusServer) {
+      this.server = this.config.janusServer;
     } else {
-      wsProtocol = "ws:";
-      wsPort = "8188";
+      this.server = this.defaultJanusServer();
     }
 
-    return [
-      wsProtocol + '//' + window.location.hostname + ':' + wsPort + '/janus/',
-      window.location.protocol + '//' + window.location.hostname + '/janus/'
-    ];
-  }
-
-  function connect() {
-    var deferred = $q.defer();
-
-    if (that.janus === null) {
-      Janus.init({debug: jhConfig.janusDebug});
-      that.janus = new Janus({
-        server: that.server,
-        success: function() {
-          deferred.resolve();
-        },
-        error: function(error) {
-          var msg = "Janus error: " + error;
-          msg += "\nDo you want to reload in order to retry?";
-          deferred.reject();
-          if (window.confirm(msg)) {
-            window.location.reload();
-          }
-        },
-        destroyed: function() {
-          console.log("Janus object destroyed");
-        }
-      });
-    } else {
-      deferred.resolve();
+    if (this.config.janusServerSSL && this.requestService.usingSSL()) {
+      this.server = this.config.janusServerSSL;
     }
 
-    return deferred.promise;
   }
 
-  function doEnter(username) {
-    var $$rootScope = $rootScope;
-    var connection = undefined;
+  public connect(): Promise<any> {
+    let promise: Promise<any> = new Promise<any>((resolve, reject) => {
 
-    // Create new session
-    that.janus.attach({
+      if (that.janus === null) {
+        Janus.init({debug: this.config.janusDebug});
+
+        that.janus = new Janus({
+          server: this.server,
+          success: () => { resolve(); },
+          error: (error) => {
+            let msg: string = `Janus error: ${error}`;
+            msg += "\nDo you want to reload in order to retry?";
+            reject();
+            if (window.confirm(msg)) {
+              window.location.reload();
+            }
+          },
+          destroyed: () => { console.log("Janus object destroyed"); }
+        });
+      } else {
+        resolve();
+      }
+
+    });
+
+    return promise;
+  }
+
+  public doEnter(username: string): void {
+    let connection: any = undefined;
+    /*
+     * Create new session
+     */
+    this.janus.attach({
       plugin: "janus.plugin.videoroom",
-      success: function(pluginHandle) {
-        // Step 1. Right after attaching to the plugin, we send a
-        // request to join
+      success: (pluginHandle: any): void => {
+        /*
+         * Step 1. Right after attaching to the plugin, we send a
+         * request to join
+         */
         connection = new FeedConnection();
-        connection.setAttrs(pluginHandle, that.room.id, "main");
+        connection.setAttrs(pluginHandle, this.room.id, "main");
         connection.register(username);
       },
-      error: function(error) {
-        console.error("Error attaching plugin... " + error);
+      error: (error: string): void => {
+        console.error(`Error attaching plugin... ${error}`);
       },
-      consentDialog: function(on) {
+      consentDialog: (on: boolean): void => {
         console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
-        $$rootScope.$broadcast('consentDialog.changed', on);
-        if(!on){
-          //notify if joined muted
-          if (startMuted) {
-            $$rootScope.$broadcast('muted.Join');
-          }
-        }
+        // [TODO] - Reenable broadcast
+        // $$rootScope.$broadcast('consentDialog.changed', on);
+        // if(!on){
+          // //notify if joined muted
+          // if (startMuted) {
+            // $$rootScope.$broadcast('muted.Join');
+          // }
+        // }
       },
-      ondataopen: function() {
+      ondataopen: (): void => {
         console.log("The publisher DataChannel is available");
         connection.onDataOpen();
-        sendStatus();
+        this.sendStatus();
       },
-      onlocalstream: function(stream) {
-        // Step 4b (parallel with 4a).
-        // Send the created stream to the UI, so it can be attached to
-        // some element of the local DOM
-        console.log(" ::: Got a local stream :::");
-        var feed = FeedsService.findMain();
+      onlocalstream: (stream: any): void => {
+        /*
+         * Step 4b (parallel with 4a).
+         * Send the created stream to the UI, so it can be attached to
+         * some element of the local DOM
+         * console.log(" ::: Got a local stream :::");
+         */
+        let feed: Feed = this.feeds.findMain();
         feed.setStream(stream);
       },
-      oncleanup: function () {
+      oncleanup: (): void => {
         console.log(" ::: Got a cleanup notification: we are unpublished now :::");
       },
-      onmessage: function (msg, jsep) {
-        var event = msg.videoroom;
+      onmessage: (msg: any, jsep: any): void => {
+        let event: any = msg.videoroom;
         console.log("Event: " + event);
 
-        // Step 2. Response from janus confirming we joined
+        /*
+         * Step 2. Response from janus confirming we joined
+         */
         if (event === "joined") {
           console.log("Successfully joined room " + msg.room);
-          ActionService.enterRoom(msg.id, username, connection);
-          // Step 3. Establish WebRTC connection with the Janus server
-          // Step 4a (parallel with 4b). Publish our feed on server
+          this.actionService.enterRoom(msg.id, username, connection);
+          /*
+           * Step 3. Establish WebRTC connection with the Janus server
+           * Step 4a (parallel with 4b). Publish our feed on server
+           */
 
-          if (jhConfig.joinUnmutedLimit !== undefined && jhConfig.joinUnmutedLimit !== null) {
-            startMuted = (msg.publishers instanceof Array) && msg.publishers.length >= jhConfig.joinUnmutedLimit;
+          if (this.config.joinUnmutedLimit !== undefined && this.config.joinUnmutedLimit !== null) {
+            this.startMuted = (msg.publishers instanceof Array) && msg.publishers.length >= this.config.joinUnmutedLimit;
           }
 
           connection.publish({
             muted: startMuted,
-            error: function() { connection.publish({noCamera: true, muted: startMuted}); }
+            error: (): void => {
+              connection.publish({
+                noCamera: true,
+                muted: this.startMuted
+              }); }
           });
 
-          // Step 5. Attach to existing feeds, if any
+          /*
+           * Step 5. Attach to existing feeds, if any
+           */
           if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
-            that.subscribeToFeeds(msg.publishers, that.room.id);
+            this.subscribeToFeeds(msg.publishers, this.room.id);
           }
-          // The room has been destroyed
+
+          /*
+           * The room has been destroyed
+           */
         } else if (event === "destroyed") {
           console.log("The room has been destroyed!");
-          $$rootScope.$broadcast('room.destroy');
+          // [TODO] - Reenable Broadcast
+          // $$rootScope.$broadcast('room.destroy');
+
         } else if (event === "event") {
-          // Any new feed to attach to?
+          /*
+           * Any new feed to attach to?
+           */
           if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
-            that.subscribeToFeeds(msg.publishers, that.room.id);
-          // One of the publishers has gone away?
-          } else if(msg.leaving !== undefined && msg.leaving !== null) {
-            var leaving = msg.leaving;
-            ActionService.destroyFeed(leaving);
-          // One of the publishers has unpublished?
-          } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
-            var unpublished = msg.unpublished;
-            ActionService.destroyFeed(unpublished);
-          // Reply to a configure request
+            this.subscribeToFeeds(msg.publishers, this.room.id);
+          /*
+           * One of the publishers has gone away?
+           */
+          } else if (msg.leaving !== undefined && msg.leaving !== null) {
+            this.actionService.destroyFeed(msg.leaving);
+          /*
+           * One of the publishers has unpublished?
+           */
+          } else if ( msg.unpublished !== undefined && msg.unpublished !== null) {
+            this.actionService.destroyFeed(msg.unpublished);
+          /*
+           * Reply to a configure request
+           */
           } else if (msg.configured) {
             connection.confirmConfig();
-          // The server reported an error
-          } else if(msg.error !== undefined && msg.error !== null) {
+          /*
+           * The server reported an error
+           */
+          } else if (msg.error !== undefined && msg.error !== null) {
             console.log("Error message from server" + msg.error);
-            $$rootScope.$broadcast('room.error', msg.error);
+            // [TODO] - Reenable broadcast
+            // $$rootScope.$broadcast('room.error', msg.error);
           }
         }
 
@@ -199,90 +206,101 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
     });
   }
 
-  function doGetRooms() {
-    var deferred = $q.defer();
+  public doGetRooms(): Promise<any> {
+    let promise: Promise<any> = new Promise<any>((resolve, reject) => {
+      /*
+       * Create a new session just to get the list
+       */
+      that.janus.attach({
+        plugin: "janus.plugin.videoroom",
+        success: (pluginHandle: any) => {
+          console.log("getAvailableRooms plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
 
-    // Create a new session just to get the list
-    that.janus.attach({
-      plugin: "janus.plugin.videoroom",
-      success: function(pluginHandle) {
-        console.log("getAvailableRooms plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
-        var request = { "request": "list" };
-        pluginHandle.send({"message": request, success: function(result) {
-          // Free the resource (it looks safe to do it here)
-          pluginHandle.detach();
+          let request: any = { "request": "list" };
+          pluginHandle.send({
+            message: request,
+            success: (result: any) => {
+              /*
+               * Free the resource (it looks safe to do it here)
+               */
+              pluginHandle.detach();
 
-          if (result.videoroom === "success") {
-            var rooms = _.map(result.list, function(r) {
-              return new Room(r);
-            });
-            rooms = _.sortBy(rooms, "label");
-            deferred.resolve(rooms);
-          } else {
-            deferred.reject();
-          }
-        }});
-      }
+              if (result.videoroom === "success") {
+                let rooms: Array<Room> = _.map(result.list, (r) => {
+                  return new Room(r);
+                });
+                rooms = _.sortBy(rooms, "label");
+                resolve(rooms);
+              } else {
+                reject();
+              }
+            }
+          });
+        }
+      });
     });
-    return deferred.promise;
+
+    return promise;
   }
 
-  // Enter the room
-  function enter(username) {
-    var deferred = $q.defer();
-
-    connect().then(function () {
-      doEnter(username);
-      deferred.resolve();
+  public enter(username: string): Promise<any> {
+    let promise: Promise<any> = new Promise<any>((resolve, reject) => {
+      connect().then(() => {
+        this.doEnter(username);
+        resolve();
+      });
     });
-    return deferred.promise;
+    return promise;
   }
 
-  function leave() {
-    ActionService.leaveRoom();
+  public leave(): void {
+    this.actionService.leaveRoom();
   }
 
-  function setRoom(room) {
+  public setRoom(room: Room): void {
     this.room = room;
   }
 
-  function getRoom() {
+  public getRoom(): Room {
     return this.room;
   }
 
-  function getRooms() {
-    var deferred = $q.defer();
-
-    if (this.rooms === null) {
-      connect().then(function () {
-        doGetRooms().then(function (rooms) {
-          that.rooms = rooms;
-          deferred.resolve(rooms);
+  public getRooms(): Promise<any> {
+    let promise: Promise<any> = new Promise<any>((resolve, reject) => {
+      if (this.rooms === null) {
+        connect().then((): void => {
+          this.doGetRooms().then((rooms: Array<Room>): void => {
+            this.rooms = rooms;
+            resolve(rooms);
+          });
         });
-      });
-    } else {
-      deferred.resolve(this.rooms);
-    }
-    return deferred.promise;
+      } else {
+        resolve(this.rooms);
+      }
+    });
+
+    return promise;
   }
 
-  function subscribeToFeeds(list) {
+  public subscribeToFeeds(list: Array<Feed>): void {
     console.log("Got a list of available publishers/feeds:");
     console.log(list);
-    for (var f = 0; f < list.length; f++) {
-      var id = list[f].id;
-      var display = list[f].display;
+
+    for (let f: number = 0; f < list.length; f++) {
+      let id: number = list[f].id;
+      let display: any = list[f].display;
       console.log("  >> [" + id + "] " + display);
-      var feed = FeedsService.find(id);
+
+      let feed: Feed = this.feeds.find(id);
       if (feed === null || feed.waitingForConnection()) {
         this.subscribeToFeed(id, display);
       }
     }
   }
 
-  function subscribeToFeed(id, display) {
-    var feed = FeedsService.find(id);
-    var connection = undefined;
+  public subscribeToFeed(id: number, display: any): void {
+    let feed: Feed = this.feeds.find(id);
+    let connection: any = undefined;
 
     if (feed) {
       display = feed.display;
@@ -290,109 +308,121 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
 
     this.janus.attach({
       plugin: "janus.plugin.videoroom",
-      success: function(pluginHandle) {
+      success: (pluginHandle: any): void => {
         connection = new FeedConnection();
         connection.setAttrs(pluginHandle, that.room.id, "subscriber");
         connection.listen(id);
       },
-      error: function(error) {
-        console.error("  -- Error attaching plugin... " + error);
+      error: (error: any): void => {
+        console.error(`  -- Error attaching plugin... ${error}`);
       },
-      onmessage: function(msg, jsep) {
+      onmessage: (msg: any, jsep: any): void => {
         console.log(" ::: Got a message (listener) :::");
         console.log(JSON.stringify(msg));
-        var event = msg.videoroom;
+
+        let event: any = msg.videoroom;
         console.log("Event: " + event);
+
         if (event === "attached") {
-          // Subscriber created and attached
-          $timeout(function() {
-            if (feed) {
-              ActionService.stopIgnoringFeed(id, connection);
-            } else {
-              ActionService.remoteJoin(id, display, connection);
-            }
-            console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
-          });
+          /*
+           * Subscriber created and attached
+           */
+          if (feed) {
+            this.actionService.stopIgnoringFeed(id, connection);
+          } else {
+            this.actionService.remoteJoin(id, display, connection);
+          }
+          console.log("Successfully attached to feed " + id + " (" + display + ") in room " + msg.room);
+
         } else if (msg.configured) {
           connection.confirmConfig();
+
         } else if (msg.started) {
-          // Initial setConfig, needed to complete all the initializations
-          connection.setConfig({values: {audio: true, video: jhConfig.videoThumbnails}});
+          /*
+           * Initial setConfig, needed to complete all the initializations
+           */
+          connection.setConfig({values: {audio: true, video: this.config.videoThumbnails}});
+
         } else {
           console.log("What has just happened?!");
         }
 
-        if(jsep !== undefined && jsep !== null) {
+        if (jsep !== undefined && jsep !== null) {
           connection.subscribe(jsep);
         }
       },
-      onremotestream: function(stream) {
-        FeedsService.waitFor(id).then(function (feed) {
-          feed.setStream(stream);
-        }, function (reason) {
+      onremotestream: (stream: any): void => {
+        this.feeds.waitFor(id).then((f: Feed): void => {
+          f.setStream(stream);
+        }, (reason: any): void => {
           console.error(reason);
         });
       },
-      ondataopen: function() {
+      ondataopen: (): void => {
         console.log("The subscriber DataChannel is available");
         connection.onDataOpen();
-        // Send status information of all our feeds to inform the newcommer
-        sendStatus();
+        /*
+         * Send status information of all our feeds to inform the newcommer
+         */
+        this.sendStatus();
       },
-      ondata: function(data) {
+      ondata: (data: any): void => {
         console.log(" ::: Got info in the data channel (subscriber) :::");
-        DataChannelService.receiveMessage(data, id);
+        this.dataChannel.receiveMessage(data, id);
       },
-      oncleanup: function() {
+      oncleanup: (): void => {
         console.log(" ::: Got a cleanup notification (remote feed " + id + ") :::");
       }
     });
   }
 
-  function publishScreen() {
-    var display = FeedsService.findMain().display;
-    var connection = undefined;
-    var id;
+  public publishScreen(): void {
+    let display: any = this.feeds.findMain().display;
+    let connection: any = undefined;
+    let id: number;
 
     this.janus.attach({
       plugin: "janus.plugin.videoroom",
-      success: function(pluginHandle) {
+      success: (pluginHandle: any): void => {
         connection = new FeedConnection();
         connection.setAttrs(pluginHandle, that.room.id, "screen");
         connection.register(display);
-        ScreenShareService.setInProgress(true);
+        this.screenShareService.setInProgress(true);
       },
-      error: function(error) {
+      error: (error: any): void => {
         console.error("  -- Error attaching screen plugin... " + error);
       },
-      onlocalstream: function(stream) {
+      onlocalstream: (stream: any): void => {
         console.log(" ::: Got the screen stream :::");
-        var feed = FeedsService.find(id);
+        let feed: Feed = this.feeds.find(id);
         feed.setStream(stream);
       },
-      onmessage: function(msg, jsep) {
+      onmessage: (msg: any, jsep: any): void => {
         console.log(" ::: Got a message (screen) :::");
         console.log(msg);
-        var event = msg.videoroom;
+        let event: any = msg.videoroom;
 
         if (event === "joined") {
           id = msg.id;
-          ActionService.publishScreen(id, display, connection);
+          this.actionService.publishScreen(id, display, connection);
 
           connection.publish({
-            success: function() {
-              ScreenShareService.setInProgress(false);
+            success: (): void => {
+              this.screenShareService.setInProgress(false);
             },
-            error: function(error) {
+            error: (error: any): void => {
               console.log(error);
-              unPublishFeed(id);
-              ScreenShareService.setInProgress(false);
-              ScreenShareService.showHelp();
+              this.unPublishFeed(id);
+              this.screenShareService.setInProgress(false);
+              this.screenShareService.showHelp();
             }
           });
-        // Reply to a configure request
+        /*
+         * Reply to a configure request
+         */
         } else if (msg.configured) {
           connection.confirmConfig();
+
         } else {
           console.log("Unexpected event for screen");
         }
@@ -403,48 +433,48 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
     });
   }
 
-  function unPublishFeed(feedId) {
-    ActionService.destroyFeed(feedId);
+  public unPublishFeed(feedId: number): void {
+    this.actionService.destroyFeed(feedId);
   }
 
-  function ignoreFeed(feedId) {
-    ActionService.ignoreFeed(feedId);
+  public ignoreFeed(feedId: number): void {
+    this.actionService.ignoreFeed(feedId);
   }
 
-  function stopIgnoringFeed(feedId) {
+  public stopIgnoringFeed(feedId: number): void {
     this.subscribeToFeed(feedId);
   }
 
-  function toggleChannel(type, feed) {
-    ActionService.toggleChannel(type, feed);
+  public toggleChannel(type: string, feed: Feed): void {
+    this.actionService.toggleChannel(type, feed);
   }
 
   /**
    * Enable audio while holding key and disable audio when the key is released.
-   * @param keyevent Keyevent keydown or keyup
    */
-  function pushToTalk(keyevent) {
-    var disableAudio = function() {
-      ActionService.setMedia('audio', false);
+  public pushToTalk(keyevent: any): void {
+    let disableAudio: void = (): void => {
+      this.actionService.setMedia("audio", false);
       holdingKey = false;
     };
-    if (muteTimer) {
-      $timeout.cancel(muteTimer);
+
+    if (this.muteTimer) {
+      clearTimeout(this.muteTimer);
     }
     // we need this so the user is muted when he focuses another window while holding the key
-    muteTimer = $timeout(disableAudio, 1000);
+    this.muteTimer = setTimeout(disableAudio, 1000);
 
 
-    if (keyevent === 'keydown' && !holdingKey) {
-      ActionService.setMedia('audio', true);
+    if (keyevent === "keydown" && !holdingKey) {
+      this.actionService.setMedia("audio", true);
       holdingKey = true;
-    } else if (keyevent === 'keyup') {
-      ActionService.setMedia('audio', false);
+
+    } else if (keyevent === "keyup") {
+      this.actionService.setMedia("audio", false);
       holdingKey = false;
-      $timeout.cancel(muteTimer);
+      clearTimeout(this.muteTimer);
     }
   }
-
 
   /**
    * Broadcast status information of all our feeds when a data channel is
@@ -454,12 +484,31 @@ function RoomService($q, $rootScope, $timeout, FeedsService, Room,
    * important information right away and the whole status some seconds after.
    * Hacky and dirty, we know.
    */
-  function sendStatus() {
-    FeedsService.publisherFeeds().forEach(function (p) {
-      DataChannelService.sendStatus(p, {exclude: "picture"});
-      $timeout(function() { DataChannelService.sendStatus(p); }, 4000);
+  private sendStatus(): void {
+    this.feeds.publisherFeeds().forEach((p: Feed): void => {
+      this.dataChannel.sendStatus(p, {exclude: "picture"});
+      setTimeout((): void => {
+        this.dataChannel.sendStatus(p);
+      }, 4000);
     });
   }
-}
 
-export default RoomService;
+  private defaultJanusServer(): Array<string> {
+    let wsProtocol: string;
+    let wsPort: string;
+
+    if (this.requestService.usingSSL()) {
+      wsProtocol = "wss:";
+      wsPort = "8989";
+    } else {
+      wsProtocol = "ws:";
+      wsPort = "8188";
+    }
+
+    return [
+      `${wsProtocol}//${window.location.hostname}:${wsPort}/janus/`,
+      `${window.location.protocol}//${window.location.hostname}/janus/`
+    ];
+  }
+
+}

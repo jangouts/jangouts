@@ -5,25 +5,24 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-LogService.$inject = ['$timeout'];
+import { Injectable } from "@angular/core";
 
-function LogService($timeout) {
-  this.entries = [];
+import { LogEntry } from "./logentry.model";
 
-  this.add = add;
-  this.allEntries = allEntries;
+@Injectable()
+export class LogService {
 
-  function add(entry) {
-    var that = this;
+  public entries: Array<any> = [];
 
-    $timeout(function () {
-      that.entries.push(entry);
-    });
+  constructor() { }
+
+  public add(entry: LogEntry): any {
+    this.entries.push(entry);
   }
 
-  function allEntries() {
+  public allEntries(): any {
     return this.entries;
   }
-}
 
-export default LogService;
+
+}

@@ -5,85 +5,113 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-DataChannelService.$inject = ['FeedsService', 'LogEntry', 'LogService', '$rootScope'];
+import { Injectable } from "@angular/core";
 
-function DataChannelService(FeedsService, LogEntry, LogService, $rootScope) {
-  this.sendStatus = sendStatus;
-  this.sendMuteRequest = sendMuteRequest;
-  this.sendChatMessage = sendChatMessage;
-  this.receiveMessage = receiveMessage;
+import { LogEntry } from "./logentry.model";
+import { LogService } from "./log.service";
+import { Feed, FeedsService } from "../feed";
 
-  function receiveMessage(data, remoteId) {
-    var msg = JSON.parse(data);
-    var type = msg.type;
-    var content = msg.content;
-    var feed;
-    var logEntry;
+@Injectable()
+export class DataChannelService {
+
+  constructor(private feedsService: FeedsService, private logService: LogService) { }
+
+  public receiveMessage(data: any, remoteId: number): void {
+    let msg: any = JSON.parse(data);
+    let type: string = msg.type;
+    let content: any = msg.content;
+    let feed: Feed;
+    let logEntry: LogEntry;
 
     if (type === "chatMsg") {
-      logEntry = new LogEntry("chatMsg", {feed: FeedsService.find(remoteId), text: content});
+
+      logEntry = new LogEntry("chatMsg", {
+        feed: this.feedsService.find(remoteId),
+        text: content
+      });
+
       if (logEntry.hasText()) {
-        LogService.add(logEntry);
+        this.logService.add(logEntry);
       }
+
     } else if (type === "muteRequest") {
-      feed = FeedsService.find(content.target);
+
+      feed = this.feedsService.find(content.target);
+
       if (feed.isPublisher) {
-        feed.setEnabledChannel("audio", false, {after:
-          function() { $rootScope.$broadcast('muted.byRequest'); }
-        });
+
+        // [TODO] - Enable broadcast 'muted.byRequest'
+        feed.setEnabledChannel("audio", false, {});
+        // feed.setEnabledChannel("audio", false, {
+          // after: () => { $rootScope.$broadcast('muted.byRequest'); }
+        // });
       }
-      // Log the event
-      logEntry = new LogEntry("muteRequest", {source: FeedsService.find(remoteId), target: feed});
-      LogService.add(logEntry);
+
+      // log the event
+      logEntry = new LogEntry("muteRequest", {
+        source: this.feedsService.find(remoteId),
+        target: feed
+      });
+      this.logService.add(logEntry);
+
     } else if (type === "statusUpdate") {
-      feed = FeedsService.find(content.source);
+
+      feed = this.feedsService.find(content.source);
+
       if (feed && !feed.isPublisher) {
         feed.setStatus(content.status);
       }
+
     } else {
       console.log("Unknown data type: " + type);
     }
   }
 
-  function sendMuteRequest(feed) {
-    var content = {
+  public sendMuteRequest(feed: Feed): void {
+    let content: any = {
       target: feed.id,
     };
 
-    sendMessage("muteRequest", content);
+    this.sendMessage("muteRequest", content);
   }
 
-  function sendStatus(feed, statusOptions) {
-    var content = {
+  public sendStatus(feed: Feed, statusOptions: any): void {
+    let content: any = {
       source: feed.id,
       status: feed.getStatus(statusOptions)
     };
 
-    sendMessage("statusUpdate", content);
+    this.sendMessage("statusUpdate", content);
   }
 
-  function sendChatMessage(text) {
-    sendMessage("chatMsg", text);
+  public sendChatMessage(text: string): void {
+    this.sendMessage("chatMsg", text);
   }
 
-  function sendMessage(type, content) {
-    var text = JSON.stringify({
+  private sendMessage(type: string, content: any): void {
+    let text: string = JSON.stringify({
       type: type,
       content: content
     });
-    var mainFeed = FeedsService.findMain();
+
+    let mainFeed: Feed = this.feedsService.findMain();
+
     if (mainFeed === null) { return; }
+
     if (!mainFeed.isDataOpen()) {
       console.log("Data channel not open yet. Skipping");
       return;
     }
-    var connection = mainFeed.connection;
+
+    let connection: any = mainFeed.connection;
     connection.sendData({
       text: text,
-      error: function(reason) { alert(reason); },
-      success: function() { console.log("Data sent: " + type); }
+      error: (reason) => {
+        alert(reason);
+      },
+      success: () => {
+        console.log("Data sent: " + type);
+      }
     });
   }
 }
-
-export default DataChannelService;
