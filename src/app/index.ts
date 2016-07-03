@@ -27,7 +27,7 @@ import chatComponent from "./chat";
 import footerComponent from "./footer";
 import feedComponent from "./feed";
 
-import roomComponent from "./components/room";
+import roomComponent from "./room";
 import browserInfoComponent from "./components/browser-info";
 import notifierComponent from "./components/notifier";
 import routerComponent from "./components/router";
@@ -87,7 +87,7 @@ function routesConfig($stateProvider, $urlRouterProvider) {
     })
     .state("room", {
       url: "/rooms/:room?user",
-      template: "<jh-room></jh-room>
+      template: "<jh-room></jh-room>",
       resolve: {
         StatesService: "StatesService",
         setRoomAndService: ["StatesService", "$state", function (StatesService, $state) {

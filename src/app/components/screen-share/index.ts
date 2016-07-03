@@ -8,3 +8,5 @@ export default angular.module('janusHangouts.screenShareComponent', [])
   .directive('jhScreenShareHint', jhScreenShareHintDirective)
   .controller('ScreenShareHelpCtrl', ScreenShareHelpCtrl)
   .service('ScreenShareService', ScreenShareService);
+
+export { ScreenShareService };

@@ -7,13 +7,14 @@
 
 import * as _ from "lodash";
 
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 
 import { Feed, FeedsService, FeedConnection } from "../feed";
-import { RequestService } from "../router";
-import { ScreenShareService } from "../screen-share";
+//import { RequestService } from "../components/router";
+//import { ScreenShareService } from "../components/screen-share";
 import { DataChannelService } from "./data-channel.service";
 import { ActionService } from "./action.service";
+import { Room } from "./room.model";
 
 /*
  * Service to communication with janus room
@@ -33,9 +34,9 @@ export class RoomService {
   constructor(private feeds: FeedsService,
               private dataChannel: DataChannelService,
               private actionService: ActionService,
-              private screenShareService: ScreenShareService,
-              private requestService: RequestService,
-              private config: Config) {
+              @Inject("jhConfig") private config: any,
+              @Inject("ScreenShareServic") private screenShareService: any,
+              @Inject("RequestService") private requestService: any) {
 
     if (this.config.janusServer) {
       this.server = this.config.janusServer;
@@ -52,10 +53,10 @@ export class RoomService {
   public connect(): Promise<any> {
     let promise: Promise<any> = new Promise<any>((resolve, reject) => {
 
-      if (that.janus === null) {
+      if (this.janus === null) {
         Janus.init({debug: this.config.janusDebug});
 
-        that.janus = new Janus({
+        this.janus = new Janus({
           server: this.server,
           success: () => { resolve(); },
           error: (error) => {
@@ -145,7 +146,7 @@ export class RoomService {
           }
 
           connection.publish({
-            muted: startMuted,
+            muted: this.startMuted,
             error: (): void => {
               connection.publish({
                 noCamera: true,
@@ -211,7 +212,7 @@ export class RoomService {
       /*
        * Create a new session just to get the list
        */
-      that.janus.attach({
+      this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: (pluginHandle: any) => {
           console.log("getAvailableRooms plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
@@ -245,7 +246,7 @@ export class RoomService {
 
   public enter(username: string): Promise<any> {
     let promise: Promise<any> = new Promise<any>((resolve, reject) => {
-      connect().then(() => {
+      this.connect().then(() => {
         this.doEnter(username);
         resolve();
       });
@@ -268,7 +269,7 @@ export class RoomService {
   public getRooms(): Promise<any> {
     let promise: Promise<any> = new Promise<any>((resolve, reject) => {
       if (this.rooms === null) {
-        connect().then((): void => {
+        this.connect().then((): void => {
           this.doGetRooms().then((rooms: Array<Room>): void => {
             this.rooms = rooms;
             resolve(rooms);
@@ -282,7 +283,7 @@ export class RoomService {
     return promise;
   }
 
-  public subscribeToFeeds(list: Array<Feed>): void {
+  public subscribeToFeeds(list: Array<Feed>, id: number): void {
     console.log("Got a list of available publishers/feeds:");
     console.log(list);
 
@@ -298,7 +299,7 @@ export class RoomService {
     }
   }
 
-  public subscribeToFeed(id: number, display: any): void {
+  public subscribeToFeed(id: number, display?: any): void {
     let feed: Feed = this.feeds.find(id);
     let connection: any = undefined;
 
@@ -310,7 +311,7 @@ export class RoomService {
       plugin: "janus.plugin.videoroom",
       success: (pluginHandle: any): void => {
         connection = new FeedConnection();
-        connection.setAttrs(pluginHandle, that.room.id, "subscriber");
+        connection.setAttrs(pluginHandle, this.room.id, "subscriber");
         connection.listen(id);
       },
       error: (error: any): void => {
@@ -385,7 +386,7 @@ export class RoomService {
       plugin: "janus.plugin.videoroom",
       success: (pluginHandle: any): void => {
         connection = new FeedConnection();
-        connection.setAttrs(pluginHandle, that.room.id, "screen");
+        connection.setAttrs(pluginHandle, this.room.id, "screen");
         connection.register(display);
         this.screenShareService.setInProgress(true);
       },
@@ -445,7 +446,7 @@ export class RoomService {
     this.subscribeToFeed(feedId);
   }
 
-  public toggleChannel(type: string, feed: Feed): void {
+  public toggleChannel(type: string, feed?: Feed): void {
     this.actionService.toggleChannel(type, feed);
   }
 
@@ -453,9 +454,9 @@ export class RoomService {
    * Enable audio while holding key and disable audio when the key is released.
    */
   public pushToTalk(keyevent: any): void {
-    let disableAudio: void = (): void => {
+    let disableAudio: any = (): void => {
       this.actionService.setMedia("audio", false);
-      holdingKey = false;
+      this.holdingKey = false;
     };
 
     if (this.muteTimer) {
@@ -465,13 +466,13 @@ export class RoomService {
     this.muteTimer = setTimeout(disableAudio, 1000);
 
 
-    if (keyevent === "keydown" && !holdingKey) {
+    if (keyevent === "keydown" && !this.holdingKey) {
       this.actionService.setMedia("audio", true);
-      holdingKey = true;
+      this.holdingKey = true;
 
     } else if (keyevent === "keyup") {
       this.actionService.setMedia("audio", false);
-      holdingKey = false;
+      this.holdingKey = false;
       clearTimeout(this.muteTimer);
     }
   }

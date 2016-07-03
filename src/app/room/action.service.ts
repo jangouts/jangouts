@@ -116,13 +116,13 @@ export class ActionService {
     }
 
     if (feed.isEnabled(type)) {
-      let callback: void = null;
+      let callback: any = null;
       /*
        * If we are muting the main feed (the only publisher that can be
        * actually muted) raise a signal
        */
       if (type === "audio" && feed.isPublisher) {
-        callback = () => {
+        callback = (): void => {
           // [TODO] - Set broadcast for 'muted.byUser'
           // $rootScope.$broadcast("muted.byUser");
         };
@@ -148,7 +148,7 @@ export class ActionService {
     /*
      * Log the event
      */
-    LogService.add(entry);
+    this.logService.add(entry);
   }
 
 }

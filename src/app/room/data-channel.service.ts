@@ -75,7 +75,7 @@ export class DataChannelService {
     this.sendMessage("muteRequest", content);
   }
 
-  public sendStatus(feed: Feed, statusOptions: any): void {
+  public sendStatus(feed: Feed, statusOptions?: any): void {
     let content: any = {
       source: feed.id,
       status: feed.getStatus(statusOptions)

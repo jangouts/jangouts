@@ -33,7 +33,7 @@ export class SendPicsDirective implements OnInit {
   public initPics(element: ElementRef): any {
     let canvas: any = $("canvas", element);
     let canvasTag: HTMLCanvasElement = <HTMLCanvasElement>canvas[0];
-    let video: HTMLVideoElement = $("video", element).first();
+    let video: any = $("video", element).first();
     let context: any = canvasTag.getContext("2d");
 
     // initially set it to 4:3 (fitting the placeholder image)

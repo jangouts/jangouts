@@ -10,16 +10,14 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class LogEntry {
 
-  public type: string;
-  public content: any;
   public timestamp: Date;
 
-  constructor(public type: string, public content: any = {}) {
+  constructor(public t: string, public content: any = {}) {
     this.timestamp = new Date();
   }
 
   public text(): string {
-    return this[this.type + "Text"]();
+    return this[this.t + "Text"]();
   }
 
   public muteRequestText(): string {

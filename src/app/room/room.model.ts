@@ -10,8 +10,6 @@ import * as _ from "lodash";
 import { Injectable } from "@angular/core";
 
 interface IRoomAttributes {
-  id: number;
-  label: string;
   description: string;
   record: string;
   room: number;
