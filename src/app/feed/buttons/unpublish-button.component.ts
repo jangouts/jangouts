@@ -17,15 +17,15 @@ export class UnpublishButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject('RoomService') private roomService: any) { }
+  constructor(@Inject("RoomService") private roomService: any) { }
 
-  ngOnInit() { }
+  public ngOnInit(): void { }
 
-  public click() {
+  public click(): void {
     this.roomService.unPublishFeed(this.feed.id);
   }
 
-  public isVisible() {
+  public isVisible(): boolean  {
     return (this.feed.isPublisher && this.feed.isLocalScreen);
   }
 

@@ -17,10 +17,10 @@ export class AudioButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject('RoomService') private roomService: any,
-              @Inject('MuteNotifier') private muteNotifier: any) { }
+  constructor(@Inject("RoomService") private roomService: any,
+              @Inject("MuteNotifier") private muteNotifier: any) { }
 
-  ngOnInit() { }
+  public ngOnInit(): void { }
 
   public toggle(): void {
     this.roomService.toggleChannel("audio", this.feed);
@@ -33,7 +33,7 @@ export class AudioButtonComponent implements OnInit {
     return (this.feed.isPublisher && !this.feed.isLocalScreen && !this.feed.getAudioEnabled());
   }
 
-  public showsDisable() {
+  public showsDisable(): boolean {
     return (!this.feed.isIgnored && this.feed.getAudioEnabled());
   }
 

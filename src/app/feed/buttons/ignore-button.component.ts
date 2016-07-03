@@ -17,23 +17,23 @@ export class IgnoreButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject('RoomService') private roomService: any) { }
+  constructor(@Inject("RoomService") private roomService: any) { }
 
-  ngOnInit() { }
+  public ngOnInit(): void { }
 
-  public showsIgnore() {
+  public showsIgnore(): boolean {
     return (!this.feed.isPublisher && !this.feed.isIgnored);
   }
 
-  public showsStopIgnoring() {
+  public showsStopIgnoring(): boolean {
     return this.feed.isIgnored;
   }
 
-  public ignore() {
+  public ignore(): void {
     this.roomService.ignoreFeed(this.feed.id);
   }
 
-  public stopIgnoring() {
+  public stopIgnoring(): void {
     this.roomService.stopIgnoringFeed(this.feed.id);
   }
 }

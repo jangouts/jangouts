@@ -9,8 +9,8 @@ import {
 
 import { Control } from "@angular/common";
 
-declare const jasmine;
-declare const spyOn;
+declare const jasmine: any;
+declare const spyOn: any;
 
 import { ChatFormComponent } from "./chat-form.component";
 
@@ -31,7 +31,7 @@ describe("Component: ChatForm", () => {
   beforeEach(inject([ ChatFormComponent ], (chatForm)  => {
     this.chatForm = chatForm;
     this.ctrlGroup = chatForm.chatForm.value;
-    this.textField = <Control>this.chatForm.chatForm.controls["text"]
+    this.textField = <Control>this.chatForm.chatForm.controls["text"];
   }));
 
   it("should start with an empty text", () => {

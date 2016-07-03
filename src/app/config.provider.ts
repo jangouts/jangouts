@@ -1,21 +1,14 @@
-export default angular.module("janusHangouts.config", [])
-    .provider('jhConfig', function () {
-      var config = {
-        "janusServer"     : null,
-        "janusServerSSL"  : null,
-        "janusDebug"      : false,
-        "httpsAvailable"  : true,
-        "httpsUrl"        : null,
-        "videoThumbnails" : true,
-        "joinUnmutedLimit": 3,
-      };
+import { upgradeAdapter } from "../adapter";
 
-      return {
-        $get: function () {
-          return config;
-        },
-        $set: function(k, v) {
-          config[k] = v;
-        }
-      };
-    });
+export class Config {
+    public janusServer: any = null;
+    public janusServerSSL: any = null;
+    public janusDebug: boolean = false;
+    public httpsAvailable: boolean = true;
+    public httpsUrl: any = null;
+    public videoThumbnails: boolean = true;
+    public joinUnmutedLimit: number = 3;
+}
+
+angular.module("janusHangouts.config", [])
+.provider("jhConfig", upgradeAdapter.downgradeNg2Provider(Config));

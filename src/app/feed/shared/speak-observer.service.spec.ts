@@ -10,8 +10,8 @@ import {
 
 import { SpeakObserver } from "./speak-observer.service";
 
-declare const jasmine;
-declare const spyOn;
+declare const jasmine: any;
+declare const spyOn: any;
 
 describe("Service: SpeakObserver", () => {
 

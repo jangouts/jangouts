@@ -17,19 +17,19 @@ export class VideoButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject('RoomService') private roomService: any) { }
+  constructor(@Inject("RoomService") private roomService: any) { }
 
-  ngOnInit() { }
+  public ngOnInit(): void { }
 
-  public toggle() {
+  public toggle(): void {
     this.roomService.toggleChannel("video", this.feed);
   }
 
-  public showsEnable() {
+  public showsEnable(): boolean {
     return (this.feed.isPublisher && !this.feed.getVideoEnabled());
   }
 
-  public showsDisable() {
+  public showsDisable(): boolean {
     return (this.feed.isPublisher && this.feed.getVideoEnabled());
   }
 

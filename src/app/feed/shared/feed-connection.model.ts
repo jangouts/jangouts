@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { ConnectionConfig, IWanted, IOptions } from "./connection-config.model";
 
 interface IMedia {

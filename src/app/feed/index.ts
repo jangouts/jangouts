@@ -20,7 +20,7 @@ export default angular.module("janusHangouts.feedComponent", [])
   .factory("FeedConnection", upgradeAdapter.downgradeNg2Provider(FeedConnection))
   .directive("jhPushtotalkButton", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(PushToTalkComponent))
   .directive("jhFeed", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(FeedComponent))
-  .directive("jhMainFeed", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(MainFeedComponent))
+  .directive("jhMainFeed", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(MainFeedComponent));
 
 
 export { FeedsService, Feed, FeedConnection }

@@ -13,15 +13,16 @@ import { Component, OnInit, Inject } from "@angular/core";
 })
 export class PushToTalkComponent implements OnInit {
 
-  private titleText1: string  = "Set Push-to-talk hotkey";
-  private titleText2: string  = "Disable Push-to-talk";
-  private ignoreClick: boolean = false;
-
   public hotkeyActive: boolean = false;
   public showHotkey: boolean = false;
   public hotkey: string = null;
   public titleText: string = this.titleText1;
   public toggleText: string = null;
+
+  private titleText1: string  = "Set Push-to-talk hotkey";
+  private titleText2: string  = "Disable Push-to-talk";
+  private ignoreClick: boolean = false;
+
 
   constructor(@Inject("RoomService") private roomService: any,
               @Inject("UserService") private userService: any,
@@ -32,8 +33,28 @@ export class PushToTalkComponent implements OnInit {
     this.setLastHotkey();
   }
 
+  public click($event: any): void {
+    if (this.ignoreClick) {
+      return;
+    }
+
+    $event.currentTarget.blur();
+
+    if (this.hotkeyActive) {
+      if (this.hotkey !== null) {
+        this.setPushToTalk(null);
+      } else {
+        window.Mousetrap.stopRecord();
+      }
+      this.hotkeyActive = false;
+    } else {
+      this.hotkeyActive = true;
+      this.recordSequence();
+    }
+  }
+
   private setLastHotkey(): void {
-    let lastHotkey = this.userService.getSetting("lastHotkey");
+    let lastHotkey: string = this.userService.getSetting("lastHotkey");
     if (lastHotkey) {
       this.hotkeyActive = true;
       this.setPushToTalk(lastHotkey);
@@ -43,7 +64,7 @@ export class PushToTalkComponent implements OnInit {
   private recordSequence(): void {
     this.toggleText = "Choose a hotkey for Push-to-Talk...";
 
-    let recordCallback = (sequence: Array<string>) => {
+    let recordCallback: void = (sequence: Array<string>) => {
       this.toggleText = "";
 
       if (sequence !== undefined && sequence !== null && sequence[0] !== undefined && sequence[0].length > 0) {
@@ -72,7 +93,7 @@ export class PushToTalkComponent implements OnInit {
     this.toggleText = warning;
     this.ignoreClick = true;
 
-    let timeoutCallback = (): void => {
+    let timeoutCallback: void = (): void => {
       this.toggleText = "";
       this.hotkeyActive = false;
       this.ignoreClick = false;
@@ -92,7 +113,7 @@ export class PushToTalkComponent implements OnInit {
     }
 
     if (key !== null) {
-      let pttCallback = (event) => {
+      let pttCallback: void = (event) => {
         event.preventDefault();
         this.roomService.pushToTalk(event.type);
       };
@@ -116,26 +137,6 @@ export class PushToTalkComponent implements OnInit {
     }
 
     this.userService.setSetting("lastHotkey", key);
-  }
-
-  public click($event): void {
-    if (this.ignoreClick) {
-      return;
-    }
-
-    $event.currentTarget.blur();
-
-    if (this.hotkeyActive) {
-      if (this.hotkey !== null) {
-        this.setPushToTalk(null);
-      } else {
-        window.Mousetrap.stopRecord();
-      }
-      this.hotkeyActive = false;
-    } else {
-      this.hotkeyActive = true;
-      this.recordSequence();
-    }
   }
 
 }
