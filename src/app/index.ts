@@ -20,7 +20,6 @@ require("./vendor.scss");
 require("./index.scss");
 
 import config from "./config.provider";
-import room from "./room";
 import signin from "./signin";
 
 // Components
@@ -51,7 +50,6 @@ angular.module("janusHangouts", [
     "angular-extended-notifications",
     "LocalStorageModule",
     config.name,
-    room.name,
     signin.name,
     roomComponent.name,
     browserInfoComponent.name,
@@ -89,8 +87,7 @@ function routesConfig($stateProvider, $urlRouterProvider) {
     })
     .state("room", {
       url: "/rooms/:room?user",
-      template: require("./room/room.html"),
-      controller: "RoomCtrl",
+      template: "<jh-room></jh-room>
       resolve: {
         StatesService: "StatesService",
         setRoomAndService: ["StatesService", "$state", function (StatesService, $state) {

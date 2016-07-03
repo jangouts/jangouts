@@ -7,6 +7,8 @@
 
 import { Component, OnInit, Inject } from "@angular/core";
 
+import { RoomService } from "../../room";
+
 @Component({
   selector: "jh-pushtotalk-button",
   template: require("./pushtotalk.component.html")
@@ -24,7 +26,7 @@ export class PushToTalkComponent implements OnInit {
   private ignoreClick: boolean = false;
 
 
-  constructor(@Inject("RoomService") private roomService: any,
+  constructor(private roomService: RoomService,
               @Inject("UserService") private userService: any,
               @Inject("hotkeys") private hotkeys: any) {
   }
@@ -64,7 +66,7 @@ export class PushToTalkComponent implements OnInit {
   private recordSequence(): void {
     this.toggleText = "Choose a hotkey for Push-to-Talk...";
 
-    let recordCallback: void = (sequence: Array<string>) => {
+    let recordCallback: any = (sequence: Array<string>) => {
       this.toggleText = "";
 
       if (sequence !== undefined && sequence !== null && sequence[0] !== undefined && sequence[0].length > 0) {
@@ -93,7 +95,7 @@ export class PushToTalkComponent implements OnInit {
     this.toggleText = warning;
     this.ignoreClick = true;
 
-    let timeoutCallback: void = (): void => {
+    let timeoutCallback: any = (): void => {
       this.toggleText = "";
       this.hotkeyActive = false;
       this.ignoreClick = false;
@@ -113,7 +115,7 @@ export class PushToTalkComponent implements OnInit {
     }
 
     if (key !== null) {
-      let pttCallback: void = (event) => {
+      let pttCallback: any = (event: any): void => {
         event.preventDefault();
         this.roomService.pushToTalk(event.type);
       };

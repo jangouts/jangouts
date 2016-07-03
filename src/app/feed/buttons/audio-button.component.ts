@@ -7,6 +7,7 @@
 
 import { Component, OnInit, Input, Inject } from "@angular/core";
 
+import { RoomService } from "../../room";
 import { Feed } from "../shared";
 
 @Component({
@@ -17,7 +18,7 @@ export class AudioButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject("RoomService") private roomService: any,
+  constructor(private roomService: RoomService,
               @Inject("MuteNotifier") private muteNotifier: any) { }
 
   public ngOnInit(): void { }
