@@ -1,6 +1,9 @@
 import {
   beforeEachProviders,
+  beforeEach,
+  describe,
   inject,
+  expect,
   it
 } from "@angular/core/testing";
 
@@ -9,11 +12,15 @@ import { ChatMessageComponent } from "./chat-message.component";
 describe("ChatMessage", () => {
 
   beforeEachProviders(() => [
-    ChatMessageComponent,
+    {provide: ChatMessageComponent, useClass: ChatMessageComponent},
   ]);
 
-  it("should have embedOptions defined", inject([ ChatMessageComponent ], (chatMessage) => {
-    expect(chatMessage.embedOptions).toEqual(jasmine.objectContaining({
+  beforeEach(inject([ ChatMessageComponent ], (chatMessage) => {
+    this.chatMessage = chatMessage;
+  }));
+
+  it("should have embedOptions defined", () => {
+    expect(this.chatMessage.embedOptions).toEqual(jasmine.objectContaining({
       link: true,
       linkTarget: "_blank",
       image: {
@@ -30,8 +37,7 @@ describe("ChatMessage", () => {
       },
       basicVideo: true,
       tweetEmbed: false
-
     }));
-  }));
+  });
 
 });

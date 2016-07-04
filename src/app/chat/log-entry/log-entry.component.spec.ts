@@ -1,6 +1,9 @@
 import {
   beforeEachProviders,
+  beforeEach,
+  describe,
   inject,
+  expect,
   it
 } from "@angular/core/testing";
 
@@ -9,20 +12,24 @@ import { LogEntryComponent } from "./log-entry.component";
 describe("LogEntry", () => {
 
   beforeEachProviders(() => [
-    LogEntryComponent,
+    {provide: LogEntryComponent, useClass: LogEntryComponent}
   ]);
 
-  describe("ngOnInit", () => {
-    it("should set text with message.text()", inject([ LogEntryComponent ], (logEntry) => {
+  beforeEach(inject([ LogEntryComponent ], (logEntry) => {
+    this.logEntry = logEntry;
+  }));
 
-      logEntry.message = {
+  describe("ngOnInit", () => {
+    it("should set given text", () => {
+
+      this.logEntry.message = {
         text: function (): string { return "message text"; }
       };
 
-      logEntry.ngOnInit();
+      this.logEntry.ngOnInit();
 
-      expect(logEntry.text).toEqual("message text");
-    }));
+      expect(this.logEntry.text).toEqual("message text");
+    });
 
   });
 
