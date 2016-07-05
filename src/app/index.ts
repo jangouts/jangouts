@@ -5,7 +5,14 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import "zone.js";
+/*
+ * Error with the exported typings from zone.js
+ * https://github.com/angular/zone.js/issues/297#issuecomment-200912405
+ */
+//import "zone.js";
+import "zone.js/dist/zone";
+import "zone.js/dist/long-stack-trace-zone";
+
 import "reflect-metadata";
 import { upgradeAdapter } from "./adapter";
 
@@ -13,20 +20,21 @@ require("./vendor.scss");
 require("./index.scss");
 
 import config from "./config.provider";
-import room from "./room/index";
-import signin from "./signin/index";
+import room from "./room";
+import signin from "./signin";
 
 // Components
-import roomComponent from "./components/room/index";
-import browserInfoComponent from "./components/browser-info/index";
-import chatComponent from "./components/chat/index";
-import feedComponent from "./components/feed/index";
-import notifierComponent from "./components/notifier/index";
-import routerComponent from "./components/router/index";
-import screenShareComponent from "./components/screen-share/index";
-import userComponent from "./components/user/index";
-import videochatComponent from "./components/videochat/index";
-import footerComponent from "./components/footer/index";
+import chatComponent from "./chat";
+import footerComponent from "./footer";
+
+import roomComponent from "./components/room";
+import browserInfoComponent from "./components/browser-info";
+import feedComponent from "./components/feed";
+import notifierComponent from "./components/notifier";
+import routerComponent from "./components/router";
+import screenShareComponent from "./components/screen-share";
+import userComponent from "./components/user";
+import videochatComponent from "./components/videochat";
 
 angular.module("janusHangouts", [
     "ngAnimate",

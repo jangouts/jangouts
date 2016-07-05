@@ -66,11 +66,11 @@ module.exports = {
        *
        * See: https://github.com/wbuchwalter/tslint-loader
        */
-      {
-        test: /\.ts$/,
-        loader: 'tslint-loader',
-        exclude: [helpers.root('node_modules')]
-      },
+      //{
+        //test: /\.ts$/,
+        //loader: 'tslint-loader',
+        //exclude: [helpers.root('node_modules')]
+      //},
 
       /**
        * Source map loader support for *.js files
@@ -106,16 +106,7 @@ module.exports = {
        */
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
-        query: {
-          compilerOptions: {
-
-            // Remove TypeScript helpers to be injected
-            // below by DefinePlugin
-            removeComments: true
-
-          }
-        },
+        loader: 'ts',
         exclude: [/\.e2e\.ts$/]
       },
 

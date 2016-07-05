@@ -4,7 +4,7 @@ import {
   it
 } from "@angular/core/testing";
 
-import { FooterComponent } from "./jh-footer.directive";
+import { FooterComponent } from "./footer.component";
 
 describe("Footer", () => {
   beforeEachProviders(() => [
@@ -15,7 +15,7 @@ describe("Footer", () => {
     expect(footer.version).toBeDefined();
   }));
 
-  it("should have version defined", inject([ FooterComponent ], (footer) => {
+  it("should have the correct version", inject([ FooterComponent ], (footer) => {
     expect(footer.version).toEqual("0.4.4");
   }));
 });

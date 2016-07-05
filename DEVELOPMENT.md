@@ -133,28 +133,21 @@ npm run build:prod
 ## Running Tests Locally
 
 ### run tests
+This command will start and capture all configured browsers (by default only
+PhantomJS) and run tests.
 ```bash
 npm run test
 ```
 
+Watch files and executing the tests whenever one of these files
+change.
+
+```bash
+npm run test:watch
+```
+
 ### run end-to-end tests
-```bash
-# make sure you have your server running in another terminal
-npm run e2e
-```
-
-### run webdriver (for end-to-end)
-```bash
-npm run webdriver:update
-npm run webdriver:start
-```
-
-### run Protractor's elementExplorer (for end-to-end)
-```bash
-npm run webdriver:start
-# in another terminal
-npm run e2e:live
-```
+TODO
 
 ## Code Style
 
