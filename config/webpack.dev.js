@@ -45,7 +45,7 @@ module.exports = webpackMerge(commonConfig, {
    */
   devServer: {
     port: 4000,
-    host: 'localhost',
+    host: '0.0.0.0',
     historyApiFallback: true,
     outputPath: helpers.root('dist')
   },
