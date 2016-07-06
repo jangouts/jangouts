@@ -2,7 +2,7 @@
   <header>
     <div class="row">
       <div class="col-xs-12 col-sm-4">
-        <img src="images/jangouts-logo.png" id="logo" />
+        <img src="../../../images/jangouts-logo.png" id="logo" />
       </div>
       <div class="col-xs-12 col-sm-8 text-right">
         <jh-pushtotalk-button></jh-pushtotalk-button>
@@ -41,31 +41,29 @@
           row="item.position[0]" col="item.position[1]"
           size-x="item.size[0]" size-y="item.size[1]"
           ng-repeat="item in vm.gridsterItems">
-        <div
+        <jh-main-feed
+          [feed]="vm.highlightedFeed()"
           ng-if="item.content === 'Speaker'"
           class="grid-item-content"
           id="main-video"
-          jh-main-feed="true"
-          feed="vm.highlightedFeed()"
           ng-class="{mirrored: vm.mirrored()}">
-        </div>
+        </jh-main-feed>
         <div
           ng-if="item.content === 'Participants'"
           class="grid-item-content"
           id="thumbnails">
-          <div
-            jh-feed="true"
-            feed="f"
-            ng-repeat="f in vm.feeds() | orderBy:'+display'"
-            toggle-highlight-fn="vm.toggleHighlightedFeed(f)"
-            highlighted="vm.isHighlighted(f)"
-            highlighted-by-user="vm.isHighlightedByUser(f)">
-          </div>
+          <jh-feed
+            [feed]="f"
+            (toggle-highlight)="vm.toggleHighlightedFeed($event)"
+            [highlighted]="vm.isHighlighted(f)"
+            [highlighted-by-user]="vm.isHighlightedByUser(f)"
+            ng-repeat="f in vm.feeds() | orderBy:'+display'">
+          </jh-feed>
         </div>
         <div
           ng-if="item.content === 'Chat'"
           class="grid-item-content">
-          <jh-chat messages="vm.logEntries()"></jh-chat>
+          <jh-chat [messages]="vm.logEntries()"></jh-chat>
         </div>
       </li>
     </ul>

@@ -1,0 +1,12 @@
+<div class="header">
+  <strong>{{ message.content.feed.display }}</strong>
+  <small class="pull-right text-muted">
+    <span class="glyphicon glyphicon-time"></span>
+    {{ message.timestamp | date:'shortTime' }}
+  </small>
+</div>
+
+<div>{{message.text()}}</div>
+
+<!-- TODO: Reenable when fix angular2 upgrader with templateUrl defined as function -->
+<!--<ng-embed embedData="message.text()" embedOptions="embedOptions"></ng-embed>-->

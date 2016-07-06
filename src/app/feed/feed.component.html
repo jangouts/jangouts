@@ -1,0 +1,41 @@
+<figure
+  *ngIf="feed"
+  [jhSendPics]="feed"
+  [jhSetVideoSubscription]="videoThumbnails || highlighted || !feed.isSilent()"
+  [initial]="videoThumbnails || highlighted"
+  [feed]="feed"
+  [ngClass]="{'own-feed': feed.isPublisher, sticky: highlightedByUser}">
+  <div class="thumb"
+       (click)="click()">
+    <video
+      autoplay
+      class="face"
+      [ngClass]="{mirrored: mirrored}"
+      [hidden]="thumbnailTag() !== 'video'"
+      [jhVideoStream]="feed.getStream()"
+      [mutted]="feed && feed.isPublisher">
+    </video>
+    <img
+      [src]="feed.getPicture()"
+      class="face"
+      [ngClass]="{mirrored: mirrored}"
+      [hidden]="thumbnailTag() !== 'picture'">
+    <img
+      src="../../assets/images/placeholder.png"
+      class="face"
+      [ngClass]="{mirrored: mirrored}"
+      [hidden]="thumbnailTag() !== 'placeholder'">
+    <canvas
+      [hidden]="true">
+    </canvas>
+  </div>
+  <figcaption>
+    <span class="caption">{{ feed.display }}</span>
+    <div class="buttons">
+      <jh-unpublish-button [feed]="feed"></jh-unpublish-button>
+      <jh-video-button [feed]="feed"></jh-video-button>
+      <jh-ignore-button [feed]="feed"></jh-ignore-button>
+      <jh-audio-button [feed]="feed"></jh-audio-button>
+    </div>
+  </figcaption>
+</figure>
