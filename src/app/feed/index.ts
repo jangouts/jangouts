@@ -23,4 +23,12 @@ export default angular.module("janusHangouts.feedComponent", [])
   .directive("jhMainFeed", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(MainFeedComponent));
 
 
-export { FeedsService, Feed, FeedConnection }
+export {
+  FeedsService,
+  Feed,
+  FeedConnection,
+  PushToTalkComponent,
+  FeedComponent,
+  MainFeedComponent
+}
+export * from "./buttons";

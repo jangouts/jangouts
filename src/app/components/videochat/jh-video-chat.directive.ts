@@ -9,7 +9,7 @@ jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'UserSe
 
 function jhVideoChatDirective($window, LogService, FeedsService, UserService, Notifier, hotkeys, $timeout) {
   return {
-    restrict: 'EA',
+    restrict: 'E',
     template: require('./jh-video-chat.html'),
     scope: {},
     controllerAs: 'vm',

@@ -14,6 +14,8 @@ import {
   FORM_DIRECTIVES
 } from "@angular/common";
 
+import { ActionService } from "../../room";
+
 
 @Component({
   selector: "jh-chat-form",
@@ -23,10 +25,8 @@ import {
 export class ChatFormComponent {
 
   public chatForm: ControlGroup;
-  public actionService: any;
 
-  constructor(@Inject("ActionService") actionService: any) {
-    this.actionService = actionService;
+  constructor(private actionService: ActionService) {
     this.chatForm = new ControlGroup({
       text: new Control(null, Validators.required)
     });

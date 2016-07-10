@@ -5,9 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-jhScreenShareButtonDirective.$inject = ['ScreenShareService', 'RoomService', 'RequestService'];
+jhScreenShareButtonDirective.$inject = ['ScreenShareService', 'RoomService', 'jhConfig'];
 
-function jhScreenShareButtonDirective(ScreenShareService, RoomService, RequestService) {
+function jhScreenShareButtonDirective(ScreenShareService, RoomService, jhConfig) {
   return {
     restrict: 'EA',
     template: require('./jh-screen-share-button.html'),
@@ -31,7 +31,7 @@ function jhScreenShareButtonDirective(ScreenShareService, RoomService, RequestSe
     }
 
     function enabled() {
-      return (RequestService.usingSSL() && !ScreenShareService.getInProgress());
+      return (jhConfig.usingSSL && !ScreenShareService.getInProgress());
     }
 
     function title() {

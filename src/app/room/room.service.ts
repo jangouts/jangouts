@@ -10,11 +10,11 @@ import * as _ from "lodash";
 import { Injectable, Inject } from "@angular/core";
 
 import { Feed, FeedsService, FeedConnection } from "../feed";
-//import { RequestService } from "../components/router";
-//import { ScreenShareService } from "../components/screen-share";
+import { ScreenShareService } from "../components/screen-share";
 import { DataChannelService } from "./data-channel.service";
 import { ActionService } from "./action.service";
 import { Room } from "./room.model";
+import { Config } from "../config.provider";
 
 /*
  * Service to communication with janus room
@@ -34,19 +34,10 @@ export class RoomService {
   constructor(private feeds: FeedsService,
               private dataChannel: DataChannelService,
               private actionService: ActionService,
-              @Inject("jhConfig") private config: any,
-              @Inject("ScreenShareServic") private screenShareService: any,
-              @Inject("RequestService") private requestService: any) {
+              private config: Config,
+              private screenShareService: ScreenShareService) {
 
-    if (this.config.janusServer) {
-      this.server = this.config.janusServer;
-    } else {
-      this.server = this.defaultJanusServer();
-    }
-
-    if (this.config.janusServerSSL && this.requestService.usingSSL()) {
-      this.server = this.config.janusServerSSL;
-    }
+    this.server = this.config.janusServer
 
   }
 
@@ -97,8 +88,8 @@ export class RoomService {
       error: (error: string): void => {
         console.error(`Error attaching plugin... ${error}`);
       },
-      consentDialog: (on: boolean): void => {
-        console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
+      //consentDialog: (on: boolean): void => {
+        //console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
         // [TODO] - Reenable broadcast
         // $$rootScope.$broadcast('consentDialog.changed', on);
         // if(!on){
@@ -107,7 +98,7 @@ export class RoomService {
             // $$rootScope.$broadcast('muted.Join');
           // }
         // }
-      },
+      //},
       ondataopen: (): void => {
         console.log("The publisher DataChannel is available");
         connection.onDataOpen();
@@ -194,7 +185,7 @@ export class RoomService {
            * The server reported an error
            */
           } else if (msg.error !== undefined && msg.error !== null) {
-            console.log("Error message from server" + msg.error);
+            console.error("Error message from server" + msg.error);
             // [TODO] - Reenable broadcast
             // $$rootScope.$broadcast('room.error', msg.error);
           }
@@ -415,7 +406,10 @@ export class RoomService {
               console.log(error);
               this.unPublishFeed(id);
               this.screenShareService.setInProgress(false);
-              this.screenShareService.showHelp();
+
+              // [TODO] - Reenable when $modal upgraded
+              console.log("Show ScreenShareService.showHelp()");
+              // this.screenShareService.showHelp();
             }
           });
         /*
@@ -492,24 +486,6 @@ export class RoomService {
         this.dataChannel.sendStatus(p);
       }, 4000);
     });
-  }
-
-  private defaultJanusServer(): Array<string> {
-    let wsProtocol: string;
-    let wsPort: string;
-
-    if (this.requestService.usingSSL()) {
-      wsProtocol = "wss:";
-      wsPort = "8989";
-    } else {
-      wsProtocol = "ws:";
-      wsPort = "8188";
-    }
-
-    return [
-      `${wsProtocol}//${window.location.hostname}:${wsPort}/janus/`,
-      `${window.location.protocol}//${window.location.hostname}/janus/`
-    ];
   }
 
 }

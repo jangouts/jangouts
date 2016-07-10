@@ -5,9 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-jhScreenShareHintDirective.$inject = ['ScreenShareService', 'RequestService'];
+jhScreenShareHintDirective.$inject = ['ScreenShareService', 'jhConfig'];
 
-function jhScreenShareHintDirective(ScreenShareService, RequestService) {
+function jhScreenShareHintDirective(ScreenShareService, jhConfig) {
   return {
     restrict: 'EA',
     template: require('./jh-screen-share-hint.html'),
@@ -22,8 +22,8 @@ function jhScreenShareHintDirective(ScreenShareService, RequestService) {
     var vm = this;
 
     vm.showHelp = function() { ScreenShareService.showHelp(); };
-    vm.usingSSL = function() { return RequestService.usingSSL(); };
-    vm.httpsUrl = function() { return RequestService.httpsUrl(); };
+    vm.usingSSL = function() { return jhConfig.usingSSL; };
+    vm.httpsUrl = function() { return jhConfig.httpsUrl; };
     vm.visible = visible;
 
     function visible() {

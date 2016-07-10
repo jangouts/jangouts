@@ -23,11 +23,11 @@ import config from "./config.provider";
 import signin from "./signin";
 
 // Components
-import chatComponent from "./chat";
 import footerComponent from "./footer";
 import feedComponent from "./feed";
-
 import roomComponent from "./room";
+import chatComponent from "./chat";
+
 import browserInfoComponent from "./components/browser-info";
 import notifierComponent from "./components/notifier";
 import routerComponent from "./components/router";
@@ -161,7 +161,6 @@ function stateEvents($rootScope, $state, RoomService) {
     $state.go("signin");
   });
 }
-
 
 upgradeAdapter.bootstrap(document.documentElement, ["janusHangouts"], {
 	strictDi: true

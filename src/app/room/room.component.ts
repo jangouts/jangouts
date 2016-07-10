@@ -4,21 +4,26 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
+import { upgradeAdapter } from "../adapter";
 
 import { Component, OnInit, Inject } from "@angular/core";
 
 import { Room } from "./room.model";
 import { RoomService } from "./room.service";
 
+const jhVideoChat = upgradeAdapter.upgradeNg1Component('jhVideoChat');
+
 interface IRoomParameters {
   room?: number;
   user?: string;
 }
 
-
 @Component({
   selector: "jh-room",
-  template: require("./room.component.html")
+  template: require("./room.component.html"),
+  directives: [
+    jhVideoChat
+  ]
 })
 export class RoomComponent implements OnInit {
 

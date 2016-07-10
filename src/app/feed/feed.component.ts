@@ -45,6 +45,7 @@ export class FeedComponent implements OnInit {
   constructor() { }
 
   public ngOnInit(): void {
+    console.debug("FeedComponent:", this.feed, this);
     this.mirrored = (this.feed.isPublisher && !this.feed.isLocalScreen);
   }
 

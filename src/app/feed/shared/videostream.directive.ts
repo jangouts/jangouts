@@ -12,9 +12,7 @@ export class VideoStreamDirective {
 
   @Input() public mutted: boolean = false;
 
-  constructor (private el: ElementRef) {
-    this.el = el.nativeElement;
-  }
+  constructor (private el: ElementRef) { }
 
   @Input("jhVideoStream")
   set stream(stream: any) {

@@ -4,34 +4,36 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
+export default ScreenShareService;
 
-ScreenShareService.$inject = ['$timeout', '$modal'];
+import { Injectable, Inject } from "@angular/core";
 
-function ScreenShareService($timeout, $modal) {
-  this.inProgress = false;
-  this.setInProgress = setInProgress;
-  this.getInProgress = getInProgress;
-  this.showHelp = showHelp;
+@Injectable()
+export class ScreenShareService {
 
-  function setInProgress(value) {
-    var that = this;
-    $timeout(function () {
-      that.inProgress = value;
+  private inProgress: boolean = false;
+
+  // [TODO] - Reenable when $modal upgraded
+  // constructor(@Inject("$modal") private $modal: any) {}
+  constructor() {}
+
+  public setInProgress(value: boolean): void {
+    setTimeout(() => {
+      this.inProgress = value;
     });
   }
 
-  function getInProgress() {
+  public getInProgress(): boolean {
     return this.inProgress;
   }
 
-  function showHelp() {
-    $modal.open({
-      animation: true,
-      templateUrl: 'app/components/screen-share/screen-share-help.html',
-      controller: 'ScreenShareHelpCtrl',
-      controllerAs: 'vm'
-    });
-  }
+  // public showHelp(): void {
+    // this.$modal.open({
+      // animation: true,
+      // template: require("./screen-share-help.html"),
+      // controller: "ScreenShareHelpCtrl",
+      // controllerAs: "vm"
+    // });
+  // }
 }
 
-export default ScreenShareService;

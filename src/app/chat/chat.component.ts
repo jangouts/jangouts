@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 
 import { ChatMessageComponent} from "./chat-message";
 import { ChatFormComponent} from "./chat-form";
@@ -23,10 +23,16 @@ import { AutoScrollDirective } from "./message-autoscroll.directive";
     AutoScrollDirective
   ]
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit {
 
   @Input() public messages: any;
 
-  constructor () { }
+  constructor () {
+    console.debug("Chat component", this);
+  }
+
+  public ngOnInit() {
+    console.debug("Chat component ONINIT", this);
+  }
 
 }
