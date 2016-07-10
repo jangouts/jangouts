@@ -22,8 +22,6 @@ export class MainFeedComponent {
   @Input() public feed: Feed;
   @Input() public message: string;
 
-  constructor() {
-    console.debug("Constructor", this);
-  }
+  constructor() { }
 
 }

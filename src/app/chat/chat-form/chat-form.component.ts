@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, Inject } from "@angular/core";
+import { Component } from "@angular/core";
 
 import {
   Control,

@@ -7,7 +7,7 @@
 
 import * as _ from "lodash";
 
-import { Injectable, Inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 
 import { Feed, FeedsService, FeedConnection } from "../feed";
 import { ScreenShareService } from "../components/screen-share";
@@ -37,7 +37,7 @@ export class RoomService {
               private config: Config,
               private screenShareService: ScreenShareService) {
 
-    this.server = this.config.janusServer
+    this.server = this.config.janusServer;
 
   }
 
@@ -88,8 +88,8 @@ export class RoomService {
       error: (error: string): void => {
         console.error(`Error attaching plugin... ${error}`);
       },
-      //consentDialog: (on: boolean): void => {
-        //console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
+      // consentDialog: (on: boolean): void => {
+        // console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
         // [TODO] - Reenable broadcast
         // $$rootScope.$broadcast('consentDialog.changed', on);
         // if(!on){
@@ -98,7 +98,7 @@ export class RoomService {
             // $$rootScope.$broadcast('muted.Join');
           // }
         // }
-      //},
+      // },
       ondataopen: (): void => {
         console.log("The publisher DataChannel is available");
         connection.onDataOpen();
@@ -274,7 +274,7 @@ export class RoomService {
     return promise;
   }
 
-  public subscribeToFeeds(list: Array<Feed>, id: number): void {
+  public subscribeToFeeds(list: Array<Feed>): void {
     console.log("Got a list of available publishers/feeds:");
     console.log(list);
 

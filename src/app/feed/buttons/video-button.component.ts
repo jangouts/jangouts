@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, OnInit, Input, Inject } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
 import { RoomService } from "../../room";
 import { Feed } from "../shared";

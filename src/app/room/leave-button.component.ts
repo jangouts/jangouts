@@ -15,7 +15,7 @@ import { RoomService } from "./room.service";
 export class LeaveButtonComponent implements OnInit {
 
   constructor(private roomService: RoomService,
-             @Inject('$state') private $state: any) { }
+             @Inject("$state") private $state: any) { }
 
   public ngOnInit(): void { }
 

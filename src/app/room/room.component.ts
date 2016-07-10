@@ -11,7 +11,7 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { Room } from "./room.model";
 import { RoomService } from "./room.service";
 
-const jhVideoChat = upgradeAdapter.upgradeNg1Component('jhVideoChat');
+const jhVideoChat: any = upgradeAdapter.upgradeNg1Component("jhVideoChat");
 
 interface IRoomParameters {
   room?: number;

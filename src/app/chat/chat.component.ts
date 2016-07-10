@@ -27,12 +27,8 @@ export class ChatComponent implements OnInit {
 
   @Input() public messages: any;
 
-  constructor () {
-    console.debug("Chat component", this);
-  }
+  constructor () { }
 
-  public ngOnInit() {
-    console.debug("Chat component ONINIT", this);
-  }
+  public ngOnInit(): void { }
 
 }
