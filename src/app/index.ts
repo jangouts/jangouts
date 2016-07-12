@@ -24,8 +24,8 @@ import signin from "./signin";
 
 // Components
 import footerComponent from "./footer";
-import feedComponent from "./feed";
 import roomComponent from "./room";
+import feedComponent from "./feed";
 import chatComponent from "./chat";
 
 import browserInfoComponent from "./components/browser-info";

@@ -110,6 +110,11 @@ module.exports = {
         exclude: [/\.e2e\.ts$/]
       },
 
+      {
+        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico|ogg|mp3|wav)$/,
+        loader: 'file?name=assets/[name].[hash].[ext]'
+      },
+
       /**
        * Json loader support for *.json files.
        *

@@ -7,12 +7,15 @@ import {
   it
 } from "@angular/core/testing";
 
+import { provide } from "@angular/core";
+
 import { Control } from "@angular/common";
 
 declare const jasmine: any;
 declare const spyOn: any;
 
 import { ChatFormComponent } from "./chat-form.component";
+import { ActionService } from "../../room";
 
 class MockActionService {
   public writeChatMessage(text: string): void { }
@@ -24,7 +27,7 @@ describe("Component: ChatForm", () => {
 
     return [
       {provide: ChatFormComponent, useClass: ChatFormComponent},
-      {provide: "ActionService", useValue: this.actionService}
+      {provide: ActionService, useValue: this.actionService}
     ];
   });
 

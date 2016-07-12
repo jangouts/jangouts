@@ -146,10 +146,10 @@ export class RoomService {
           });
 
           /*
-           * Step 5. Attach to existing feeds, if any
+           * step 5. attach to existing feeds, if any
            */
           if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
-            this.subscribeToFeeds(msg.publishers, this.room.id);
+            this.subscribeToFeeds(msg.publishers);
           }
 
           /*
@@ -165,7 +165,7 @@ export class RoomService {
            * Any new feed to attach to?
            */
           if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
-            this.subscribeToFeeds(msg.publishers, this.room.id);
+            this.subscribeToFeeds(msg.publishers);
           /*
            * One of the publishers has gone away?
            */

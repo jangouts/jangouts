@@ -24,6 +24,9 @@ require('zone.js/dist/sync-test');
 // RxJS
 require('rxjs/Rx');
 
+// [TODO] - remove when remove angular1.X
+require('angular');
+
 var testing = require('@angular/core/testing');
 var browser = require('@angular/platform-browser-dynamic/testing');
 
