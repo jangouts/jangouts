@@ -102,7 +102,7 @@ export class ActionService {
     }
   }
 
-  public toggleChannel(type: string, feed: Feed): void {
+  public toggleChannel(type: string, feed: Feed = undefined): void {
     /*
      * If no feed is provided, we are muting ourselves
      */
