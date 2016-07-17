@@ -41,7 +41,7 @@ export class Config {
       } else {
         let hostname: string = window.location.hostname;
         let pathname: string = window.location.pathname;
-        return `https://${hostname}${pathname}`
+        return `https://${hostname}${pathname}`;
       }
     } else {
       return null;
