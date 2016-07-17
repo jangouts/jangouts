@@ -7,8 +7,6 @@ import {
   it
 } from "@angular/core/testing";
 
-import { provide } from "@angular/core";
-
 import { Control } from "@angular/common";
 
 declare const jasmine: any;
