@@ -11,7 +11,7 @@ import { ChatMessageComponent } from "./chat-message.component";
 
 declare const jasmine;
 
-describe("ChatMessage", () => {
+describe("Component: ChatMessage", () => {
 
   beforeEachProviders(() => [
     {provide: ChatMessageComponent, useClass: ChatMessageComponent},

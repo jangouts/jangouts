@@ -9,7 +9,7 @@ import {
 
 import { LogEntryComponent } from "./log-entry.component";
 
-describe("LogEntry", () => {
+describe("Component: LogEntry", () => {
 
   beforeEachProviders(() => [
     {provide: LogEntryComponent, useClass: LogEntryComponent}
