@@ -7,6 +7,7 @@
 
 import * as _ from "lodash";
 
+// [TODO] - Review if attrs should be optionals (see `configure` method)
 export interface IWanted {
   audio?: boolean;
   video?: boolean;
