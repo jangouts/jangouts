@@ -160,7 +160,7 @@ export class FeedConnection {
     } else {
       this.config = new ConnectionConfig(this.pluginHandle, options.values, null, options.ok);
     }
-  }
+  };
 
   /**
    * Gets the configuration flags
