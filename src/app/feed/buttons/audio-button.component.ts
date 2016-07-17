@@ -38,7 +38,7 @@ export class AudioButtonComponent implements OnInit {
     return (!this.feed.isIgnored && this.feed.getAudioEnabled());
   }
 
-  public showsAudioOff() {
+  public showsAudioOff(): boolean {
     return !(this.feed.isPublisher || this.feed.isIgnored || this.feed.getAudioEnabled());
   }
 

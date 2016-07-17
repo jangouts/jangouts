@@ -12,9 +12,9 @@ import {
 import { FeedsService } from "./feeds.service";
 import { Feed } from "./feed.model";
 
-declare const jasmine;
-declare const spyOn;
-declare const Promise;
+declare const jasmine: any;
+declare const spyOn: any;
+declare const Promise: any;
 
 describe("Service: FeedsService", () => {
 

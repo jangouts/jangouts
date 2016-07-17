@@ -7,10 +7,8 @@ import {
   it
 } from "@angular/core/testing";
 
-import { Control } from "@angular/common";
-
-declare const jasmine;
-declare const spyOn;
+declare const jasmine: any;
+declare const spyOn: any;
 
 import { FeedComponent } from "./feed.component";
 
