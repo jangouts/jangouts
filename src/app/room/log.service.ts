@@ -12,15 +12,15 @@ import { LogEntry } from "./logentry.model";
 @Injectable()
 export class LogService {
 
-  public entries: Array<any> = [];
+  public entries: Array<LogEntry> = [];
 
   constructor() { }
 
-  public add(entry: LogEntry): any {
+  public add(entry: LogEntry): void {
     this.entries.push(entry);
   }
 
-  public allEntries(): any {
+  public allEntries(): Array<LogEntry> {
     return this.entries;
   }
 

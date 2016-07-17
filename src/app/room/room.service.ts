@@ -11,10 +11,10 @@ import { Injectable } from "@angular/core";
 
 import { Feed, FeedsService, FeedConnection } from "../feed";
 import { ScreenShareService } from "../components/screen-share";
+import { Config } from "../config.provider";
 import { DataChannelService } from "./data-channel.service";
 import { ActionService } from "./action.service";
 import { Room } from "./room.model";
-import { Config } from "../config.provider";
 
 /*
  * Service to communication with janus room

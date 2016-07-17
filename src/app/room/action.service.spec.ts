@@ -1,5 +1,4 @@
 import {
-  beforeEachProviders,
   beforeEach,
   describe,
   expect,
@@ -32,17 +31,10 @@ class MockFeedsService {
 
 describe("Service: ActionService", () => {
 
-  beforeEachProviders(() => {
+  beforeEach(() => {
     this.dataChannelService = new MockDataChannelService();
     this.feedsService = new MockFeedsService();
     this.logService = new MockLogService();
-
-    return [
-      {provide: ActionService, useClass: ActionService}
-    ];
-  });
-
-  beforeEach(() => {
     this.actionService = new ActionService(
       this.feedsService,
       this.dataChannelService,

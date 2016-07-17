@@ -16,7 +16,7 @@ export class DataChannelService {
 
   constructor(private feedsService: FeedsService, private logService: LogService) { }
 
-  public receiveMessage(data: any, remoteId: number): void {
+  public receiveMessage(data: string, remoteId: number): void {
     let msg: any = JSON.parse(data);
     let type: string = msg.type;
     let content: any = msg.content;
