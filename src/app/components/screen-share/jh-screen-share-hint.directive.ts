@@ -22,7 +22,7 @@ function jhScreenShareHintDirective(ScreenShareService, jhConfig) {
     var vm = this;
 
     vm.showHelp = function() { ScreenShareService.showHelp(); };
-    vm.usingSSL = function() { return jhConfig.usingSSL; };
+    vm.usingSSL = function() { return jhConfig.usingSSL(); };
     vm.httpsUrl = function() { return jhConfig.httpsUrl; };
     vm.visible = visible;
 

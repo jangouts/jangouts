@@ -19,12 +19,12 @@ export class Config {
   get janusServer(): Array<string> {
     let server: Array<string> = this.defaultJanusServer();
 
-    if (this.janusServerSSL && this.usingSSL) {
+    if (this.janusServerSSL && this.usingSSL()) {
       server = this.janusServerSSL;
-    }
-
-    if (this._janusServer) {
-      server = this._janusServer;
+    } else {
+      if (this._janusServer) {
+        server = this._janusServer;
+      }
     }
 
     return server;
@@ -52,7 +52,7 @@ export class Config {
     this._httpsUrl = url;
   }
 
-  get usingSSL(): boolean {
+  public usingSSL(): boolean {
     return (window.location.protocol === "https:");
   }
 
@@ -60,7 +60,7 @@ export class Config {
     let wsProtocol: string;
     let wsPort: string;
 
-    if (this.usingSSL) {
+    if (this.usingSSL()) {
       wsProtocol = "wss:";
       wsPort = "8989";
     } else {

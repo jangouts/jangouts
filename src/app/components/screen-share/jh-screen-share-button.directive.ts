@@ -31,7 +31,7 @@ function jhScreenShareButtonDirective(ScreenShareService, RoomService, jhConfig)
     }
 
     function enabled() {
-      return (jhConfig.usingSSL && !ScreenShareService.getInProgress());
+      return (jhConfig.usingSSL() && !ScreenShareService.getInProgress());
     }
 
     function title() {

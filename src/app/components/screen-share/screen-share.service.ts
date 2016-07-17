@@ -18,9 +18,7 @@ export class ScreenShareService {
   constructor() {}
 
   public setInProgress(value: boolean): void {
-    setTimeout(() => {
-      this.inProgress = value;
-    });
+    this.inProgress = value;
   }
 
   public getInProgress(): boolean {
