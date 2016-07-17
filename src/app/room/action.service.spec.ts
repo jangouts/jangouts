@@ -42,117 +42,129 @@ describe("Service: ActionService", () => {
     );
   });
 
-  it("should create a publisher feed on call enterRoom", () => {
-    spyOn(this.feedsService, "add");
-    this.actionService.enterRoom(1, {}, {});
+  describe("#enterRoom", () => {
+    it("should create a publisher feed", () => {
+      spyOn(this.feedsService, "add");
+      this.actionService.enterRoom(1, {}, {});
 
-    expect(this.feedsService.add).toHaveBeenCalledWith(
-      jasmine.objectContaining({
-        id: 1,
-        isPublisher: true
-      }),
-      {main: true}
-    );
-  });
-
-  it("should destroy feeds on call leaveRoom", () => {
-    let feed: Feed = new Feed();
-    feed.setAttrs({id: 1, isPublisher: true});
-
-    spyOn(feed, "disconnect");
-    spyOn(this.feedsService, "allFeeds").and.callFake(() => {
-      return [feed, {id: 2}];
+      expect(this.feedsService.add).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          id: 1,
+          isPublisher: true
+        }),
+        {main: true}
+      );
     });
-    spyOn(this.feedsService, "find").and.callFake((id: number) => {
-      if (id === 1) {
-        return feed;
-      } else {
-        return null;
-      }
+  });
+
+  describe("#leaveRoom", () => {
+    it("should destroy feeds", () => {
+      let feed: Feed = new Feed();
+      feed.setAttrs({id: 1, isPublisher: true});
+
+      spyOn(feed, "disconnect");
+      spyOn(this.feedsService, "allFeeds").and.callFake(() => {
+        return [feed, {id: 2}];
+      });
+      spyOn(this.feedsService, "find").and.callFake((id: number) => {
+        if (id === 1) {
+          return feed;
+        } else {
+          return null;
+        }
+      });
+      spyOn(this.feedsService, "destroy")
+
+      this.actionService.leaveRoom();
+
+      expect(feed.disconnect).toHaveBeenCalled();
+      expect(this.feedsService.destroy).toHaveBeenCalledWith(1);
     });
-    spyOn(this.feedsService, "destroy")
-
-    this.actionService.leaveRoom();
-
-    expect(feed.disconnect).toHaveBeenCalled();
-    expect(this.feedsService.destroy).toHaveBeenCalledWith(1);
   });
 
-  it("should create a localScreen feed on call publishScreen", () => {
-    spyOn(this.feedsService, "add");
-    this.actionService.publishScreen(1, {}, {});
+  describe("#publishScreen", () => {
+    it("should create a localScreen feed", () => {
+      spyOn(this.feedsService, "add");
+      this.actionService.publishScreen(1, {}, {});
 
-    expect(this.feedsService.add).toHaveBeenCalledWith(
-      jasmine.objectContaining({
-        id: 1,
-        isPublisher: true,
-        isLocalScreen: true
-      })
-    );
-  });
-
-  it("should create a non publisher feed on call remoteJoin", () => {
-    spyOn(this.feedsService, "add");
-    this.actionService.remoteJoin(1, {}, {});
-
-    expect(this.feedsService.add).toHaveBeenCalledWith(
-      jasmine.objectContaining({
-        id: 1,
-        isPublisher: false
-      })
-    );
-  });
-
-  it("should set feed as ignored on call ignoreFeed", () => {
-    let feed: Feed = new Feed();
-    feed.setAttrs({id: 1});
-
-    spyOn(feed, "ignore");
-    spyOn(this.feedsService, "find").and.callFake((id: number) => {
-      if (id === 1) {
-        return feed;
-      } else {
-        return null;
-      }
+      expect(this.feedsService.add).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          id: 1,
+          isPublisher: true,
+          isLocalScreen: true
+        })
+      );
     });
-
-    this.actionService.ignoreFeed(1);
-    this.actionService.ignoreFeed(2);
-
-    expect(feed.ignore).toHaveBeenCalled();
   });
 
-  it("should set feed as not ignored on call ignoreFeed", () => {
-    let connection: any = {};
-    let feed: Feed = new Feed();
-    feed.setAttrs({id: 1});
+  describe("#remoteJoin", () => {
+    it("should create a non publisher feed", () => {
+      spyOn(this.feedsService, "add");
+      this.actionService.remoteJoin(1, {}, {});
 
-    spyOn(feed, "stopIgnoring");
-    spyOn(this.feedsService, "find").and.callFake((id: number) => {
-      if (id === 1) {
-        return feed;
-      } else {
-        return null;
-      }
+      expect(this.feedsService.add).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          id: 1,
+          isPublisher: false
+        })
+      );
+    });
+  });
+
+  describe("#ignoreFeed", () => {
+    it("should set feed as ignored", () => {
+      let feed: Feed = new Feed();
+      feed.setAttrs({id: 1});
+
+      spyOn(feed, "ignore");
+      spyOn(this.feedsService, "find").and.callFake((id: number) => {
+        if (id === 1) {
+          return feed;
+        } else {
+          return null;
+        }
+      });
+
+      this.actionService.ignoreFeed(1);
+      this.actionService.ignoreFeed(2);
+
+      expect(feed.ignore).toHaveBeenCalled();
     });
 
-    this.actionService.stopIgnoringFeed(1, connection);
-    this.actionService.stopIgnoringFeed(2, connection);
+    it("should set feed as not ignored", () => {
+      let connection: any = {};
+      let feed: Feed = new Feed();
+      feed.setAttrs({id: 1});
 
-    expect(feed.stopIgnoring).toHaveBeenCalledWith(connection);
+      spyOn(feed, "stopIgnoring");
+      spyOn(this.feedsService, "find").and.callFake((id: number) => {
+        if (id === 1) {
+          return feed;
+        } else {
+          return null;
+        }
+      });
+
+      this.actionService.stopIgnoringFeed(1, connection);
+      this.actionService.stopIgnoringFeed(2, connection);
+
+      expect(feed.stopIgnoring).toHaveBeenCalledWith(connection);
+    });
   });
 
-  it("should create a new chate message on call writeChatMessage", () => {
-    spyOn(this.dataChannelService, "sendChatMessage");
+  describe("#writeChatMessage", () => {
+    it("should create a new chate message", () => {
+      spyOn(this.dataChannelService, "sendChatMessage");
 
-    this.actionService.writeChatMessage("text message");
-    this.actionService.writeChatMessage("");
+      this.actionService.writeChatMessage("text message");
+      this.actionService.writeChatMessage("");
 
-    expect(this.dataChannelService.sendChatMessage.calls.count()).toBe(1);
-    expect(this.dataChannelService.sendChatMessage).toHaveBeenCalledWith("text message");
+      expect(this.dataChannelService.sendChatMessage.calls.count()).toBe(1);
+      expect(this.dataChannelService.sendChatMessage).toHaveBeenCalledWith("text message");
+    });
   });
 
-  describe("toggleChannel", () => {
+  describe("#toggleChannel", () => {
     it("should disable voice for the main feed", () => {
       let feed: Feed = new Feed();
       feed.setAttrs({ id: 1, isPublisher: true });
@@ -255,23 +267,25 @@ describe("Service: ActionService", () => {
 
   });
 
-  it("should disable/enable channel for the main feed on call setMedia", () => {
-      let feed: Feed = new Feed();
-      feed.setAttrs({ id: 1, isPublisher: false });
-      spyOn(feed, "setEnabledChannel");
-      spyOn(this.feedsService, "findMain").and.returnValue(feed);
+  describe("#setMedia", () => {
+    it("should disable/enable channel for the main feed", () => {
+        let feed: Feed = new Feed();
+        feed.setAttrs({ id: 1, isPublisher: false });
+        spyOn(feed, "setEnabledChannel");
+        spyOn(this.feedsService, "findMain").and.returnValue(feed);
 
-      this.actionService.setMedia("audio", false);
-      expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", false);
+        this.actionService.setMedia("audio", false);
+        expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", false);
 
-      this.actionService.setMedia("audio", true);
-      expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", true);
+        this.actionService.setMedia("audio", true);
+        expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", true);
 
-      this.actionService.setMedia("video", false);
-      expect(feed.setEnabledChannel).toHaveBeenCalledWith("video", false);
+        this.actionService.setMedia("video", false);
+        expect(feed.setEnabledChannel).toHaveBeenCalledWith("video", false);
 
-      this.actionService.setMedia("video", true);
-      expect(feed.setEnabledChannel).toHaveBeenCalledWith("video", true);
+        this.actionService.setMedia("video", true);
+        expect(feed.setEnabledChannel).toHaveBeenCalledWith("video", true);
+    });
   });
 
 });

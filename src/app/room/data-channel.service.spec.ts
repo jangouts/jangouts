@@ -32,24 +32,33 @@ describe("Service: DataChannelService", () => {
       this.feedsService,
       this.logService
     );
+    this.feed = {
+      id: 1,
+      isPublisher: true,
+      isDataOpen: jasmine.createSpy("feed.isDataOpen"),
+      setStatus: jasmine.createSpy("feed.setStatus"),
+      getStatus: jasmine.createSpy("feed.getStatus").and.returnValue(true),
+      setEnabledChannel: jasmine.createSpy("feed.setEnabledChannel"),
+      connection: jasmine.createSpyObj("connection", ["sendData"])
+    }
+    spyOn(this.feedsService, "findMain").and.returnValue(this.feed);
+    spyOn(this.feedsService, "find").and.returnValue(this.feed);
+    spyOn(this.logService, "add");
   });
 
-  describe("reveiceMessage", () => {
+  describe("#reveiceMessage", () => {
     it("should create a new chat logEntry when receive chat message", () => {
       let data: string = JSON.stringify({
         type: "chatMsg",
         content: "text example"
       });
-      let feed: any = {id: 1};
-      spyOn(this.feedsService, "find").and.returnValue(feed);
-      spyOn(this.logService, "add");
 
       this.dataChannelService.receiveMessage(data, 1);
 
       expect(this.logService.add).toHaveBeenCalledWith(jasmine.objectContaining({
         t: "chatMsg",
         content: {
-          feed: { id: 1},
+          feed: this.feed,
           text: "text example"
         }
       }));
@@ -62,17 +71,14 @@ describe("Service: DataChannelService", () => {
           target: 1
         }
       });
-      let feed: any = {id: 1};
-      spyOn(this.feedsService, "find").and.returnValue(feed);
-      spyOn(this.logService, "add");
 
       this.dataChannelService.receiveMessage(data, 1);
 
       expect(this.logService.add).toHaveBeenCalledWith(jasmine.objectContaining({
         t: "muteRequest",
         content: {
-          source: { id: 1},
-          target: { id: 1}
+          source: this.feed,
+          target: this.feed
         }
       }));
     });
@@ -84,17 +90,10 @@ describe("Service: DataChannelService", () => {
           target: 1
         }
       });
-      let feed: any = {
-        id: 1,
-        isPublisher: true,
-        setEnabledChannel: (): void => { }
-      };
-      spyOn(this.feedsService, "find").and.returnValue(feed);
-      spyOn(feed, "setEnabledChannel");
 
       this.dataChannelService.receiveMessage(data, 1);
 
-      expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", false, jasmine.any(Object))
+      expect(this.feed.setEnabledChannel).toHaveBeenCalledWith("audio", false, jasmine.any(Object))
     });
 
     it("should update the feed status when receive statusUpdate", () => {
@@ -105,70 +104,61 @@ describe("Service: DataChannelService", () => {
           status: "new status"
         }
       });
-      let feed: any = {
-        id: 1,
-        setStatus: (s: string): void => { }
-      };
-      spyOn(this.feedsService, "find").and.returnValue(feed);
-      spyOn(feed, "setStatus");
+
+      this.feed.isPublisher = false;
 
       this.dataChannelService.receiveMessage(data, 1);
 
-      expect(feed.setStatus).toHaveBeenCalledWith("new status");
+      expect(this.feed.setStatus).toHaveBeenCalledWith("new status");
     });
   });
 
-  describe("send functions", () => {
-    let feed: any;
+  describe("#sendMuteRequest", () => {
+    it("should send mute request", () => {
+      this.feed.isDataOpen.and.returnValue(true);
 
-    beforeEach(() => {
-      feed = {
-        id: 1,
-        isDataOpen: (): boolean => { return true; },
-        getStatus: (): boolean => { return true; },
-        connection: {
-          sendData: (): void => {}
-        }
-      }
-      spyOn(this.feedsService, "findMain").and.returnValue(feed);
-      spyOn(feed.connection, "sendData")
-    });
+      this.dataChannelService.sendMuteRequest(this.feed);
 
-    it("should send message when send mute request", () => {
-      this.dataChannelService.sendMuteRequest(feed);
-
-      expect(feed.connection.sendData).toHaveBeenCalledWith(
+      expect(this.feed.connection.sendData).toHaveBeenCalledWith(
         jasmine.objectContaining({
           text: JSON.stringify({
             type: "muteRequest",
             content: {
-              target: feed.id
+              target: this.feed.id
             }
           })
         })
       );
     });
+  });
 
+  describe("#sendStatus", () => {
     it("should send message when sendStatus", () => {
-      this.dataChannelService.sendStatus(feed);
+      this.feed.isDataOpen.and.returnValue(true);
 
-      expect(feed.connection.sendData).toHaveBeenCalledWith(
+      this.dataChannelService.sendStatus(this.feed);
+
+      expect(this.feed.connection.sendData).toHaveBeenCalledWith(
         jasmine.objectContaining({
           text: JSON.stringify({
             type: "statusUpdate",
             content: {
-              source: feed.id,
+              source: this.feed.id,
               status: true
             }
           })
         })
       );
     });
+  });
 
+  describe("#sendChatMessage", () => {
     it("should send message when sendChatMessage", () => {
+      this.feed.isDataOpen.and.returnValue(true);
+
       this.dataChannelService.sendChatMessage("text demo");
 
-      expect(feed.connection.sendData).toHaveBeenCalledWith(
+      expect(this.feed.connection.sendData).toHaveBeenCalledWith(
         jasmine.objectContaining({
           text: JSON.stringify({
             type: "chatMsg",
@@ -177,7 +167,6 @@ describe("Service: DataChannelService", () => {
         })
       );
     });
-
   });
 
 });

@@ -75,11 +75,13 @@ describe("Service: RoomService", () => {
     window.Janus.init = (): void => { };
   });
 
-  it("should initialize server attribute on create", () => {
-    expect(this.roomService.server).toBe(this.configService.janusServer)
+  describe("on create", () => {
+    it("should initialize server attribute", () => {
+      expect(this.roomService.server).toBe(this.configService.janusServer)
+    });
   });
 
-  describe("connect", () => {
+  describe("#connect", () => {
     it("should create a new instance of Janus when connect", () => {
       this.roomService.connect();
 
@@ -134,7 +136,7 @@ describe("Service: RoomService", () => {
       }
     });
 
-    describe("enter", () => {
+    describe("#enter", () => {
 
       beforeEach(() => {
         spyOn(this.roomService, "subscribeToFeed");
@@ -297,7 +299,7 @@ describe("Service: RoomService", () => {
 
     });
 
-    describe("getRooms", () => {
+    describe("#getRooms", () => {
       it("should return a list of rooms", <any>fakeAsync((): void => {
         let result: Promise<any> = this.roomService.getRooms("username");
         this.attach.and.callFake((config) => {
@@ -323,7 +325,7 @@ describe("Service: RoomService", () => {
       }));
     });
 
-    describe("subscribeToFeed", () => {
+    describe("#subscribeToFeed", () => {
       beforeEach(() => {
         this.roomService.enter("username");
         this.roomService.setRoom({id: 1});
@@ -414,7 +416,7 @@ describe("Service: RoomService", () => {
       }));
     });
 
-    describe("publishScreen", () => {
+    describe("#publishScreen", () => {
       beforeEach(() => {
         this.roomService.enter("username");
         this.roomService.setRoom({id: 1});
