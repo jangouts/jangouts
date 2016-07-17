@@ -5,10 +5,8 @@ import {
   it
 } from "@angular/core/testing";
 
-import { FeedsService, Feed } from "../feed";
+import { Feed } from "../feed";
 
-import { DataChannelService } from "./data-channel.service";
-import { LogService } from "./log.service";
 import { LogEntry } from "./logentry.model";
 import { ActionService } from "./action.service";
 
@@ -73,7 +71,7 @@ describe("Service: ActionService", () => {
           return null;
         }
       });
-      spyOn(this.feedsService, "destroy")
+      spyOn(this.feedsService, "destroy");
 
       this.actionService.leaveRoom();
 
@@ -188,7 +186,7 @@ describe("Service: ActionService", () => {
       spyOn(this.feedsService, "findMain").and.returnValue(feed);
 
       this.actionService.toggleChannel("audio");
-      expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", true)
+      expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", true);
     });
 
     it("should disable video for the main feed", () => {
@@ -238,7 +236,7 @@ describe("Service: ActionService", () => {
       spyOn(feed, "isEnabled").and.returnValue(false);
 
       this.actionService.toggleChannel("audio", feed);
-      expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", true)
+      expect(feed.setEnabledChannel).toHaveBeenCalledWith("audio", true);
     });
 
     it("should disable video for the given feed", () => {

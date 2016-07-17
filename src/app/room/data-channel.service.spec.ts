@@ -5,9 +5,6 @@ import {
   it
 } from "@angular/core/testing";
 
-import { FeedsService, Feed } from "../feed";
-
-import { LogService } from "./log.service";
 import { LogEntry } from "./logentry.model";
 import { DataChannelService } from "./data-channel.service";
 
@@ -40,7 +37,7 @@ describe("Service: DataChannelService", () => {
       getStatus: jasmine.createSpy("feed.getStatus").and.returnValue(true),
       setEnabledChannel: jasmine.createSpy("feed.setEnabledChannel"),
       connection: jasmine.createSpyObj("connection", ["sendData"])
-    }
+    };
     spyOn(this.feedsService, "findMain").and.returnValue(this.feed);
     spyOn(this.feedsService, "find").and.returnValue(this.feed);
     spyOn(this.logService, "add");
@@ -93,7 +90,7 @@ describe("Service: DataChannelService", () => {
 
       this.dataChannelService.receiveMessage(data, 1);
 
-      expect(this.feed.setEnabledChannel).toHaveBeenCalledWith("audio", false, jasmine.any(Object))
+      expect(this.feed.setEnabledChannel).toHaveBeenCalledWith("audio", false, jasmine.any(Object));
     });
 
     it("should update the feed status when receive statusUpdate", () => {

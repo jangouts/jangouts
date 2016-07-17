@@ -5,8 +5,6 @@ import {
   it
 } from "@angular/core/testing";
 
-import { FeedsService, Feed } from "../feed";
-
 import { LogService } from "./log.service";
 import { LogEntry } from "./logentry.model";
 

@@ -1,5 +1,4 @@
 import {
-  beforeEachProviders,
   beforeEach,
   describe,
   fakeAsync,
@@ -71,13 +70,13 @@ describe("Service: RoomService", () => {
     );
 
     // create Janus mock
-    window.Janus = jasmine.createSpy('Janus');
+    window.Janus = jasmine.createSpy("Janus");
     window.Janus.init = (): void => { };
   });
 
   describe("on create", () => {
     it("should initialize server attribute", () => {
-      expect(this.roomService.server).toBe(this.configService.janusServer)
+      expect(this.roomService.server).toBe(this.configService.janusServer);
     });
   });
 
@@ -121,7 +120,7 @@ describe("Service: RoomService", () => {
       let that: any = this;
       this.attach = jasmine.createSpy("janus.attach");
 
-      window.Janus.and.callFake(function (config) {
+      window.Janus.and.callFake(function (config: any): any {
         config.success();
         this.attach = that.attach;
         return this;
@@ -133,7 +132,7 @@ describe("Service: RoomService", () => {
         send: jasmine.createSpy("pluginHandle.send"),
         createOffer: jasmine.createSpy("pluginHandle.createOffer"),
         detach: jasmine.createSpy("pluginHandle.detach")
-      }
+      };
     });
 
     describe("#enter", () => {
@@ -168,7 +167,7 @@ describe("Service: RoomService", () => {
           config.success(this.pluginHandle);
           config.ondataopen();
         });
-        let feed: any = {id:1};
+        let feed: any = {id: 1};
         spyOn(this.feedsService, "publisherFeeds").and.returnValue([feed]);
 
         flushMicrotasks(); // resolve promises
@@ -202,9 +201,9 @@ describe("Service: RoomService", () => {
       it("should attach to existing feeds when Janus confirm we joined", <any>fakeAsync((): void => {
         this.roomService.enter("username");
         this.roomService.setRoom({id: 1});
-        let publishers = [
-          {id: 1, display: "demo", waitingForConnection() { return true; }},
-          {id: 2, display: "demo", waitingForConnection() { return true; }}
+        let publishers: any[] = [
+          {id: 1, display: "demo", waitingForConnection: function (): any { return true; }},
+          {id: 2, display: "demo", waitingForConnection: function (): any { return true; }},
         ];
         this.attach.and.callFake((config) => {
           config.success(this.pluginHandle);
@@ -231,9 +230,9 @@ describe("Service: RoomService", () => {
         this.roomService.enter("username");
         this.roomService.setRoom({id: 1});
 
-        let publishers = [
-          {id: 1, display: "demo", waitingForConnection() { return true; }},
-          {id: 2, display: "demo", waitingForConnection() { return true; }}
+        let publishers: any[] = [
+          {id: 1, display: "demo", waitingForConnection: function (): any { return true; }},
+          {id: 2, display: "demo", waitingForConnection: function (): any { return true; }},
         ];
         this.attach.and.callFake((config) => {
           config.success(this.pluginHandle);
@@ -303,10 +302,10 @@ describe("Service: RoomService", () => {
       it("should return a list of rooms", <any>fakeAsync((): void => {
         let result: Promise<any> = this.roomService.getRooms("username");
         this.attach.and.callFake((config) => {
-          config.success(this.pluginHandle)
+          config.success(this.pluginHandle);
         });
 
-        let rooms: any = [ {id: 1}, {id: 2} ]
+        let rooms: any = [ {id: 1}, {id: 2} ];
 
         this.pluginHandle.send.and.callFake((config) => {
           config.success({
@@ -317,8 +316,8 @@ describe("Service: RoomService", () => {
 
         flushMicrotasks(); // resolve promises
 
-        result.then((rooms) => {
-          for (let room of rooms) {
+        result.then((response) => {
+          for (let room of response) {
             expect(room instanceof Room).toBe(true);
           }
         });
