@@ -142,7 +142,7 @@ describe("Service: FeedConnection", () => {
       );
     });
 
-    it("should call success callback when webRTC offer success", () => {
+    it("should call success callback when webRTC offer succeeds", () => {
       this.pluginHandle.createOffer.and.callFake((options) => {
         options.success()
       });
@@ -151,7 +151,7 @@ describe("Service: FeedConnection", () => {
       expect(this.options.success).toHaveBeenCalled();
     });
 
-    it("should call success callback when webRTC offer success", () => {
+    it("should call success callback when webRTC offer succeeds", () => {
       this.pluginHandle.createOffer.and.callFake((options) => {
         options.error()
       });
@@ -183,7 +183,7 @@ describe("Service: FeedConnection", () => {
       );
     });
 
-    it("should send a request start message when webRTC answer success", () => {
+    it("should send a request start message when webRTC answer succeeds", () => {
       this.pluginHandle.createAnswer.and.callFake((options) => {
         options.success(this.jsepVal);
       });
@@ -222,7 +222,7 @@ describe("Service: FeedConnection", () => {
       };
     });
 
-    it("should create a new config if not exist", () => {
+    it("should create a new config if it doesn't exist", () => {
       expect(this.connection.config).toBe(null);
       this.connection.setConfig(this.options);
 

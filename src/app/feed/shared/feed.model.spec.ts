@@ -84,7 +84,6 @@ describe("Model: Feed", () => {
       });
 
       let result: boolean = this.feed.isEnabled("audio");
-      expect(connection.getConfig).toHaveBeenCalled();
       expect(result).toBe(connectionStatus.audio);
 
       result = this.feed.isEnabled("video");
@@ -190,7 +189,6 @@ describe("Model: Feed", () => {
       });
 
       let result: boolean = this.feed.getVideoEnabled();
-      expect(connection.getConfig).toHaveBeenCalled();
       expect(result).toBe(connectionStatus.video);
     });
   });
@@ -224,14 +222,14 @@ describe("Model: Feed", () => {
     });
   });
 
-  describe("#igonre", () => {
+  describe("#ignore", () => {
     it("should destroy the connection", () => {
       let connection: any = {
         destroy: jasmine.createSpy("connection.destroy")
       };
       this.feed.setAttrs({ connection: connection });
 
-      this.feed.disconnect();
+      this.feed.ignore();
 
       expect(this.feed.isConnected()).toBe(false);
       expect(connection.destroy).toHaveBeenCalled();
@@ -240,7 +238,7 @@ describe("Model: Feed", () => {
 
 
   describe("#stopIgnoring", () => {
-    it("should be connected", () => {
+    it("should sets the feed as connected", () => {
       this.feed.setAttrs({});
       this.feed.ignore();
 
@@ -415,14 +413,14 @@ describe("Model: Feed", () => {
       expect(this.feed.isSilent()).toBe(false);
     });
 
-    it("should return false if feed was speaking in a time given", () => {
+    it("should return false if feed was speaking in a given time", () => {
       this.feed.speaking = false;
       this.feed.silentSince = (Date.now() - 1000);
 
       expect(this.feed.isSilent(5000)).toBe(false);
     });
 
-    it("should return true if feed is not speaking in a time given", () => {
+    it("should return true if feed is not speaking in a given time", () => {
       this.feed.speaking = false;
       this.feed.silentSince = (Date.now() - 10000);
 
