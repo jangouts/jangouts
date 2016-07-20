@@ -28,8 +28,8 @@ describe("Component: Feed", () => {
       isLocalScreen: false,
       isIgnored: false,
       getVideoEnabled: jasmine.createSpy("feed.getVideoEnabled").and.returnValue(true),
-      getVideoSubscription: jasmine.createSpy("feed.getVideoSubscription").and.returnValue(false)
-      getPicture: jasmine.createSpy("feed.getPicture").and.returnValue(false),
+      getVideoSubscription: jasmine.createSpy("feed.getVideoSubscription").and.returnValue(false),
+      getPicture: jasmine.createSpy("feed.getPicture").and.returnValue(false)
     };
     this.feedComponent.highlighted = false;
     this.feedComponent.highlightedByUser = false;
