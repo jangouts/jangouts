@@ -50,7 +50,7 @@ describe("Service: SpeakObserver", () => {
   });
 
   describe("#isSpeaking", () => {
-    it("should return not speaking when no sound", <any>fakeAsync((): void => {
+    it("should return false when no sound", <any>fakeAsync((): void => {
       let speakObserver: SpeakObserver = new SpeakObserver({});
 
       tick(5000);
@@ -60,7 +60,7 @@ describe("Service: SpeakObserver", () => {
       speakObserver.destroy();
     }));
 
-    it("should return speaking when sound", <any>fakeAsync((): void => {
+    it("should return true when sound", <any>fakeAsync((): void => {
       let speakObserver: SpeakObserver = new SpeakObserver({});
       spyOn(this.Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {
         for (let i: number = 0; i < 512; i++) {
@@ -78,7 +78,7 @@ describe("Service: SpeakObserver", () => {
       speakObserver.destroy();
     }));
 
-    it("should return not speaking when sound stops", <any>fakeAsync((): void => {
+    it("should return false when sound stops", <any>fakeAsync((): void => {
       let speakObserver: SpeakObserver = new SpeakObserver({});
       let stopTalk: boolean = false;
       spyOn(this.Analyser, "getFloatFrequencyData").and.callFake((fftBins: any) => {

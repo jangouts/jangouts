@@ -75,7 +75,7 @@ describe("Service: FeedsService", () => {
   });
 
   describe("#allFeeds",  () => {
-    it("should return an empty array when not feeds added", () => {
+    it("should return an empty array when no feeds present", () => {
       expect(this.feeds.allFeeds().length).toBe(0);
     });
 
@@ -208,14 +208,19 @@ describe("Service: FeedsService", () => {
     it("should return a promise that resolve with asked feed", <any>fakeAsync((): void => {
       let response: Promise<any> = this.feeds.waitFor(1, 3, 10);
 
+      /*
+       * Note: I don't know why but if I run `tick(20)` fails and run `tick(10)`
+       * twice works. So for each interval cycle is necessary run one `tick`.
+       */
+      // 2 interval cycles (20ms in total)
       tick(10);
       tick(10);
       (<any>this.feeds.find).and.returnValue(this.feed);
-      tick(10);
+      tick(10); // another interval cycle
 
       expect(this.feeds.find.calls.count()).toBe(4);
 
-      flushMicrotasks(); // resolve promieses
+      flushMicrotasks(); // resolve promises
 
       response.then((feed) => {
         expect(feed).toBe(this.feed);
@@ -226,20 +231,21 @@ describe("Service: FeedsService", () => {
       let rejectHandler: any = jasmine.createSpy('reject');
       this.feeds.waitFor(1, 3).catch(rejectHandler);
 
+      // 3 interval cycles (with default timeout value)
       tick(1000);
       tick(1000);
       tick(1000);
 
-      flushMicrotasks(); // resolve promieses
+      flushMicrotasks(); // resolve promises
 
       expect(rejectHandler).toHaveBeenCalled();
     }));
 
-    it("should return a promise that resolve with the asked feed even if it means not wait", <any>fakeAsync((): void => {
+    it("should return a promise that resolve with the asked feed even if it means not to wait", <any>fakeAsync((): void => {
       this.feeds.find.and.returnValue(this.feed);
       let response: Promise<any> = this.feeds.waitFor(1);
 
-      flushMicrotasks(); // resolve promieses
+      flushMicrotasks(); // resolve promises
 
       response.then((feed) => {
         expect(feed).toBe(this.feed);
