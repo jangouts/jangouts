@@ -183,32 +183,6 @@ describe("Service: FeedConnection", () => {
       );
     });
 
-    it("should send a request start message when webRTC answer succeeds", () => {
-      this.pluginHandle.createAnswer.and.callFake((options) => {
-        options.success(this.jsepVal);
-      });
-      this.connection.subscribe(this.jsepVal);
-
-      expect(this.pluginHandle.send).toHaveBeenCalledWith(
-        jasmine.objectContaining({
-          message: {
-            request: "start",
-            room: 1
-          },
-          jsep: this.jsepVal
-        })
-      );
-    });
-
-    it("should shows an error when webRTC answer fails", () => {
-      this.pluginHandle.createAnswer.and.callFake((options) => {
-        options.error();
-      });
-      spyOn(window.console, "error");
-      this.connection.subscribe(this.jsepVal);
-
-      expect(window.console.error).toHaveBeenCalled();
-    });
   });
 
   describe("#setConfig", () => {
