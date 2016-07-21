@@ -104,7 +104,7 @@ export class FeedConnection {
       media.data = false;
     }
 
-    // [TODO] - De-animize the callbacks a tests it
+    // [TODO] - De-anonymize the callbacks a tests it
     this.pluginHandle.createOffer({
       media: media,
       success: (jsep: any): void => {
@@ -129,7 +129,7 @@ export class FeedConnection {
    */
   public subscribe(jsepVal: any): void {
 
-    // [TODO] - De-animize the callbacks a tests it
+    // [TODO] - De-anonymize the callbacks a tests it
     this.pluginHandle.createAnswer({
       jsep: jsepVal,
       media: {

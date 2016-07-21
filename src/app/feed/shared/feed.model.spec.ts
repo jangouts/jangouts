@@ -238,7 +238,7 @@ describe("Model: Feed", () => {
 
 
   describe("#stopIgnoring", () => {
-    it("should sets the feed as connected", () => {
+    it("should set the feed as connected", () => {
       this.feed.setAttrs({});
       this.feed.ignore();
 
