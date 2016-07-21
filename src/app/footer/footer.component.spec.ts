@@ -1,12 +1,14 @@
 import {
   beforeEachProviders,
+  describe,
   inject,
+  expect,
   it
 } from "@angular/core/testing";
 
 import { FooterComponent } from "./footer.component";
 
-describe("Footer", () => {
+describe("Component: Footer", () => {
   beforeEachProviders(() => [
     FooterComponent
   ]);

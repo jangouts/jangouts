@@ -18,3 +18,5 @@ export default angular.module('janusHangouts.roomComponent', [])
   .service('ActionService', ActionService);
 
 upgradeAdapter.upgradeNg1Provider('ActionService');
+upgradeAdapter.upgradeNg1Provider('RoomService');
+upgradeAdapter.upgradeNg1Provider('DataChannelService');

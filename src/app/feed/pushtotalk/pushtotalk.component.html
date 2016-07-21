@@ -1,0 +1,10 @@
+<button [ngClass]="{'btn-danger': hotkeyActive }" class="btn" (click)="click($event)" title="{{titleText}}">
+  <span class="glyphicon glyphicon-bullhorn" aria-hidden="true">
+  </span>
+  <span [hidden]="!showHotkey">
+    <kbd style="background-color:#f15a5c;line-height:1em;">
+        {{hotkey}}
+    </kbd>
+  </span>
+    {{toggleText}}
+</button>

@@ -18,7 +18,7 @@ class MockActionService {
   public writeChatMessage(text: string): void { }
 }
 
-describe("ChatForm", () => {
+describe("Component: ChatForm", () => {
   beforeEachProviders(() => {
     this.actionService = new MockActionService();
 

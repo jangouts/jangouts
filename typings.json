@@ -10,11 +10,10 @@
     "angular-route": "registry:dt/angular-route#1.3.0+20160317120654",
     "angular-sanitize": "registry:dt/angular-sanitize#1.3.0+20160317120654",
     "angular-ui-router": "registry:dt/angular-ui-router#1.1.5+20160521151413",
-    "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
+    "core-js": "registry:dt/core-js#0.0.0+20160317120654",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
     "jquery": "registry:dt/jquery#1.10.0+20160417213236",
     "mousetrap": "registry:dt/mousetrap#1.5.0+20160501152135",
-    "core-js": "registry:dt/core-js#0.0.0+20160317120654",
-    "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
     "node": "registry:dt/node#4.0.0+20160509154515"
   },
   "dependencies": {
