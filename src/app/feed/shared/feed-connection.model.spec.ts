@@ -244,10 +244,12 @@ describe("Service: FeedConnection", () => {
     });
 
     it("should return the existing config", () => {
-      this.connection.config = jasmine.createSpyObj("config", ["get"]);
+      this.connection.config = jasmine.createSpyObj("config", ["get"])
+      this.connection.config.get.and.returnValue({"config": "object"});
       let result: any = this.connection.getConfig();
 
       expect(this.connection.config.get).toHaveBeenCalled();
+      expect(result).toEqual({"config": "object"});
     });
   });
 
