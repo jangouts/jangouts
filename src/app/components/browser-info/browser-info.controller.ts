@@ -9,7 +9,7 @@ BrowserInfoCtrl.$inject = ["$uibModalInstance", "jhConfig"];
 
 function BrowserInfoCtrl($uibModalInstance, jhConfig) {
   var vm = this;
-  vm.usingSSL = function() { return jhConfig.usingSSL(); };
+  vm.usingSSL = function() { return jhConfig.usingSSL; };
   vm.httpsUrl = function() { return jhConfig.httpsUrl(); };
   vm.close = close;
 
