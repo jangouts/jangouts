@@ -26,12 +26,6 @@ describe("Service: Config", () => {
       ]);
     });
 
-    it("should return default https janus server", () => {
-      spyOn(this.config, "usingSSL").and.returnValue(true);
-
-      expect(this.config.janusServer[0]).toEqual("wss://localhost:8989/janus/");
-    });
-
     it("should return the defined janus server if it is setted", () => {
       let server: string [] = [
         "ws://janustest.com:8188/path/",
@@ -40,22 +34,6 @@ describe("Service: Config", () => {
       this.config.janusServer = server;
 
       expect(this.config.janusServer).toBe(server);
-    });
-
-    it("should return the defined janus server SSL if it is setted", () => {
-      let server: string [] = [
-        "ws://janustest.com:8188/path/",
-        "http://janustest.com/path/"
-      ];
-      let serverSSL: string [] = [
-        "wss://janustest.com:8989/path/",
-        "https://janustest.com/path/"
-      ];
-      this.config.janusServer = server;
-      this.config.janusServerSSL = serverSSL;
-      spyOn(this.config, "usingSSL").and.returnValue(true);
-
-      expect(this.config.janusServer).toBe(serverSSL);
     });
 
   });
