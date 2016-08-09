@@ -59,6 +59,10 @@ module.exports = function(config) {
      */
     reporters: [ 'mocha', 'coverage', 'karma-remap-istanbul' ],
 
+    mochaReporter: {
+      ignoreSkipped: true
+    },
+
     // web server port
     port: 9876,
 

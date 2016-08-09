@@ -5,12 +5,12 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-BrowserInfoCtrl.$inject = ["$uibModalInstance", "RequestService"];
+BrowserInfoCtrl.$inject = ["$uibModalInstance", "jhConfig"];
 
-function BrowserInfoCtrl($uibModalInstance, RequestService) {
+function BrowserInfoCtrl($uibModalInstance, jhConfig) {
   var vm = this;
-  vm.usingSSL = function() { return RequestService.usingSSL(); };
-  vm.httpsUrl = function() { return RequestService.httpsUrl(); };
+  vm.usingSSL = function() { return jhConfig.usingSSL; };
+  vm.httpsUrl = function() { return jhConfig.httpsUrl(); };
   vm.close = close;
 
   function close() {

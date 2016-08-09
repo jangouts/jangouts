@@ -8,20 +8,16 @@
 import { Directive, ElementRef, Input } from "@angular/core";
 
 @Directive({ selector: "[jhVideoStream]" })
-export class VideoStream {
-
-  private el: any;
+export class VideoStreamDirective {
 
   @Input() public mutted: boolean = false;
 
-  constructor (el: ElementRef) {
-    this.el = el.nativeElement;
-  }
+  constructor (private el: ElementRef) { }
 
   @Input("jhVideoStream")
   set stream(stream: any) {
     if (stream !== undefined && stream !== null) {
-      let video = <HTMLVideoElement>this.el;
+      let video: HTMLVideoElement = <HTMLVideoElement>this.el.nativeElement;
       video.muted = this.mutted; // mute video of the local stream
       attachMediaStream(video, stream);
     }

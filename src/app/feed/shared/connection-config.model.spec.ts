@@ -6,10 +6,10 @@ import {
   it
 } from "@angular/core/testing";
 
-import { ConnectionConfig, IWanted } from "./connection-config.model";
+import { ConnectionConfig } from "./connection-config.model";
 
-declare const jasmine;
-declare const spyOn;
+declare const jasmine: any;
+declare const spyOn: any;
 
 describe("Service: ConnectionConfig", () => {
 
@@ -31,7 +31,7 @@ describe("Service: ConnectionConfig", () => {
   });
 
   it("should call pluginHandle.send on create", () => {
-    let cconfig = new ConnectionConfig(
+    let cconfig: any = new ConnectionConfig(
       this.pluginHandle,
       this.config,
       {},

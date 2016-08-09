@@ -7,12 +7,12 @@
 
 import { Component, Input } from "@angular/core";
 
-import { Feed, VideoStream } from "../shared";
+import { Feed, VideoStreamDirective } from "../shared";
 
 @Component({
   selector: "jh-main-feed",
   directives: [
-    VideoStream
+    VideoStreamDirective
   ],
   template: require("./main-feed.component.html"),
   styles: [require("!raw!sass!./main-feed.component.scss")]

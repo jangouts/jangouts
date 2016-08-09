@@ -24,6 +24,12 @@ require('zone.js/dist/sync-test');
 // RxJS
 require('rxjs/Rx');
 
+// [TODO] - remove when remove angular1.X
+require('angular');
+
+// Disable console.log in tests
+window.console.log = function() { };
+
 var testing = require('@angular/core/testing');
 var browser = require('@angular/platform-browser-dynamic/testing');
 

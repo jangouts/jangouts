@@ -5,8 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, OnInit, Input, Inject } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
+import { RoomService } from "../../room";
 import { Feed } from "../shared";
 
 @Component({
@@ -17,23 +18,23 @@ export class IgnoreButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject('RoomService') private roomService: any) { }
+  constructor(private roomService: RoomService) { }
 
-  ngOnInit() { }
+  public ngOnInit(): void { }
 
-  public showsIgnore() {
+  public showsIgnore(): boolean {
     return (!this.feed.isPublisher && !this.feed.isIgnored);
   }
 
-  public showsStopIgnoring() {
+  public showsStopIgnoring(): boolean {
     return this.feed.isIgnored;
   }
 
-  public ignore() {
+  public ignore(): void {
     this.roomService.ignoreFeed(this.feed.id);
   }
 
-  public stopIgnoring() {
+  public stopIgnoring(): void {
     this.roomService.stopIgnoringFeed(this.feed.id);
   }
 }

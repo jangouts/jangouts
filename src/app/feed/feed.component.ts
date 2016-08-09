@@ -7,9 +7,9 @@
 
 import { Component, OnInit, Output, Input, EventEmitter } from "@angular/core";
 
-import { Feed, VideoStream } from "./shared";
-import { SendPics } from "./send-pics.directive";
-import { SetVideoSubscription } from "./set-video-subscription.directive";
+import { Feed, VideoStreamDirective } from "./shared";
+import { SendPicsDirective } from "./send-pics.directive";
+import { SetVideoSubscriptionDirective } from "./set-video-subscription.directive";
 
 import {
   AudioButtonComponent,
@@ -24,9 +24,9 @@ import {
   template: require("./feed.component.html"),
   styles: [require("!raw!sass!./feed.component.scss")],
   directives: [
-    SendPics,
-    VideoStream,
-    SetVideoSubscription,
+    SendPicsDirective,
+    VideoStreamDirective,
+    SetVideoSubscriptionDirective,
     AudioButtonComponent,
     VideoButtonComponent,
     IgnoreButtonComponent,
@@ -35,49 +35,44 @@ import {
 })
 export class FeedComponent implements OnInit {
 
-  @Input() feed: Feed;
-  @Output() toggleHighlight = new EventEmitter<Feed>();
-  @Input() highlighted: boolean;
-  @Input() highlightedByUser: boolean;
+  @Input() public feed: Feed;
+  @Output() public toggleHighlight: EventEmitter<Feed> = new EventEmitter<Feed>();
+  @Input() public highlighted: boolean;
+  @Input() public highlightedByUser: boolean;
 
   private mirrored: boolean = false;
 
   constructor() { }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.mirrored = (this.feed.isPublisher && !this.feed.isLocalScreen);
   }
 
   // [TODO] - Show muted notification
   // [NOTE] - This probably should be moved to a service
-    //if (feed.isPublisher && !feed.isLocalScreen) {
-      ///*
-       //* Until this timeout is reached, the "you are muted" notification will
-       //* not be displayed again
-       //*/
-      //var mutedWarningTimeout = now();
-      //scope.$on('muted.byRequest', function() {
-        //mutedWarningTimeout = secondsFromNow(3);
-        //MuteNotifier.muted();
-      //});
-      //scope.$on('muted.byUser', function() {
-        //mutedWarningTimeout = now(); // reset the warning timeout
-      //});
-      //scope.$on('muted.Join', function() {
-        //mutedWarningTimeout = now();
-        //MuteNotifier.joinedMuted();
-      //});
-      //scope.$watch('vm.feed.isVoiceDetected()', function(newVal) {
-        ///*
-         //* Display warning only if muted (check for false, undefined means
-         //* still connecting) and the timeout has been reached
-         //*/
-        //if (newVal && feed.getAudioEnabled() === false && now() > mutedWarningTimeout) {
-          //MuteNotifier.speaking();
-          //mutedWarningTimeout = secondsFromNow(60);
-        //}
-      //});
-
+  /*
+     if (feed.isPublisher && !feed.isLocalScreen) {
+        //Until this timeout is reached, the "you are muted" notification will not be displayed again
+       var mutedWarningTimeout = now();
+       scope.$on('muted.byRequest', function() {
+         mutedWarningTimeout = secondsFromNow(3);
+         MuteNotifier.muted();
+       });
+       scope.$on('muted.byUser', function() {
+         mutedWarningTimeout = now(); // reset the warning timeout
+       });
+       scope.$on('muted.Join', function() {
+         mutedWarningTimeout = now();
+         MuteNotifier.joinedMuted();
+       });
+       scope.$watch('vm.feed.isVoiceDetected()', function(newVal) {
+         // Display warning only if muted (check for false, undefined means still connecting) and the timeout has been reached
+         if (newVal && feed.getAudioEnabled() === false && now() > mutedWarningTimeout) {
+           MuteNotifier.speaking();
+           mutedWarningTimeout = secondsFromNow(60);
+         }
+       });
+  */
 
   public thumbnailTag(): string {
     if (this.highlighted || this.feed.isIgnored) { return "placeholder"; }
@@ -95,7 +90,7 @@ export class FeedComponent implements OnInit {
     }
   }
 
-  private click (): void {
+  public click (): void {
     this.toggleHighlight.emit(this.feed);
   }
 

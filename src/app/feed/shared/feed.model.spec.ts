@@ -8,16 +8,10 @@ import {
 
 import { Feed } from "./feed.model";
 
-declare const jasmine;
-declare const spyOn;
+declare const jasmine: any;
+declare const spyOn: any;
 
 describe("Model: Feed", () => {
-
-  beforeEachProviders(() => {
-    return [
-      {provide: Feed, useClass: Feed}
-    ];
-  });
 
   beforeEach(() => {
     this.feed = new Feed();

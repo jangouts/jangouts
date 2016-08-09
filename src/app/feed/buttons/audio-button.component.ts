@@ -7,6 +7,7 @@
 
 import { Component, OnInit, Input, Inject } from "@angular/core";
 
+import { RoomService } from "../../room";
 import { Feed } from "../shared";
 
 @Component({
@@ -17,10 +18,10 @@ export class AudioButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject('RoomService') private roomService: any,
-              @Inject('MuteNotifier') private muteNotifier: any) { }
+  constructor(private roomService: RoomService,
+              @Inject("MuteNotifier") private muteNotifier: any) { }
 
-  ngOnInit() { }
+  public ngOnInit(): void { }
 
   public toggle(): void {
     this.roomService.toggleChannel("audio", this.feed);
@@ -33,11 +34,11 @@ export class AudioButtonComponent implements OnInit {
     return (this.feed.isPublisher && !this.feed.isLocalScreen && !this.feed.getAudioEnabled());
   }
 
-  public showsDisable() {
+  public showsDisable(): boolean {
     return (!this.feed.isIgnored && this.feed.getAudioEnabled());
   }
 
-  public showsAudioOff() {
+  public showsAudioOff(): boolean {
     return !(this.feed.isPublisher || this.feed.isIgnored || this.feed.getAudioEnabled());
   }
 

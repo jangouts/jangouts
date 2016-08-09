@@ -5,8 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, OnInit, Input, Inject } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
+import { RoomService } from "../../room";
 import { Feed } from "../shared";
 
 @Component({
@@ -17,15 +18,15 @@ export class UnpublishButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject('RoomService') private roomService: any) { }
+  constructor(private roomService: RoomService) { }
 
-  ngOnInit() { }
+  public ngOnInit(): void { }
 
-  public click() {
+  public click(): void {
     this.roomService.unPublishFeed(this.feed.id);
   }
 
-  public isVisible() {
+  public isVisible(): boolean  {
     return (this.feed.isPublisher && this.feed.isLocalScreen);
   }
 

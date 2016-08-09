@@ -9,7 +9,7 @@ import {
 
 import { ChatMessageComponent } from "./chat-message.component";
 
-declare const jasmine;
+declare const jasmine: any;
 
 describe("Component: ChatMessage", () => {
 

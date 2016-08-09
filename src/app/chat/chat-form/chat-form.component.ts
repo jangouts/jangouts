@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, Inject } from "@angular/core";
+import { Component } from "@angular/core";
 
 import {
   Control,
@@ -13,6 +13,8 @@ import {
   Validators,
   FORM_DIRECTIVES
 } from "@angular/common";
+
+import { ActionService } from "../../room";
 
 
 @Component({
@@ -23,10 +25,8 @@ import {
 export class ChatFormComponent {
 
   public chatForm: ControlGroup;
-  public actionService: any;
 
-  constructor(@Inject("ActionService") actionService: any) {
-    this.actionService = actionService;
+  constructor(private actionService: ActionService) {
     this.chatForm = new ControlGroup({
       text: new Control(null, Validators.required)
     });

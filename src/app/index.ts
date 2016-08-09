@@ -20,15 +20,14 @@ require("./vendor.scss");
 require("./index.scss");
 
 import config from "./config.provider";
-import room from "./room";
 import signin from "./signin";
 
 // Components
-import chatComponent from "./chat";
 import footerComponent from "./footer";
 import feedComponent from "./feed";
+import chatComponent from "./chat";
+import roomComponent from "./room";
 
-import roomComponent from "./components/room";
 import browserInfoComponent from "./components/browser-info";
 import notifierComponent from "./components/notifier";
 import routerComponent from "./components/router";
@@ -51,7 +50,6 @@ angular.module("janusHangouts", [
     "angular-extended-notifications",
     "LocalStorageModule",
     config.name,
-    room.name,
     signin.name,
     roomComponent.name,
     browserInfoComponent.name,
@@ -89,8 +87,7 @@ function routesConfig($stateProvider, $urlRouterProvider) {
     })
     .state("room", {
       url: "/rooms/:room?user",
-      template: require("./room/room.html"),
-      controller: "RoomCtrl",
+      template: "<jh-room></jh-room>",
       resolve: {
         StatesService: "StatesService",
         setRoomAndService: ["StatesService", "$state", function (StatesService, $state) {
@@ -164,7 +161,6 @@ function stateEvents($rootScope, $state, RoomService) {
     $state.go("signin");
   });
 }
-
 
 upgradeAdapter.bootstrap(document.documentElement, ["janusHangouts"], {
 	strictDi: true

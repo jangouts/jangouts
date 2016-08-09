@@ -5,8 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, OnInit, Input, Inject } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 
+import { RoomService } from "../../room";
 import { Feed } from "../shared";
 
 @Component({
@@ -17,19 +18,19 @@ export class VideoButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(@Inject('RoomService') private roomService: any) { }
+  constructor(private roomService: RoomService) { }
 
-  ngOnInit() { }
+  public ngOnInit(): void { }
 
-  public toggle() {
+  public toggle(): void {
     this.roomService.toggleChannel("video", this.feed);
   }
 
-  public showsEnable() {
+  public showsEnable(): boolean {
     return (this.feed.isPublisher && !this.feed.getVideoEnabled());
   }
 
-  public showsDisable() {
+  public showsDisable(): boolean {
     return (this.feed.isPublisher && this.feed.getVideoEnabled());
   }
 
