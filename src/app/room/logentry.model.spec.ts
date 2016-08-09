@@ -36,7 +36,7 @@ describe("Model: LogEntry", () => {
       expect(logEntry.muteRequestText()).toEqual("You have muted ancor");
     });
 
-    it("should return a message indicating somebody muted sombody when source isn't publisher", () => {
+    it("should return a message indicating somebody muted somebody when source isn't publisher", () => {
       let logEntry: LogEntry = new LogEntry("muteRequest", {
         source: { display: "ancor" },
         target: { isPublisher: true }
@@ -84,7 +84,7 @@ describe("Model: LogEntry", () => {
   });
 
   describe("#newRemoteFeedText", () => {
-    it("should return a text indicating sombody joined the room", () => {
+    it("should return a text indicating somebody joined the room", () => {
       let logEntry: LogEntry = new LogEntry("newRemoteFeed", {
         feed: { display: "ancor" }
       });
@@ -94,7 +94,7 @@ describe("Model: LogEntry", () => {
   });
 
   describe("#ignoreFeedText", () => {
-    it("should return a text indicating sombody joined the room", () => {
+    it("should return a text indicating somebody joined the room", () => {
       let logEntry: LogEntry = new LogEntry("ignoreFeed", {
         feed: { display: "ancor" }
       });
@@ -103,7 +103,7 @@ describe("Model: LogEntry", () => {
   });
 
   describe("#stopIgnoringFeedText", () => {
-    it("should return a text indicating sombody joined the room", () => {
+    it("should return a text indicating somebody joined the room", () => {
       let logEntry: LogEntry = new LogEntry("stopIgnoringFeed", {
         feed: { display: "ancor" }
       });

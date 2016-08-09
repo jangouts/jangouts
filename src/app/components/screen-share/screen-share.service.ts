@@ -25,6 +25,7 @@ export class ScreenShareService {
     return this.inProgress;
   }
 
+  // [TODO] - Review when find a solution for modals
   // public showHelp(): void {
     // this.$modal.open({
       // animation: true,
