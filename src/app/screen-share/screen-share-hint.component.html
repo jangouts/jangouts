@@ -1,0 +1,12 @@
+<small *ngIf="visible()">
+  <span *ngIf="usingSSL()">
+    If you wish to use the screen sharing functionality, make sure you have
+    understood <a class="alert-link" href="#" (click)="showHelp()">these instructions</a>.
+  </span>
+  <span *ngIf="!usingSSL()">
+    Screen sharing will not work without SSL. If you want to make use of that
+    functionality, access the
+    <a class="alert-link" href="{{httpsUrl()}}">HTTPS version</a> of this
+    site.
+  </span>
+</small>

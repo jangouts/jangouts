@@ -6,15 +6,13 @@
  */
 export default ScreenShareService;
 
-import { Injectable, Inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 
 @Injectable()
 export class ScreenShareService {
 
   private inProgress: boolean = false;
 
-  // [TODO] - Reenable when $modal upgraded
-  // constructor(@Inject("$modal") private $modal: any) {}
   constructor() {}
 
   public setInProgress(value: boolean): void {
@@ -24,15 +22,5 @@ export class ScreenShareService {
   public getInProgress(): boolean {
     return this.inProgress;
   }
-
-  // [TODO] - Review when find a solution for modals
-  // public showHelp(): void {
-    // this.$modal.open({
-      // animation: true,
-      // template: require("./screen-share-help.html"),
-      // controller: "ScreenShareHelpCtrl",
-      // controllerAs: "vm"
-    // });
-  // }
 }
 
