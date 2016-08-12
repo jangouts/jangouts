@@ -1,0 +1,58 @@
+<div class="row">
+  <header>
+    <div class="row">
+      <div class="col-xs-12 col-sm-4">
+        <img src="../../images/jangouts-logo.png" id="logo" />
+      </div>
+      <div class="col-xs-12 col-sm-8 text-right">
+        <!--<jh-pushtotalk-button></jh-pushtotalk-button>--> <!-- Query error -->
+        <jh-thumbnails-mode-button></jh-thumbnails-mode-button>
+        <jh-screen-share-button></jh-screen-share-button>
+        <button
+           class="btn"
+           (click)="showHotkeys()"
+           title="Keyboard shortcuts">
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        </button>
+        <jh-leave-button></jh-leave-button>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div id="videochat-body">
+  <jh-notification></jh-notification>
+
+  <div id="videochat-playroom" class="row">
+
+    <div class="row">
+      <jh-main-feed
+        id="main-video"
+        class="col-md-6"
+        style="margin: 20px 0;"
+        [feed]="highlightedFeed()"
+        [ngClass]="{mirrored: mirrored()}">
+      </jh-main-feed>
+
+      <jh-chat [messages]="logEntries()" class="col-md-6" style="margin: 20px 0;"></jh-chat>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div id="thumbnails" class="panel" style="margin: 0 20px 20px 20px; padding: 8px;">
+          <jh-feed
+            [feed]="f"
+            (toggleHighlight)="toggleHighlightedFeed($event)"
+            [highlighted]="isHighlighted(f)"
+            [highlighted-by-user]="isHighlightedByUser(f)"
+            *ngFor="let f of feeds()">
+          </jh-feed>
+
+            <!-- [TODO] - find a way to do orderby with angular2 -->
+            <!--[>| orderBy:'+display'"><]-->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,10 +1,10 @@
 <button
-   ng-class="{ 'btn-danger': !vm.isChecked() }"
+   [ngClass]="{ 'btn-danger': !isChecked() }"
    class="btn"
-   ng-click="vm.click()"
+   (click)="click($event)"
    title="Toggle Picture/Video thumbnails.
 Use picture mode to lower bandwidth and CPU usage">
   <span class="glyphicon"
-    ng-class="{ 'glyphicon-picture': !vm.isChecked(), 'glyphicon-facetime-video': vm.isChecked() }"
+    [ngClass]="{ 'glyphicon-picture': !isChecked(), 'glyphicon-facetime-video': isChecked() }"
     aria-hidden="true"></span>
 </button>
