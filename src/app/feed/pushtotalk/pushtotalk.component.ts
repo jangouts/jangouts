@@ -8,6 +8,7 @@
 import { Component, OnInit, Inject } from "@angular/core";
 
 import { RoomService } from "../../room";
+import { UserService } from "../../user/user.service";
 
 @Component({
   selector: "jh-pushtotalk-button",
@@ -27,7 +28,7 @@ export class PushToTalkComponent implements OnInit {
 
 
   constructor(private roomService: RoomService,
-              @Inject("UserService") private userService: any,
+              private userService: UserService,
               @Inject("hotkeys") private hotkeys: any) {
   }
 

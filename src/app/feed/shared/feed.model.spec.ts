@@ -1,5 +1,4 @@
 import {
-  beforeEachProviders,
   beforeEach,
   describe,
   expect,
@@ -310,8 +309,8 @@ describe("Model: Feed", () => {
       this.feed.dataChannel = jasmine.createSpyObj("dataChannel", ["sendStatus"]);
       let options: any = jasmine.createSpyObj("options", ["after"]);
       this.feed.connection = jasmine.createSpyObj("connection", ["setConfig"]);
-      this.feed.connection.setConfig.and.callFake((options) => {
-        options.ok();
+      this.feed.connection.setConfig.and.callFake((opt: any) => {
+        opt.ok();
       });
 
       this.feed.setEnabledChannel("audio", true, options);

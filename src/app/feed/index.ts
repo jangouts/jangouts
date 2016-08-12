@@ -1,34 +1,12 @@
-import { upgradeAdapter } from "../adapter";
-
 import { FeedsService, Feed, FeedConnection } from "./shared";
 
-import { PushToTalkComponent } from "./pushtotalk";
-import { MainFeedComponent } from "./main-feed";
-
-import { FeedComponent } from "./feed.component";
-
+import { upgradeAdapter } from "../adapter";
 upgradeAdapter.addProvider(FeedsService);
 upgradeAdapter.addProvider(Feed);
 upgradeAdapter.addProvider(FeedConnection);
 
-upgradeAdapter.upgradeNg1Provider("hotkeys"); // needed for pushToTalk
-upgradeAdapter.upgradeNg1Provider("MuteNotifier");
+export { FeedsService, Feed, FeedConnection };
+export { PushToTalkComponent } from "./pushtotalk";
+export { MainFeedComponent } from "./main-feed";
+export { FeedComponent } from "./feed.component";
 
-export default angular.module("janusHangouts.feedComponent", [])
-  .service("FeedsService", upgradeAdapter.downgradeNg2Provider(FeedsService))
-  .factory("Feed", upgradeAdapter.downgradeNg2Provider(Feed))
-  .factory("FeedConnection", upgradeAdapter.downgradeNg2Provider(FeedConnection))
-  .directive("jhPushtotalkButton", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(PushToTalkComponent))
-  .directive("jhFeed", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(FeedComponent))
-  .directive("jhMainFeed", <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(MainFeedComponent));
-
-
-export {
-  FeedsService,
-  Feed,
-  FeedConnection,
-  PushToTalkComponent,
-  FeedComponent,
-  MainFeedComponent
-}
-export * from "./buttons";
