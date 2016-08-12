@@ -1,9 +1,7 @@
-import { upgradeAdapter } from "./adapter";
-
 import { Injectable } from "@angular/core";
 
 @Injectable()
-export class Config {
+export class ConfigService {
 
   public janusServerSSL: Array<string> = null;
   public janusDebug: boolean = false;
@@ -14,7 +12,7 @@ export class Config {
   private _httpsUrl: string = null;
   private _janusServer: Array<string> = null;
 
-  constructor () {}
+  constructor () { }
 
   get janusServer(): Array<string> {
     let server: Array<string> = this.defaultJanusServer();
@@ -77,7 +75,3 @@ export class Config {
   }
 }
 
-upgradeAdapter.addProvider(Config);
-
-export default angular.module("janusHangouts.config", [])
-    .value("jhConfig", upgradeAdapter.downgradeNg2Provider(Config));
