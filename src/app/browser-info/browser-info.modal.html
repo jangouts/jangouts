@@ -1,0 +1,37 @@
+<!--<h3 class="modal-title">Information about browsers</h3>-->
+
+<h4>Firefox</h4>
+<p>
+At least Firefox 36 is required, a more recent version is recommended.
+</p>
+<p>
+Firefox will refuse to use any bit rate lower than a certain limit
+(200 kbps by default). In some situations, a lower bit rate can
+be useful to save bandwidth and processing power in the clients.
+This limit can be adjusted (a sensible value would be 64) modifying
+the <code>media.peerconnection.video.min_bitrate</code> setting at
+<a href="about:config">about:config</a>.
+</p>
+<h4>Chrom(e/ium)</h4>
+<p>
+Jangouts has been successfully tested with Chromium 41. It will probably work
+with older versions as well, but the usage of a version as recent as possible
+is recommended (see exception below).
+</p>
+<p>
+There is a known bug in Chromium 46 (and maybe other versions of both Chrome
+and Chromium) that causes it to crash during initialization of WebRTC
+connections when running in sandbox mode (which is the default). If
+Chrom(e/ium) crashes when entering a Jangouts room, close it and execute it
+again adding the <code>--no-sandbox</code> parameter to the command line.
+</p>
+<p>
+Chrome and Chromium 47 (and probably more recent versions) seem to refuse to
+send WebRTC content (neither audio or video) over plain HTTP.
+<span *ngIf="usingSSL()">You should not be affected by that problem, since
+you are using a SSL (HTTPS) connection.</span>
+<span *ngIf="!usingSSL() && httpsUrl()">
+To avoid this and other problems, it's probably a good idea to access the
+<a class="alert-link" href="{{httpsUrl()}}">SSL (HTTPS) version</a>
+of this site.</span>
+</p>
