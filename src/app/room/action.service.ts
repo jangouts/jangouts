@@ -9,6 +9,7 @@ import * as _ from "lodash";
 
 import { Injectable } from "@angular/core";
 
+import { Broadcaster } from "../shared";
 import { Feed, FeedsService } from "../feed";
 import { DataChannelService } from "./data-channel.service";
 import { LogService } from "./log.service";
@@ -19,7 +20,8 @@ export class ActionService {
 
   constructor(private feeds: FeedsService,
               private dataChannel: DataChannelService,
-              private logService: LogService) { }
+              private logService: LogService,
+              private broadcaster: Broadcaster) { }
 
   public enterRoom(feedId: number, display: any, connection: any): void {
     let feed: Feed = new Feed();
@@ -123,8 +125,7 @@ export class ActionService {
        */
       if (type === "audio" && feed.isPublisher) {
         callback = (): void => {
-          // [TODO] - Set broadcast for 'muted.byUser'
-          // $rootScope.$broadcast("muted.byUser");
+          this.broadcaster.broadcast("muted.byUser");
         };
       }
       feed.setEnabledChannel(type, false, {after: callback});

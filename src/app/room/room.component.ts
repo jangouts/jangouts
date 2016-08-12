@@ -4,14 +4,15 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
-import { upgradeAdapter } from "../adapter";
-
 import { Component, OnInit, Inject } from "@angular/core";
+
+import { Broadcaster } from "../shared";
+import { VideoChatComponent } from "../videochat";
+import { UserService } from "../user/user.service";
 
 import { Room } from "./room.model";
 import { RoomService } from "./room.service";
 
-const jhVideoChat: any = upgradeAdapter.upgradeNg1Component("jhVideoChat");
 
 interface IRoomParameters {
   room?: number;
@@ -22,7 +23,7 @@ interface IRoomParameters {
   selector: "jh-room",
   template: require("./room.component.html"),
   directives: [
-    jhVideoChat
+    VideoChatComponent
   ]
 })
 export class RoomComponent implements OnInit {
@@ -32,8 +33,9 @@ export class RoomComponent implements OnInit {
   public params: IRoomParameters = {};
 
   constructor(private roomService: RoomService,
+              private broadcaster: Broadcaster,
+              private userService: UserService,
               @Inject("hotkeys") private hotkeys: any,
-              @Inject("UserService") private userService: any,
               @Inject("blockUI") private blockUI: any,
               @Inject("$state") private $state: any,
               @Inject("$scope") private $scope: any) {
@@ -71,12 +73,12 @@ export class RoomComponent implements OnInit {
   }
 
   private setEvents(): void {
-    this.$scope.$on("room.error", (evt: any, error: any): void => {
+    this.broadcaster.on("room.error").subscribe((error: any): void => {
       // [FIXME] - do something neat
       alert("Janus server reported the following error:\n" + error);
     });
 
-    this.$scope.$on("consentDialog.changed", (evt: any, open: boolean): void => {
+    this.broadcaster.on("consentDialog.changed").subscribe((open: any): void => {
       if (open) {
         this.blockUI.start();
       } else if (!open) {
@@ -96,12 +98,15 @@ export class RoomComponent implements OnInit {
         combo: "alt+n",
         description: "Disable or enable camera",
         callback: (): void => { this.roomService.toggleChannel("video"); }
-      })
+      });
+      /*
+       * Signout was never implemented
       .add({
         combo: "alt+q",
         description: "Sign out",
         callback: (): void => { this.userService.signout(); }
       });
+      */
 
     this.$scope.hotkeys = this.hotkeys;
   }

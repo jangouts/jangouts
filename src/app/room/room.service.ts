@@ -9,9 +9,10 @@ import * as _ from "lodash";
 
 import { Injectable } from "@angular/core";
 
+import { Broadcaster } from "../shared";
 import { Feed, FeedsService, FeedConnection } from "../feed";
-import { ScreenShareService } from "../components/screen-share";
-import { Config } from "../config.provider";
+import { ScreenShareService } from "../screen-share/screen-share.service";
+import { ConfigService } from "../config.provider";
 import { DataChannelService } from "./data-channel.service";
 import { ActionService } from "./action.service";
 import { Room } from "./room.model";
@@ -31,11 +32,12 @@ export class RoomService {
 
   private server: Array<string>;
 
-  constructor(private feeds: FeedsService,
+  constructor(private config: ConfigService,
+              private feeds: FeedsService,
               private dataChannel: DataChannelService,
               private actionService: ActionService,
-              private config: Config,
-              private screenShareService: ScreenShareService) {
+              private screenShareService: ScreenShareService,
+              private broadcaster: Broadcaster) {
 
     this.server = this.config.janusServer;
 
@@ -88,17 +90,16 @@ export class RoomService {
       error: (error: string): void => {
         console.error(`Error attaching plugin... ${error}`);
       },
-      // consentDialog: (on: boolean): void => {
-        // console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
-        // [TODO] - Reenable broadcast
-        // $$rootScope.$broadcast('consentDialog.changed', on);
-        // if(!on){
-          // //notify if joined muted
-          // if (startMuted) {
-            // $$rootScope.$broadcast('muted.Join');
-          // }
-        // }
-      // },
+      consentDialog: (on: boolean): void => {
+        console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
+        this.broadcaster.broadcast("consentDialog.changed", on);
+        if (!on) {
+          // notify if joined muted
+          if (this.startMuted) {
+            this.broadcaster.broadcast("muted.Join");
+          }
+        }
+      },
       ondataopen: (): void => {
         console.log("The publisher DataChannel is available");
         connection.onDataOpen();
@@ -157,8 +158,7 @@ export class RoomService {
            */
         } else if (event === "destroyed") {
           console.log("The room has been destroyed!");
-          // [TODO] - Reenable Broadcast
-          // $$rootScope.$broadcast('room.destroy');
+          this.broadcaster.broadcast("room.destroy");
 
         } else if (event === "event") {
           /*
@@ -186,8 +186,7 @@ export class RoomService {
            */
           } else if (msg.error !== undefined && msg.error !== null) {
             console.error("Error message from server" + msg.error);
-            // [TODO] - Reenable broadcast
-            // $$rootScope.$broadcast('room.error', msg.error);
+            this.broadcaster.broadcast("room.error", msg.error);
           }
         }
 

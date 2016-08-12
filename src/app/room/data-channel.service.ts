@@ -7,14 +7,17 @@
 
 import { Injectable } from "@angular/core";
 
+import { Broadcaster } from "../shared";
+import { Feed, FeedsService } from "../feed";
 import { LogEntry } from "./logentry.model";
 import { LogService } from "./log.service";
-import { Feed, FeedsService } from "../feed";
 
 @Injectable()
 export class DataChannelService {
 
-  constructor(private feedsService: FeedsService, private logService: LogService) { }
+  constructor(private feedsService: FeedsService,
+              private logService: LogService,
+              private broadcaster: Broadcaster) { }
 
   public receiveMessage(data: string, remoteId: number): void {
     let msg: any = JSON.parse(data);
@@ -39,12 +42,11 @@ export class DataChannelService {
       feed = this.feedsService.find(content.target);
 
       if (feed.isPublisher) {
-
-        // [TODO] - Enable broadcast 'muted.byRequest'
-        feed.setEnabledChannel("audio", false, {});
-        // feed.setEnabledChannel("audio", false, {
-          // after: () => { $rootScope.$broadcast('muted.byRequest'); }
-        // });
+         feed.setEnabledChannel("audio", false, {
+           after: () => {
+             this.broadcaster.broadcast("muted.byRequest");
+           }
+         });
       }
 
       // log the event

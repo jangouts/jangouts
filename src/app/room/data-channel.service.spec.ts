@@ -19,15 +19,22 @@ class MockFeedsService {
   public findMain(): any { }
 }
 
+class MockBroadcaster {
+  public broadcast(ev: any, data: any): void {}
+  public on(ev: any): void {}
+}
+
 describe("Service: DataChannelService", () => {
 
   beforeEach(() => {
     this.feedsService = new MockFeedsService();
     this.logService = new MockLogService();
+    this.broadcaster = new MockBroadcaster();
 
     this.dataChannelService = new DataChannelService(
       this.feedsService,
-      this.logService
+      this.logService,
+      this.broadcaster
     );
     this.feed = {
       id: 1,

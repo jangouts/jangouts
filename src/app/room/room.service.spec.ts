@@ -49,6 +49,11 @@ class MockScreenShareService {
   public setInProgress(val: boolean): void {}
 }
 
+class MockBroadcaster {
+  public broadcast(ev: any, data: any): void {}
+  public on(ev: any): void {}
+}
+
 
 describe("Service: RoomService", () => {
 
@@ -59,6 +64,7 @@ describe("Service: RoomService", () => {
     this.actionService = new MockActionService();
     this.configService = new MockConfigService();
     this.screenShareService = new MockScreenShareService();
+    this.broadcaster = new MockBroadcaster();
 
     // create instance of service
     this.roomService = new RoomService(
@@ -66,7 +72,8 @@ describe("Service: RoomService", () => {
       this.dataChannelService,
       this.actionService,
       this.configService,
-      this.screenShareService
+      this.screenShareService,
+      this.broadcaster
     );
 
     // create Janus mock
