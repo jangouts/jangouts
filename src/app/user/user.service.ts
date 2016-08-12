@@ -5,88 +5,102 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-UserService.$inject = ['localStorageService'];
+import { Injectable } from "@angular/core";
 
-function UserService(localStorageService) {
-  var USER_SETTINGS_KEY = 'userSettings'; // 'const' is not available in all platforms.
-  this.user = null;
-  this.settings = localStorageService.get(USER_SETTINGS_KEY) || {};
+const USER_SETTINGS_KEY: string = "userSettings";
+
+interface IUSER {
+  username: string;
+}
+
+@Injectable()
+export class UserService {
+
+  public user: IUSER = null;
+  public settings: any = {};
+
+  constructor() {
+    this.settings = this.get(USER_SETTINGS_KEY) || {};
+  }
 
   /*
    * Returns the current (signed in) user.
    * @returns {object} An object representing the user like
-   *                   { username: 'some-name' }
+   *                   { username: "some-name" }
    */
-  this.getUser = function() {
+  public getUser(): IUSER {
     return this.user;
-  };
+  }
 
   /*
    * Sign in a user.
    * @param   {string} username Username.
    * @returns {object} An object representing the user like
    */
-  this.signin = function(username) {
-    this.setSetting('lastUsername', username);
+  public signin(username: string): void {
+    this.setSetting("lastUsername", username);
     this.user = { username: username };
-  };
+  }
 
   /*
    * Get all user settings.
    * @returns {object} An object containing all the settings.
    */
-  this.getSettings = function() {
+  public getSettings(): any {
     return this.settings;
-  };
+  }
 
   /*
    * Get the value for a given user setting.
    * @param   {string} key User setting key.
    * @returns {}       The value for the given setting.
    */
-  this.getSetting = function(key) {
+  public getSetting(key: string): any {
     return this.settings[key];
-  };
+  }
 
   /*
    * Remove a user setting.
    * @param   {string} key User setting key.
    * @returns {boolean}    True if the element was removed.
    */
-  this.removeSetting = function(key) {
+  public removeSetting(key: string): void {
     delete this.settings[key];
     this.storeSettings();
-  };
+  }
 
   /*
    * Clear user settings.
-   * @returns {boolean} True if storage was cleared.
    */
-  this.clearSettings = function() {
+  public clearSettings(): void {
     this.settings = {};
-    return localStorageService.clearAll(USER_SETTINGS_KEY);
-  };
+    this.storeSettings();
+  }
 
   /*
    * Set the value for a given user setting.
    * @param   {string} key User setting key.
    * @param   {}       value User setting value.
    */
-  this.setSetting = function(key, value) {
+  public setSetting(key: string, value: any): void {
     this.settings[key] = value;
     this.storeSettings();
-  };
+  }
 
   /*
    * Store settings in the local storage.
    *
    * This function is not supposed to be called by users of the API.
-   *
-   * @private
    */
-  this.storeSettings = function() {
-    localStorageService.set(USER_SETTINGS_KEY, this.settings);
-  };
-}
+  private storeSettings(): void {
+    this.set(USER_SETTINGS_KEY, this.settings);
+  }
 
-export default UserService;
+  private get(key: string): any {
+    return JSON.parse(localStorage.getItem(`jh.${key}`));
+  }
+
+  private set(key: string, value: any): void {
+    localStorage.setItem(`jh.${key}`, JSON.stringify(value));
+  }
+}
