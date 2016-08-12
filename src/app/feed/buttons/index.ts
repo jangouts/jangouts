@@ -1,4 +1,18 @@
-export { AudioButtonComponent } from "./audio-button.component";
-export { VideoButtonComponent } from "./video-button.component";
-export { IgnoreButtonComponent } from "./ignore-button.component";
-export { UnpublishButtonComponent } from "./unpublish-button.component";
+import { AudioButtonComponent } from "./audio-button.component";
+import { VideoButtonComponent } from "./video-button.component";
+import { IgnoreButtonComponent } from "./ignore-button.component";
+import { UnpublishButtonComponent } from "./unpublish-button.component";
+
+export {
+  AudioButtonComponent,
+  VideoButtonComponent,
+  IgnoreButtonComponent,
+  UnpublishButtonComponent
+};
+
+export const FEED_BUTTONS_COMPONENT = [
+  AudioButtonComponent,
+  VideoButtonComponent,
+  IgnoreButtonComponent,
+  UnpublishButtonComponent
+];

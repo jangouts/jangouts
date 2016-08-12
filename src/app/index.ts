@@ -29,6 +29,12 @@ upgradeAdapter.addProvider(ConfigService);
 let configModule: any = angular.module("janusHangouts.config", [])
     .service("jhConfig", upgradeAdapter.downgradeNg2Provider(ConfigService));
 
+/* Register providers */
+import { FEED_PROVIDERS } from "./feed";
+for (let p of FEED_PROVIDERS) {
+	upgradeAdapter.addProvider(p);
+}
+
 /* Components */
 import roomComponent from "./room";
 import userComponent from "./user";

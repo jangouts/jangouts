@@ -8,11 +8,12 @@ import { Component, OnInit, Inject } from "@angular/core";
 
 import {
   Feed,
-  FeedsService,
-  PushToTalkComponent,
-  FeedComponent,
-  MainFeedComponent
+  FeedsService
 } from "../feed";
+
+import { FeedComponent } from "../feed/feed.component";
+import { MainFeedComponent } from "../feed/main-feed/main-feed.component";
+import { PushToTalkComponent } from "../feed/pushtotalk/pushtotalk.component";
 
 import {
   LogEntry,
@@ -38,13 +39,25 @@ interface IHighlight {
   current: Feed;
 }
 
+console.log([
+    ThumbnailsModeButtonComponent,
+    MainFeedComponent,
+    PushToTalkComponent,
+    FeedComponent,
+    ScreenShareButtonComponent,
+    LeaveButtonComponent,
+    NotificationComponent,
+    ChatComponent
+  ]);
+
+
 @Component({
   selector: "jh-video-chat",
   template: require("./video-chat.component.html"),
   directives: [
     ThumbnailsModeButtonComponent,
     MainFeedComponent,
-    PushToTalkComponent,
+    //PushToTalkComponent,
     FeedComponent,
     ScreenShareButtonComponent,
     LeaveButtonComponent,
