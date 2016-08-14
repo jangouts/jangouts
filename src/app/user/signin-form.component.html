@@ -17,13 +17,14 @@
       <label class="sr-only" for="inputRoom">Room</label>
       <!--<span *ngIf="!showRoomList && room">{{ room.label }}</span>-->
         <!--*ngIf="showRoomsList"-->
+        Room {{room}} {{rooms}}
       <select
         id="inputRoom"
         class="form-control input-lg"
         ngControl="room"
         required="true">
         <option value="" disabled selected>Select a room</option>
-        <option *ngFor="let room of rooms" [selected]="room">{{room.label}}</option>
+        <option *ngFor="let roomopt of rooms" [value]="roomopt.id" [selected]="room">{{roomopt.label}}</option>
       </select>
     </div>
     <!--[TODO] Add textTemplate support for thumbnails mode button-->

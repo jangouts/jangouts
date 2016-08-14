@@ -98,7 +98,10 @@ export class SigninFormComponent implements OnInit {
 
         // update form fields
         (<Control>this.loginForm.controls["username"]).updateValue(username);
-        (<Control>this.loginForm.controls["room"]).updateValue(this.room);
+        (<Control>this.loginForm.controls["room"]).updateValue("");
+        if (this.room) {
+          (<Control>this.loginForm.controls["room"]).updateValue(this.room.id);
+        }
       });
     });
   }
@@ -106,7 +109,7 @@ export class SigninFormComponent implements OnInit {
   public signin(): void {
     if (this.loginForm.value.room && this.loginForm.value.username) {
       this.state.go("room", {
-        room: this.loginForm.value.room.id,
+        room: this.loginForm.value.room,
         user: this.loginForm.value.username
       });
     }
