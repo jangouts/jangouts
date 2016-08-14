@@ -39,18 +39,6 @@ interface IHighlight {
   current: Feed;
 }
 
-console.log([
-    ThumbnailsModeButtonComponent,
-    MainFeedComponent,
-    PushToTalkComponent,
-    FeedComponent,
-    ScreenShareButtonComponent,
-    LeaveButtonComponent,
-    NotificationComponent,
-    ChatComponent
-  ]);
-
-
 @Component({
   selector: "jh-video-chat",
   template: require("./video-chat.component.html"),
