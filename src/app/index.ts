@@ -21,8 +21,11 @@ require("./index.scss");
 upgradeAdapter.upgradeNg1Provider("hotkeys"); // needed for pushToTalk
 
 /* Register providers for browser, this is mandatory. */
-// import {MODAL_BROWSER_PROVIDERS} from 'angular2-modal/platform-browser';
-// upgradeAdapter.addProvider(MODAL_BROWSER_PROVIDERS);
+// [TODO] - Activate when remove angular1
+ /*import {MODAL_BROWSER_PROVIDERS} from 'angular2-modal/platform-browser';
+ for (let p of MODAL_BROWSER_PROVIDERS) {
+ 	upgradeAdapter.addProvider(p);
+}*/
 
 import { ConfigService } from "./config.provider";
 upgradeAdapter.addProvider(ConfigService);
@@ -34,11 +37,13 @@ import { FEED_PROVIDERS } from "./feed";
 for (let p of FEED_PROVIDERS) {
 	upgradeAdapter.addProvider(p);
 }
+import { UserService } from "./user";
+upgradeAdapter.addProvider(UserService);
 
 /* Components */
 import roomComponent from "./room";
-import userComponent from "./user";
 import routerComponent from "./router";
+import userComponent from "./user";
 import footerComponent from "./footer";
 
 angular.module("janusHangouts", [
@@ -84,10 +89,7 @@ function routesConfig($stateProvider: any, $urlRouterProvider: any): void {
         setRoomAndService: ["StatesService", "$state", function (StatesService: any, $state: any): void {
           return StatesService.setRoomAndUser($state.toParams);
         }]
-      },
-      onEnter: ["UserService", "RoomService", function (UserService: any, RoomService: any): void {
-        UserService.setSetting("lastRoom", RoomService.getRoom().id);
-      }]
+      }
     });
 
 	$urlRouterProvider.otherwise("/sign_in");

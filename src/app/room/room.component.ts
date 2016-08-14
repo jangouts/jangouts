@@ -55,6 +55,9 @@ export class RoomComponent implements OnInit {
       this.$state.go("signin", this.params);
 
     } else {
+      /* Set last room */
+      this.userService.setSetting("lastRoom", this.roomService.getRoom().id);
+
       if (this.$state.params.user === undefined) {
         /*
          * Make sure the url includes the user (to allow bookmarking)
