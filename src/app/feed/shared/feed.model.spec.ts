@@ -2,7 +2,8 @@ import {
   beforeEach,
   describe,
   expect,
-  it
+  it,
+  xit
 } from "@angular/core/testing";
 
 import { Feed } from "./feed.model";

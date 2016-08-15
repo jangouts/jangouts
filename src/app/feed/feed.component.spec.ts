@@ -11,11 +11,13 @@ declare const jasmine: any;
 declare const spyOn: any;
 
 import { FeedComponent } from "./feed.component";
+import { Broadcaster } from "../shared";
 
 describe("Component: Feed", () => {
   beforeEachProviders(() => {
     return [
       {provide: FeedComponent, useClass: FeedComponent},
+      {provide: Broadcaster, useClass: Broadcaster},
     ];
   });
 

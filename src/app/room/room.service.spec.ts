@@ -68,10 +68,10 @@ describe("Service: RoomService", () => {
 
     // create instance of service
     this.roomService = new RoomService(
+      this.configService,
       this.feedsService,
       this.dataChannelService,
       this.actionService,
-      this.configService,
       this.screenShareService,
       this.broadcaster
     );
