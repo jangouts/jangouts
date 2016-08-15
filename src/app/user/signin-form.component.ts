@@ -67,8 +67,7 @@ export class SigninFormComponent implements OnInit {
 
   constructor(private roomService: RoomService,
               private userService: UserService,
-              private zone: NgZone,
-              @Inject("$state") private state: any) {
+              private zone: NgZone) {
 
     this.loginForm = new ControlGroup({
       username: new Control(null, Validators.required),
@@ -108,10 +107,17 @@ export class SigninFormComponent implements OnInit {
 
   public signin(): void {
     if (this.loginForm.value.room && this.loginForm.value.username) {
+
+      // [TODO] - Until routes migrated to angular2
+      let url: string = `/rooms/${this.loginForm.value.room}?user=${this.loginForm.value.username}`;
+      window.location.hash = url;
+
+      /* Old code
       this.state.go("room", {
         room: this.loginForm.value.room,
         user: this.loginForm.value.username
       });
+      */
     }
   }
 

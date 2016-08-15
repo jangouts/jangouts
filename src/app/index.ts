@@ -51,7 +51,6 @@ angular.module("janusHangouts", [
     "ngCookies",
     "ngTouch",
     "ngSanitize",
-    "blockUI",
     "ui.router",
     "ui.bootstrap",
     "cfp.hotkeys",
@@ -63,7 +62,6 @@ angular.module("janusHangouts", [
     footerComponent.name
   ])
   .config(routesConfig)
-  .config(blockUIConfig)
   .config(decorators)
   .run(getConfig)
   .run(stateEvents);
@@ -93,13 +91,6 @@ function routesConfig($stateProvider: any, $urlRouterProvider: any): void {
     });
 
 	$urlRouterProvider.otherwise("/sign_in");
-}
-
-blockUIConfig.$inject = ["blockUIConfig"];
-function blockUIConfig(blockUIConfig: any): void {
-  blockUIConfig.template = require("./room/consent-dialog.html");
-  blockUIConfig.cssClass = "block-ui block-ui-anim-fade consent-dialog";
-  blockUIConfig.autoBlock = false;
 }
 
 decorators.$inject = ["$provide"];

@@ -7,6 +7,8 @@
 
 import { Component, OnInit, Inject } from "@angular/core";
 
+import {HotkeysService, Hotkey} from 'angular2-hotkeys';
+
 import { RoomService } from "../../room";
 import { UserService } from "../../user/user.service";
 
@@ -18,7 +20,7 @@ export class PushToTalkComponent implements OnInit {
 
   public hotkeyActive: boolean = false;
   public showHotkey: boolean = false;
-  public hotkey: string = null;
+  public hotkey: Hotkey = null;
   public titleText: string = this.titleText1;
   public toggleText: string = null;
 
@@ -29,7 +31,7 @@ export class PushToTalkComponent implements OnInit {
 
   constructor(private roomService: RoomService,
               private userService: UserService,
-              @Inject("hotkeys") private hotkeys: any) {
+              private hotkeys: HotkeysService) {
   }
 
   public ngOnInit (): void {
@@ -107,8 +109,12 @@ export class PushToTalkComponent implements OnInit {
 
   private setPushToTalk(key: string): void {
     if (this.hotkey !== null) {
-      this.hotkeys.del(this.hotkey, "keydown");
-      this.hotkeys.del(this.hotkey, "keyup");
+      this.hotkeys.remove(this.hotkey);
+      // [TODO] - angular2-hotkeys new update to suport keydown/keyup
+      /*
+       * this.hotkeys.remove(this.hotkey, "keydown");
+       * this.hotkeys.remove(this.hotkey, "keyup");
+       */
 
       this.hotkey = null;
       this.showHotkey = false;
@@ -116,25 +122,20 @@ export class PushToTalkComponent implements OnInit {
     }
 
     if (key !== null) {
-      let pttCallback: any = (event: any): void => {
+      let pttCallback: any = (event: any): boolean => {
         event.preventDefault();
         this.roomService.pushToTalk(event.type);
+        return false;  // prevent bubbling
       };
 
-      this.hotkeys.add({
-        combo: key,
-        description: "Push-to-talk",
-        callback: pttCallback,
-        action: "keydown"
-      });
-      this.hotkeys.add({
-        combo: key,
-        description: "Push-to-talk",
-        callback: pttCallback,
-        action: "keyup"
-      });
+      this.hotkey = new Hotkey(key, pttCallback);
+      this.hotkeys.add(this.hotkey);
+      // [TODO] - angular2-hotkeys new update to suport keydown/keyup
+      /*
+       * this.hotkeys.add(new Hotkey(key, pttCallback, "keydown"));
+       * this.hotkeys.add(new Hotkey(key, pttCallback, "keyup"));
+       */
 
-      this.hotkey = key;
       this.showHotkey = true;
       this.titleText = this.titleText2;
     }

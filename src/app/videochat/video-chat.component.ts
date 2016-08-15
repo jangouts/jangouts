@@ -6,6 +6,8 @@
  */
 import { Component, OnInit, Inject } from "@angular/core";
 
+import {HotkeysService, Hotkey} from 'angular2-hotkeys';
+
 import {
   Feed,
   FeedsService
@@ -62,7 +64,7 @@ export class VideoChatComponent implements OnInit {
 
   constructor(private feedsService: FeedsService,
               private logService: LogService,
-              @Inject("hotkeys") private hotkeys: any) { }
+              private hotkeys: HotkeysService) { }
 
   public ngOnInit(): void { }
 
@@ -131,7 +133,9 @@ export class VideoChatComponent implements OnInit {
   }
 
   public showHotkeys(): void {
-    this.hotkeys.toggleCheatSheet();
+    // [FIX] - toggleCheatSheet not supported yet by angular2-hotkeys
+    // this.hotkeys.toggleCheatSheet();
+    console.warn("Not implemented yet");
   }
 
 }
