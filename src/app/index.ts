@@ -17,38 +17,7 @@ import "reflect-metadata";
 require("./vendor.scss");
 require("./index.scss");
 
-import { bootstrap } from "@angular/platform-browser-dynamic";
-import { NgZone } from "@angular/core";
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app.module';
 
-import { AppComponent } from "./app.component";
-import { APP_ROUTER_PROVIDERS } from "./app.routing";
-import { ConfigService } from "./config.provider";
-import {
-  DataChannelService,
-  LogService,
-  ActionService,
-  RoomService
-} from "./room";
-import { FeedsService } from "./feed";
-import { Broadcaster  } from "./shared";
-import { ScreenShareService } from "./screen-share";
-import { StatesService } from "./router";
-import { MODAL_BROWSER_PROVIDERS } from "angular2-modal/platform-browser";
-import { UserService } from "./user";
-
-import { HotkeysService } from 'angular2-hotkeys';
-
-bootstrap(AppComponent, [
-	...APP_ROUTER_PROVIDERS,
-	HotkeysService,
-	ConfigService,
-  DataChannelService,
-  LogService,
-  ActionService,
-	FeedsService,
-	Broadcaster,
-	ScreenShareService,
-	RoomService,
-	UserService,
-	//...MODAL_BROWSER_PROVIDERS
-]);
+platformBrowserDynamic().bootstrapModule(AppModule);

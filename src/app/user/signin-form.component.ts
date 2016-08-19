@@ -61,11 +61,10 @@ export class SigninFormComponent implements OnInit {
               private userService: UserService,
               private route: ActivatedRoute,
               private router: Router) {
-    console.log('signing');
-    console.log(this.route);
   }
 
   public ngOnInit(): void {
+
     this.roomService.getRooms().then((rooms) => {
       this.room = this.roomService.getRoom();
       this.rooms = rooms;
@@ -90,8 +89,8 @@ export class SigninFormComponent implements OnInit {
 
       // [TODO] - Until routes migrated to angular2
       let url: string = `/rooms/${this.room.id}?user=${this.username}`;
-      window.location = url;
-      this.router.navigate(['/rooms', this.room.id, this.username])
+      window.location.hash = url;
+      //this.router.navigate(['/rooms', this.room.id, this.username])
 
       /* Old code
       this.state.go("room", {

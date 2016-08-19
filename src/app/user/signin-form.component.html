@@ -8,6 +8,7 @@
       <input id="inputUsername"
              class="form-control input-lg"
              type="text"
+             name="username"
              [(ngModel)]="username"
              required="true"
              autofocus
@@ -21,6 +22,7 @@
         id="inputRoom"
         class="form-control input-lg"
         [(ngModel)]="room"
+        name="room"
         required="true">
         <option value="" disabled selected>Select a room</option>
         <option *ngFor="let roomopt of rooms" [value]="roomopt">{{roomopt.label}}</option>

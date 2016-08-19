@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ROUTER_DIRECTIVES } from "@angular/router";
+import { Http, Response } from '@angular/http';
 
 import { ConfigService } from "./config.provider";
 import { SigninFormComponent } from "./user";
@@ -23,26 +24,24 @@ import { FooterComponent } from "./footer";
     FooterComponent
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  constructor(private config: ConfigService) {
-    console.log("Contructor AppComponent");
-    this.getConfig()
-  }
+  constructor(private config: ConfigService,
+              private http: Http) {}
 
-  private getConfig(): void {
-    let request: any = new XMLHttpRequest();
-    request.open("GET", "config.json", false);
-    request.send(null);
-    if (request.status === 200) {
-      let config: any = JSON.parse(request.responseText);
-      for (let key in config) {
-        if (config.hasOwnProperty(key)) {
-          this.config[key] = config[key];
-        }
+  public ngOnInit(): void {
+    this.http.get("config.json").subscribe((res: Response) => {
+      if (res.status === 200) {
+        let config: any = res.json();
+        for (let key in config) {
+          if (config.hasOwnProperty(key)) {
+            this.config[key] = config[key];
+          }
+        };
+      } else {
+        console.warn("No configuration found");
       };
-    } else {
-      console.warn("No configuration found");
-    }
+
+    });
   }
 }

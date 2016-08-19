@@ -1,19 +1,22 @@
-import { provideRouter, RouterConfig}   from "@angular/router";
+import { Routes, RouterModule }   from "@angular/router";
 
 import { SigninFormComponent } from "./user";
 import { RoomComponent } from "./room";
-import { FooterComponent } from "./footer";
 
-const appRoutes: RouterConfig = [
+const appRoutes: Routes = [
   {
     path: "sign_in",
     component: SigninFormComponent
   },
-  //{
-    //path: "rooms/:roomid",
-    //component: RoomComponent
-  //},
+  {
+    path: "rooms/:roomid",
+    component: RoomComponent
+  },
   { path: "", redirectTo: "/sign_in", pathMatch: "full" }
 ];
 
-export const APP_ROUTER_PROVIDERS = provideRouter(appRoutes);
+export const appRoutingProviders: any[] = [
+
+];
+
+export const routing = RouterModule.forRoot(appRoutes);
