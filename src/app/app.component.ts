@@ -2,8 +2,9 @@ import { Component } from "@angular/core";
 import { ROUTER_DIRECTIVES } from "@angular/router";
 
 import { ConfigService } from "./config.provider";
-import { UserService, SigninFormComponent } from "./user";
-import { RoomService, RoomComponent } from "./room";
+import { SigninFormComponent } from "./user";
+import { RoomComponent } from "./room";
+import { FooterComponent } from "./footer";
 
 @Component({
   selector: "jh-jangouts",
@@ -18,7 +19,8 @@ import { RoomService, RoomComponent } from "./room";
   directives: [
     ROUTER_DIRECTIVES,
     SigninFormComponent,
-    RoomComponent
+    RoomComponent,
+    FooterComponent
   ]
 })
 export class AppComponent {
