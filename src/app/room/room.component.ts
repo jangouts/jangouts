@@ -36,10 +36,9 @@ interface IRoomParameters {
   selector: "jh-room",
   template: require("./room.component.html"),
   directives: [
-    VideoChatComponent,
+    //VideoChatComponent,
     BlockUIComponent
-  ],
-  providers : [HotkeysService]
+  ]
 })
 export class RoomComponent implements OnInit {
 

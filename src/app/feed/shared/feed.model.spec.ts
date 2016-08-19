@@ -1,15 +1,5 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  xit
-} from "@angular/core/testing";
-
 import { Feed } from "./feed.model";
 
-declare const jasmine: any;
-declare const spyOn: any;
 
 describe("Model: Feed", () => {
 

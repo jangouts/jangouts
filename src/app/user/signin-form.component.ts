@@ -31,15 +31,7 @@ function jhSigninFormLink(scope, element) {
 */
 
 
-import { Component, OnInit, Inject, NgZone } from "@angular/core";
-
-import {
-  Control,
-  ControlGroup,
-  Validators,
-  FORM_DIRECTIVES
-} from "@angular/common";
-
+import { Component, OnInit, Inject } from "@angular/core";
 
 import { RoomService, Room } from "../room";
 import { ScreenShareHintComponent } from "../screen-share";
@@ -51,7 +43,6 @@ import { UserService } from "./user.service";
   selector: "jh-signin-form",
   template: require("./signin-form.component.html"),
   directives: [
-    FORM_DIRECTIVES,
     ScreenShareHintComponent,
     ThumbnailsModeButtonComponent,
     BrowserInfoComponent
@@ -61,28 +52,20 @@ export class SigninFormComponent implements OnInit {
 
   public rooms: Room[] = [];
   public room: Room = null;
+  public username: string = null;
   public showRoomsList: boolean = true;
-  public loginForm: ControlGroup;
 
 
   constructor(private roomService: RoomService,
-              private userService: UserService,
-              private zone: NgZone) {
-
-    this.loginForm = new ControlGroup({
-      username: new Control(null, Validators.required),
-      room: new Control(null, Validators.required)
-    });
-  }
+              private userService: UserService) { }
 
   public ngOnInit(): void {
     this.roomService.getRooms().then((rooms) => {
       this.room = this.roomService.getRoom();
       this.rooms = rooms;
-      let username: string = null;
 
       if (this.userService.getUser() !== null) {
-        username = this.userService.getUser().username;
+        this.username = this.userService.getUser().username;
       }
 
       if (this.room === null) {
@@ -92,24 +75,15 @@ export class SigninFormComponent implements OnInit {
         });
       }
 
-      this.zone.run(() => {
-        this.showRoomsList = this.room === null;
-
-        // update form fields
-        (<Control>this.loginForm.controls["username"]).updateValue(username);
-        (<Control>this.loginForm.controls["room"]).updateValue("");
-        if (this.room) {
-          (<Control>this.loginForm.controls["room"]).updateValue(this.room.id);
-        }
-      });
+      this.showRoomsList = this.room === null;
     });
   }
 
   public signin(): void {
-    if (this.loginForm.value.room && this.loginForm.value.username) {
+    if (this.room && this.username) {
 
       // [TODO] - Until routes migrated to angular2
-      let url: string = `/rooms/${this.loginForm.value.room}?user=${this.loginForm.value.username}`;
+      let url: string = `/rooms/${this.room.id}?user=${this.username}`;
       window.location.hash = url;
 
       /* Old code

@@ -1,10 +1,18 @@
-import { upgradeAdapter } from "../adapter";
-
 import { ChatComponent} from "./chat.component";
+import { LogEntryComponent } from "./log-entry";
+import { ChatMessageComponent } from "./chat-message";
+import { ChatFormComponent } from "./chat-form";
 
-export default angular.module("janusHangouts.chatComponent", [
-  "janusHangouts.roomComponent"
-]).directive("jhChat",
-             <angular.IDirectiveFactory>upgradeAdapter.downgradeNg2Component(ChatComponent));
+export {
+  ChatComponent,
+  LogEntryComponent,
+  ChatMessageComponent,
+  ChatFormComponent
+};
 
-export { ChatComponent }
+export const CHAT_COMPONENTS = [
+  ChatComponent,
+  LogEntryComponent,
+  ChatMessageComponent,
+  ChatFormComponent
+];

@@ -1,15 +1,5 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
-
 import { LogEntry } from "./logentry.model";
 import { DataChannelService } from "./data-channel.service";
-
-declare const jasmine: any;
-declare const spyOn: any;
 
 class MockLogService {
   public add(entry: LogEntry): void {}

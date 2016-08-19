@@ -1,17 +1,11 @@
 import {
-  beforeEachProviders,
-  describe,
-  inject,
-  expect,
-  it
-} from "@angular/core/testing";
+  inject, addProviders
+} from '@angular/core/testing';
 
 import { FooterComponent } from "./footer.component";
 
 describe("Component: Footer", () => {
-  beforeEachProviders(() => [
-    FooterComponent
-  ]);
+  beforeEach(() => addProviders([FooterComponent]));
 
   it("should have version defined", inject([ FooterComponent ], (footer) => {
     expect(footer.version).toBeDefined();

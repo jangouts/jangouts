@@ -1,8 +1,14 @@
-import { upgradeAdapter } from "../adapter";
+//import { upgradeAdapter } from "../adapter";
 
 import { StatesService } from "./states.service";
 
-upgradeAdapter.addProvider(StatesService);
+//upgradeAdapter.addProvider(StatesService);
 
-export default angular.module("janusHangouts.routerComponent", [])
-  .service("StatesService", upgradeAdapter.downgradeNg2Provider(StatesService));
+//export default angular.module("janusHangouts.routerComponent", [])
+  //.service("StatesService", upgradeAdapter.downgradeNg2Provider(StatesService));
+//
+export { StatesService };
+
+export const ROUTER_PROVIDERS = [
+  StatesService
+];

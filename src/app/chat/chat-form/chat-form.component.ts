@@ -7,36 +7,22 @@
 
 import { Component } from "@angular/core";
 
-import {
-  Control,
-  ControlGroup,
-  Validators,
-  FORM_DIRECTIVES
-} from "@angular/common";
-
 import { ActionService } from "../../room";
 
 
 @Component({
   selector: "jh-chat-form",
-  template: require("./chat-form.component.html"),
-  directives: [FORM_DIRECTIVES]
+  template: require("./chat-form.component.html")
 })
 export class ChatFormComponent {
 
-  public chatForm: ControlGroup;
+  public text: string = null;
 
-  constructor(private actionService: ActionService) {
-    this.chatForm = new ControlGroup({
-      text: new Control(null, Validators.required)
-    });
-  }
+  constructor(private actionService: ActionService) {}
 
   public submit(): void {
-    let field: string = "text";
-
-    this.actionService.writeChatMessage(this.chatForm.value.text);
-    (<Control>this.chatForm.controls[field]).updateValue(null);
+    this.actionService.writeChatMessage(this.text);
+    this.text = null;
   }
 
 }

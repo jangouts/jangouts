@@ -1,11 +1,3 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
-
-
 import { ScreenShareService } from "./screen-share.service";
 
 describe("Service: ScreenShareService", () => {

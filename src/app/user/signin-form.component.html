@@ -2,13 +2,13 @@
   <div class="text-center">
     <img src="../../images/jangouts-logo.png" class="jangouts-logo-login" />
   </div>
-  <form [ngFormModel]="loginForm" (ngSubmit)="signin()" novalidate>
+  <form (ngSubmit)="signin()" novalidate>
     <div class="form-group">
       <label class="sr-only" for="inputUsername">Username</label>
       <input id="inputUsername"
              class="form-control input-lg"
              type="text"
-             ngControl="username"
+             [(ngModel)]="username"
              required="true"
              autofocus
              placeholder="Username">
@@ -20,10 +20,10 @@
       <select
         id="inputRoom"
         class="form-control input-lg"
-        ngControl="room"
+        [(ngModel)]="room"
         required="true">
         <option value="" disabled selected>Select a room</option>
-        <option *ngFor="let roomopt of rooms" [value]="roomopt.id" [selected]="room">{{roomopt.label}}</option>
+        <option *ngFor="let roomopt of rooms" [value]="roomopt">{{roomopt.label}}</option>
       </select>
     </div>
     <!--[TODO] Add textTemplate support for thumbnails mode button-->

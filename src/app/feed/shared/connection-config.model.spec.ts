@@ -1,23 +1,15 @@
 import {
-  beforeEachProviders,
-  beforeEach,
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
+  addProviders
+} from '@angular/core/testing';
 
 import { ConnectionConfig } from "./connection-config.model";
 
-declare const jasmine: any;
-declare const spyOn: any;
 
 describe("Service: ConnectionConfig", () => {
 
-  beforeEachProviders(() => {
-    return [
+  beforeEach(() => addProviders([
       {provide: ConnectionConfig, useClass: ConnectionConfig}
-    ];
-  });
+  ]));
 
   beforeEach(() => {
     this.config = {

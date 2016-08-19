@@ -1,21 +1,14 @@
 import {
-  beforeEachProviders,
-  beforeEach,
-  describe,
-  inject,
-  expect,
-  it
-} from "@angular/core/testing";
+	inject, addProviders
+} from '@angular/core/testing';
 
 import { ChatMessageComponent } from "./chat-message.component";
 
-declare const jasmine: any;
-
 describe("Component: ChatMessage", () => {
 
-  beforeEachProviders(() => [
+  beforeEach(() => addProviders([
     {provide: ChatMessageComponent, useClass: ChatMessageComponent},
-  ]);
+  ]));
 
   beforeEach(inject([ ChatMessageComponent ], (chatMessage) => {
     this.chatMessage = chatMessage;

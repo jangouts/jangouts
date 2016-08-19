@@ -1,18 +1,12 @@
 import {
-  beforeEach,
-  describe,
   fakeAsync,
   tick,
-  flushMicrotasks,
-  expect,
-  it
+  flushMicrotasks
 } from "@angular/core/testing";
 
 import { Room} from "./room.model";
 import { RoomService } from "./room.service";
 
-declare const jasmine: any;
-declare const spyOn: any;
 declare const window: any;
 
 

@@ -1,14 +1,4 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
-
 import { Broadcaster } from "./broadcaster.service";
-
-declare const jasmine: any;
-declare const spyOn: any;
 
 describe("Service: Broadcaster", () => {
 

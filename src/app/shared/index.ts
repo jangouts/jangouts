@@ -1,7 +1,11 @@
-import { upgradeAdapter } from "../adapter";
+//import { upgradeAdapter } from "../adapter";
 
 import { Broadcaster } from "./broadcaster.service";
 
-upgradeAdapter.addProvider(Broadcaster);
+//upgradeAdapter.addProvider(Broadcaster);
 
 export { Broadcaster };
+
+export const SHARED_PROVIDERS = [
+  Broadcaster
+];

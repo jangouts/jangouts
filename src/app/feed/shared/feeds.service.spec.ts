@@ -1,9 +1,5 @@
 import {
-  beforeEachProviders,
-  beforeEach,
-  describe,
-  expect,
-  it,
+  addProviders,
   fakeAsync,
   flushMicrotasks,
   tick
@@ -12,17 +8,13 @@ import {
 import { FeedsService } from "./feeds.service";
 import { Feed } from "./feed.model";
 
-declare const jasmine: any;
-declare const spyOn: any;
 declare const Promise: any;
 
 describe("Service: FeedsService", () => {
 
-  beforeEachProviders(() => {
-    return [
+  beforeEach(() => addProviders([
       {provide: FeedsService, useClass: FeedsService}
-    ];
-  });
+  ]));
 
   beforeEach(() => {
     this.feeds = new FeedsService();

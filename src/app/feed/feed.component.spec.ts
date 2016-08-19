@@ -1,25 +1,15 @@
 import {
-  beforeEach,
-  beforeEachProviders,
-  describe,
-  expect,
-  inject,
-  it
-} from "@angular/core/testing";
-
-declare const jasmine: any;
-declare const spyOn: any;
+  inject, addProviders
+} from '@angular/core/testing';
 
 import { FeedComponent } from "./feed.component";
 import { Broadcaster } from "../shared";
 
 describe("Component: Feed", () => {
-  beforeEachProviders(() => {
-    return [
+  beforeEach(() => addProviders([
       {provide: FeedComponent, useClass: FeedComponent},
       {provide: Broadcaster, useClass: Broadcaster},
-    ];
-  });
+  ]));
 
   beforeEach(inject([ FeedComponent ], (feedComponent)  => {
     this.feedComponent = feedComponent;

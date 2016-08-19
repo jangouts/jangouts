@@ -15,6 +15,7 @@ export class FooterComponent {
   public version: string;
 
   constructor() {
+    console.log("constructor footer");
     this.version = VERSION;
   }
 
