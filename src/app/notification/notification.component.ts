@@ -11,6 +11,9 @@ import { Broadcaster } from "../shared";
 import { ActionService } from "../room";
 import { ConfigService } from "../config.provider";
 
+/**
+ * Component implementing a mute alert notification
+ */
 @Component({
   selector: "jh-notification",
   template: require("./notification.component.html")

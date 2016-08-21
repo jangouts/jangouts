@@ -17,6 +17,10 @@ interface IBroadcastEvent {
   data?: any;
 }
 
+/**
+ * Class implementing a broadcast mechanism equivalent to the one available in
+ * Angular 1
+ */
 @Injectable()
 export class Broadcaster {
   private _eventBus: Subject<IBroadcastEvent>;

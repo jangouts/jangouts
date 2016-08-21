@@ -11,6 +11,7 @@
       cursor: pointer;
       .face {
         vertical-align: middle;
+        // [REVIEW] - Review width/height when reenable feed autoresize
         width: 128px;
         height: 96px;
         // This transition causes some artifacts in some corner cases

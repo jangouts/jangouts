@@ -25,7 +25,7 @@ describe("Service: Broadcaster", () => {
     expect(eventHandler).toHaveBeenCalledWith("example message");
   });
 
-  it("should be notified only for the event subscribed", () => {
+  it("should not be notified if not subscribed to the event", () => {
     let eventHandler: any = jasmine.createSpy("eventHandler");
     this.broadcaster.on("MyEvent").subscribe(eventHandler);
 
