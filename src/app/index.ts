@@ -9,6 +9,7 @@
 require("./index.scss");
 
 /* Load javascript deps */
+import "jquery";
 import "mousetrap";
 import "mousetrap/plugins/record/mousetrap-record";
 import "lodash";

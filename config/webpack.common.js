@@ -101,6 +101,21 @@ module.exports = {
       cache: true
     }),
 
+    /*
+     * Plugin: ProvidePlugin
+     * Description: Automatically loaded modules.
+     *
+     * Copies project config.
+     *
+     * See: https://webpack.github.io/docs/list-of-plugins.html#provideplugin
+     */
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      'window.jquery': 'jquery'
+    }),
+
     /**
      * Plugin: DefinePlugin
      * Description: Define free variables.
