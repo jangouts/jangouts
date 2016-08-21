@@ -32,7 +32,7 @@ function jhSigninFormLink(scope, element) {
 
 
 import { Component, OnInit, Inject } from "@angular/core";
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 
 import { RoomService, Room } from "../room";
 import { ScreenShareHintComponent } from "../screen-share";
@@ -87,17 +87,12 @@ export class SigninFormComponent implements OnInit {
   public signin(): void {
     if (this.room && this.username) {
 
-      // [TODO] - Until routes migrated to angular2
-      let url: string = `/rooms/${this.room.id}?user=${this.username}`;
-      window.location.hash = url;
-      //this.router.navigate(['/rooms', this.room.id, this.username])
+      let navigationExtras: NavigationExtras = {
+        queryParams: { 'user': this.username},
+      };
 
-      /* Old code
-      this.state.go("room", {
-        room: this.loginForm.value.room,
-        user: this.loginForm.value.username
-      });
-      */
+      this.router.navigate(['/rooms', this.room.id], navigationExtras);
+
     }
   }
 

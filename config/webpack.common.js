@@ -16,8 +16,6 @@ var DefinePlugin = require('webpack/lib/DefinePlugin');
 
 module.exports = {
   entry: {
-    //'polyfills': './src/polyfills.ts',
-    'vendor': './src/vendor.ts',
     'app': './src/app/index.ts'
   },
 
@@ -76,26 +74,6 @@ module.exports = {
     ),
 
     /*
-     * Plugin: OccurenceOrderPlugin
-     * Description: Varies the distribution of the ids to get the smallest id length
-     * for often used ids.
-     *
-     * See: https://webpack.github.io/docs/list-of-plugins.html#occurrenceorderplugin
-     * See: https://github.com/webpack/docs/wiki/optimization#minimize
-     */
-    //new webpack.optimize.OccurenceOrderPlugin(true),
-
-    /*
-     * Plugin: CommonsChunkPlugin
-     * Description: Shares common code between the pages.
-     * It identifies common modules and put them into a commons chunk.
-     *
-     * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
-     * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
-     */
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.[hash].js'),
-
-    /*
      * Plugin: CopyWebpackPlugin
      * Description: Copy files and directories in webpack.
      *
@@ -121,21 +99,6 @@ module.exports = {
       chunksSortMode: 'none',
       minify: false,
       cache: true
-    }),
-
-    /*
-     * Plugin: ProvidePlugin
-     * Description: Automatically loaded modules.
-     *
-     * Copies project config.
-     *
-     * See: https://webpack.github.io/docs/list-of-plugins.html#provideplugin
-     */
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      'window.jquery': 'jquery'
     }),
 
     /**

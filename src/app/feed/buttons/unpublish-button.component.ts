@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Inject, forwardRef } from "@angular/core";
 
 import { RoomService } from "../../room";
 import { Feed } from "../shared";
@@ -18,7 +18,8 @@ export class UnpublishButtonComponent implements OnInit {
 
   @Input() public feed: Feed;
 
-  constructor(private roomService: RoomService) { }
+  /* Needed in order to fix import barrels error https://github.com/angular/angular.io/issues/1301 */
+  constructor(@Inject(forwardRef(() => RoomService)) private roomService: RoomService) { }
 
   public ngOnInit(): void { }
 

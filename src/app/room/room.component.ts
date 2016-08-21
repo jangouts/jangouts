@@ -5,8 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 import { Component, OnInit, Inject } from "@angular/core";
-
-import {HotkeysService, Hotkey} from 'angular2-hotkeys';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 
 import { Broadcaster } from "../shared";
 import { BlockUIComponent} from "../block-ui";
@@ -16,27 +15,11 @@ import { UserService } from "../user/user.service";
 import { Room } from "./room.model";
 import { RoomService } from "./room.service";
 
-
-// [TODO] - Remove when router migrated
-function getParameterByName(name: string, url?: string) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results || !results[2]) return undefined;
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
-interface IRoomParameters {
-  room?: number;
-  user?: string;
-}
-
 @Component({
   selector: "jh-room",
   template: require("./room.component.html"),
   directives: [
-    //VideoChatComponent,
+    VideoChatComponent,
     BlockUIComponent
   ]
 })
@@ -44,50 +27,43 @@ export class RoomComponent implements OnInit {
 
   public room: Room;
   public user: any;
-  public params: IRoomParameters = {};
 
   constructor(private roomService: RoomService,
               private broadcaster: Broadcaster,
               private userService: UserService,
-              private hotkeys: HotkeysService) {
+              private route: ActivatedRoute,
+              private router: Router) {
 
-    this.room = this.roomService.getRoom();
-    this.user = this.userService.getUser();
   }
 
   public ngOnInit(): void {
+    this.room = this.roomService.getRoom();
+    this.user = this.userService.getUser();
+
     if (this.room === null || this.user === null) {
       /*
        * Redirect to signin making sure room is included in the url
        */
-      if (this.room !== null) {
-        this.params.room = this.room.id;
+      let navigationExtras: NavigationExtras = {}
+      if (this.room) {
+          navigationExtras["queryParams"] = { 'room': this.room.id};
       }
-      // [TODO] - Until routes migrated to angular2
-      let url: string = `/sign_in?room=${this.params.room}`;
-      window.location.hash = url;
-      /* Old code
-       * this.$state.go("signin", this.params);
-       */
+      this.router.navigate(['/sign_in'], navigationExtras);
 
     } else {
       /* Set last room */
       this.userService.setSetting("lastRoom", this.roomService.getRoom().id);
 
-      // if (this.$state.params.user === undefined) {
-      if (getParameterByName("user") === undefined) {
+
+      if (this.user === null && this.route.snapshot.queryParams["user"] === undefined) {
         /*
          * Make sure the url includes the user (to allow bookmarking)
          */
-        this.params.room = this.room.id;
-        this.params.user = this.user.username;
 
-        // [TODO] - Until routes migrated to angular2
-        let url: string = `/rooms/${this.params.room}?user=${this.params.user}`;
-        window.location.hash = url;
-        /* Old code
-         * this.$state.go(this.$state.current.name, this.params, {location: "replace"});
-         */
+        let navigationExtras: NavigationExtras = {
+          queryParams: { 'user': this.user.username},
+        };
+        this.router.navigate(['/rooms', this.room.id], navigationExtras);
 
       } else {
         this.roomService.enter(this.user.username);
@@ -111,21 +87,23 @@ export class RoomComponent implements OnInit {
   }
 
   private setKeybindings(): void {
-    this.hotkeys.add(new Hotkey("alt+m", (event: KeyboardEvent): boolean => {
-        this.roomService.toggleChannel("audio");
-        return false; // prevent bubbling
-      }));
-      this.hotkeys.add(new Hotkey("alt+n", (event: KeyboardEvent): boolean => {
-        this.roomService.toggleChannel("video");
-        return false; // prevent bubbling
-      }));
+    window.Mousetrap.bind("alt+m", (event: KeyboardEvent): boolean => {
+      console.log('toggle channel audio');
+      this.roomService.toggleChannel("audio");
+      return false; // prevent bubbling
+    });
+    window.Mousetrap.bind("alt+n", (event: KeyboardEvent): boolean => {
+      console.log('toggle channel video');
+      this.roomService.toggleChannel("video");
+      return false; // prevent bubbling
+    });
 
       /*
        * Signout was never implemented
-      this.hotkeys.add(new Hotkey("alt+q", (event: KeyboardEvent) => {
+      window.Mousetrap.bind("alt+q", (event: KeyboardEvent) => {
         this.userService.signout();
         return false; // prevent bubbling
-      }));
+      });
       */
   }
 }

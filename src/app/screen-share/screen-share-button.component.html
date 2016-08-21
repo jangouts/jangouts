@@ -1,10 +1,8 @@
-<div style="display: inline-block;">
-     <!--uib-tooltip="{{vm.title()}}"-->
-     <!--tooltip-placement="bottom">-->
+<div style="display: inline-block;" title="{{title()}}">
   <button
     class="btn"
-    ng-disabled="!vm.enabled()"
-    ng-click="vm.click()">
+    [disabled]="!enabled()"
+    (click)="click()">
     <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
   </button>
 </div>

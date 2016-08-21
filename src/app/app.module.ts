@@ -1,57 +1,77 @@
+/*
+ * Copyright (C) 2015 SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
+
 import { NgModule }       from '@angular/core';
+import { CommonModule }       from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
+
+import { MODAL_BROWSER_PROVIDERS } from "angular2-modal/platform-browser";
+
 import { AppComponent }   from './app.component';
 
 import { ConfigService } from "./config.provider";
 import {
+  FeedsService,
+  FEED_COMPONENTS
+} from "./feed";
+import {
+  RoomService,
   DataChannelService,
   LogService,
   ActionService,
-  RoomService
+  ROOM_COMPONENTS,
 } from "./room";
-import { FeedsService } from "./feed";
+
 import { Broadcaster  } from "./shared";
-import { ScreenShareService } from "./screen-share";
+import { ScreenShareService, ScreenShareButtonComponent } from "./screen-share";
 import { StatesService } from "./router";
-import { MODAL_BROWSER_PROVIDERS } from "angular2-modal/platform-browser";
-import { UserService } from "./user";
-
-import { HotkeysService } from 'angular2-hotkeys';
-
-import { RoomComponent } from "./room";
+import { SigninFormComponent, UserService } from "./user";
+import { NotificationComponent } from "./notification";
+import { CHAT_COMPONENTS } from "./chat";
+import { ThumbnailsModeButtonComponent } from "./videochat";
 import { FooterComponent } from "./footer";
-import { SigninFormComponent } from "./user";
 
-import { routing } from "./app.routing";
+import { routing, appRoutingProviders } from "./app.routing";
 
 @NgModule({
     declarations: [
       AppComponent,
-      RoomComponent,
-      SigninFormComponent
+      ROOM_COMPONENTS,
+      SigninFormComponent,
+      NotificationComponent,
+      ThumbnailsModeButtonComponent,
+      ScreenShareButtonComponent,
+      NotificationComponent,
+      CHAT_COMPONENTS,
+      FEED_COMPONENTS
     ],
     imports: [
       BrowserModule,
-      // Router
-      routing,
-      // Forms
-      FormsModule,
+      routing,     // router
+      FormsModule, // forms
       HttpModule,
+      CommonModule,
       JsonpModule
     ],
     providers: [
-      HotkeysService,
+      appRoutingProviders,
+      RoomService,
       ConfigService,
       DataChannelService,
       LogService,
       ActionService,
       FeedsService,
+      StatesService,
       Broadcaster,
       ScreenShareService,
-      RoomService,
-      UserService
+      UserService,
+      MODAL_BROWSER_PROVIDERS
     ],
     bootstrap: [AppComponent],
 })

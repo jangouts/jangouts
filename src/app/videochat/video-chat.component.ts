@@ -6,8 +6,6 @@
  */
 import { Component, OnInit, Inject } from "@angular/core";
 
-import {HotkeysService, Hotkey} from 'angular2-hotkeys';
-
 import {
   Feed,
   FeedsService
@@ -24,9 +22,7 @@ import {
 } from "../room";
 import { ChatComponent } from "../chat";
 import { NotificationComponent } from "../notification";
-
 import { ThumbnailsModeButtonComponent } from "./thumbnails-mode-button.component";
-
 import { ScreenShareButtonComponent } from "../screen-share";
 
 interface IHighlight {
@@ -43,17 +39,7 @@ interface IHighlight {
 
 @Component({
   selector: "jh-video-chat",
-  template: require("./video-chat.component.html"),
-  directives: [
-    ThumbnailsModeButtonComponent,
-    MainFeedComponent,
-    //PushToTalkComponent,
-    FeedComponent,
-    ScreenShareButtonComponent,
-    LeaveButtonComponent,
-    NotificationComponent,
-    ChatComponent
-  ]
+  template: require("./video-chat.component.html")
 })
 export class VideoChatComponent implements OnInit {
 
@@ -63,8 +49,7 @@ export class VideoChatComponent implements OnInit {
   };
 
   constructor(private feedsService: FeedsService,
-              private logService: LogService,
-              private hotkeys: HotkeysService) { }
+              private logService: LogService) {}
 
   public ngOnInit(): void { }
 
@@ -133,7 +118,7 @@ export class VideoChatComponent implements OnInit {
   }
 
   public showHotkeys(): void {
-    // [FIX] - toggleCheatSheet not supported yet by angular2-hotkeys
+    // [FIX] - toggleCheatSheet not supported yet
     // this.hotkeys.toggleCheatSheet();
     console.warn("Not implemented yet");
   }
