@@ -7,13 +7,6 @@
 
 import { Component, Input } from "@angular/core";
 
-// [TODO]: Reenable ngEmbed when angular adapter supports templateUrl functions
-// import { upgradeAdapter } from '../../adapter';
-
-// upgrade ngEmbed directive
-// const NgEmbed = upgradeAdapter.upgradeNg1Component('ngEmbed');
-
-
 // define interface for embedOptions
 interface IEmbedOptions {
   link: boolean;
