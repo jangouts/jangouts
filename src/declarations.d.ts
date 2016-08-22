@@ -2,10 +2,6 @@ interface JQuery {
     size(): number;
 }
 
-interface Room {
-  id: number;
-}
-
 declare var Janus: any;
 
 declare const VERSION: string;
