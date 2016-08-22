@@ -14,14 +14,19 @@ import { RoomService } from "./room.service";
 })
 export class LeaveButtonComponent implements OnInit {
 
-  constructor(private roomService: RoomService,
-             @Inject("$state") private $state: any) { }
+  constructor(private roomService: RoomService) {}
 
   public ngOnInit(): void { }
 
   public leave(): void {
     this.roomService.setRoom(null);
     // stateChangeStart will take care of calling RoomService.leave()
-    this.$state.go("signin");
+
+    // [TODO] - Until routes migrated to angular2
+    let url: string = `/sign_in`;
+    window.location.hash = url;
+    /* Old code
+     * this.$state.go("signin");
+     */
   }
 }

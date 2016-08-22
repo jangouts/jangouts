@@ -1,0 +1,10 @@
+<button
+   [ngClass]="{ 'btn-danger': !isChecked() }"
+   class="btn"
+   (click)="click($event)"
+   title="Toggle Picture/Video thumbnails.
+Use picture mode to lower bandwidth and CPU usage">
+  <span class="glyphicon"
+    [ngClass]="{ 'glyphicon-picture': !isChecked(), 'glyphicon-facetime-video': isChecked() }"
+    aria-hidden="true"></span>
+</button>

@@ -11,8 +11,10 @@ import { Injectable } from "@angular/core";
 export class LogEntry {
 
   public timestamp: Date;
+  public type: string;
 
   constructor(public t: string, public content: any = {}) {
+    this.type = t;
     this.timestamp = new Date();
   }
 

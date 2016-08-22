@@ -93,7 +93,7 @@ describe("Service: FeedConnection", () => {
 
   describe("#sendData", () => {
     it("should call pluginHandle.data", () => {
-      let data = { id: 1 };
+      let data: any = { id: 1 };
       this.connection.sendData(data);
 
       expect(this.pluginHandle.data).toHaveBeenCalledWith(data);
@@ -144,7 +144,7 @@ describe("Service: FeedConnection", () => {
 
     it("should call success callback when webRTC offer succeeds", () => {
       this.pluginHandle.createOffer.and.callFake((options) => {
-        options.success()
+        options.success();
       });
       this.connection.publish(this.options);
 
@@ -153,7 +153,7 @@ describe("Service: FeedConnection", () => {
 
     it("should call success callback when webRTC offer succeeds", () => {
       this.pluginHandle.createOffer.and.callFake((options) => {
-        options.error()
+        options.error();
       });
       this.connection.publish(this.options);
 
@@ -218,7 +218,7 @@ describe("Service: FeedConnection", () => {
     });
 
     it("should return the existing config", () => {
-      this.connection.config = jasmine.createSpyObj("config", ["get"])
+      this.connection.config = jasmine.createSpyObj("config", ["get"]);
       this.connection.config.get.and.returnValue({"config": "object"});
       let result: any = this.connection.getConfig();
 
@@ -235,7 +235,7 @@ describe("Service: FeedConnection", () => {
 
     it("should confirm the existing config", () => {
       this.connection.config = jasmine.createSpyObj("config", ["confirm"]);
-      let result: any = this.connection.confirmConfig();
+      this.connection.confirmConfig();
 
       expect(this.connection.config.confirm).toHaveBeenCalled();
     });
@@ -245,7 +245,7 @@ describe("Service: FeedConnection", () => {
   describe("#onDataOpen", () => {
     it("should set dataOpen flat to true", () => {
       expect(this.connection.isDataOpen).toBe(false);
-      this.connection.onDataOpen()
+      this.connection.onDataOpen();
       expect(this.connection.isDataOpen).toBe(true);
     });
   });

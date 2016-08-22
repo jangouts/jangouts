@@ -1,0 +1,7 @@
+<div *ngIf="notification" class="alert alert-info" style="margin: 0px; border-radius: 0;">
+  <span>{{notification}}</span>
+  <div class="pull-right">
+    <button class="btn btn-xs btn-default" (click)="unmute($event)">Unmute</button>
+    <button class="btn btn-xs btn-default" (click)="dontShowAgain($event)">Don't show again</button>
+  </div>
+</div>

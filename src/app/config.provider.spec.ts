@@ -6,15 +6,15 @@ import {
 } from "@angular/core/testing";
 
 
-import { Config } from "./config.provider";
+import { ConfigService } from "./config.provider";
 
 declare const jasmine: any;
 declare const spyOn: any;
 
-describe("Service: Config", () => {
+describe("Service: ConfigService", () => {
 
   beforeEach(() => {
-    this.config = new Config();
+    this.config = new ConfigService();
   });
 
   describe("janusServer", () => {

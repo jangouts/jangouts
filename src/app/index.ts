@@ -9,7 +9,6 @@
  * Error with the exported typings from zone.js
  * https://github.com/angular/zone.js/issues/297#issuecomment-200912405
  */
-//import "zone.js";
 import "zone.js/dist/zone";
 import "zone.js/dist/long-stack-trace-zone";
 
@@ -19,68 +18,63 @@ import { upgradeAdapter } from "./adapter";
 require("./vendor.scss");
 require("./index.scss");
 
-import config from "./config.provider";
-import signin from "./signin";
+upgradeAdapter.upgradeNg1Provider("hotkeys"); // needed for pushToTalk
 
-// Components
-import footerComponent from "./footer";
-import feedComponent from "./feed";
-import chatComponent from "./chat";
+/* Register providers for browser, this is mandatory. */
+// [TODO] - Activate when remove angular1
+ /*import {MODAL_BROWSER_PROVIDERS} from 'angular2-modal/platform-browser';
+ for (let p of MODAL_BROWSER_PROVIDERS) {
+ 	upgradeAdapter.addProvider(p);
+}*/
+
+import { ConfigService } from "./config.provider";
+upgradeAdapter.addProvider(ConfigService);
+let configModule: any = angular.module("janusHangouts.config", [])
+    .service("jhConfig", upgradeAdapter.downgradeNg2Provider(ConfigService));
+
+/* Register providers */
+import { FEED_PROVIDERS } from "./feed";
+for (let p of FEED_PROVIDERS) {
+	upgradeAdapter.addProvider(p);
+}
+import { UserService } from "./user";
+upgradeAdapter.addProvider(UserService);
+
+/* Components */
 import roomComponent from "./room";
-
-import browserInfoComponent from "./components/browser-info";
-import notifierComponent from "./components/notifier";
-import routerComponent from "./components/router";
-import screenShareComponent from "./components/screen-share";
-import userComponent from "./components/user";
-import videochatComponent from "./components/videochat";
+import routerComponent from "./router";
+import userComponent from "./user";
+import footerComponent from "./footer";
 
 angular.module("janusHangouts", [
     "ngAnimate",
     "ngCookies",
     "ngTouch",
     "ngSanitize",
-    "blockUI",
     "ui.router",
     "ui.bootstrap",
-    "ngEmbed",
     "cfp.hotkeys",
-    "gridster",
     "ngAudio",
-    "angular-extended-notifications",
-    "LocalStorageModule",
-    config.name,
-    signin.name,
+    configModule.name,
     roomComponent.name,
-    browserInfoComponent.name,
-    chatComponent.name,
-    feedComponent.name,
-    notifierComponent.name,
     routerComponent.name,
-    screenShareComponent.name,
     userComponent.name,
-    videochatComponent.name,
-		footerComponent.name
+    footerComponent.name
   ])
   .config(routesConfig)
-  .config(blockUIConfig)
-  .config(notificationsConfig)
-  .config(localStorageConfig)
   .config(decorators)
   .run(getConfig)
   .run(stateEvents);
 
 routesConfig.$inject = ["$stateProvider", "$urlRouterProvider"];
-function routesConfig($stateProvider, $urlRouterProvider) {
+function routesConfig($stateProvider: any, $urlRouterProvider: any): void {
   $stateProvider
     .state("signin", {
       url: "/sign_in?room",
-      template: require("./signin/signin.html"),
-      controller: "SigninController",
-      controllerAs: "vm",
+      template: "<div id='signin'><jh-signin-form></jh-signin-form></div>",
       resolve: {
         StatesService: "StatesService",
-        setRoomAndService: ["StatesService", "$state", function (StatesService, $state) {
+        setRoomAndService: ["StatesService", "$state", function (StatesService: any, $state: any): void {
           return StatesService.setRoomAndUser($state.toParams);
         }]
       }
@@ -90,46 +84,23 @@ function routesConfig($stateProvider, $urlRouterProvider) {
       template: "<jh-room></jh-room>",
       resolve: {
         StatesService: "StatesService",
-        setRoomAndService: ["StatesService", "$state", function (StatesService, $state) {
+        setRoomAndService: ["StatesService", "$state", function (StatesService: any, $state: any): void {
           return StatesService.setRoomAndUser($state.toParams);
         }]
-      },
-      onEnter: ["UserService", "RoomService", function (UserService, RoomService) {
-        UserService.setSetting("lastRoom", RoomService.getRoom().id);
-      }]
+      }
     });
 
-  $urlRouterProvider.otherwise("/sign_in");
-}
-
-blockUIConfig.$inject = ["blockUIConfig"];
-function blockUIConfig(blockUIConfig) {
-  blockUIConfig.template = require("./room/consent-dialog.html");
-  blockUIConfig.cssClass = "block-ui block-ui-anim-fade consent-dialog";
-  blockUIConfig.autoBlock = false;
-}
-
-notificationsConfig.$inject = ["notificationsProvider"];
-function notificationsConfig(notificationsProvider) {
-  notificationsProvider.setDefaults({
-    templatesDir: "app/templates/",
-    faIcons: true,
-    closeOnRouteChange: "state"
-  });
-}
-
-localStorageConfig.$inject = ["localStorageServiceProvider"];
-function localStorageConfig(localStorageServiceProvider) {
-  localStorageServiceProvider.setPrefix("jh");
+	$urlRouterProvider.otherwise("/sign_in");
 }
 
 decorators.$inject = ["$provide"];
-function decorators($provide) {
-  // Decorate $state with parameters from the URL
-  // so they're available when 'resolving':
-  // http://stackoverflow.com/questions/22985988/angular-ui-router-get-state-info-of-tostate-in-resolve
-  $provide.decorator("$state", ["$delegate", "$rootScope", function ($delegate, $rootScope) {
-    $rootScope.$on("$stateChangeStart", function (event, state, params) {
+function decorators($provide: any): void {
+  /* Decorate $state with parameters from the URL so they're available when
+   * 'resolving':
+   * http://stackoverflow.com/questions/22985988/angular-ui-router-get-state-info-of-tostate-in-resolve
+   */
+  $provide.decorator("$state", ["$delegate", "$rootScope", function ($delegate: any, $rootScope: any): void {
+    $rootScope.$on("$stateChangeStart", function (event: any, state: any, params: any): void {
       $delegate.toParams = params;
     });
     return $delegate;
@@ -137,13 +108,13 @@ function decorators($provide) {
 }
 
 getConfig.$inject = ["$http", "jhConfig"];
-function getConfig($http, jhConfig) {
-  var request = new XMLHttpRequest();
+function getConfig($http: any, jhConfig: any): void {
+  var request: any = new XMLHttpRequest();
   request.open("GET", "config.json", false);
   request.send(null);
   if (request.status === 200) {
-    var config = JSON.parse(request.responseText);
-    angular.forEach(config, function(value, key) {
+    var config: any = JSON.parse(request.responseText);
+    angular.forEach(config, function(value: any, key: any): void {
        jhConfig[key] = value;
     });
   } else {
@@ -152,16 +123,16 @@ function getConfig($http, jhConfig) {
 }
 
 stateEvents.$inject = ["$rootScope", "$state", "RoomService"];
-function stateEvents($rootScope, $state, RoomService) {
-  $rootScope.$on("$stateChangeStart", function () {
-    // Before changing state, cleanup feeds
+function stateEvents($rootScope: any, $state: any, RoomService: any): void {
+  $rootScope.$on("$stateChangeStart", function (): void {
+    /* Before changing state, cleanup feeds */
     RoomService.leave();
   });
-  $rootScope.$on("$stateChangeError", function () {
+  $rootScope.$on("$stateChangeError", function (): void {
     $state.go("signin");
   });
 }
 
 upgradeAdapter.bootstrap(document.documentElement, ["janusHangouts"], {
-	strictDi: true
+  strictDi: true
 });

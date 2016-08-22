@@ -4,14 +4,28 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
-import { upgradeAdapter } from "../adapter";
-
 import { Component, OnInit, Inject } from "@angular/core";
+
+import {HotkeysService, Hotkey} from 'angular2-hotkeys';
+
+import { Broadcaster } from "../shared";
+import { BlockUIComponent} from "../block-ui";
+import { VideoChatComponent } from "../videochat";
+import { UserService } from "../user/user.service";
 
 import { Room } from "./room.model";
 import { RoomService } from "./room.service";
 
-const jhVideoChat: any = upgradeAdapter.upgradeNg1Component("jhVideoChat");
+
+// [TODO] - Remove when router migrated
+function getParameterByName(name: string, url?: string) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results || !results[2]) return undefined;
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 interface IRoomParameters {
   room?: number;
@@ -22,8 +36,10 @@ interface IRoomParameters {
   selector: "jh-room",
   template: require("./room.component.html"),
   directives: [
-    jhVideoChat
-  ]
+    VideoChatComponent,
+    BlockUIComponent
+  ],
+  providers : [HotkeysService]
 })
 export class RoomComponent implements OnInit {
 
@@ -32,11 +48,9 @@ export class RoomComponent implements OnInit {
   public params: IRoomParameters = {};
 
   constructor(private roomService: RoomService,
-              @Inject("hotkeys") private hotkeys: any,
-              @Inject("UserService") private userService: any,
-              @Inject("blockUI") private blockUI: any,
-              @Inject("$state") private $state: any,
-              @Inject("$scope") private $scope: any) {
+              private broadcaster: Broadcaster,
+              private userService: UserService,
+              private hotkeys: HotkeysService) {
 
     this.room = this.roomService.getRoom();
     this.user = this.userService.getUser();
@@ -50,16 +64,31 @@ export class RoomComponent implements OnInit {
       if (this.room !== null) {
         this.params.room = this.room.id;
       }
-      this.$state.go("signin", this.params);
+      // [TODO] - Until routes migrated to angular2
+      let url: string = `/sign_in?room=${this.params.room}`;
+      window.location.hash = url;
+      /* Old code
+       * this.$state.go("signin", this.params);
+       */
 
     } else {
-      if (this.$state.params.user === undefined) {
+      /* Set last room */
+      this.userService.setSetting("lastRoom", this.roomService.getRoom().id);
+
+      // if (this.$state.params.user === undefined) {
+      if (getParameterByName("user") === undefined) {
         /*
          * Make sure the url includes the user (to allow bookmarking)
          */
         this.params.room = this.room.id;
         this.params.user = this.user.username;
-        this.$state.go(this.$state.current.name, this.params, {location: "replace"});
+
+        // [TODO] - Until routes migrated to angular2
+        let url: string = `/rooms/${this.params.room}?user=${this.params.user}`;
+        window.location.hash = url;
+        /* Old code
+         * this.$state.go(this.$state.current.name, this.params, {location: "replace"});
+         */
 
       } else {
         this.roomService.enter(this.user.username);
@@ -71,38 +100,33 @@ export class RoomComponent implements OnInit {
   }
 
   private setEvents(): void {
-    this.$scope.$on("room.error", (evt: any, error: any): void => {
+    this.broadcaster.on("room.error").subscribe((error: any): void => {
       // [FIXME] - do something neat
       alert("Janus server reported the following error:\n" + error);
     });
 
-    this.$scope.$on("consentDialog.changed", (evt: any, open: boolean): void => {
-      if (open) {
-        this.blockUI.start();
-      } else if (!open) {
-        this.blockUI.stop();
-      }
-    });
+    //this.broadcaster.on("consentDialog.changed").subscribe((open: any): void => {
+      //console.log("consentDialog.changed", open);
+      //this.broadcaster.broadcast("blockUI", open);
+    //});
   }
 
   private setKeybindings(): void {
-    this.hotkeys.bindTo(this.$scope)
-      .add({
-        combo: "alt+m",
-        description: "Mute or unmute your microphone",
-        callback: (): void => { this.roomService.toggleChannel("audio"); }
-      })
-      .add({
-        combo: "alt+n",
-        description: "Disable or enable camera",
-        callback: (): void => { this.roomService.toggleChannel("video"); }
-      })
-      .add({
-        combo: "alt+q",
-        description: "Sign out",
-        callback: (): void => { this.userService.signout(); }
-      });
+    this.hotkeys.add(new Hotkey("alt+m", (event: KeyboardEvent): boolean => {
+        this.roomService.toggleChannel("audio");
+        return false; // prevent bubbling
+      }));
+      this.hotkeys.add(new Hotkey("alt+n", (event: KeyboardEvent): boolean => {
+        this.roomService.toggleChannel("video");
+        return false; // prevent bubbling
+      }));
 
-    this.$scope.hotkeys = this.hotkeys;
+      /*
+       * Signout was never implemented
+      this.hotkeys.add(new Hotkey("alt+q", (event: KeyboardEvent) => {
+        this.userService.signout();
+        return false; // prevent bubbling
+      }));
+      */
   }
 }

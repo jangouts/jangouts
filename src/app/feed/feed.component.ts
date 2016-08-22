@@ -7,7 +7,9 @@
 
 import { Component, OnInit, Output, Input, EventEmitter } from "@angular/core";
 
-import { Feed, VideoStreamDirective } from "./shared";
+import { Broadcaster } from "../shared";
+import { Feed } from "./shared/feed.model";
+import { VideoStreamDirective } from "./shared/videostream.directive";
 import { SendPicsDirective } from "./send-pics.directive";
 import { SetVideoSubscriptionDirective } from "./set-video-subscription.directive";
 
@@ -42,37 +44,21 @@ export class FeedComponent implements OnInit {
 
   private mirrored: boolean = false;
 
-  constructor() { }
+  constructor(private broadcaster: Broadcaster) { }
 
   public ngOnInit(): void {
     this.mirrored = (this.feed.isPublisher && !this.feed.isLocalScreen);
   }
 
-  // [TODO] - Show muted notification
-  // [NOTE] - This probably should be moved to a service
-  /*
-     if (feed.isPublisher && !feed.isLocalScreen) {
-        //Until this timeout is reached, the "you are muted" notification will not be displayed again
-       var mutedWarningTimeout = now();
-       scope.$on('muted.byRequest', function() {
-         mutedWarningTimeout = secondsFromNow(3);
-         MuteNotifier.muted();
-       });
-       scope.$on('muted.byUser', function() {
-         mutedWarningTimeout = now(); // reset the warning timeout
-       });
-       scope.$on('muted.Join', function() {
-         mutedWarningTimeout = now();
-         MuteNotifier.joinedMuted();
-       });
-       scope.$watch('vm.feed.isVoiceDetected()', function(newVal) {
-         // Display warning only if muted (check for false, undefined means still connecting) and the timeout has been reached
-         if (newVal && feed.getAudioEnabled() === false && now() > mutedWarningTimeout) {
-           MuteNotifier.speaking();
-           mutedWarningTimeout = secondsFromNow(60);
-         }
-       });
-  */
+  @Input()
+  set isVoiceDetected(val: boolean) {
+    /*
+     * Broadcast only if muted (check for false, undefined means still connecting)
+     */
+    if (this.feed.isPublisher && !this.feed.isLocalScreen && val && !this.feed.getAudioEnabled()) {
+      this.broadcaster.broadcast("speaking");
+    }
+  }
 
   public thumbnailTag(): string {
     if (this.highlighted || this.feed.isIgnored) { return "placeholder"; }
