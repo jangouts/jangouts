@@ -6,10 +6,9 @@
  */
 
 import { Component, OnInit, ViewContainerRef } from "@angular/core";
-import {Modal, BS_MODAL_PROVIDERS} from 'angular2-modal/plugins/bootstrap';
+import {Modal, BS_MODAL_PROVIDERS} from "angular2-modal/plugins/bootstrap";
 
 import { ConfigService } from "../config.provider";
-import { ScreenShareService } from "./screen-share.service";
 
 @Component({
   selector: "jh-screen-share-hint",
@@ -36,7 +35,7 @@ export class ScreenShareHintComponent implements OnInit {
 
   public showHelp(): void {
     this.modal.alert()
-      .size('lg')
+      .size("lg")
       .isBlocking(true)
       .showClose(true)
       .keyboard(27)

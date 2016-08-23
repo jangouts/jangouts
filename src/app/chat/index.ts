@@ -10,7 +10,7 @@ export {
   ChatFormComponent
 };
 
-export const CHAT_COMPONENTS = [
+export const CHAT_COMPONENTS: any[] = [
   ChatComponent,
   LogEntryComponent,
   ChatMessageComponent,

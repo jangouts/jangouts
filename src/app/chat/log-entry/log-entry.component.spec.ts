@@ -1,6 +1,4 @@
-import {
-	inject, addProviders
-} from '@angular/core/testing';
+import { inject, addProviders } from "@angular/core/testing";
 
 import { LogEntryComponent } from "./log-entry.component";
 

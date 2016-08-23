@@ -9,7 +9,6 @@ import { Injectable } from "@angular/core";
 import {
   Routes,
   RouterModule,
-  Resolve,
   ActivatedRouteSnapshot,
   RouterStateSnapshot
 }   from "@angular/router";
@@ -22,10 +21,10 @@ import { StatesService } from "./router";
 export class UserRoomResolver {
   constructor(private states: StatesService) {}
 
-  public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Promise<any> {
+  public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
     return this.states.setRoomAndUser({
-      user: route.queryParams['user'],
-      room: route.params['roomid'] || route.queryParams['room']
+      user: route.queryParams["user"], // tslint:disable-line
+      room: route.params["roomid"] || route.queryParams["room"] // tslint:disable-line
     });
   }
 }
@@ -54,4 +53,4 @@ export const appRoutingProviders: any[] = [
   StatesService
 ];
 
-export const routing = RouterModule.forRoot(appRoutes, { useHash: true });
+export const routing: any = RouterModule.forRoot(appRoutes, { useHash: true });

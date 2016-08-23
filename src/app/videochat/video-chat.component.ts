@@ -4,26 +4,18 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 
 import {
   Feed,
   FeedsService
 } from "../feed";
 
-import { FeedComponent } from "../feed/feed.component";
-import { MainFeedComponent } from "../feed/main-feed/main-feed.component";
-import { PushToTalkComponent } from "../feed/pushtotalk/pushtotalk.component";
 
 import {
   LogEntry,
-  LogService,
-  LeaveButtonComponent
+  LogService
 } from "../room";
-import { ChatComponent } from "../chat";
-import { NotificationComponent } from "../notification";
-import { ThumbnailsModeButtonComponent } from "./thumbnails-mode-button.component";
-import { ScreenShareButtonComponent } from "../screen-share";
 
 interface IHighlight {
   /*

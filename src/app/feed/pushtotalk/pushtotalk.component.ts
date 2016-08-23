@@ -28,7 +28,7 @@ export class PushToTalkComponent implements OnInit {
 
 
   /* Needed in order to fix import barrels error https://github.com/angular/angular.io/issues/1301 */
-  constructor(@Inject(forwardRef(() => RoomService)) private roomService: RoomService,
+  constructor(@Inject(forwardRef(() => RoomService)) private roomService: RoomService, // tslint:disable-line
               private userService: UserService) {
   }
 

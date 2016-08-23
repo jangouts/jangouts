@@ -1,8 +1,4 @@
-import {
-	addProviders,
-  fakeAsync,
-  tick
-} from "@angular/core/testing";
+import { addProviders, fakeAsync, tick } from "@angular/core/testing";
 
 import { SpeakObserver } from "./speak-observer.service";
 

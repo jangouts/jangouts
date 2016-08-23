@@ -7,7 +7,7 @@
 
 import { Component, OnInit } from "@angular/core";
 import { Router, Event, NavigationStart, NavigationError, ROUTER_DIRECTIVES } from "@angular/router";
-import { Http, Response } from '@angular/http';
+import { Http, Response } from "@angular/http";
 
 import { ConfigService } from "./config.provider";
 import { SigninFormComponent } from "./user";
@@ -44,11 +44,11 @@ export class AppComponent implements OnInit {
   }
 
   private setRouterEvents(): void {
-    this.router.events.subscribe((event:Event) => {
-      if(event instanceof NavigationStart) {
+    this.router.events.subscribe((event: Event): void => {
+      if (event instanceof NavigationStart) {
         this.roomService.leave(); // before changing state, cleanup feeds
       } else if (event instanceof NavigationError) {
-        this.router.navigate(["/sign_in"])
+        this.router.navigate(["/sign_in"]);
       }
     });
   }

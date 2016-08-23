@@ -12,7 +12,7 @@ import { Feed } from "./shared";
 @Directive({ selector: "[jhSendPics]" })
 export class SendPicsDirective implements OnInit {
 
-  @Input("jhSendPics") public feed: Feed;
+  @Input("jhSendPics") public feed: Feed; // tslint:disable-line
   private el: any;
 
   constructor (el: ElementRef) {

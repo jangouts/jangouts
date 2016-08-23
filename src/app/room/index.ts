@@ -10,7 +10,7 @@ export {
 };
 export { Room } from "./room.model";
 export { LogEntry } from "./logentry.model";
-export const ROOM_PROVIDERS = [
+export const ROOM_PROVIDERS: any[] = [
   RoomService,
   DataChannelService,
   LogService,
@@ -27,7 +27,7 @@ export {
   RoomComponent
 };
 
-export const ROOM_COMPONENTS = [
+export const ROOM_COMPONENTS: any[] = [
   LeaveButtonComponent,
   RoomComponent
 ];

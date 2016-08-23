@@ -1,6 +1,4 @@
-import {
-  addProviders
-} from '@angular/core/testing';
+import { addProviders } from "@angular/core/testing";
 
 import { FeedConnection } from "./feed-connection.model";
 

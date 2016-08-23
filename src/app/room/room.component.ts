@@ -4,8 +4,8 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
-import { Component, OnInit, Inject } from "@angular/core";
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, NavigationExtras } from "@angular/router";
 
 import { Broadcaster } from "../shared";
 import { BlockUIComponent} from "../block-ui";
@@ -44,26 +44,26 @@ export class RoomComponent implements OnInit {
       /*
        * Redirect to signin making sure room is included in the url
        */
-      let navigationExtras: NavigationExtras = {}
+      let navigationExtras: NavigationExtras = {};
       if (this.room) {
-          navigationExtras["queryParams"] = { 'room': this.room.id};
+          navigationExtras["queryParams"] = { "room": this.room.id}; // tslint:disable-line
       }
-      this.router.navigate(['/sign_in'], navigationExtras);
+      this.router.navigate(["/sign_in"], navigationExtras);
 
     } else {
       /* Set last room */
       this.userService.setSetting("lastRoom", this.roomService.getRoom().id);
 
 
-      if (this.user === null && this.route.snapshot.queryParams["user"] === undefined) {
+      if (this.user === null && this.route.snapshot.queryParams["user"] === undefined) { // tslint:disable-line
         /*
          * Make sure the url includes the user (to allow bookmarking)
          */
 
         let navigationExtras: NavigationExtras = {
-          queryParams: { 'user': this.user.username},
+          queryParams: { "user": this.user.username},
         };
-        this.router.navigate(['/rooms', this.room.id], navigationExtras);
+        this.router.navigate(["/rooms", this.room.id], navigationExtras);
 
       } else {
         this.roomService.enter(this.user.username);
@@ -80,20 +80,17 @@ export class RoomComponent implements OnInit {
       alert("Janus server reported the following error:\n" + error);
     });
 
-    //this.broadcaster.on("consentDialog.changed").subscribe((open: any): void => {
-      //console.log("consentDialog.changed", open);
-      //this.broadcaster.broadcast("blockUI", open);
-    //});
+    // this.broadcaster.on("consentDialog.changed").subscribe((open: any): void => {
+      // this.broadcaster.broadcast("blockUI", open);
+    // });
   }
 
   private setKeybindings(): void {
     window.Mousetrap.bind("alt+m", (event: KeyboardEvent): boolean => {
-      console.log('toggle channel audio');
       this.roomService.toggleChannel("audio");
       return false; // prevent bubbling
     });
     window.Mousetrap.bind("alt+n", (event: KeyboardEvent): boolean => {
-      console.log('toggle channel video');
       this.roomService.toggleChannel("video");
       return false; // prevent bubbling
     });

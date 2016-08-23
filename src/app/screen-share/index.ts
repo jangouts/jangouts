@@ -4,6 +4,6 @@ export { ScreenShareHintComponent } from "./screen-share-hint.component";
 import { ScreenShareService } from "./screen-share.service";
 
 export { ScreenShareService };
-export const SCREEN_SHARE_PROVIDERS = [
+export const SCREEN_SHARE_PROVIDERS: any [] = [
   ScreenShareService
 ];

@@ -31,8 +31,8 @@ function jhSigninFormLink(scope, element) {
 */
 
 
-import { Component, OnInit, Inject } from "@angular/core";
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, NavigationExtras } from "@angular/router";
 
 import { RoomService, Room } from "../room";
 import { ScreenShareHintComponent } from "../screen-share";
@@ -88,10 +88,10 @@ export class SigninFormComponent implements OnInit {
     if (this.room && this.username) {
 
       let navigationExtras: NavigationExtras = {
-        queryParams: { 'user': this.username},
+        queryParams: { "user": this.username},
       };
 
-      this.router.navigate(['/rooms', this.room.id], navigationExtras);
+      this.router.navigate(["/rooms", this.room.id], navigationExtras);
 
     }
   }

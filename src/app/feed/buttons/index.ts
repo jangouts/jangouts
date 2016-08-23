@@ -10,7 +10,7 @@ export {
   UnpublishButtonComponent
 };
 
-export const FEED_BUTTONS_COMPONENTS = [
+export const FEED_BUTTONS_COMPONENTS: any[] = [
   AudioButtonComponent,
   VideoButtonComponent,
   IgnoreButtonComponent,

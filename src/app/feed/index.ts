@@ -1,7 +1,7 @@
 import { FeedsService, Feed, FeedConnection } from "./shared";
 
 export { FeedsService, Feed, FeedConnection };
-export const FEED_PROVIDERS = [ FeedsService, FeedConnection, Feed ];
+export const FEED_PROVIDERS: any[] = [ FeedsService, FeedConnection, Feed ];
 
 
 import { PushToTalkComponent } from "./pushtotalk";
@@ -27,7 +27,7 @@ export {
   FEED_BUTTONS_COMPONENTS
 };
 
-export const FEED_COMPONENTS = [
+export const FEED_COMPONENTS: any[] = [
   PushToTalkComponent,
   MainFeedComponent,
   FeedComponent,
