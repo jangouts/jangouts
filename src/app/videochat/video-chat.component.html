@@ -5,15 +5,16 @@
         <img src="../../images/jangouts-logo.png" id="logo" />
       </div>
       <div class="col-xs-12 col-sm-8 text-right">
-        <!--<jh-pushtotalk-button></jh-pushtotalk-button>--> <!-- Query error -->
+        <jh-pushtotalk-button></jh-pushtotalk-button>
         <jh-thumbnails-mode-button></jh-thumbnails-mode-button>
         <jh-screen-share-button></jh-screen-share-button>
-        <button
-           class="btn"
-           (click)="showHotkeys()"
-           title="Keyboard shortcuts">
-          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-        </button>
+        <!-- [REVIEW] - cheatsheet not implemented yet -->
+        <!--<button-->
+           <!--class="btn"-->
+           <!--(click)="showHotkeys()"-->
+           <!--title="Keyboard shortcuts">-->
+          <!--<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>-->
+        <!--</button>-->
         <jh-leave-button></jh-leave-button>
       </div>
     </div>
@@ -44,8 +45,9 @@
             [feed]="f"
             (toggleHighlight)="toggleHighlightedFeed($event)"
             [highlighted]="isHighlighted(f)"
-            [highlighted-by-user]="isHighlightedByUser(f)"
             *ngFor="let f of feeds()">
+            <!--[FIXME] - Fix highlighted-by-user attr-->
+            <!--[highlighted-by-user]="isHighlightedByUser(f)"-->
           </jh-feed>
 
             <!-- [TODO] - find a way to do orderby with angular2 -->

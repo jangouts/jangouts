@@ -1,9 +1,9 @@
-<form name="chatMessage" [ngFormModel]="chatForm" (ngSubmit)="submit()">
+<form name="chatMessage" (ngSubmit)="submit()" #chatForm="ngForm" novalidate>
   <div class="input-group">
-    <input class="form-control input-sm" placeholder="Type your message here..."
-    type="text" ngControl="text" required>
+    <input name="message" class="form-control input-sm" placeholder="Type your message here..."
+    type="text" [(ngModel)]="text" required>
     <span class="input-group-btn">
-      <button type="submit" class="btn btn-sm" [disabled]="!chatForm.valid">Send</button>
+      <button type="submit" class="btn btn-sm" [disabled]="!chatForm.form.valid">Send</button>
     </span>
   </div>
 </form>

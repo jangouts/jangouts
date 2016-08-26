@@ -1,26 +1,12 @@
 {
   "globalDependencies": {
-    "angular": "registry:dt/angular#1.5.0+20160509150441",
-    "angular-animate": "registry:dt/angular-animate#1.5.0+20160407085121",
-    "angular-cookies": "registry:dt/angular-cookies#1.4.0+20160317120654",
-    "angular-hotkeys": "registry:dt/angular-hotkeys#0.0.0+20160317120654",
-    "angular-local-storage": "registry:dt/angular-local-storage#0.1.5+20160317120654",
-    "angular-mocks": "registry:dt/angular-mocks#1.3.0+20160425155016",
-    "angular-resource": "registry:dt/angular-resource#1.5.0+20160412142209",
-    "angular-route": "registry:dt/angular-route#1.3.0+20160317120654",
-    "angular-sanitize": "registry:dt/angular-sanitize#1.3.0+20160317120654",
-    "angular-ui-router": "registry:dt/angular-ui-router#1.1.5+20160521151413",
-    "core-js": "registry:dt/core-js#0.0.0+20160317120654",
+    "core-js": "registry:dt/core-js#0.0.0+20160725163759",
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
-    "jquery": "registry:dt/jquery#1.10.0+20160417213236",
+    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "mousetrap": "registry:dt/mousetrap#1.5.0+20160501152135",
-    "node": "registry:dt/node#4.0.0+20160509154515"
+    "node": "registry:env/node#6.0.0+20160813135048"
   },
   "dependencies": {
-    "lodash": "registry:npm/lodash#4.0.0+20160416211519"
-  },
-  "globalDevDependencies": {
-    "angular-mocks": "registry:dt/angular-mocks#1.3.0+20160425155016",
-    "jasmine": "registry:dt/jasmine#2.2.0+20160505161446"
+    "lodash": "registry:npm/lodash#4.0.0+20160723033700"
   }
 }

@@ -1,5 +1,3 @@
-<!--<h3 class="modal-title">Information about browsers</h3>-->
-
 <h4>Firefox</h4>
 <p>
 At least Firefox 36 is required, a more recent version is recommended.
@@ -28,10 +26,10 @@ again adding the <code>--no-sandbox</code> parameter to the command line.
 <p>
 Chrome and Chromium 47 (and probably more recent versions) seem to refuse to
 send WebRTC content (neither audio or video) over plain HTTP.
-<span *ngIf="usingSSL()">You should not be affected by that problem, since
+<span *ngIf="usingSSL">You should not be affected by that problem, since
 you are using a SSL (HTTPS) connection.</span>
-<span *ngIf="!usingSSL() && httpsUrl()">
+<span *ngIf="!usingSSL && httpsUrl">
 To avoid this and other problems, it's probably a good idea to access the
-<a class="alert-link" href="{{httpsUrl()}}">SSL (HTTPS) version</a>
+<a class="alert-link" href="{{httpsUrl}}">SSL (HTTPS) version</a>
 of this site.</span>
 </p>

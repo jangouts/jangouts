@@ -1,15 +1,6 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
-
+/// <reference path="../../typings/globals/jasmine/index.d.ts" />
 
 import { ConfigService } from "./config.provider";
-
-declare const jasmine: any;
-declare const spyOn: any;
 
 describe("Service: ConfigService", () => {
 

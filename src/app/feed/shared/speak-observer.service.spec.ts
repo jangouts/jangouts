@@ -1,17 +1,6 @@
-import {
-  beforeEachProviders,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  fakeAsync,
-  tick
-} from "@angular/core/testing";
+import { addProviders, fakeAsync, tick } from "@angular/core/testing";
 
 import { SpeakObserver } from "./speak-observer.service";
-
-declare const jasmine: any;
-declare const spyOn: any;
 
 describe("Service: SpeakObserver", () => {
 
@@ -19,9 +8,9 @@ describe("Service: SpeakObserver", () => {
     getFloatFrequencyData: function (fftBins: any): void { }
   };
 
-  beforeEachProviders(() => [
+  beforeEach(() => addProviders([
     {provide: SpeakObserver, useClass: SpeakObserver}
-  ]);
+  ]));
 
   beforeEach(() => {
     this.context = {

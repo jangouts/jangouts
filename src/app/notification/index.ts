@@ -1,1 +1,4 @@
-export { NotificationComponent } from "./notification.component";
+import { NotificationComponent } from "./notification.component";
+export { NotificationComponent };
+
+export const NOTIFICATION_COMPONENTS: any[] = [ NotificationComponent ];

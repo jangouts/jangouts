@@ -1,15 +1,5 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
-
 import { LogService } from "./log.service";
 import { LogEntry } from "./logentry.model";
-
-declare const jasmine: any;
-declare const spyOn: any;
 
 describe("Service: LogService", () => {
 

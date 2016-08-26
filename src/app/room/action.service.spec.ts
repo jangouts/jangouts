@@ -1,17 +1,8 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
-
 import { Feed } from "../feed";
 
 import { LogEntry } from "./logentry.model";
 import { ActionService } from "./action.service";
 
-declare const jasmine: any;
-declare const spyOn: any;
 
 class MockDataChannelService {
   public sendChatMessage(text: string): void {}

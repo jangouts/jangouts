@@ -5,12 +5,10 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, forwardRef } from "@angular/core";
 
-import {HotkeysService, Hotkey} from 'angular2-hotkeys';
-
-import { RoomService } from "../../room";
 import { UserService } from "../../user/user.service";
+import { RoomService } from "../../room/room.service";
 
 @Component({
   selector: "jh-pushtotalk-button",
@@ -20,7 +18,7 @@ export class PushToTalkComponent implements OnInit {
 
   public hotkeyActive: boolean = false;
   public showHotkey: boolean = false;
-  public hotkey: Hotkey = null;
+  public hotkey: string = null;
   public titleText: string = this.titleText1;
   public toggleText: string = null;
 
@@ -29,9 +27,9 @@ export class PushToTalkComponent implements OnInit {
   private ignoreClick: boolean = false;
 
 
-  constructor(private roomService: RoomService,
-              private userService: UserService,
-              private hotkeys: HotkeysService) {
+  /* Needed in order to fix import barrels error https://github.com/angular/angular.io/issues/1301 */
+  constructor(@Inject(forwardRef(() => RoomService)) private roomService: RoomService, // tslint:disable-line
+              private userService: UserService) {
   }
 
   public ngOnInit (): void {
@@ -48,8 +46,11 @@ export class PushToTalkComponent implements OnInit {
     if (this.hotkeyActive) {
       if (this.hotkey !== null) {
         this.setPushToTalk(null);
+      /* Mousetrap.stopRecord() is not implemented */
+      /*
       } else {
         window.Mousetrap.stopRecord();
+      */
       }
       this.hotkeyActive = false;
     } else {
@@ -89,9 +90,7 @@ export class PushToTalkComponent implements OnInit {
       }
     };
 
-    window.Mousetrap.record({
-      recordSequence: false
-    }, recordCallback);
+    window.Mousetrap.record(recordCallback);
   }
 
   private warn(warning: string): void {
@@ -109,12 +108,8 @@ export class PushToTalkComponent implements OnInit {
 
   private setPushToTalk(key: string): void {
     if (this.hotkey !== null) {
-      this.hotkeys.remove(this.hotkey);
-      // [TODO] - angular2-hotkeys new update to suport keydown/keyup
-      /*
-       * this.hotkeys.remove(this.hotkey, "keydown");
-       * this.hotkeys.remove(this.hotkey, "keyup");
-       */
+      window.Mousetrap.unbind(this.hotkey, "keydown");
+      window.Mousetrap.unbind(this.hotkey, "keyup");
 
       this.hotkey = null;
       this.showHotkey = false;
@@ -128,19 +123,17 @@ export class PushToTalkComponent implements OnInit {
         return false;  // prevent bubbling
       };
 
-      this.hotkey = new Hotkey(key, pttCallback);
-      this.hotkeys.add(this.hotkey);
-      // [TODO] - angular2-hotkeys new update to suport keydown/keyup
-      /*
-       * this.hotkeys.add(new Hotkey(key, pttCallback, "keydown"));
-       * this.hotkeys.add(new Hotkey(key, pttCallback, "keyup"));
-       */
+      this.hotkey = key;
+      window.Mousetrap.bind(this.hotkey, pttCallback, "keydown");
+      window.Mousetrap.bind(this.hotkey, pttCallback, "keyup");
 
       this.showHotkey = true;
       this.titleText = this.titleText2;
+
     }
 
     this.userService.setSetting("lastHotkey", key);
+
   }
 
 }

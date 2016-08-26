@@ -1,23 +1,13 @@
-import {
-  beforeEachProviders,
-  beforeEach,
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
+import { addProviders } from "@angular/core/testing";
 
 import { FeedConnection } from "./feed-connection.model";
 
-declare const jasmine: any;
-declare const spyOn: any;
 
 describe("Service: FeedConnection", () => {
 
-  beforeEachProviders(() => {
-    return [
+  beforeEach(() => addProviders([
       {provide: FeedConnection, useClass: FeedConnection}
-    ];
-  });
+  ]));
 
   beforeEach(() => {
     this.pluginHandle = {

@@ -1,3 +1,4 @@
+@import "vendor";
 @import "variables";
 
 body {
@@ -70,7 +71,8 @@ header {
 
 
 //styles by sections
-#signin {
+jh-signin-form {
+  display: block;
   width: 100%;
   min-height: 660px;
   background: url('../images/login-bg.jpg') #000;
@@ -126,8 +128,3 @@ header {
   background-color: darken($color1, 10%);
   border-color: darken($color1, 15%);
 }
-
-/* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
-   all your sass files automatically */
-// injector
-// endinjector

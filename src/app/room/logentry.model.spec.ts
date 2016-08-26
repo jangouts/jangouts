@@ -1,12 +1,4 @@
-import {
-  describe,
-  expect,
-  it
-} from "@angular/core/testing";
-
 import { LogEntry } from "./logentry.model";
-
-declare const spyOn: any;
 
 describe("Model: LogEntry", () => {
 
