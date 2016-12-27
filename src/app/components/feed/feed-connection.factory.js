@@ -17,6 +17,15 @@
    * Manages the connection of a feed to the Janus server
    *
    * @constructor
+   *
+   * @param {string} role - possible values
+   *        * main: main publisher feed
+   *        * subscriber: subscriber feed
+   *        * screen: screen-sharing publisher feed
+   *        * window: screen-sharing publisher feed
+   *  In most browsers, "screen" and "window" are equivalent. Firefox uses the
+   *  former to share the whole screen and the latter for sharing individual
+   *  windows.
    */
   function feedConnectionFactory(ConnectionConfig) {
     return function(pluginHandle, roomId, role) {
@@ -78,8 +87,9 @@
           media.audioSend = true;
           media.data = true;
         } else {
+          // Publishing something but not "main" -> screen sharing
           cfg.audio = false;
-          media.video = "screen";
+          media.video = this.role;
           media.audioSend = false;
           media.data = false;
         }
