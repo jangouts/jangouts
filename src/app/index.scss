@@ -39,15 +39,25 @@ body {
     border: 2px solid transparent;
     border-radius: 4px;
 
+    .buttons {
+      z-index: 10;
+      position: absolute;
+    }
+
     .thumb {
       position: relative;
-      cursor: pointer;
       .face {
         vertical-align: middle;
         width: 64px;
         height: 48px;
         // This transition causes some artifacts in some corner cases
         // transition: width .3s, height .3s;
+      }
+      .buttons {
+        top: 50%;
+        width: 100%;
+        padding: 0px 7px 0px 7px;
+        margin-top: -10px;
       }
     }
 
@@ -58,8 +68,6 @@ body {
       height: 26px;
       position: relative;
       .buttons {
-        z-index: 10;
-        position: absolute;
         top: 2px;
         right: 2px;
       }
