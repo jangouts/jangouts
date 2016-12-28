@@ -1,10 +1,4 @@
-<div style="display: inline-block;"
-     uib-tooltip="{{vm.title()}}"
-     tooltip-placement="bottom">
-  <button
-    class="btn"
-    ng-disabled="!vm.enabled()"
-    ng-click="vm.click()">
-    <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
-  </button>
-</div>
+<jh-screen-share-sub-button
+  source="'screen'"
+  icon="'blackboard'"
+  label="'Share a window/desktop'"></jh-screen-share-sub-button>

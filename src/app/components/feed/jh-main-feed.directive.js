@@ -30,7 +30,7 @@
         if (newVal !== undefined && newVal !== null) {
           var video = $('video', element)[0];
           video.muted = true;
-          attachMediaStream(video, newVal);
+          Janus.attachMediaStream(video, newVal);
         }
       });
     }
