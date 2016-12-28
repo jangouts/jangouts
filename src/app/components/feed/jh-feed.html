@@ -1,9 +1,5 @@
-<figure
-  ng-class="{'own-feed': vm.feed.isPublisher, sticky: vm.highlightedByUser}"
-  ng-init="buttons=false"
-  ng-mouseenter="buttons=true"
-  ng-mouseleave="buttons=false">
-  <div class="thumb">
+<figure ng-class="{'own-feed': vm.feed.isPublisher, sticky: vm.highlightedByUser}">
+  <div class="thumb" ng-click="vm.toggleHighlightFn()">
     <video
       autoplay
       class="face"
@@ -26,23 +22,31 @@
     <canvas
       ng-show="false">
     </canvas>
-    <div
-      class="buttons"
-      ng-show="buttons">
-      <div class="pull-left">
-        <jh-sticky-button feed="vm.feed" click-fn="vm.toggleHighlightFn()" highlighted="vm.highlighted" sticky="vm.highlightedByUser"></jh-sticky-button>
-      </div>
-      <span class="pull-right">
-        <jh-video-button feed="vm.feed"></jh-video-button>
-        <jh-ignore-button feed="vm.feed"></jh-ignore-button>
-      </span>
-    </div>
   </div>
-  <figcaption>
-    <span class="caption">{{ vm.feed.display }}</span>
+  <figcaption
+    ng-init="buttons=false">
+    <span
+      class="caption"
+      ng-class="{dropdown: buttons, dropup: !buttons}"
+      ng-click="buttons=!buttons">
+      <span class="caret"></span>
+      {{ vm.feed.display }}
+    </span>
     <div class="buttons">
       <jh-unpublish-button feed="vm.feed"></jh-unpublish-button>
       <jh-audio-button feed="vm.feed"></jh-audio-button>
+    </div>
+    <div
+      class="additional-buttons"
+      ng-show="buttons">
+        <jh-sticky-button
+          feed="vm.feed"
+          click-fn="buttons=false; vm.toggleHighlightFn()"
+          highlighted="vm.highlighted"
+          sticky="vm.highlightedByUser">
+        </jh-sticky-button>
+        <jh-video-button feed="vm.feed" ng-click="buttons=false"></jh-video-button>
+        <jh-ignore-button feed="vm.feed" ng-click="buttons=false"></jh-ignore-button>
     </div>
   </figcaption>
 </figure>

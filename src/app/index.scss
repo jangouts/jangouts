@@ -39,25 +39,14 @@ body {
     border: 2px solid transparent;
     border-radius: 4px;
 
-    .buttons {
-      z-index: 10;
-      position: absolute;
-    }
-
     .thumb {
-      position: relative;
+      cursor: pointer;
       .face {
         vertical-align: middle;
         width: 64px;
         height: 48px;
         // This transition causes some artifacts in some corner cases
         // transition: width .3s, height .3s;
-      }
-      .buttons {
-        top: 50%;
-        width: 100%;
-        padding: 0px 7px 0px 7px;
-        margin-top: -10px;
       }
     }
 
@@ -67,15 +56,33 @@ body {
       padding: 2px 3px 3px 3px;
       height: 26px;
       position: relative;
-      .buttons {
-        top: 2px;
-        right: 2px;
-      }
       .caption {
-        overflow: hidden;
         position: absolute;
         width: 80%;
         height: 20px;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .buttons {
+        z-index: 10;
+        position: absolute;
+        top: 2px;
+        right: 2px;
+      }
+      .additional-buttons {
+        z-index: 10;
+        position: absolute;
+        bottom: 22px;
+        padding: 1px;
+        background-clip: padding-box;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.07);
+        border-radius: 4px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        button {
+          margin: 2px;
+        }
       }
     }
 
