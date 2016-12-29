@@ -86,6 +86,15 @@ body {
       }
     }
 
+    .btn {
+      // FIXME: this is a copy&paste of Bootstrap's .btn-xs
+      // we should use @extend instead of repeating Bootstrap code
+      border-radius: 3px;
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 1px 5px;
+    }
+
     &.own-feed {
       figcaption {
         color: #fff;
