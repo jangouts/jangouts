@@ -40,7 +40,6 @@ body {
     border-radius: 4px;
 
     .thumb {
-      position: relative;
       cursor: pointer;
       .face {
         vertical-align: middle;
@@ -57,17 +56,33 @@ body {
       padding: 2px 3px 3px 3px;
       height: 26px;
       position: relative;
+      .caption {
+        position: absolute;
+        width: 80%;
+        height: 20px;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+      }
       .buttons {
         z-index: 10;
         position: absolute;
         top: 2px;
         right: 2px;
       }
-      .caption {
-        overflow: hidden;
+      .additional-buttons {
+        z-index: 10;
         position: absolute;
-        width: 80%;
-        height: 20px;
+        bottom: 22px;
+        padding: 1px;
+        background-clip: padding-box;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.07);
+        border-radius: 4px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        button {
+          margin: 2px;
+        }
       }
     }
 
