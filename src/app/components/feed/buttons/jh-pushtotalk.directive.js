@@ -65,7 +65,7 @@
       }
 
       function recordSequence() {
-        vm.toggleText = "Choose a hotkey for Push-to-Talk...";
+        vm.toggleText = "Choose a hotkey...";
 
         var recordCallback = function(sequence) {
           vm.toggleText = "";
