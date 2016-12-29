@@ -15,7 +15,7 @@
   function jhPushToTalkButtonDirective(RoomService, hotkeys, $timeout, UserService) {
     return {
       restrict: 'E',
-      templateUrl: 'app/components/feed/jh-pushtotalk-button.html',
+      templateUrl: 'app/components/feed/buttons/jh-pushtotalk-button.html',
       controllerAs: 'vm',
       controller: jhPushToTalkButtonCtrl,
       scope: {}
