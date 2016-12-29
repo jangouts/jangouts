@@ -1,34 +1,28 @@
 <div class="row">
   <header>
     <div class="row">
-      <div class="col-xs-12 col-sm-4">
-        <img src="images/jangouts-logo.png" id="logo" />
-      </div>
-      <div class="col-xs-12 col-sm-8 text-right">
-        <jh-pushtotalk-button></jh-pushtotalk-button>
-        <jh-thumbnails-mode-button></jh-thumbnails-mode-button>
-        <jh-screen-share-button></jh-screen-share-button>
+      <div class="col-xs-12 col-sm-5">
+        <jh-room-info></jh-room-info>
         <button
            class="btn"
            ng-click="vm.showHotkeys()"
            title="Keyboard shortcuts">
           <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
         </button>
-        <button
-          ng-show="vm.windowResizeModeOn"
-          class="btn"
-          ng-click="vm.setDefaultLayout()"
-          title="Reset layout to default">
-          <span class="glyphicon glyphicon-trash"  aria-hidden="true"></span>
-        </button>
-        <button
-          ng-class="{ 'btn-danger': vm.windowResizeModeOn }"
-          class="btn"
-          ng-click="vm.toggleWindowResizeMode()"
-          title="Window resize mode">
-          <span class="glyphicon glyphicon-pushpin"  aria-hidden="true"></span>
-        </button>
+        <jh-thumbnails-mode-button></jh-thumbnails-mode-button>
+        <jh-resize-mode-button
+          toggle-fn="vm.toggleWindowResizeMode()"
+          reset-fn="vm.setDefaultLayout()"
+          resize-mode-on="vm.windowResizeModeOn"></jh-resize-mode-button>
         <jh-leave-button></jh-leave-button>
+      </div>
+      <div class="hidden-xs col-sm-2 text-center">
+        <img src="images/jangouts-logo.png" id="logo" />
+      </div>
+      <div class="col-xs-12 col-sm-5 text-right">
+        <jh-main-feed-info></jh-main-feed-info>
+        <jh-screen-share-button></jh-screen-share-button>
+        <jh-pushtotalk-button></jh-pushtotalk-button>
       </div>
     </div>
   </header>
