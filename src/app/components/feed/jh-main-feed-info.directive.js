@@ -29,7 +29,9 @@
       vm.name = name;
 
       function name() {
-        return FeedsService.findMain().display;
+        var feed = FeedsService.findMain();
+        var name = (feed !== null) ? feed.display : "";
+        return name;
       }
     }
   }
