@@ -7,7 +7,6 @@ $color3: #e1dcbd; // Brown-ish
 $jangouts-bg:  $color3;
 $jangouts-video-bg: $color2;
 
-
 body {
   background: $jangouts-bg;
 }
@@ -161,10 +160,15 @@ header {
   #logo {
     height: 33px;
   }
-  button {
+  button, .btn-default {
     color: $color1;
     background: transparent;
-    border: 0px;
+    border-color: transparent;
+
+    &:active, &:focus, &:hover {
+      background: inherit;
+      border-color: transparent;
+    }
   }
   div.checkbox {
     top: 2px;
