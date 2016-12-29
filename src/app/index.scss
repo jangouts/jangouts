@@ -175,6 +175,18 @@ header {
     margin: 0 12px 0 12px;
     display: inline;
   }
+
+  .push-to-talk {
+    kbd {
+      background-color: $color1;
+      margin-left: -2px;
+      line-height: 1em;
+      font-weight: bold;
+    }
+    .toggle-text {
+      font-size: 10px;
+    }
+  }
 }
 
 footer {

@@ -33,6 +33,7 @@
       vm.titleText = titleText1;
 
       vm.click = click;
+      vm.isRecording = isRecording;
 
       setLastHotkey();
 
@@ -65,7 +66,7 @@
       }
 
       function recordSequence() {
-        vm.toggleText = "Choose a hotkey...";
+        vm.toggleText = "Press hotkey";
 
         var recordCallback = function(sequence) {
           vm.toggleText = "";
@@ -140,6 +141,9 @@
         UserService.setSetting("lastHotkey", key);
       }
 
+      function isRecording() {
+        return (vm.toggleText && vm.toggleText !== "");
+      }
     }
 
   }
