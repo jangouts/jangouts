@@ -74,6 +74,7 @@
 
       /* Functions */
       vm.feeds = feeds;
+      vm.mainFeed = mainFeed;
       vm.highlightedFeed = highlightedFeed;
       vm.mirrored = mirrored;
       vm.toggleHighlightedFeed = toggleHighlightedFeed;
@@ -135,6 +136,10 @@
 
       function feeds() {
         return FeedsService.allFeeds();
+      }
+
+      function mainFeed() {
+        return FeedsService.findMain();
       }
 
       function highlightedFeed() {

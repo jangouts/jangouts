@@ -37,11 +37,11 @@
       }
 
       function showsEnable() {
-        return (vm.feed.isPublisher && !vm.feed.getVideoEnabled());
+        return (vm.feed && vm.feed.isPublisher && !vm.feed.getVideoEnabled());
       }
 
       function showsDisable() {
-        return (vm.feed.isPublisher && vm.feed.getVideoEnabled());
+        return (vm.feed && vm.feed.isPublisher && vm.feed.getVideoEnabled());
       }
     }
   }
