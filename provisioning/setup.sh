@@ -40,6 +40,7 @@ then
   nvm install 5
   nvm alias default 5
   npm install -g bower
+  npm install -g yarn
 fi
 
 #
@@ -48,4 +49,4 @@ fi
 [[ ! -d node_modules ]] && mkdir node_modules
 cd /home/vagrant/jangouts
 [[ ! -L node_modules ]] && ln -s ../node_modules
-npm install
+yarn install
