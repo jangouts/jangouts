@@ -25,10 +25,7 @@ import {
   selector: "jh-feed",
   template: require("./feed.component.html"),
   styles: [require("!raw!sass!./feed.component.scss")],
-  directives: [
-    SendPicsDirective,
-    VideoStreamDirective,
-    SetVideoSubscriptionDirective,
+  entryComponents: [
     AudioButtonComponent,
     VideoButtonComponent,
     IgnoreButtonComponent,

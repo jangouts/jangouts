@@ -10,16 +10,16 @@ import { CommonModule } from "@angular/common";
 import { BrowserModule  } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { HttpModule, JsonpModule } from "@angular/http";
-
-import { MODAL_BROWSER_PROVIDERS } from "angular2-modal/platform-browser";
-
 import { AppComponent } from "./app.component";
 
 import { ConfigService } from "./config.provider";
+
 import {
   FeedsService,
-  FEED_COMPONENTS
+  FEED_COMPONENTS,
+  FEED_DIRECTIVES
 } from "./feed";
+
 import {
   RoomService,
   DataChannelService,
@@ -29,12 +29,14 @@ import {
 } from "./room";
 
 import { Broadcaster  } from "./shared";
-import { ScreenShareService, ScreenShareButtonComponent } from "./screen-share";
+import { ScreenShareService, ScreenShareButtonComponent, ScreenShareHintComponent } from "./screen-share";
 import { StatesService } from "./router";
 import { SigninFormComponent, UserService } from "./user";
 import { NotificationComponent } from "./notification";
 import { CHAT_COMPONENTS } from "./chat";
-import { ThumbnailsModeButtonComponent } from "./videochat";
+import { ThumbnailsModeButtonComponent, VideoChatComponent } from "./videochat";
+import { BlockUIComponent } from "./block-ui";
+import { BrowserInfoComponent } from "./browser-info";
 import { FooterComponent } from "./footer";
 
 import { routing, appRoutingProviders } from "./app.routing";
@@ -47,10 +49,15 @@ import { routing, appRoutingProviders } from "./app.routing";
       SigninFormComponent,
       NotificationComponent,
       ThumbnailsModeButtonComponent,
+      VideoChatComponent,
+      BlockUIComponent,
+      BrowserInfoComponent,
       ScreenShareButtonComponent,
+      ScreenShareHintComponent,
       NotificationComponent,
       CHAT_COMPONENTS,
-      FEED_COMPONENTS
+      FEED_COMPONENTS,
+      FEED_DIRECTIVES
     ],
     imports: [
       BrowserModule,
@@ -71,8 +78,7 @@ import { routing, appRoutingProviders } from "./app.routing";
       StatesService,
       Broadcaster,
       ScreenShareService,
-      UserService,
-      MODAL_BROWSER_PROVIDERS
+      UserService
     ],
     bootstrap: [AppComponent],
 })

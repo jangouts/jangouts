@@ -6,16 +6,13 @@
  */
 
 import { Component, OnInit, ViewContainerRef } from "@angular/core";
-import { SafeUrl, DomSanitizationService} from "@angular/platform-browser";
-
-import {Modal, BS_MODAL_PROVIDERS} from "angular2-modal/plugins/bootstrap";
-
+import { SafeUrl, DomSanitizer } from "@angular/platform-browser";
+import { Modal } from "angular2-modal/plugins/bootstrap";
 import { ConfigService } from "../config.provider";
 
 @Component({
   selector: "jh-browser-info",
-  template: require("./browser-info.component.html"),
-  viewProviders: [ ...BS_MODAL_PROVIDERS ]
+  template: require("./browser-info.component.html")
 })
 export class BrowserInfoComponent implements OnInit {
 
@@ -23,9 +20,9 @@ export class BrowserInfoComponent implements OnInit {
 
   constructor(public modal: Modal,
               private config: ConfigService,
-              private sanitizer: DomSanitizationService,
-              viewContainer: ViewContainerRef) {
-      modal.defaultViewContainer = viewContainer;
+              private sanitizer: DomSanitizer,
+              vcRef: ViewContainerRef) {
+      modal.overlay.defaultViewContainer = vcRef;
   }
 
   public ngOnInit(): void { }

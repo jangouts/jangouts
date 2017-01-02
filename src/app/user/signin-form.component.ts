@@ -43,7 +43,7 @@ import { UserService } from "./user.service";
 @Component({
   selector: "jh-signin-form",
   template: require("./signin-form.component.html"),
-  directives: [
+  entryComponents: [
     ScreenShareHintComponent,
     ThumbnailsModeButtonComponent,
     BrowserInfoComponent

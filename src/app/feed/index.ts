@@ -33,3 +33,13 @@ export const FEED_COMPONENTS: any[] = [
   FeedComponent,
   ...FEED_BUTTONS_COMPONENTS
 ];
+
+import { VideoStreamDirective } from "./shared/videostream.directive";
+import { SendPicsDirective } from "./send-pics.directive";
+import { SetVideoSubscriptionDirective } from "./set-video-subscription.directive";
+
+export const FEED_DIRECTIVES: any[] = [
+  VideoStreamDirective,
+  SendPicsDirective,
+  SetVideoSubscriptionDirective
+];

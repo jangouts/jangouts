@@ -6,21 +6,19 @@
  */
 
 import { Component, OnInit, ViewContainerRef } from "@angular/core";
-import {Modal, BS_MODAL_PROVIDERS} from "angular2-modal/plugins/bootstrap";
-
+import { Modal } from "angular2-modal/plugins/bootstrap";
 import { ConfigService } from "../config.provider";
 
 @Component({
   selector: "jh-screen-share-hint",
-  template: require("./screen-share-hint.component.html"),
-  viewProviders: [ ...BS_MODAL_PROVIDERS ]
+  template: require("./screen-share-hint.component.html")
 })
 export class ScreenShareHintComponent implements OnInit {
 
   constructor(public modal: Modal,
               private config: ConfigService,
-              viewContainer: ViewContainerRef) {
-      modal.defaultViewContainer = viewContainer;
+              vcRef: ViewContainerRef) {
+      modal.overlay.defaultViewContainer = vcRef;
   }
 
   public ngOnInit(): void { }

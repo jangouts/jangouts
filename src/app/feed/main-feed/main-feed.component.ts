@@ -11,9 +11,6 @@ import { Feed, VideoStreamDirective } from "../shared";
 
 @Component({
   selector: "jh-main-feed",
-  directives: [
-    VideoStreamDirective
-  ],
   template: require("./main-feed.component.html"),
   styles: [require("!raw!sass!./main-feed.component.scss")]
 })

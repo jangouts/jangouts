@@ -18,7 +18,7 @@ import { RoomService } from "./room.service";
 @Component({
   selector: "jh-room",
   template: require("./room.component.html"),
-  directives: [
+  entryComponents: [
     VideoChatComponent,
     BlockUIComponent
   ]

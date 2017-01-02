@@ -16,11 +16,10 @@ import { AutoScrollDirective } from "./message-autoscroll.directive";
   selector: "jh-chat",
   template: require("./chat.component.html"),
   styles: [require("!raw!sass!./chat.component.scss")],
-  directives: [
+  entryComponents: [
     ChatFormComponent,
     ChatMessageComponent,
-    LogEntryComponent,
-    AutoScrollDirective
+    LogEntryComponent
   ]
 })
 export class ChatComponent implements OnInit {

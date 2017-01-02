@@ -6,7 +6,7 @@
  */
 
 import { Component, OnInit } from "@angular/core";
-import { Router, Event, NavigationStart, NavigationError, ROUTER_DIRECTIVES } from "@angular/router";
+import { Router, Event, NavigationStart, NavigationError } from "@angular/router";
 import { Http, Response } from "@angular/http";
 
 import { ConfigService } from "./config.provider";
@@ -24,8 +24,7 @@ import { FooterComponent } from "./footer";
 
     <jh-footer></jh-footer>
   `,
-  directives: [
-    ROUTER_DIRECTIVES,
+  entryComponents: [
     SigninFormComponent,
     RoomComponent,
     FooterComponent
