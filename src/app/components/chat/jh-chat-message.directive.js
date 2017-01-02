@@ -28,6 +28,7 @@
       vm.embedOptions = {
         link: true,
         linkTarget: '_blank',
+        sanitizeHtml: false,
         image: {
           embed: true
         },
