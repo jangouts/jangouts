@@ -15,7 +15,7 @@
     "janus-gateway": "git://github.com/meetecho/janus-gateway.git#e4d01db5361810",
     "angular-block-ui": "~0.2.0",
     "lodash": "~3.10.1",
-    "ngEmbed": "ng-embed#~2.0.3",
+    "ngEmbed": "git://github.com/ritz078/ng-embed.git#5b2fa818197838f",
     "angular-hotkeys": "devonzara/angular-hotkeys#18915a4fe83281a5f8a",
     "mousetrap": "mousetrap-js/mousetrap#8236fbda90e2c50dfbfbe4",
     "angular-gridster": "~0.13.5",
