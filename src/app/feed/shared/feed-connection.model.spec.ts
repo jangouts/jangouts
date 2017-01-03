@@ -1,13 +1,10 @@
-import { addProviders } from "@angular/core/testing";
-
+import { TestBed } from "@angular/core/testing";
 import { FeedConnection } from "./feed-connection.model";
 
-
 describe("Service: FeedConnection", () => {
-
-  beforeEach(() => addProviders([
-      {provide: FeedConnection, useClass: FeedConnection}
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [FeedConnection]
+  }));
 
   beforeEach(() => {
     this.pluginHandle = {

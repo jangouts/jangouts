@@ -1,13 +1,11 @@
-import { inject, addProviders } from "@angular/core/testing";
-
+import { inject, TestBed } from "@angular/core/testing";
 import { FeedComponent } from "./feed.component";
 import { Broadcaster } from "../shared";
 
 describe("Component: Feed", () => {
-  beforeEach(() => addProviders([
-      {provide: FeedComponent, useClass: FeedComponent},
-      {provide: Broadcaster, useClass: Broadcaster},
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [FeedComponent, Broadcaster]
+  }));
 
   beforeEach(inject([ FeedComponent ], (feedComponent)  => {
     this.feedComponent = feedComponent;

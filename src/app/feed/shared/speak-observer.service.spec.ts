@@ -1,5 +1,4 @@
-import { addProviders, fakeAsync, tick } from "@angular/core/testing";
-
+import { TestBed, fakeAsync, tick } from "@angular/core/testing";
 import { SpeakObserver } from "./speak-observer.service";
 
 describe("Service: SpeakObserver", () => {
@@ -8,9 +7,9 @@ describe("Service: SpeakObserver", () => {
     getFloatFrequencyData: function (fftBins: any): void { }
   };
 
-  beforeEach(() => addProviders([
-    {provide: SpeakObserver, useClass: SpeakObserver}
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [SpeakObserver]
+  }));
 
   beforeEach(() => {
     this.context = {

@@ -1,12 +1,12 @@
-import { inject, addProviders } from "@angular/core/testing";
+import { inject, TestBed } from "@angular/core/testing";
 
 import { LogEntryComponent } from "./log-entry.component";
 
 describe("Component: LogEntry", () => {
 
-  beforeEach(() => addProviders([
-    {provide: LogEntryComponent, useClass: LogEntryComponent}
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [LogEntryComponent]
+  }));
 
   beforeEach(inject([ LogEntryComponent ], (logEntry) => {
     this.logEntry = logEntry;

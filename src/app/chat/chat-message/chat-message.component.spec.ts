@@ -1,12 +1,13 @@
-import { inject, addProviders } from "@angular/core/testing";
-
+import { inject, TestBed } from "@angular/core/testing";
 import { ChatMessageComponent } from "./chat-message.component";
 
 describe("Component: ChatMessage", () => {
 
-  beforeEach(() => addProviders([
-    {provide: ChatMessageComponent, useClass: ChatMessageComponent},
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [
+      {provide: ChatMessageComponent, useClass: ChatMessageComponent},
+    ]
+  }));
 
   beforeEach(inject([ ChatMessageComponent ], (chatMessage) => {
     this.chatMessage = chatMessage;

@@ -1,5 +1,5 @@
 import {
-  addProviders,
+  TestBed,
   fakeAsync,
   flushMicrotasks,
   tick
@@ -11,10 +11,9 @@ import { Feed } from "./feed.model";
 declare const Promise: any;
 
 describe("Service: FeedsService", () => {
-
-  beforeEach(() => addProviders([
-      {provide: FeedsService, useClass: FeedsService}
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [FeedsService]
+  }));
 
   beforeEach(() => {
     this.feeds = new FeedsService();

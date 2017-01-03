@@ -1,13 +1,13 @@
-import { addProviders } from "@angular/core/testing";
+import { TestBed } from "@angular/core/testing";
 
 import { ConnectionConfig } from "./connection-config.model";
 
 
 describe("Service: ConnectionConfig", () => {
 
-  beforeEach(() => addProviders([
-      {provide: ConnectionConfig, useClass: ConnectionConfig}
-  ]));
+  beforeEach(() => TestBed.configureTestingModule({
+    providers: [ConnectionConfig]
+  }));
 
   beforeEach(() => {
     this.config = {

@@ -1,4 +1,4 @@
-import { inject, addProviders } from "@angular/core/testing";
+import { inject, TestBed } from "@angular/core/testing";
 
 import { ChatFormComponent } from "./chat-form.component";
 import { ActionService } from "../../room";
@@ -11,10 +11,12 @@ describe("Component: ChatForm", () => {
   beforeEach(() => {
     this.actionService = new MockActionService();
 
-    addProviders([
-      {provide: ChatFormComponent, useClass: ChatFormComponent},
-      {provide: ActionService, useValue: this.actionService}
-    ]);
+    TestBed.configureTestingModule({
+      providers: [
+        ChatFormComponent,
+        {provide: ActionService, useValue: this.actionService}
+      ]
+    });
   });
 
   beforeEach(inject([ ChatFormComponent ], (chatForm)  => {
