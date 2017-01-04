@@ -11,46 +11,19 @@
   angular.module('janusHangouts')
     .directive('jhScreenShareButton', jhScreenShareButtonDirective);
 
-  jhScreenShareButtonDirective.$inject = ['ScreenShareService', 'RoomService', 'RequestService'];
+  function jhScreenShareButtonDirective() {
+    // Firefox needs different WebRTC constraints for screen and window sharing
+    var suffix = (window.navigator.mozGetUserMedia) ? '-moz' : '';
 
-  function jhScreenShareButtonDirective(ScreenShareService, RoomService, RequestService) {
     return {
       restrict: 'EA',
-      templateUrl: 'app/components/screen-share/jh-screen-share-button.html',
+      templateUrl: 'app/components/screen-share/jh-screen-share-button' + suffix + '.html',
       scope: true,
       controllerAs: 'vm',
       bindToController: true,
       controller: JhScreenShareButtonCtrl
     };
 
-    function JhScreenShareButtonCtrl() {
-      /* jshint: validthis */
-      var vm = this;
-      vm.click = click;
-      vm.enabled = enabled;
-      vm.title = title;
-
-      function click() {
-        if (vm.enabled()) {
-          RoomService.publishScreen();
-        }
-      }
-
-      function enabled() {
-        return (RequestService.usingSSL() && !ScreenShareService.getInProgress());
-      }
-
-      function title() {
-        if (vm.enabled()) {
-          return "Share a window/desktop";
-        } else {
-          if (ScreenShareService.getInProgress()) {
-            return "Wait while the screen is shared";
-          } else {
-            return "Screen sharing disabled (no SSL?)";
-          }
-        }
-      }
-    }
+    function JhScreenShareButtonCtrl() {}
   }
 })();

@@ -18,7 +18,8 @@
       restrict: 'EA',
       templateUrl: 'app/components/feed/buttons/jh-audio-button.html',
       scope: {
-        feed: '='
+        feed: '=',
+        withMonitor: '='
       },
       controllerAs: 'vm',
       bindToController: true,
@@ -28,14 +29,16 @@
     function JhAudioButtonCtrl() {
       /* jshint: validthis */
       var vm = this;
-      var feed = vm.feed;
 
       vm.toggle = toggle;
       vm.showsEnable = showsEnable;
       vm.showsDisable = showsDisable;
       vm.showsAudioOff = showsAudioOff;
+      vm.isSpeaking = isSpeaking;
 
       function toggle() {
+        var feed = vm.feed;
+
         RoomService.toggleChannel("audio", feed);
         if (feed.isPublisher && !feed.isLocalScreen && !feed.getAudioEnabled()) {
           MuteNotifier.dismissLastNotification();
@@ -43,15 +46,22 @@
       }
 
       function showsEnable() {
-        return (feed.isPublisher && !feed.isLocalScreen && !feed.getAudioEnabled());
+        var feed = vm.feed;
+        return (feed && feed.isPublisher && !feed.isLocalScreen && !feed.getAudioEnabled());
       }
 
       function showsDisable() {
-        return (!feed.isIgnored && feed.getAudioEnabled());
+        var feed = vm.feed;
+        return (feed && !feed.isIgnored && feed.getAudioEnabled());
       }
 
       function showsAudioOff() {
-        return (!feed.isPublisher && !feed.isIgnored && !feed.getAudioEnabled());
+        var feed = vm.feed;
+        return (feed && !feed.isPublisher && !feed.isIgnored && !feed.getAudioEnabled());
+      }
+
+      function isSpeaking() {
+        return (vm.withMonitor && vm.feed && vm.feed.getSpeaking());
       }
     }
   }

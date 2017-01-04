@@ -35,7 +35,7 @@
           var video = $('video', element)[0];
           // Mute video of the local stream
           video.muted = scope.vm.feed.isPublisher;
-          attachMediaStream(video, newVal);
+          Janus.attachMediaStream(video, newVal);
         }
       });
 

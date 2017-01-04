@@ -1,14 +1,14 @@
 <button
   type="button"
-  class="btn btn-xs"
-  ng-class="{'btn-primary': vm.feed.getSpeaking(), 'btn-default': !vm.feed.getSpeaking()}"
+  class="btn"
+  ng-class="{'btn-primary': vm.isSpeaking(), 'btn-default': !vm.isSpeaking()}"
   ng-click="vm.toggle()"
   title="Disable audio"
   ng-show="vm.showsDisable()">
   <span class="glyphicon glyphicon-volume-up"></span>
 </button><button
   type="button"
-  class="btn btn-xs btn-danger"
+  class="btn btn-danger"
   ng-click="vm.toggle()"
   title="Enable audio"
   ng-show="vm.showsEnable()">
@@ -16,7 +16,7 @@
 </button><button
   type="button"
   disabled
-  class="btn btn-xs btn-danger"
+  class="btn btn-danger"
   title="Audio disabled"
   ng-show="vm.showsAudioOff()">
   <span class="glyphicon glyphicon-volume-off"></span>

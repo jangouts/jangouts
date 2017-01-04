@@ -67,6 +67,49 @@
       };
 
       /**
+       * Checks if a given local track is enabled.
+       *
+       * Take into account the term 'track' refers to the local tracks of the
+       * stream as rendered by the browser, not to the webRTC communication
+       * channels. For example, disabling a local audio track will cause the
+       * browser to stop reproducing the sound, but will not cause the browser
+       * to stop receiving it through the corresponding channel.
+       *
+       * @param {string} type - "audio" or "video"
+       * @returns {boolean}
+       */
+      this.isTrackEnabled = function(type) {
+        var track = getTrack(type);
+        return (track !== null && track.enabled);
+      };
+
+      /*
+       * Enables or disables the given track.
+       *
+       * See isTrackEnabled for more information about tracks vs channels.
+       *
+       * @param {string} type - "audio" or "video"
+       * @param {boolean} enabled
+       */
+      this.setEnabledTrack = function(type, enabled) {
+        var track = getTrack(type);
+        if (track !== null) {
+          track.enabled = enabled;
+        }
+      };
+
+      /*
+       * Checks whether the feed has a given track.
+       *
+       * See isTrackEnabled for more information about tracks vs channels.
+       *
+       * @param {string} type - "audio" or "video"
+       */
+      this.hasTrack = function(type) {
+        return (getTrack(type) !== null);
+      };
+
+      /**
        * Sets picture for picture channel
        * @param {string} val - path to picture
        */
@@ -251,10 +294,9 @@
             }
           });
           if (type === "video") {
-            var tracks = stream.getVideoTracks();
-            if (tracks !== null && tracks !== undefined){
-              tracks[0].enabled = enabled;
-            }
+            // Disable the local track in addition to the channel, so it's more
+            // obvious for the user that we are not sending video anymore
+            this.setEnabledTrack("video", enabled);
           }
         } else if (type === "audio" && enabled === false) {
           DataChannelService.sendMuteRequest(this);
@@ -361,6 +403,21 @@
           return null;
         }
       };
+
+      function getTrack(type) {
+        if(stream === null || stream === undefined) {
+          return null;
+        }
+        var func = "get" + _.capitalize(type) + "Tracks";
+        if(stream[func]() === null || stream[func]() === undefined) {
+          return null;
+        }
+        var track = stream[func]()[0];
+        if(track === undefined) {
+          return null;
+        }
+        return track;
+      }
     };
   }
 })();

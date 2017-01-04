@@ -350,7 +350,7 @@
       });
     }
 
-    function publishScreen() {
+    function publishScreen(videoSource) {
       var display = FeedsService.findMain().display;
       var connection;
       var id;
@@ -358,7 +358,7 @@
       this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
-          connection = new FeedConnection(pluginHandle, that.room.id, "screen");
+          connection = new FeedConnection(pluginHandle, that.room.id, videoSource);
           connection.register(display);
           ScreenShareService.setInProgress(true);
         },
@@ -369,6 +369,13 @@
           console.log(" ::: Got the screen stream :::");
           var feed = FeedsService.find(id);
           feed.setStream(stream);
+
+          // Unpublish feed when screen sharing stops
+          stream.onended = function () {
+            unPublishFeed(id);
+            ScreenShareService.setInProgress(false);
+          };
+
         },
         onmessage: function(msg, jsep) {
           console.log(" ::: Got a message (screen) :::");

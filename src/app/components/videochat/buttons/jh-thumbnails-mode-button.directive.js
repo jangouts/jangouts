@@ -17,7 +17,7 @@
     return {
       restrict: 'EA',
       templateUrl: function(elem, attrs) {
-        var base = 'app/components/videochat/jh-thumbnails-mode-button';
+        var base = 'app/components/videochat/buttons/jh-thumbnails-mode-button';
         if (attrs.textTemplate) {
           return base + '-with-text.html';
         } else {

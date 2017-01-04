@@ -1,0 +1,10 @@
+<div style="display: inline-block;"
+     uib-tooltip="{{vm.title()}}"
+     tooltip-placement="bottom">
+  <button
+    class="btn"
+    ng-disabled="!vm.enabled()"
+    ng-click="vm.click()">
+    <span class="glyphicon glyphicon-{{vm.icon}}" aria-hidden="true"></span>
+  </button>
+</div>
