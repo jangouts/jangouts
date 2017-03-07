@@ -76,8 +76,9 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     if (request.status === 200) {
       var config = JSON.parse(request.responseText);
       angular.forEach(config, function(value, key) {
-         jhConfig[key] = value;
+         jhConfig[key] = value.replace("%{hostname}",window.location.host);
       });
+      console.log(jhConfig);
     } else {
       console.warn('No configuration found');
     }
