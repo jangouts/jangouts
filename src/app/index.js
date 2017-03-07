@@ -69,16 +69,22 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
       return $delegate;
     });
   })
-  .run(function($http, jhConfig) {
+  .run(function($rootScope,$http, jhConfig) {
+    //global function to replace the placeholders
+    $rootScope.replacePlaceholder = function(value){
+      return value.replace("%{hostname}",window.location.host)
+    }
+    //function ends here
+
     var request = new XMLHttpRequest();
     request.open('GET', 'config.json', false);
     request.send(null);
     if (request.status === 200) {
       var config = JSON.parse(request.responseText);
       angular.forEach(config, function(value, key) {
-         jhConfig[key] = value.replace("%{hostname}",window.location.host);
+        //assigning config value with replaced value of placeholder
+         jhConfig[key] = $rootScope.replacePlaceholder(value);
       });
-      console.log(jhConfig);
     } else {
       console.warn('No configuration found');
     }
