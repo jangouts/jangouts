@@ -6,9 +6,9 @@ var browserSync = require('browser-sync');
 var $ = require('gulp-load-plugins')();
 
 module.exports = function(options) {
-  gulp.task('scripts', ['config', 'lint'], function () {
+  gulp.task('lint', ['config'], function () {
     return gulp.src(options.src + '/app/**/*.js')
-      .pipe(browserSync.reload({ stream: true }))
-      .pipe($.size());
+      .pipe($.jshint())
+      .pipe($.jshint.reporter('jshint-stylish'));
   });
 };
