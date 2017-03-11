@@ -71,7 +71,7 @@
       LogService.add(entry);
     }
 
-    function destroyFeed(feedId) {
+    function destroyFeed(feedId,destroyType) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
       $timeout(function () {
@@ -79,8 +79,10 @@
         FeedsService.destroy(feedId);
       });
       // Log the event
-      var entry = new LogEntry("destroyFeed", {feed: feed});
-      LogService.add(entry);
+      if(destroyType === "leaving") {
+        var entry = new LogEntry("destroyFeed", {feed: feed});
+        LogService.add(entry);
+      }
     }
 
     function ignoreFeed(feedId) {
