@@ -1,0 +1,36 @@
+
+<div ng-show="vm.isEditable() && vm.isEditing()">
+  <input class="name-edit" ng-model="vm.editedName">
+  <button
+    class="btn btn-success"
+    ng-click="vm.confirmEdit()"
+    title="Confirm New Name">
+  <span class="glyphicon glyphicon-ok-circle"></span>
+  </button>
+  <button
+    class="btn btn-danger"
+    ng-click="vm.toggleEditingMode()"
+    title="Exit Editing Mode">
+    <span class="glyphicon glyphicon-remove-circle"></span>
+  </button>
+</div>
+
+<button
+  type="button"
+  class="btn btn-default"
+  ng-click="vm.toggleEditingMode()"
+  title="Edit Name"
+  ng-show="vm.isEditable()">
+  <span class="glyphicon glyphicon-edit"></span>
+</button>
+
+<!--
+<button
+  type="button"
+  class="btn btn-danger"
+  ng-click="vm.toggle()"
+  title="Enable video"
+  ng-show="vm.showsEnable()">
+  <span class="glyphicon glyphicon-eye-close"></span>
+</button>
+-->

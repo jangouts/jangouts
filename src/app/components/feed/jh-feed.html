@@ -39,6 +39,7 @@
     <div
       class="additional-buttons"
       ng-show="buttons">
+        <jh-nameedit-button feed=vm.feed ng-click="button=false"></jh-nameedit-button>
         <jh-sticky-button
           feed="vm.feed"
           click-fn="buttons=false; vm.toggleHighlightFn()"

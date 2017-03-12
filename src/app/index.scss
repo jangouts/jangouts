@@ -84,7 +84,19 @@ body {
         }
       }
     }
-
+    
+    .name-edit {
+      color: #000;
+      -webkit-box-shadow: 0 0 10px #C9302C;
+      -moz-box-shadow: 0 0 10px #C9302C;
+      box-shadow: 0 0 10px #C9302C;
+    }
+    .name-edit:focus{
+      -webkit-box-shadow: 0 0 10px #9ecaed;
+      -moz-box-shadow: 0 0 10px #9ecaed;
+      box-shadow: 0 0 10px #9ecaed;
+    }
+    
     .btn {
       // FIXME: this is a copy&paste of Bootstrap's .btn-xs
       // we should use @extend instead of repeating Bootstrap code
