@@ -1,9 +1,9 @@
 
 <div ng-show="vm.isEditable() && vm.isEditing()">
-  <input class="name-edit" ng-model="vm.editedName">
+  <input class="name-edit" ng-model="vm.newName">
   <button
     class="btn btn-success"
-    ng-click="vm.confirmEdit()"
+    ng-click="vm.updateName()"
     title="Confirm New Name">
   <span class="glyphicon glyphicon-ok-circle"></span>
   </button>

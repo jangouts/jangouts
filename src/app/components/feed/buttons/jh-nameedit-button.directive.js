@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhNameeditButton', jhNameeditButton);
 
-  jhNameeditButton.$inject = ['RoomService', 'DataChannelService'];
+  jhNameeditButton.$inject = ['FeedsService', '$state'];
 
-  function jhNameeditButton(RoomService, DataChannelService) {
+  function jhNameeditButton(FeedsService, $state) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/feed/buttons/jh-nameedit-button.html',
@@ -58,7 +58,6 @@
        * @returns {boolean}
        */
       function isEditing() {
-        console.log("Current editing value", vm.editing);
         return vm.editing;
       }
       
@@ -68,9 +67,12 @@
        */
       function updateName() {
         if (vm.newName) {
-            
+          FeedsService
+            .findMain()
+            .updateDisplay(vm.newName);
+          $state.go('room', {user: vm.newName}, {notify: false});
         }
-        vm.newName = null;
+        this.toggleEditingMode();
       }
     }
   }
