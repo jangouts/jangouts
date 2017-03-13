@@ -1,1 +1,15 @@
-<span class="feed-info">{{ vm.name() }}</span>
+<span>
+  <div class="name-edit"
+  ng-show="vm.isEditing()">
+    <input ng-keypress="vm.keyDetect($event)"
+      ng-model="vm.newName">
+    <span class="glyphicon glyphicon-question-sign"
+      title="Press Enter to change &#013; Press Escape to keep"></span>
+  </div>
+  <span class="feed-info"
+  title="Double Click to Edit Name"
+  ng-dblclick="vm.makeNameEditable()"
+  ng-hide="vm.isEditing()">
+  {{ vm.name() }}
+  </span>
+</span>
