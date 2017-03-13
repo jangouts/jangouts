@@ -71,9 +71,15 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
   })
   .run(function($http, jhConfig) {
     //function to replace the placeholders
+    
     function replacePlaceholder(value) {
-      return value.replace("%{hostname}", window.location.host);
+      if (typeof value === 'string') {
+          return value.replace("%{hostname}", window.location.host);
+      }
+      
+      return value;
     }
+    
     var request = new XMLHttpRequest();
     request.open('GET', 'config.json', false);
     request.send(null);
