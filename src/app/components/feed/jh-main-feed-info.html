@@ -1,14 +1,17 @@
 <span>
   <div class="name-edit"
   ng-show="vm.isEditing()">
-    <input ng-keypress="vm.keyDetect($event)"
-      ng-model="vm.newName">
+    <input ng-keydown="vm.keyDetect($event)"
+      ng-blur="vm.leaveEditingMode()"
+      ng-model="vm.newName"
+      placeholder="new name">
     <span class="glyphicon glyphicon-question-sign"
-      title="Press Enter to change &#013; Press Escape to keep"></span>
+      title="Press Enter to change&#013;
+Press Escape to keep"></span>
   </div>
   <span class="feed-info"
-  title="Double Click to Edit Name"
-  ng-dblclick="vm.makeNameEditable()"
+  title="Click to Edit Name"
+  ng-click="vm.makeNameEditable()"
   ng-hide="vm.isEditing()">
   {{ vm.name() }}
   </span>
