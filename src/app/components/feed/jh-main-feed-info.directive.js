@@ -48,7 +48,6 @@
       function keyDetect(event) {
         // if keypressed is 'Enter'
         // then update the name to the current value in input box
-        console.log("This is detected keycode", event);
         if (event.keyCode === 13) {
           vm.updateName();
           vm.leaveEditingMode();

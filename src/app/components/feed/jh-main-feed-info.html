@@ -1,10 +1,12 @@
 <span>
   <div class="name-edit"
   ng-show="vm.isEditing()">
-    <input ng-keydown="vm.keyDetect($event)"
+    <input ng-if="vm.isEditing()"
+    ng-keydown="vm.keyDetect($event)"
       ng-blur="vm.leaveEditingMode()"
       ng-model="vm.newName"
-      placeholder="new name">
+      placeholder="new name"
+      auto-focus>
     <span class="glyphicon glyphicon-question-sign"
       title="Press Enter to change&#013;
 Press Escape to keep"></span>
