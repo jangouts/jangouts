@@ -8,7 +8,7 @@
 (function () {
   'use strict';
 
-  angular.module('janusHangouts')
+  angular.module('janusHangouts.actionService', [])
     .service('ActionService', ActionService);
 
   ActionService.$inject = ['$timeout', 'Feed', 'FeedsService', 'LogEntry',
