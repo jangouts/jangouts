@@ -92,7 +92,9 @@
       destroyfeed(feedID)
       // Log the event
       var entry = new LogEntry("destroyFeedUnpublish", {feed: feed});
-      LogService.add(entry);
+      if (entry.text !="") {
+        LogService.add(entry);
+      }
     }
 
     function ignoreFeed(feedId) {
