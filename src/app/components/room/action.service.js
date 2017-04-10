@@ -19,6 +19,7 @@
     this.leaveRoom = leaveRoom;
     this.remoteJoin = remoteJoin;
     this.destroyFeed = destroyFeed;
+    this.unpublishFeed = unpublishFeed;
     this.ignoreFeed = ignoreFeed;
     this.stopIgnoringFeed = stopIgnoringFeed;
     this.writeChatMessage = writeChatMessage;
@@ -71,7 +72,7 @@
       LogService.add(entry);
     }
 
-    function destroyFeed(feedId,destroyType) {
+    function destroyFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
       $timeout(function () {
@@ -79,10 +80,17 @@
         FeedsService.destroy(feedId);
       });
       // Log the event
-      if(destroyType === "leaving") {
-        var entry = new LogEntry("destroyFeed", {feed: feed});
-        LogService.add(entry);
-      }
+      var entry = new LogEntry("destroyFeed", {feed: feed});
+      LogService.add(entry);
+    }
+
+    function unpublishFeed(feedId,destroyType) {
+      var feed = FeedsService.find(feedId);
+      if (feed === null) { return; }
+      $timeout(function () {
+        feed.disconnect();
+        FeedsService.destroy(feedId);
+      });
     }
 
     function ignoreFeed(feedId) {

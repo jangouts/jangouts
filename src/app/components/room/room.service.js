@@ -179,11 +179,11 @@
             // One of the publishers has gone away?
             } else if(msg.leaving !== undefined && msg.leaving !== null) {
               var leaving = msg.leaving;
-              ActionService.destroyFeed(leaving,"leaving");
+              ActionService.destroyFeed(leaving);
             // One of the publishers has unpublished?
             } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
               var unpublished = msg.unpublished;
-              ActionService.destroyFeed(unpublished,"unpublished");
+              ActionService.unpublishFeed(unpublished);
             // Reply to a configure request
             } else if (msg.configured) {
               connection.confirmConfig();
