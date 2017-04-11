@@ -84,7 +84,7 @@
       LogService.add(entry);
     }
 
-    function unpublishFeed(feedId,destroyType) {
+    function unpublishFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
       $timeout(function () {
