@@ -82,17 +82,19 @@
     }
 
     function destroyFeedLeaving(feedId) {
-      destroyfeed(feedID)
+      var feed = FeedsService.find(feedId);
+      destroyFeed(feedId);
       // Log the event
       var entry = new LogEntry("destroyFeedLeaving", {feed: feed});
       LogService.add(entry);
     }
 
     function destroyFeedUnpublish(feedId) {
-      destroyfeed(feedID)
+      var feed = FeedsService.find(feedId);
+      destroyFeed(feedId);
       // Log the event
       var entry = new LogEntry("destroyFeedUnpublish", {feed: feed});
-      if (entry.text !="") {
+      if (entry.text !== "") {
         LogService.add(entry);
       }
     }
