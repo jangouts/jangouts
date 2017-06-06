@@ -73,7 +73,7 @@
         options = options || {};
 
         var media = {videoRecv: false, audioRecv: false};
-        var cfg = {video: true, audio: true};
+        var cfg = {video: true, audio: true, data: true};
         if (this.role === "main") {
           if (options.muted){
             cfg.audio = false;
