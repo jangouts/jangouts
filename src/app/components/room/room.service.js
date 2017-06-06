@@ -183,7 +183,7 @@
             // One of the publishers has unpublished?
             } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
               var unpublished = msg.unpublished;
-              ActionService.destroyFeed(unpublished);
+              ActionService.unpublishFeed(unpublished);
             // Reply to a configure request
             } else if (msg.configured) {
               connection.confirmConfig();
