@@ -13,7 +13,7 @@
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
-      'ScreenShareService', 'RequestService'];
+      'ScreenShareService', 'RequestService', 'UserService'];
 
   /**
    * Service to communication with janus room
@@ -22,7 +22,7 @@
    */
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       FeedConnection, DataChannelService, ActionService, jhConfig,
-      ScreenShareService, RequestService) {
+      ScreenShareService, RequestService, UserService) {
     this.enter = enter;
     this.leave = leave;
     this.setRoom = setRoom;
@@ -113,7 +113,7 @@
           // Step 1. Right after attaching to the plugin, we send a
           // request to join
           connection = new FeedConnection(pluginHandle, that.room.id, "main");
-          connection.register(username);
+          connection.register(username, UserService.getPin());
         },
         error: function(error) {
           console.error("Error attaching plugin... " + error);
@@ -213,7 +213,6 @@
           pluginHandle.send({"message": request, success: function(result) {
             // Free the resource (it looks safe to do it here)
             pluginHandle.detach();
-
             if (result.videoroom === "success") {
               var rooms = _.map(result.list, function(r) {
                 return new Room(r);
@@ -294,7 +293,7 @@
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           connection = new FeedConnection(pluginHandle, that.room.id, "subscriber");
-          connection.listen(id);
+          connection.listen(id, UserService.getPin());
         },
         error: function(error) {
           console.error("  -- Error attaching plugin... " + error);
@@ -359,7 +358,7 @@
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           connection = new FeedConnection(pluginHandle, that.room.id, videoSource);
-          connection.register(display);
+          connection.register(display, UserService.getPin());
           ScreenShareService.setInProgress(true);
         },
         error: function(error) {

@@ -42,13 +42,13 @@
         this.pluginHandle.detach();
       };
 
-      this.register = function(display) {
-        var register = { "request": "join", "room": roomId, "ptype": "publisher", "display": display };
+      this.register = function(display, pin) {
+        var register = { "request": "join", "room": roomId, "ptype": "publisher", "display": display, "pin": pin || "" };
         pluginHandle.send({"message": register});
       };
 
-      this.listen = function(feedId) {
-        var listen = { "request": "join", "room": roomId, "ptype": "listener", "feed": feedId };
+      this.listen = function(feedId, pin) {
+        var listen = { "request": "join", "room": roomId, "ptype": "listener", "feed": feedId, "pin": pin || "" };
         pluginHandle.send({"message": listen});
       };
 
@@ -151,6 +151,7 @@
         } else {
           this.config = new ConnectionConfig(pluginHandle, options.values, null, options.ok);
         }
+        
       };
 
       /**
