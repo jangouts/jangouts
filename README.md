@@ -74,7 +74,8 @@ system would be:
 
 1. `sudo zypper in apache2`
 2. Copy the content of `dist` directly into `/srv/www/htdocs/`
-3. `sudo systemctl start apache2.service`
+3. `sudo a2enmod proxy`
+4. `sudo systemctl start apache2.service`
 
 See the [deployment instructions](DEPLOYMENT.md) for more information about how
 to properly configure Apache.
