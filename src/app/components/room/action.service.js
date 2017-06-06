@@ -18,7 +18,8 @@
     this.enterRoom = enterRoom;
     this.leaveRoom = leaveRoom;
     this.remoteJoin = remoteJoin;
-    this.destroyFeed = destroyFeed;
+    this.destroyFeedLeaving = destroyFeedLeaving;
+    this.destroyFeedUnpublish = destroyFeedUnpublish;
     this.ignoreFeed = ignoreFeed;
     this.stopIgnoringFeed = stopIgnoringFeed;
     this.writeChatMessage = writeChatMessage;
@@ -40,7 +41,7 @@
       var that = this;
 
       _.forEach(FeedsService.allFeeds(), function(feed) {
-        that.destroyFeed(feed.id);
+        that.destroyFeedLeaving(feed.id);
       });
     }
 
@@ -78,9 +79,24 @@
         feed.disconnect();
         FeedsService.destroy(feedId);
       });
+    }
+
+    function destroyFeedLeaving(feedId) {
+      var feed = FeedsService.find(feedId);
+      destroyFeed(feedId);
       // Log the event
-      var entry = new LogEntry("destroyFeed", {feed: feed});
+      var entry = new LogEntry("destroyFeedLeaving", {feed: feed});
       LogService.add(entry);
+    }
+
+    function destroyFeedUnpublish(feedId) {
+      var feed = FeedsService.find(feedId);
+      destroyFeed(feedId);
+      // Log the event
+      var entry = new LogEntry("destroyFeedUnpublish", {feed: feed});
+      if (entry.text !== "") {
+        LogService.add(entry);
+      }
     }
 
     function ignoreFeed(feedId) {

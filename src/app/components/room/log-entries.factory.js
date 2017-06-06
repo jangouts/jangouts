@@ -45,11 +45,16 @@
         return "Screen sharing started";
       };
 
-      this.destroyFeedText = function() {
+      this.destroyFeedLeavingText = function() {
+        return this.content.feed.display + " has left the room";
+      };
+
+      this.destroyFeedUnpublishText = function() {
+        // TO DO: I'm not sure if this function is done correctly
         if (this.content.feed.isLocalScreen) {
           return "Screen sharing stopped";
         } else {
-          return this.content.feed.display + " has left the room";
+          return "";
         }
       };
 
