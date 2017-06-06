@@ -8,7 +8,7 @@
       ng-show="vm.thumbnailTag() === 'video'">
     </video>
     <img
-      src="{{vm.feed.getPicture()}}"
+      ng-src="{{vm.feed.getPicture()}}"
       class="face"
       ng-class="{mirrored: vm.mirrored}"
       ng-show="vm.thumbnailTag() === 'picture'">

@@ -93,5 +93,24 @@
     this.storeSettings = function() {
       localStorageService.set(USER_SETTINGS_KEY, this.settings);
     };
+    
+    // Pin entered by user
+    this.enteredPin = null;
+    /*
+     * Returns the pin as entered by the current user.
+     * @returns string A string representing the user like
+     *                
+     */
+    this.getPin = function() {
+      return this.enteredPin;
+    };
+
+    /*
+     * Set the pin to value entered by current user.
+     * @param   {string} val User entered pin.
+     */
+    this.setPin = function(value) {
+      this.enteredPin = value;
+    };
   }
 })();

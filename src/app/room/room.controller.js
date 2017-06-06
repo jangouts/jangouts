@@ -38,7 +38,11 @@
 
     $scope.$on('room.error', function(evt, error) {
       // FIXME: do something neat
-      alert("Janus server reported the following error:\n" + error);
+      if (error === "Unauthorized (wrong pin)") {
+        $state.go('signin', params);
+      } else {
+        alert("Janus server reported the following error:\n" + error);
+      }
     });
 
     $scope.$on('consentDialog.changed', function(evt, open) {

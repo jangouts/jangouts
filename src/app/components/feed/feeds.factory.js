@@ -333,7 +333,35 @@
           DataChannelService.sendStatus(that);
         });
       };
+      
+      /**
+       * Updates the value of the display attribute for this publisher feed,
+       * notifying changes to the remote peers.
+       */
+      this.updateDisplay = function(newDisplay) {
+        var that = this;
 
+        $timeout(function() {
+          that.setDisplay(newDisplay);
+          DataChannelService.sendStatus(that);
+        });
+      };
+
+      /**
+       * Gets the current display name for publisher
+       * @return {string} - current display
+       */
+      this.getDisplay = function() {
+        return this.display;
+      };
+    
+      /**
+       * Sets the name for publisher 
+       * @param {string} - val - new display 
+       */
+      this.setDisplay = function (val) {
+        this.display = val;
+      };
       /**
        * Reads the representation of the local feed in order to send it to the
        * remote peers.
@@ -346,7 +374,7 @@
         options = options || {};
         if (!options.exclude) { options.exclude = []; }
 
-        var attrs = ["audioEnabled", "videoEnabled", "speaking", "picture"];
+        var attrs = ["audioEnabled", "videoEnabled", "speaking", "picture", "display"];
         var status = {};
 
         _.forEach(attrs, function(attr) {

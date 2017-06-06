@@ -13,7 +13,7 @@
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
-      'ScreenShareService', 'RequestService'];
+      'ScreenShareService', 'RequestService', 'UserService'];
 
   /**
    * Service to communication with janus room
@@ -22,7 +22,7 @@
    */
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       FeedConnection, DataChannelService, ActionService, jhConfig,
-      ScreenShareService, RequestService) {
+      ScreenShareService, RequestService, UserService) {
     this.enter = enter;
     this.leave = leave;
     this.setRoom = setRoom;
@@ -113,7 +113,7 @@
           // Step 1. Right after attaching to the plugin, we send a
           // request to join
           connection = new FeedConnection(pluginHandle, that.room.id, "main");
-          connection.register(username);
+          connection.register(username, UserService.getPin());
         },
         error: function(error) {
           console.error("Error attaching plugin... " + error);
@@ -183,7 +183,7 @@
             // One of the publishers has unpublished?
             } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
               var unpublished = msg.unpublished;
-              ActionService.destroyFeed(unpublished);
+              ActionService.unpublishFeed(unpublished);
             // Reply to a configure request
             } else if (msg.configured) {
               connection.confirmConfig();
@@ -213,7 +213,6 @@
           pluginHandle.send({"message": request, success: function(result) {
             // Free the resource (it looks safe to do it here)
             pluginHandle.detach();
-
             if (result.videoroom === "success") {
               var rooms = _.map(result.list, function(r) {
                 return new Room(r);
@@ -294,7 +293,7 @@
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           connection = new FeedConnection(pluginHandle, that.room.id, "subscriber");
-          connection.listen(id);
+          connection.listen(id, UserService.getPin());
         },
         error: function(error) {
           console.error("  -- Error attaching plugin... " + error);
@@ -318,7 +317,7 @@
             connection.confirmConfig();
           } else if (msg.started) {
             // Initial setConfig, needed to complete all the initializations
-            connection.setConfig({values: {audio: true, video: jhConfig.videoThumbnails}});
+            connection.setConfig({values: {audio: true, data: true, video: jhConfig.videoThumbnails}});
           } else {
             console.log("What has just happened?!");
           }
@@ -359,7 +358,7 @@
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           connection = new FeedConnection(pluginHandle, that.room.id, videoSource);
-          connection.register(display);
+          connection.register(display, UserService.getPin());
           ScreenShareService.setInProgress(true);
         },
         error: function(error) {

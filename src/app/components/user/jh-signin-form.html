@@ -27,6 +27,17 @@
         <option value="" disabled selected>Select a room</option>
       </select>
     </div>
+    <div ng-show="vm.room.pin_required" class="form-group">
+      <label class="sr-only" for="inputPin">Pin</label>
+      <span>Please enter the right Pin to access this Room!</span>
+        <input
+          id="inputPin"
+          class="form-control input-lg"
+          type="password"
+          ng-model="vm.enteredPin"
+          placeholder="Pin (required)"
+          >
+    </div>
     <jh-thumbnails-mode-button text-template="true"></jh-thumbnails-mode-button>
     <button id="signInButton" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
   </form>
