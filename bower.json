@@ -7,12 +7,12 @@
     "angular-cookies": "~1.4.8",
     "angular-touch": "~1.4.8",
     "angular-sanitize": "~1.4.8",
-    "jquery": "~2.1.1",
+    "jquery": "~2.1.4",
     "angular-ui-router": "~0.2.15",
     "bootstrap-sass-official": "3.3 <= 3.3.4",
     "angular-bootstrap": "~0.14.3",
     "angular": "~1.4.8",
-    "janus-gateway": "git://github.com/meetecho/janus-gateway.git#e4d01db5361810",
+    "janus-gateway": "git://github.com/meetecho/janus-gateway.git#3b74732a3545fda13d",
     "angular-block-ui": "~0.2.0",
     "lodash": "~3.10.1",
     "ngEmbed": "git://github.com/ritz078/ng-embed.git#5b2fa818197838f",
@@ -25,7 +25,7 @@
   },
   "overrides": {
     "mousetrap": {
-        "main": "plugins/record/mousetrap-record.js"
+      "main": "plugins/record/mousetrap-record.js"
     }
   },
   "devDependencies": {
