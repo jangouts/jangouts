@@ -86,9 +86,11 @@
           }
           media.audioSend = true;
           media.data = true;
+          cfg.data = true;
         } else {
           // Publishing something but not "main" -> screen sharing
           cfg.audio = false;
+          cfg.data = false;
           media.video = this.role;
           media.audioSend = false;
           media.data = false;
