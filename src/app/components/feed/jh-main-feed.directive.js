@@ -10,8 +10,10 @@
 
   angular.module('janusHangouts')
     .directive('jhMainFeed', jhMainFeedDirective);
-
-  function jhMainFeedDirective() {
+  
+    jhMainFeedDirective.$inject = ['$timeout'];
+    
+  function jhMainFeedDirective($timeout) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/feed/jh-main-feed.html',
@@ -32,6 +34,41 @@
           video.muted = true;
           Janus.attachMediaStream(video, newVal);
         }
+      });
+      
+      $timeout(function(){
+        var mainFeed = document.getElementById('main-feed');
+        mainFeed.addEventListener('dblclick', function() {
+          // if video is in fullscreen mode
+          if (
+            document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement
+          ) {
+            if (document.exitFullscreen) {
+              document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+              document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+              document.msExitFullscreen();
+            }
+            // if video is not in fullscreen mode
+          } else {
+            if (mainFeed.requestFullscreen) {
+              mainFeed.requestFullscreen();
+            } else if (mainFeed.webkitRequestFullscreen) {
+              mainFeed.webkitRequestFullscreen();
+            } else if (mainFeed.mozRequestFullScreen) {
+              mainFeed.mozRequestFullScreen();
+            } else if (mainFeed.msRequestFullscreen) {
+              mainFeed.msRequestFullscreen();
+            }
+          } 
+        });
+        
       });
     }
 

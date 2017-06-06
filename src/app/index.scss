@@ -277,7 +277,26 @@ footer {
   text-align: center;
 }
 
+#main-feed:-moz-full-screen > video {
+  -moz-transform: rotatey(180deg);  
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+#main-feed:-webkit-full-screen > video {
+  -webkit-transform: rotatey(180deg); /* safari and chrome */
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+#main-feed:fullscreen > video {
+  transform: rotatey(180deg);
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
 // Overriding of bootstrap's default negative margin, just a hack actually
+
 .row {
   margin-left: 0px;
   margin-right: 0px;
