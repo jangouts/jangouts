@@ -318,7 +318,7 @@
             connection.confirmConfig();
           } else if (msg.started) {
             // Initial setConfig, needed to complete all the initializations
-            connection.setConfig({values: {audio: true, video: jhConfig.videoThumbnails}});
+            connection.setConfig({values: {audio: true, data: true, video: jhConfig.videoThumbnails}});
           } else {
             console.log("What has just happened?!");
           }
