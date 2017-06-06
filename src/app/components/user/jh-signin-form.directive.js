@@ -47,6 +47,7 @@
       vm.room = null;
       vm.rooms = [];
       vm.listRooms = null;
+      vm.enteredPin = null; // pin entered by user
 
       RoomService.getRooms().then(function(rooms) {
         vm.room = RoomService.getRoom();
@@ -67,6 +68,7 @@
 
       function signin() {
         if (vm.room && vm.username){
+          UserService.setPin(vm.enteredPin);
           $state.go('room', {room: vm.room.id, user: vm.username});
         }
       }
