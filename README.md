@@ -112,5 +112,6 @@ This software is released under the terms of the MIT License. See the
 
 ## Find us
 
-Jangouts developers can be usually found at
-[#jangouts IRC channel at Freenode](irc://irc.freenode.net/jangouts)
+Jangouts developers can be usually found at:
+ - [#jangouts IRC channel at Freenode](https://webchat.freenode.net/?channels=%23jangouts)
+ - [Google Groups](https://groups.google.com/forum/#!forum/jangouts)
