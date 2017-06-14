@@ -39,14 +39,14 @@ Suppose there are `n` participants in a videoroom
     + Broadcast status information of all feeds when a data channel is established
     + Recieve messages from a feed
 
-02. [room.factory.js]() - It defines `Room` object containing data about video chat room and attributes from *janus.plugin.videoroom.cfg*. Some of its attributes are -
+02. [room.factory.js](../src/app/components/room/room.factory.js) - It defines `Room` object containing data about video chat room and attributes from *janus.plugin.videoroom.cfg*. Some of its attributes are -
   * id
   * description
   * max-publishers
   * pin-required
  etc.
 
-03. [feed-connection.factory.js](https://github.com/jangouts/jangouts/blob/master/src/app/components/feed/feed-connection.factory.js) - It defines `FeedConnection` object that manages the connection of a feed to the Janus server. Some of the attributes provided are - 
+03. [feed-connection.factory.js](../src/app/components/feed/feed-connection.factory.js) - It defines `FeedConnection` object that manages the connection of a feed to the Janus server. Some of the attributes provided are - 
   * `pluginHandle` object
   * feed role (publisher/subscriber)
   * `ConnectionConfig` object (using *connection-config.factory.js*)
@@ -56,7 +56,7 @@ It also performs some important actions like -
     + creating a WebRTC `offer` for sharing the audio and video with the Janus server (`publish()` method)
     + creating a WebRTC `answer` for subscribing to a feed from the Janus server (`subscribe()` method)
 
-04. [action.service.js](https://github.com/jangouts/jangouts/blob/master/src/app/components/room/action.service.js) - Provides services by performing actions, like - 
+04. [action.service.js](../src/app/components/room/action.service.js) - Provides services by performing actions, like - 
   * Creating new feed when
     + entering a room
     + publishing screen
@@ -70,7 +70,7 @@ It also performs some important actions like -
   * Adding log entries for above actions (by creating `LogEntry` object defined in *log-entries.factory.js*)
   * Sending chat text-message using `DataChannelService` (defined in *data-channel.service.js*) 
 
-05. [feeds.factory.js](https://github.com/jangouts/jangouts/blob/master/src/app/components/feed/feeds.factory.js) - Defines `Feed` object representing a Janus feed. It maintains data related to a feed for local representation, and, sending to remote peers. It contains attributes like -
+05. [feeds.factory.js](../src/app/components/feed/feeds.factory.js) - Defines `Feed` object representing a Janus feed. It maintains data related to a feed for local representation, and, sending to remote peers. It contains attributes like -
   * `FeedConnection` object
   * `id` and `display` of feed
   * other feed info -`isPublisher`, `isLocalScreen`, `isIgnored`
@@ -81,11 +81,11 @@ It also performs some important actions like -
   * Reads local feed info, to send it to the remote peers (`getStatus()` method)
   * Update local feed info used to process information sent by the remote peer (`setStatus()` method)
 
-06. [feeds.service.js](https://github.com/jangouts/jangouts/blob/master/src/app/components/feed/feeds.service.js) - It maintains a `feeds` object that contains all the `Feed` objects. A `feeds` object has feed id as key and corresponding `Feed` object as value.
+06. [feeds.service.js](../src/app/components/feed/feeds.service.js) - It maintains a `feeds` object that contains all the `Feed` objects. A `feeds` object has feed id as key and corresponding `Feed` object as value.
 
-07. [log.service.js](https://github.com/jangouts/jangouts/blob/master/src/app/components/room/log.service.js) - It maintains an array of all the `LogEntry` objects created. It supplies all these log entries, for rendering, to `jh-video-chat.html` via `jh-video-chat.directive.js`.
+07. [log.service.js](../src/app/components/room/log.service.js) - It maintains an array of all the `LogEntry` objects created. It supplies all these log entries, for rendering, to `jh-video-chat.html` via `jh-video-chat.directive.js`.
 
-08. [log-entries.factory.js](https://github.com/jangouts/jangouts/blob/master/src/app/components/room/log-entries.factory.js) - It defines `LogEntry` objects which store following types of log entries -
+08. [log-entries.factory.js](../src/app/components/room/log-entries.factory.js) - It defines `LogEntry` objects which store following types of log entries -
   * Mute Request
   * Chat Message
   * User joined/left a room
@@ -93,13 +93,13 @@ It also performs some important actions like -
   * Started/Stopped sharing screen
  For each log entry, a new LogEntry object is created.
 
-09. [data-channel.service.js](https://github.com/jangouts/jangouts/blob/master/src/app/components/room/data-channel.service.js) - It deals with data-channel communication. It provides services like -
+09. [data-channel.service.js](../src/app/components/room/data-channel.service.js) - It deals with data-channel communication. It provides services like -
   * sending and recieving
     + chat messages
     + mute requests
     + status updates
 
-10. [connection-config.factory.js](https://github.com/jangouts/jangouts/blob/master/src/app/components/feed/connection-config.factory.js) - It defines `ConnectionConfig` object that handles the status of the configuration flags (audio, video and data) of the connection to Janus, keeping them synced between client and server. It handles correctly several consequent changes of the flag values keeping the number of requests to a minimum.
+10. [connection-config.factory.js](../src/app/components/feed/connection-config.factory.js) - It defines `ConnectionConfig` object that handles the status of the configuration flags (audio, video and data) of the connection to Janus, keeping them synced between client and server. It handles correctly several consequent changes of the flag values keeping the number of requests to a minimum.
 
 
 ## Interaction among Components
@@ -107,8 +107,8 @@ It also performs some important actions like -
 
 ### Initial loading
 
-* *jangouts* starts initializing and loading other modules from [index.js](https://github.com/jangouts/jangouts/blob/master/src/app/index.js), which defines the main module *janusHangouts* and its dependency on other modules.
-* It reads the configuration options from *config.json* provided by the server and sets the value of `config` object, provided by [config.provider.js](https://github.com/jangouts/jangouts/blob/master/src/app/config.provider.js).
+* *jangouts* starts initializing and loading other modules from [index.js](../src/app/index.js), which defines the main module *janusHangouts* and its dependency on other modules.
+* It reads the configuration options from *config.json* provided by the server and sets the value of `config` object, provided by [config.provider.js](../src/app/config.provider.js).
 * Then, it directs to `signin` page.
 
 
