@@ -148,6 +148,8 @@ When a participant wants to enter a room, process starts same as fetching rooms 
 
 ### Attaching to existing and new feeds
 
+![Attach to Feeds](attaching-to-feeds.png?raw=true "Attaching to Feeds")
+
 When a participant enters a room, she/he must be attached to existing feeds representing participants (if any) in the room. As explained in section - **Entering a room**, response object is checked for existing feeds. If they exist, *room.service.js* performs following actions, for each feed in the list -
  * `RoomService.subscribeToFeed()` function is called and a handle is created.
  * `pluginHandle` object is recieved and a new `FeedConnection` object is created.
