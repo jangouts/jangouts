@@ -1,4 +1,4 @@
-# Jangouts - Working Details
+# Jangouts - Implementation and Working Details
 
 
 ## How Janus makes it possible?
@@ -61,7 +61,7 @@ following tasks -
 - It defines `FeedConnection` object that manages the connection of a feed to
 the Janus server. Some of the attributes provided are - 
     * `pluginHandle` object
-    * feed role (publisher/subscriber)
+    * feed role (publisher/subscriber/screen/window)
     * `ConnectionConfig` object (using *connection-config.factory.js*)
     
   It also performs some important actions like - 
@@ -93,11 +93,11 @@ services by performing actions, like -
 `Feed` object representing a Janus feed. It maintains data related to a feed 
 for local representation, and, sending to remote peers. It contains attributes like -
     * `FeedConnection` object
-    * `id` and `display` of feed
+    * `id` and `display` of feed (`display` is the name used for entering room)
     * other feed info -`isPublisher`, `isLocalScreen`, `isIgnored`
  
  It also contains methods that perform actions like - 
-    * changing the display
+    * changing the `display`
     * start/stop ignoring a feed
     * enabling/disabling a channel/track
     * Reads local feed info, to send it to the remote peers (`getStatus()` 
@@ -106,8 +106,9 @@ for local representation, and, sending to remote peers. It contains attributes l
     peer (`setStatus()` method)
 
 06. [feeds.service.js](../src/app/components/feed/feeds.service.js) - It 
-maintains a `feeds` object that contains all the `Feed` objects. A `feeds`
-object has feed id as key and corresponding `Feed` object as value.
+maintains a `feeds` catalogue that contains all the known `Feed` objects. A
+`feeds` catalogue has a `Feed id` as key and corresponding `Feed` object as 
+value.
 
 07. [log.service.js](../src/app/components/room/log.service.js) - It maintains
 an array of all the `LogEntry` objects created. It supplies all these log 
@@ -120,11 +121,12 @@ entries, for rendering, to `jh-video-chat.html` via `jh-video-chat.directive.js`
     * User joined/left a room
     * Started/Stopped ignoring a feed
     * Started/Stopped sharing screen
+    
  For each log entry, a new LogEntry object is created.
 
 09. [data-channel.service.js](../src/app/components/room/data-channel.service.js)
-- It deals with data-channel communication. It provides services like -
-    * sending and recieving
+- It deals with data-channel communication. It provides services like sending and
+recieving -
       + chat messages
       + mute requests
       + status updates
@@ -134,6 +136,45 @@ entries, for rendering, to `jh-video-chat.html` via `jh-video-chat.directive.js`
 flags (audio, video and data) of the connection to Janus, keeping them synced
 between client and server. It handles correctly several consequent changes of
 the flag values keeping the number of requests to a minimum.
+
+
+## *pluginHandle* object
+
+**pluginHandle** object has several methods are used to interact with the plugin
+or check the state of the `session handle` -
+
+   * `getId()`: returns the unique handle identifier.
+   * `getPlugin()`: returns the unique package name of the attached plugin.
+   * `send(parameters)`: sends a message (with or without a jsep to negotiate a
+    PeerConnection) to the plugin.
+   * `createOffer(callbacks)`: asks the library to create a WebRTC compliant 
+    OFFER.
+   * `createAnswer(callbacks)`: asks the library to create a WebRTC compliant 
+    ANSWER.
+   * `handleRemoteJsep(callbacks)`: asks the library to handle an incoming WebRTC
+    compliant session description.
+   * `dtmf(parameters)`: sends a DTMF tone on the PeerConnection.
+   * `data(parameters)`: sends data through the Data Channel, if available.
+   * `getBitrate()`: gets a verbose description of the currently received stream
+    bitrate.
+   * `hangup(sendRequest)`: tells the library to close the PeerConnection; if the
+    optional sendRequest argument is set to true, then a hangup Janus API 
+    request is sent to Janus as well (disabled by default, Janus can usually 
+    figure this out via DTLS alerts and the like but it may be useful to enable
+    it sometimes).
+   * `detach(parameters)`: detaches from the plugin and destroys the handle, tearing
+    down the related PeerConnection if it exists.
+   * `webrtcStuff` : It contains fields providing connectoin details about the handle like - 
+      + `pc` - `RTCPeerConnection` object
+      + `dataChannel` - data channel details
+      + `myStream` - local stream
+      + `remoteStream` - remote stream
+      + `mySdp` - local JSEP
+      + `sdpSent` - whether local JSEP has been sent or not.
+      + `trickle` - boolean indicating whether trickling is enabled or not.  
+etc.
+ 
+**REF**: Janus [JavaScript API](https://janus.conf.meetecho.com/docs/JS.html).
 
 
 ## Interaction among Components
@@ -190,8 +231,10 @@ performs following steps -
  `msg.videoroom = "joined"` and a `msg.id` which is unique for each participant
  in a room.
  * `ActionService.enterRoom()` is called for creating a new corresponding `Feed`
- object (with `isPublisher: true`), which is then added to `FeedService.feeds` 
- object.
+ object (with `isPublisher: true` and `main: true`, since this feed has the role
+ `main` and is the only feed with `main` role for this participant), which is 
+ then added to `FeedService.feeds` object. This feed, is now a part of
+ `FeedService.allFeeds()` and can also be accessed by using `FeedService.findMain()`.
  * Also, `publishing` feed on server is done parallely along with sending local
  stream to the UI.
  * For `publishing`, a WebRTC offer is created using `pluginHandle.createOffer()`.
