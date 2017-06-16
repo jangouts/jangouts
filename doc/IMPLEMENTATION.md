@@ -57,14 +57,17 @@ following tasks -
     * pin-required
  etc.
 
-03. [feed-connection.factory.js](../src/app/components/feed/feed-connection.factory.js)
-- It defines `FeedConnection` object that manages the connection of a feed to
+03. [feed-connection.factory.js](../src/app/components/feed/feed-connection.factory.js) - It
+defines `FeedConnection` object that manages the connection of a feed to
 the Janus server. Some of the attributes provided are - 
-    * `pluginHandle` object
-    * feed role (publisher/subscriber/screen/window)
-    * `ConnectionConfig` object (using *connection-config.factory.js*)
+    * `pluginHandle` object (See **pluginHandle object** section below for details)
+    * feed role (publisher/subscriber) - {publisher feeds are of three kinds - `main`/`screen`/`window`.
+      `main` is the main publisher feed. `screen` and `window` are publisher screen-sharing feeds.
+      In most browsers, `screen` and `window` are equivalent. Firefox uses the former to share the
+      whole screen and the latter for sharing individual windows.}
+    * `ConnectionConfig` object (using *connection-config.factory.js*)  
     
-  It also performs some important actions like - 
+    It also performs some important actions like - 
     * sending a `join` request (`register()` and `listen()` methods)
     * negotiating a WebRTC connection by -
       + creating a WebRTC `offer` for sharing the audio and video with the 
@@ -96,8 +99,8 @@ for local representation, and, sending to remote peers. It contains attributes l
     * `id` and `display` of feed (`display` is the name used for entering room)
     * other feed info -`isPublisher`, `isLocalScreen`, `isIgnored`
  
- It also contains methods that perform actions like - 
-    * changing the `display`
+    It also contains methods that perform actions like - 
+    * changing the `display` (i.e. the name of the participant)
     * start/stop ignoring a feed
     * enabling/disabling a channel/track
     * Reads local feed info, to send it to the remote peers (`getStatus()` 
@@ -114,25 +117,24 @@ value.
 an array of all the `LogEntry` objects created. It supplies all these log 
 entries, for rendering, to `jh-video-chat.html` via `jh-video-chat.directive.js`.
 
-08. [log-entries.factory.js](../src/app/components/room/log-entries.factory.js)
-- It defines `LogEntry` objects which store following types of log entries -
+08. [log-entries.factory.js](../src/app/components/room/log-entries.factory.js) - It
+defines `LogEntry` objects which store following types of log entries -
     * Mute Request
     * Chat Message
     * User joined/left a room
     * Started/Stopped ignoring a feed
     * Started/Stopped sharing screen
     
- For each log entry, a new LogEntry object is created.
+    For each log entry, a new LogEntry object is created.
 
-09. [data-channel.service.js](../src/app/components/room/data-channel.service.js)
-- It deals with data-channel communication. It provides services like sending and
-recieving -
+09. [data-channel.service.js](../src/app/components/room/data-channel.service.js) - It
+deals with data-channel communication. It provides services like sending and recieving -
       + chat messages
       + mute requests
       + status updates
 
-10. [connection-config.factory.js](../src/app/components/feed/connection-config.factory.js)
-- It defines `ConnectionConfig` object that handles the status of the configuration
+10. [connection-config.factory.js](../src/app/components/feed/connection-config.factory.js) - It
+defines `ConnectionConfig` object that handles the status of the configuration
 flags (audio, video and data) of the connection to Janus, keeping them synced
 between client and server. It handles correctly several consequent changes of
 the flag values keeping the number of requests to a minimum.
