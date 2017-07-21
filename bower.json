@@ -18,7 +18,6 @@
     "ngEmbed": "git://github.com/ritz078/ng-embed.git#5b2fa818197838f",
     "angular-hotkeys": "devonzara/angular-hotkeys#18915a4fe83281a5f8a",
     "mousetrap": "mousetrap-js/mousetrap#8236fbda90e2c50dfbfbe4",
-    "angular-gridster": "~0.13.5",
     "angular-extended-notifications": "~1.0.4",
     "angular-audio": "~1.7.1",
     "angular-local-storage": "~0.2.3"

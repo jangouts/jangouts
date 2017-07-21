@@ -9,8 +9,8 @@
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
-               'janusHangouts.config', 'cfp.hotkeys', 'gridster',
-               'ngAudio', 'angular-extended-notifications', 'LocalStorageModule'])
+               'janusHangouts.config', 'cfp.hotkeys', 'ngAudio',
+               'angular-extended-notifications', 'LocalStorageModule'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
@@ -71,15 +71,15 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
   })
   .run(function($http, jhConfig) {
     //function to replace the placeholders
-    
+
     function replacePlaceholder(value) {
       if (typeof value === 'string') {
           return value.replace("%{hostname}", window.location.host);
       }
-      
+
       return value;
     }
-    
+
     var request = new XMLHttpRequest();
     request.open('GET', 'config.json', false);
     request.send(null);
