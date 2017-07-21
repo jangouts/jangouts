@@ -53,9 +53,6 @@
       vm.isHighlightedByUser = isHighlightedByUser;
       vm.logEntries = logEntries;
       vm.showHotkeys = showHotkeys;
-      vm.windowResizeModeOn = false;
-      vm.toggleWindowResizeMode = toggleWindowResizeMode;
-      vm.setDefaultLayout = setDefaultLayout;
 
       function defaultGridsterItems() {
         // Window width minus the paddings
@@ -156,19 +153,6 @@
 
       function showHotkeys() {
         hotkeys.toggleCheatSheet();
-      }
-
-      function toggleWindowResizeMode() {
-        vm.windowResizeModeOn = !vm.windowResizeModeOn;
-      }
-
-      function setDefaultLayout() {
-        // A really ugly bug arises in my Firefox if we don't skip this case
-        if (!isDefaultLayout()) {
-          vm.gridsterItems = defaultGridsterItems();
-          UserService.removeSetting('gridsterItems');
-          Notifier.info('Your layout preferences have been deleted');
-        }
       }
     }
   }
