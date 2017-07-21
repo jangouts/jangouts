@@ -88,10 +88,6 @@
         ];
       }
 
-      function isDefaultLayout() {
-        return (UserService.getSetting('gridsterItems') === undefined);
-      }
-
       function feeds() {
         return FeedsService.allFeeds();
       }
