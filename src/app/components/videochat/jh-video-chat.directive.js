@@ -191,28 +191,7 @@
         return LogService.allEntries();
       }
 
-      function adjustSize($element) {
-        var width = $element.innerWidth();
-        var height = $element.innerHeight();
-        var inner;
-
-        // Is this the video grid item?
-        inner = $("#main-video video", $element);
-        if (inner.length) {
-          inner.css({height: height + "px", width: width + "px"});
-        }
-
-        // Is this the chat grid item?
-        inner = $("#jh-chat-messages", $element);
-        if (inner.length) {
-          inner.css({height: height - 40 + "px"});
-        }
-      }
-
       function adjustAllSizes() {
-        $(".gridster-item").each(function(index, e) {
-          adjustSize($(e));
-        });
       }
 
       function showHotkeys() {
