@@ -31,8 +31,8 @@
     function jhVideoChatCtrl() {
       /* jshint: validthis */
       var vm = this;
-      var GRIDSTER_COLS = 16;
-      vm.gridsterItems = UserService.getSetting('gridsterItems') || defaultGridsterItems();
+      var NUMBER_OF_COLS = 16;
+      vm.activityItems = UserService.getSetting('activityItems') || defaultActivityItems();
 
       /* Data */
       vm.highlight = {
@@ -54,13 +54,13 @@
       vm.logEntries = logEntries;
       vm.showHotkeys = showHotkeys;
 
-      function defaultGridsterItems() {
+      function defaultActivityItems() {
         // Window width minus the paddings
         var gridWidth = $(window).width() - 25;
         // Window height minus header and footer (and some safety pixels)
         var gridHeight = $(window).height() - 33 - 20 - 5;
         // Items are square, i.e. width == height
-        var itemHeight = gridWidth / GRIDSTER_COLS;
+        var itemHeight = gridWidth / NUMBER_OF_COLS;
         // How many rows do we have room for?
         var rows = Math.floor(gridHeight / itemHeight);
         if (rows < 6) { rows = 6; }

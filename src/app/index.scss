@@ -182,35 +182,35 @@ header {
     font-weight: bold;
     color: $color1;
   }
-  
+
   .name-edit{
     //text-align: left !important;
     margin: 0px;
     padding: 0px;
     display: inline;
     vertical-align: middle;
-    
+
     input {
       width: 150px;
     }
-    
+
     span {
       color: #F15A5C;
     }
-    
+
     .ng-pristine {
       -webkit-box-shadow: 0 0 10px #C9302C;
       -moz-box-shadow: 0 0 10px #C9302C;
       box-shadow: 0 0 10px #C9302C;
     }
-  
+
     .ng-dirty{
       -webkit-box-shadow: 0 0 10px #9ecaed;
       -moz-box-shadow: 0 0 10px #9ecaed;
       box-shadow: 0 0 10px #9ecaed;
     }
   }
-  
+
   .push-to-talk {
     kbd {
       background-color: $color1;
@@ -286,7 +286,7 @@ footer {
   padding: 0px;
 }
 
-.gridster-item {
+.activity-item {
   background: white;
 }
 

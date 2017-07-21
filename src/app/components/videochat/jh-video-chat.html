@@ -29,10 +29,10 @@
 <div class="row" id="videochat-body">
   <div id="videochat-playroom">
     <ul>
-      <li gridster-item
+      <li activity-item
           row="item.position[0]" col="item.position[1]"
           size-x="item.size[0]" size-y="item.size[1]"
-          ng-repeat="item in vm.gridsterItems">
+          ng-repeat="item in vm.activityItems">
         <div
           ng-if="item.content === 'Speaker'"
           class="grid-item-content"
