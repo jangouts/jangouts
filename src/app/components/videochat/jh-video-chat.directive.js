@@ -32,7 +32,6 @@
       /* jshint: validthis */
       var vm = this;
       var GRIDSTER_COLS = 16;
-      vm.gridsterIgnoreNextChange = true;
       vm.gridsterItems = UserService.getSetting('gridsterItems') || defaultGridsterItems();
 
       vm.gridsterOpts = {
@@ -174,7 +173,6 @@
       function setDefaultLayout() {
         // A really ugly bug arises in my Firefox if we don't skip this case
         if (!isDefaultLayout()) {
-          vm.gridsterIgnoreNextChange = true;
           vm.gridsterItems = defaultGridsterItems();
           UserService.removeSetting('gridsterItems');
           Notifier.info('Your layout preferences have been deleted');
