@@ -34,12 +34,6 @@
       var GRIDSTER_COLS = 16;
       vm.gridsterItems = UserService.getSetting('gridsterItems') || defaultGridsterItems();
 
-      vm.gridsterOpts = {
-        columns: GRIDSTER_COLS,
-        resizable: { enabled: false },
-        draggable: { enabled: false }
-      };
-
       /* Data */
       vm.highlight = {
         // Feed explicitly selected as highlight by the user (using the UI)
@@ -166,8 +160,6 @@
 
       function toggleWindowResizeMode() {
         vm.windowResizeModeOn = !vm.windowResizeModeOn;
-        vm.gridsterOpts.resizable.enabled = vm.windowResizeModeOn;
-        vm.gridsterOpts.draggable.enabled = vm.windowResizeModeOn;
       }
 
       function setDefaultLayout() {
