@@ -32,7 +32,6 @@
       /* jshint: validthis */
       var vm = this;
       var GRIDSTER_COLS = 16;
-      vm.gridsterDirtyBit = false;
       vm.gridsterIgnoreNextChange = true;
       vm.gridsterItems = UserService.getSetting('gridsterItems') || defaultGridsterItems();
 
@@ -99,16 +98,8 @@
         ];
       }
 
-      function storeGridster() {
-        if (vm.gridsterDirtyBit) {
-          UserService.setSetting('gridsterItems', vm.gridsterItems);
-          Notifier.info('Your layout has been successfully saved');
-        }
-        vm.gridsterDirtyBit = false;
-      }
-
       function isDefaultLayout() {
-        return (!vm.gridsterDirtyBit && (UserService.getSetting('gridsterItems') === undefined));
+        return (UserService.getSetting('gridsterItems') === undefined);
       }
 
       function feeds() {
@@ -178,15 +169,12 @@
         vm.windowResizeModeOn = !vm.windowResizeModeOn;
         vm.gridsterOpts.resizable.enabled = vm.windowResizeModeOn;
         vm.gridsterOpts.draggable.enabled = vm.windowResizeModeOn;
-
-        if (!vm.windowResizeModeOn) { storeGridster(); }
       }
 
       function setDefaultLayout() {
         // A really ugly bug arises in my Firefox if we don't skip this case
         if (!isDefaultLayout()) {
           vm.gridsterIgnoreNextChange = true;
-          vm.gridsterDirtyBit = false;
           vm.gridsterItems = defaultGridsterItems();
           UserService.removeSetting('gridsterItems');
           Notifier.info('Your layout preferences have been deleted');
