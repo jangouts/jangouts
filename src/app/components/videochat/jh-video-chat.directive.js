@@ -25,27 +25,7 @@
     };
 
     function jhVideoChatLink(scope, element) {
-      scope.$on('gridster-resized', function() {
-        scope.vm.adjustAllSizes();
-      });
-      // 'gridster-item-initialized' is not working for us,
-      // let's workaround the problem
-      $timeout(function() { scope.vm.adjustAllSizes(); }, 600);
-
-      // Gridster's event system is utterly faulty, it's safer to watch the data
-      scope.$watch("vm.gridsterItems", function() {
-        if (scope.vm.gridsterIgnoreNextChange) {
-          scope.vm.gridsterIgnoreNextChange = false;
-        } else {
-          scope.vm.gridsterDirtyBit = true;
-        }
-        // Wait 600ms for the animations to complete
-        $timeout(function() { scope.vm.adjustAllSizes(); }, 600);
-      }, true);
-
-      scope.$watch(
-        function() { return $("#thumbnails .thumb", element).size(); }
-      );
+      // TODO: It might be needed later.
     }
 
     function jhVideoChatCtrl() {
@@ -80,7 +60,6 @@
       vm.isHighlighted = isHighlighted;
       vm.isHighlightedByUser = isHighlightedByUser;
       vm.logEntries = logEntries;
-      vm.adjustAllSizes = adjustAllSizes;
       vm.showHotkeys = showHotkeys;
       vm.windowResizeModeOn = false;
       vm.toggleWindowResizeMode = toggleWindowResizeMode;
@@ -189,9 +168,6 @@
 
       function logEntries() {
         return LogService.allEntries();
-      }
-
-      function adjustAllSizes() {
       }
 
       function showHotkeys() {
