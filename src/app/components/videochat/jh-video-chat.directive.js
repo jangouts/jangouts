@@ -44,8 +44,7 @@
       }, true);
 
       scope.$watch(
-        function() { return $("#thumbnails .thumb", element).size(); },
-        function() { scope.vm.adjustFeedsSizes(); }
+        function() { return $("#thumbnails .thumb", element).size(); }
       );
     }
 
@@ -82,7 +81,6 @@
       vm.isHighlightedByUser = isHighlightedByUser;
       vm.logEntries = logEntries;
       vm.adjustAllSizes = adjustAllSizes;
-      vm.adjustFeedsSizes = adjustFeedsSizes;
       vm.showHotkeys = showHotkeys;
       vm.windowResizeModeOn = false;
       vm.toggleWindowResizeMode = toggleWindowResizeMode;
@@ -209,13 +207,6 @@
         if (inner.length) {
           inner.css({height: height - 40 + "px"});
         }
-
-        // Is this the list of feeds item?
-        inner = $("#thumbnails", $element);
-        if (inner.length) {
-          inner.css({height: height + "px", width: width + "px"});
-          adjustFeedsSizes();
-        }
       }
 
       function adjustAllSizes() {
@@ -244,41 +235,6 @@
           vm.gridsterItems = defaultGridsterItems();
           UserService.removeSetting('gridsterItems');
           Notifier.info('Your layout preferences have been deleted');
-        }
-      }
-
-      function adjustFeedsSizes() {
-        var div = $('#thumbnails');
-        var totalWidth = div.innerWidth();
-        var totalHeight = div.innerHeight();
-        var extraWidth = 4; // borders, margins, etc.
-        var extraHeight = 33; // name, margins, etc.
-        var qty = $(".thumb", div).size();
-        var feedWidth, perRow, rowHeight, numRows;
-        // Due to some unexpected behavior in Mozilla, it's better to calculate
-        // whether we need the scrollbar than trusting "overflow: auto"
-        // See https://github.com/jangouts/jangouts/issues/77
-        var scrollbar = true;
-
-        // Do the calculations by trial and error
-        for (feedWidth = 128; feedWidth >= 64; feedWidth -= 4) {
-          rowHeight = feedWidth * 0.75 + extraHeight;
-          perRow = Math.floor(totalWidth / (feedWidth + extraWidth));
-          numRows = Math.ceil(qty / perRow);
-          // It fits already, we don't need to keep trying
-          if (numRows * rowHeight <= totalHeight) {
-            scrollbar = false;
-            break;
-          }
-        }
-        if (feedWidth < 64) { feedWidth = 64; }
-
-        // Adjust the DOM elements
-        $(".face", div).css({height: feedWidth * 0.75 + "px", width: feedWidth + "px"});
-        if (scrollbar) {
-          div.css({"overflow-y": 'scroll'});
-        } else {
-          div.css({"overflow-y": 'hidden'});
         }
       }
     }
