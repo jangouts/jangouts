@@ -1,9 +1,11 @@
 footer.footer
-    .container-fluid
-        span.pull-left
-          | &copy; 
-          a(href='http://www.suse.com/', target='_blank') SUSE 2015
-        span.pull-right Version 
-          = version
-        .clearfix
-
+  .container-fluid
+    span.pull-left
+      img#logo(src='../../images/jangouts-logo-white.png')
+  .container-fluid
+    span.pull-left#text
+      | &copy;&nbsp;
+      a(href='http://www.suse.com/', target='_blank') SUSE 2015
+      | &nbsp;| version #{version} |&nbsp;
+      a(href='https://github.com/jangouts/jangouts', target='_blank') GitHub
+  .clearfix

@@ -1,10 +1,11 @@
 /* Colour pallete */
-$color1: #f15a5c; // Red-ish
-$color2: #09414f; // Blue-ish
-$color3: #e1dcbd; // Brown-ish
+$color1: #F04559; // Red-ish
+$color2: #0BADBA; // Blue-ish
+$color3: #222222; // Dark Navy
+$color4: #EDEDED; // Light Grey
 
 //colour variables
-$jangouts-bg:  $color3;
+$jangouts-bg:  $color4;
 $jangouts-video-bg: $color2;
 
 body {
@@ -158,7 +159,7 @@ header {
   background: $color3;
   padding: 1px 0;
   #logo {
-    height: 33px;
+    width: 150px;
   }
   button, .btn-default {
     color: $color1;
@@ -226,9 +227,13 @@ header {
 
 footer {
   background: $color3;
-  font-size: 12px;
+  font-size: 9px;
+  color: #BEBEBE;
   border: 0;
   padding: 3px 0 0 0;
+    #text {
+      margin-top: -10px;
+    }
 }
 
 .container-no-padding {
