@@ -3,6 +3,7 @@ $color1: #F04559; // Red-ish
 $color2: #0BADBA; // Blue-ish
 $color3: #222222; // Dark Navy
 $color4: #EDEDED; // Light Grey
+$color5: #BEBEBE; //Dark Grey;
 
 //colour variables
 $jangouts-bg:  $color4;
@@ -155,22 +156,27 @@ body div.block-ui-container {
   }
 }
 
+
+button, .btn-default {
+  color: $color1;
+  background: transparent;
+  border-color: transparent;
+
+  &:active, &:focus, &:hover {
+    background: inherit;
+    border-color: transparent;
+  }
+}
+
 header {
   background: $color3;
-  padding: 1px 0;
+  // padding: 5px 0;
+  height: 60px;
+  // position: fixed;
   #logo {
-    width: 150px;
+    width: 100px;
   }
-  button, .btn-default {
-    color: $color1;
-    background: transparent;
-    border-color: transparent;
 
-    &:active, &:focus, &:hover {
-      background: inherit;
-      border-color: transparent;
-    }
-  }
   div.checkbox {
     top: 2px;
     margin: 0 12px 0 12px;
@@ -180,8 +186,8 @@ header {
   .feed-info, .room-info {
     vertical-align: middle;
     font-size: 12px;
-    font-weight: bold;
-    color: $color1;
+    font-weight: normal;
+    color: $color4;
   }
 
   .name-edit{
@@ -215,24 +221,24 @@ header {
   .push-to-talk {
     kbd {
       background-color: $color1;
-      margin-left: -2px;
       line-height: 1em;
       font-weight: bold;
+      padding: 5px;
     }
     .toggle-text {
-      font-size: 10px;
+      font-size: 8px;
     }
   }
 }
 
 footer {
   background: $color3;
-  font-size: 9px;
-  color: #BEBEBE;
+  font-size: 8px;
+  color: $color5;
   border: 0;
-  padding: 3px 0 0 0;
+  padding: 10px;
     #text {
-      margin-top: -10px;
+      margin-top: -5px;
     }
 }
 
@@ -310,3 +316,173 @@ footer {
    all your sass files automatically */
 // injector
 // endinjector
+
+
+
+/*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Toggle Styles */
+
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+#wrapper.toggled {
+  padding-left: 80px;
+}
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 80px;
+  width: 0;
+  height: 100%;
+  margin-left: -80px;
+  overflow-y: auto;
+  background: $color3;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#header-wrapper {
+  // position: fixed;
+  height: 60px;
+}
+#wrapper.toggled #sidebar-wrapper {
+  width: 80px;
+}
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -80px;
+}
+/* Sidebar Styles */
+
+.sidebar-nav {
+  position: absolute;
+  top: 0px;
+  width: 80px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 40px;
+}
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: #999999;
+}
+.sidebar-nav li a:hover {
+  text-decoration: none;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+}
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+.sidebar-nav > .sidebar-brand {
+  height: 65px;
+  font-size: 18px;
+  line-height: 60px;
+}
+.sidebar-nav > .sidebar-brand a {
+  color: #999999;
+}
+.sidebar-nav > .sidebar-brand a:hover {
+  color: #fff;
+  background: none;
+}
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 80px;
+  }
+  #wrapper.toggled {
+    padding-left: 0;
+  }
+  #sidebar-wrapper {
+    width: 80px;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 0;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+
+hr {
+  border-color: $color5;
+  opacity: 0.2;
+  margin: 0;
+
+}
+
+.sidebar-box {
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  margin: auto;
+}
+
+#sidebar-box-info {
+  height: 60px;
+}
+
+.btn-sidebar {
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 0 !important;
+}
+
+#btn-info {
+  background-color: $color1;
+  height: 60px;
+}
+
+.btn-img {
+  width: 50px;
+  height: auto;
+}
+
+.btn-danger {
+  background-color: $color2;
+  border-color: $color2;
+}
+
+.btn:hover, .btn-danger:hover, #btn-info:hover {
+  background-color: black;
+  border-color: black;
+}
+
+.glyphicon {
+  color: $color4;
+  padding: 15px;
+  margin: 0px;
+}
+
+.glyphicon:hover {
+  color: $color1;
+}

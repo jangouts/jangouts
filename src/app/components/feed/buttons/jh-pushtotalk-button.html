@@ -1,16 +1,17 @@
 <button
   ng-class="{'btn-danger': vm.isRecording() }"
-  class="btn push-to-talk"
+  class="btn push-to-talk btn-sidebar"
   ng-click="vm.click($event)"
   title="{{vm.titleText}}">
-  <span class="glyphicon glyphicon-bullhorn" aria-hidden="true">
-  </span>
+  <span><img class="btn-img" src="images/buttons/buttons_hotkey.svg"/></span>
+  </br>
   <span ng-show="vm.showHotkey">
     <kbd>
         {{vm.hotkey}}
     </kbd>
   </span>
+  <!-- </br>
   <span class="toggle-text">
     {{vm.toggleText}}
-  </span>
+  </span> -->
 </button>
