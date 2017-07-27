@@ -467,14 +467,14 @@ hr {
   height: auto;
 }
 
-.btn-danger {
-  background-color: $color2;
-  border-color: $color2;
-}
-
-.btn:hover, .btn-danger:hover, #btn-info:hover {
+.btn:hover, #btn-info:hover {
   background-color: black;
   border-color: black;
+}
+
+.btn-danger, .btn-danger:hover {
+  background-color: $color2;
+  border-color: $color2;
 }
 
 .glyphicon {
