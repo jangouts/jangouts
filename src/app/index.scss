@@ -443,6 +443,8 @@ hr {
   height: 80px;
   text-align: center;
   margin: auto;
+  border-bottom: solid;
+  border-bottom-width: thin;
 }
 
 #sidebar-box-info {
@@ -483,5 +485,9 @@ hr {
 }
 
 .glyphicon:hover {
+  color: $color1;
+}
+
+#room-username-separator {
   color: $color1;
 }
