@@ -217,18 +217,17 @@ header {
       box-shadow: 0 0 10px #9ecaed;
     }
   }
+}
 
-  .push-to-talk {
-    kbd {
-      background-color: $color1;
-      line-height: 1em;
-      font-weight: bold;
-      padding: 5px;
-    }
-    .toggle-text {
-      font-size: 8px;
-    }
-  }
+kbd {
+  background-color: (black, 0.3);
+  padding: 5px;
+  font-size: 10px;
+}
+
+#btn-hotkey {
+  margin-top: -6px;
+  margin-left: -2px;
 }
 
 footer {
