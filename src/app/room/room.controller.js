@@ -67,7 +67,10 @@
       .add({
         combo: 'alt+q',
         description: 'Sign out',
-        callback: function() { UserService.signout(); }
+        callback: function() {
+          RoomService.setRoom(null);
+          $state.go('signin');
+        }
       });
     $scope.hotkeys = hotkeys;
   }
