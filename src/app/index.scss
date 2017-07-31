@@ -466,3 +466,45 @@ kbd {
 #room-username-separator {
   color: $color1;
 }
+
+// Cheatsheet styles
+.cfp-hotkeys-container {
+  background-color: transparentize($color3, 0.03);
+  color: $color4;
+  font-weight: 300;
+  padding: 25px 70px 25px 20px;
+  overflow-y: scroll !important;
+  display: block !important;
+
+  img {
+    width: 30px;
+    height: auto;
+    margin-top: -7px;
+  }
+
+  p {
+    margin-left: 5px;
+  }
+
+  span {
+    font-weight: bold;
+    color: $color1;
+  }
+
+  hr {
+    margin: 10px;
+    opacity: 0.5;
+  }
+}
+
+.cfp-hotkeys-close {
+  margin-top: -20px;
+  padding: 5px;
+  font-size: 50px;
+  border-style: none;
+}
+
+.cfp-hotkeys-close:hover {
+  color: $color1;
+  background-color: transparent;
+}
