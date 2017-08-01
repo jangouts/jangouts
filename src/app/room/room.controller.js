@@ -61,7 +61,7 @@
       })
       .add({
         combo: 'alt+n',
-        description: 'Disable/enable camera.',
+        description: 'Disable/enable your camera.',
         callback: function() { RoomService.toggleChannel('video'); }
       })
       .add({
