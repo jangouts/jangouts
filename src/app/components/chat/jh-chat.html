@@ -1,13 +1,20 @@
-<div class="jh-chat panel panel-default">
-  <div class="panel-body" id="jh-chat-messages">
-    <ul>
-      <li ng-repeat="m in vm.messages">
-        <jh-chat-message message="m" ng-if="m.type === 'chatMsg'"></jh-chat-message>
-        <jh-log-entry message="m" ng-if="m.type !== 'chatMsg'"></jh-log-entry>
-      </li>
-    </ul>
-  </div>
-  <div class="panel-footer" id="chat-form-footer">
-    <jh-chat-form></jh-chat-form>
+<div id="chat-wrapper" class="toggled">
+  <div href="#chat-toggle" class="chat" id="chat-toggle">
+    </div>
+      <!-- <jh-chat messages="vm.logEntries()"></jh-chat> -->
+      <div class="jh-chat panel panel-default">
+        <div class="panel-body" id="jh-chat-messages">
+          <ul>
+            <li ng-repeat="m in vm.messages">
+              <jh-chat-message message="m" ng-if="m.type === 'chatMsg'"></jh-chat-message>
+              <jh-log-entry message="m" ng-if="m.type !== 'chatMsg'"></jh-log-entry>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-footer" id="chat-form-footer">
+          <jh-chat-form></jh-chat-form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
