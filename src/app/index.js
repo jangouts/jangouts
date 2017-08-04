@@ -99,7 +99,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
         '<div class="right-item"><p><span>Audio.</span>Turns on/off a microphone of a certain participant.</p></div>' +
         '<div class="left-item"><img src="../images/buttons/buttons_thumb-video-on.svg"></div>' +
         '<div class="right-item"><p><span>Video.</span>Turns on/off a camera of a certain participant.</p></div>' +
-        '<div class="left-item"><img src="../images/buttons/buttons_thumb-ignore0off.svg"></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_thumb-ignore-off.svg"></div>' +
         '<div class="right-item"><p><span>Ignore.</span>Makes a certain participant invisible.</p></div>' +
         '<div class="left-item"><img src="../images/buttons/buttons_thumb-pin-off.svg"></div>' +
         '<div class="right-item"><p><span>Pin.</span>Pushes a certain thumbnail to the top.</p></div>' +
