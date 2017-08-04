@@ -37,6 +37,16 @@
       });
     }
 
-    function JhChatCtrl() {}
+    function JhChatCtrl() {
+      var vm = this;
+
+      vm.toggleChat = toggleChat;
+
+      // XXX: Maybe it is possible to get the element we want to toggle
+      // directly from Angular instead of using jQuery here.
+      function toggleChat() {
+        $("#chat-wrapper").toggleClass("toggled");
+      };
+    }
   }
 })();
