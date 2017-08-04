@@ -29,7 +29,7 @@
         /* Update messages */
         if (newVal !== undefined) {
           // Scroll to bottom of messages list.
-          var messagesList = document.getElementById('jh-chat-messages');
+          var messagesList = document.getElementById('chat-messages-box');
           setTimeout(function() {
             messagesList.scrollTop = messagesList.scrollHeight;
           }, 100);
