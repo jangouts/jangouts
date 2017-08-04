@@ -4,12 +4,8 @@
     <ul class="sidebar-nav">
       <!-- Info Button -->
       <div class="sidebar-box" id="sidebar-box-info">
-        <button
-           class="btn btn-sidebar"
-           id="btn-info"
-           ng-click="vm.showHotkeys()"
-           title="Keyboard shortcuts">
-           <img class="btn-img" src="images/buttons/buttons_info.svg">
+        <button class="btn btn-sidebar" id="btn-info" ng-click="vm.showHotkeys()" title="Keyboard shortcuts">
+          <img class="btn-img" src="images/buttons/buttons_info.svg">
         </button>
       </div>
       <!-- Layout Change Button -->
@@ -79,10 +75,10 @@
   <jh-chat></jh-chat>
 
   <!-- Page Content -->
-  <div id="page-content-wrapper"> -->
+  <div id="page-content-wrapper">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-12"> -->
+        <div class="col-lg-12">
           <!-- <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> -->
         </div>
       </div>
@@ -93,33 +89,34 @@
       <div id="videochat-playroom">
         <ul>
           <li activity-item
-              row="item.position[0]" col="item.position[1]"
-              size-x="item.size[0]" size-y="item.size[1]"
-              ng-repeat="item in vm.activityItems">
+          row="item.position[0]" col="item.position[1]"
+          size-x="item.size[0]" size-y="item.size[1]"
+          ng-repeat="item in vm.activityItems">
             <div
-              ng-if="item.content === 'Speaker'"
-              class="grid-item-content"
-              id="main-video"
-              jh-main-feed="true"
-              feed="vm.highlightedFeed()"
-              ng-class="{mirrored: vm.mirrored()}">
+            ng-if="item.content === 'Speaker'"
+            class="grid-item-content"
+            id="main-video"
+            jh-main-feed="true"
+            feed="vm.highlightedFeed()"
+            ng-class="{mirrored: vm.mirrored()}">
             </div>
             <div
-              ng-if="item.content === 'Participants'"
-              class="grid-item-content"
-              id="thumbnails">
+            ng-if="item.content === 'Participants'"
+            class="grid-item-content"
+            id="thumbnails">
               <div
-                jh-feed="true"
-                feed="f"
-                ng-repeat="f in vm.feeds() | orderBy:'+display'"
-                toggle-highlight-fn="vm.toggleHighlightedFeed(f)"
-                highlighted="vm.isHighlighted(f)"
-                highlighted-by-user="vm.isHighlightedByUser(f)">
+              jh-feed="true"
+              feed="f"
+              ng-repeat="f in vm.feeds() | orderBy:'+display'"
+              toggle-highlight-fn="vm.toggleHighlightedFeed(f)"
+              highlighted="vm.isHighlighted(f)"
+              highlighted-by-user="vm.isHighlightedByUser(f)">
               </div>
             </div>
           </li>
         </ul>
       </div>
+      <!-- /videochat-playroom -->
     </div>
     <!-- /videochat-body -->
   </div>
