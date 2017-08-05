@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhVideoChat', jhVideoChatDirective);
 
-  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'UserService', 'Notifier', 'hotkeys'];
+  jhVideoChatDirective.$inject = ['$window', 'FeedsService', 'UserService', 'Notifier', 'hotkeys'];
 
-  function jhVideoChatDirective($window, LogService, FeedsService, UserService, Notifier, hotkeys) {
+  function jhVideoChatDirective($window, FeedsService, UserService, Notifier, hotkeys) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -51,7 +51,6 @@
       vm.toggleHighlightedFeed = toggleHighlightedFeed;
       vm.isHighlighted = isHighlighted;
       vm.isHighlightedByUser = isHighlightedByUser;
-      vm.logEntries = logEntries;
       vm.showHotkeys = showHotkeys;
 
       function defaultActivityItems() {
@@ -141,10 +140,6 @@
 
       function isHighlightedByUser(f) {
         return f === vm.highlight.byUser;
-      }
-
-      function logEntries() {
-        return LogService.allEntries();
       }
 
       function showHotkeys() {

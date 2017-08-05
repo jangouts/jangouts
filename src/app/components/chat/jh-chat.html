@@ -1,10 +1,9 @@
 <div id="chat-wrapper" class="toggled">
   <div class="chat" ng-click="vm.toggleChat()"></div>
-  <!-- <jh-chat messages="vm.logEntries()"></jh-chat> -->
   <div class="jh-chat panel panel-default">
     <div class="panel-body" id="chat-messages-box">
       <ul>
-        <li ng-repeat="m in vm.messages">
+        <li ng-repeat="m in vm.logEntries()">
           <jh-chat-message message="m" ng-if="m.type === 'chatMsg'"></jh-chat-message>
           <jh-log-entry message="m" ng-if="m.type !== 'chatMsg'"></jh-log-entry>
         </li>

@@ -11,7 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhChat', jhChatDirective);
 
-  function jhChatDirective() {
+    jhChatDirective.$inject = ['LogService'];
+
+  function jhChatDirective(LogService) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/chat/jh-chat.html',
@@ -41,12 +43,17 @@
       var vm = this;
 
       vm.toggleChat = toggleChat;
+      vm.logEntries = logEntries;
 
       // XXX: Maybe it is possible to get the element we want to toggle
       // directly from Angular instead of using jQuery here.
       function toggleChat() {
         $("#chat-wrapper").toggleClass("toggled");
-      };
+      }
+
+      function logEntries() {
+        return LogService.allEntries();
+      }
     }
   }
 })();
