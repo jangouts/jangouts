@@ -1,10 +1,11 @@
-/* Colour pallete */
+// Colour pallete
 $color1: #F04559; // Red-ish
 $color2: #0BADBA; // Blue-ish
 $color3: #222222; // Dark Navy
 $color4: #EDEDED; // Light Grey
+$color5: #BEBEBE; // Dark Grey;
 
-//colour variables
+// Colour variables
 $jangouts-bg:  $color4;
 $jangouts-video-bg: $color2;
 
@@ -28,12 +29,14 @@ body {
 #videochat-playroom {
   background: $jangouts-video-bg;
 }
+
 #thumbnails {
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
   margin: 0 auto;
   overflow: hidden;
+
   figure {
     margin: 0px;
     border: 2px solid transparent;
@@ -41,6 +44,7 @@ body {
 
     .thumb {
       cursor: pointer;
+
       .face {
         vertical-align: middle;
         width: 64px;
@@ -56,6 +60,7 @@ body {
       padding: 2px 3px 3px 3px;
       height: 26px;
       position: relative;
+
       .caption {
         position: absolute;
         width: 80%;
@@ -64,12 +69,14 @@ body {
         white-space: nowrap;
         cursor: pointer;
       }
+
       .buttons {
         z-index: 10;
         position: absolute;
         top: 2px;
         right: 2px;
       }
+
       .additional-buttons {
         z-index: 10;
         position: absolute;
@@ -101,6 +108,7 @@ body {
         background: rgba(0,0,0,0.3);
       }
     }
+
     &.sticky {
       border-color: $color1;
     }
@@ -112,12 +120,15 @@ body {
   -webkit-transform:rotateY(180deg); /* Safari and Chrome */
   -moz-transform:rotateY(180deg); /* Firefox */
 }
+
 #jh-chat-messages {
   height: 40px;
 }
+
 .jh-chat.panel.panel-default {
   margin-bottom: 0;
 }
+
 .jh-chat {
   font-size: 12px;
   .panel-body {
@@ -125,6 +136,7 @@ body {
     overflow: auto;
     padding: 8px;
   }
+
   ul {
     list-style: none;
     margin: 0;
@@ -134,7 +146,6 @@ body {
       margin-bottom: 5px;
       padding-bottom: 2px;
       border-bottom: 1px dotted #aaa;
-
       .log-entry {
         font-style: oblique;
         color: #3388AA;
@@ -150,27 +161,31 @@ body {
 body div.block-ui-container {
   background-color: black;
   opacity: 0.5 !important;
+
   img {
     z-index: 1001;
   }
 }
 
+button, .btn-default {
+  color: $color1;
+  background: transparent;
+  border-color: transparent;
+
+  &:active, &:focus, &:hover {
+    background: inherit;
+    border-color: transparent;
+  }
+}
+
 header {
   background: $color3;
-  padding: 1px 0;
-  #logo {
-    width: 150px;
-  }
-  button, .btn-default {
-    color: $color1;
-    background: transparent;
-    border-color: transparent;
+  height: 60px;
 
-    &:active, &:focus, &:hover {
-      background: inherit;
-      border-color: transparent;
-    }
+  #logo {
+    width: 100px;
   }
+
   div.checkbox {
     top: 2px;
     margin: 0 12px 0 12px;
@@ -180,13 +195,12 @@ header {
   .feed-info, .room-info {
     vertical-align: middle;
     font-size: 12px;
-    font-weight: bold;
-    color: $color1;
+    font-weight: normal;
+    color: $color4;
   }
 
-  .name-edit{
-    //text-align: left !important;
-    margin: 0px;
+  .name-edit {
+     margin: 0px;
     padding: 0px;
     display: inline;
     vertical-align: middle;
@@ -211,29 +225,6 @@ header {
       box-shadow: 0 0 10px #9ecaed;
     }
   }
-
-  .push-to-talk {
-    kbd {
-      background-color: $color1;
-      margin-left: -2px;
-      line-height: 1em;
-      font-weight: bold;
-    }
-    .toggle-text {
-      font-size: 10px;
-    }
-  }
-}
-
-footer {
-  background: $color3;
-  font-size: 9px;
-  color: #BEBEBE;
-  border: 0;
-  padding: 3px 0 0 0;
-    #text {
-      margin-top: -10px;
-    }
 }
 
 .container-no-padding {
@@ -241,6 +232,17 @@ footer {
   padding-right: 0;
 }
 
+footer {
+  background: $color3;
+  font-size: 8px;
+  color: $color5;
+  border: 0;
+  padding: 10px;
+
+    #text {
+      margin-top: -5px;
+    }
+}
 
 //styles by sections
 #signin {
@@ -310,3 +312,157 @@ footer {
    all your sass files automatically */
 // injector
 // endinjector
+
+/*!
+ * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 80px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 80px;
+  width: 0;
+  height: 100%;
+  margin-left: -80px;
+  overflow-y: auto;
+  background: $color3;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#header-wrapper {
+  height: 60px;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 80px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -80px;
+}
+
+.sidebar-nav {
+  position: absolute;
+  top: 0px;
+  width: 80px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+  height: 65px;
+  font-size: 18px;
+  line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+  color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+  color: #fff;
+  background: none;
+}
+
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 80px;
+  }
+  #sidebar-wrapper {
+    width: 80px;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+}
+
+.sidebar-box {
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  margin: auto;
+  border-bottom: solid;
+  border-bottom-width: thin;
+}
+
+#sidebar-box-info {
+  height: 60px;
+}
+
+.btn-sidebar {
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 0 !important;
+}
+
+#btn-info {
+  background-color: $color1;
+  height: 60px;
+}
+
+.btn-img {
+  width: 50px;
+  height: auto;
+}
+
+.btn:hover, #btn-info:hover {
+  background-color: black;
+  border-color: black;
+}
+
+.btn-danger, .btn-danger:hover {
+  background-color: $color2;
+  border-color: $color2;
+}
+
+.glyphicon {
+  color: $color4;
+  padding: 15px;
+  margin: 0px;
+}
+
+.glyphicon:hover {
+  color: $color1;
+}
+
+kbd {
+  background-color: (black, 0.3);
+  padding: 5px;
+  font-size: 10px;
+}
+
+#btn-hotkey {
+  margin-top: -6px;
+  margin-left: -2px;
+}
+
+#room-username-separator {
+  color: $color1;
+}

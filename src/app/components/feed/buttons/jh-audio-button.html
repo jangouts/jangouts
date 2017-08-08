@@ -1,23 +1,23 @@
 <button
   type="button"
-  class="btn"
+  class="btn btn-sidebar"
   ng-class="{'btn-primary': vm.isSpeaking(), 'btn-default': !vm.isSpeaking()}"
   ng-click="vm.toggle()"
   title="Disable audio"
   ng-show="vm.showsDisable()">
-  <span class="glyphicon glyphicon-volume-up"></span>
+  <img class="btn-img" src="images/buttons/buttons_audio-on.svg"/>
 </button><button
   type="button"
-  class="btn btn-danger"
+  class="btn btn-danger btn-sidebar"
   ng-click="vm.toggle()"
   title="Enable audio"
   ng-show="vm.showsEnable()">
-  <span class="glyphicon glyphicon-volume-off"></span>
+  <img class="btn-img" src="images/buttons/buttons_audio-off.svg"/>
 </button><button
   type="button"
   disabled
-  class="btn btn-danger"
+  class="btn btn-danger btn-sidebar"
   title="Audio disabled"
   ng-show="vm.showsAudioOff()">
-  <span class="glyphicon glyphicon-volume-off"></span>
+  <img class="btn-img" src="images/buttons/buttons_audio-off.svg"/>
 </button>
