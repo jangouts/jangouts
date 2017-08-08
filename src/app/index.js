@@ -69,6 +69,52 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
       return $delegate;
     });
   })
+  .config(function(hotkeysProvider) {
+    hotkeysProvider.cheatSheetDescription = 'Show/hide this help menu.';
+    hotkeysProvider.template =
+      '<div class="cfp-hotkeys-container fade" ng-class="{in: helpVisible}" ng-click="toggleCheatSheet()">' +
+        // Main Features
+        '<div class="left-item"><img src="../images/buttons/buttons_layout-change.svg"></div>' +
+        '<div class="right-item"><p><span>Layout.</span>Toggles between the view with the main video and w/o.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_settings.svg"></div>' +
+        '<div class="right-item">' +
+          '<p><span>Mute all.</span>Turns off microphones of all participants.</p>' +
+          '<p><span>Video off for all.</span>Turns off cameras of all participants.</p>' +
+          '<p><span>Ignore all.</span>Makes all participants invisible.</p>' +
+          '<p><span>Thumbnails Order.</span>Determines the order of the thumbnails based on the participants’ names or the time they joined the call.</p>' +
+        '</div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_hotkey.svg"></div>' +
+        '<div class="right-item"><p><span>Hotkey.</span>Sets the push-to-talk key.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_audio-on.svg"></div>' +
+        '<div class="right-item"><p><span>Audio.</span>Turns on/off your microphone.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_video-on.svg"></div>' +
+        '<div class="right-item"><p><span>Video.</span>Turns on/off your camera.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_window-share.svg"></div>' +
+        '<div class="right-item"><p><span>Window Share.</span>Turns on/off the window sharing mode.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_screen-share.svg"></div>' +
+        '<div class="right-item"><p><span>Screen Share.</span>Turns on/off the screen sharing mode.</p></div>' +
+        '<hr>' +
+        // Thumbnails Features
+        '<div class="left-item"><img src="../images/buttons/buttons_thumb-audio-on.svg"></div>' +
+        '<div class="right-item"><p><span>Audio.</span>Turns on/off a microphone of a certain participant.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_thumb-video-on.svg"></div>' +
+        '<div class="right-item"><p><span>Video.</span>Turns on/off a camera of a certain participant.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_thumb-ignore-off.svg"></div>' +
+        '<div class="right-item"><p><span>Ignore.</span>Makes a certain participant invisible.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_thumb-pin-off.svg"></div>' +
+        '<div class="right-item"><p><span>Pin.</span>Pushes a certain thumbnail to the top.</p></div>' +
+        '<div class="left-item"><img src="../images/buttons/buttons_thumb-globalmute-off.svg"></div>' +
+        '<div class="right-item"><p><span>Global Mute.</span>Turns off a microphone of a certain participant so nobody in the call can hear them.</p></div>' +
+        '<hr>' +
+        // Shortcuts
+        '<div class="right-item" ng-repeat="hotkey in hotkeys | filter:{ description: \'!$$undefined$$\' }">' +
+          '<p><span ng-repeat="key in hotkey.format() track by $index">{{ key }}</span> : {{ hotkey.description }}</p>' +
+        '</div>' +
+        // Close Button
+        '<div ng-bind-html="footer" ng-if="footer"></div>' +
+        '<div class="cfp-hotkeys-close">×</div>' +
+      '</div>';
+  })
   .run(function($http, jhConfig) {
     //function to replace the placeholders
 

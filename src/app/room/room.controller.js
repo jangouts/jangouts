@@ -56,18 +56,21 @@
     hotkeys.bindTo($scope)
       .add({
         combo: 'alt+m',
-        description: 'Mute or unmute your microphone',
+        description: 'Mute/unmute your microphone.',
         callback: function() { RoomService.toggleChannel('audio'); }
       })
       .add({
         combo: 'alt+n',
-        description: 'Disable or enable camera',
+        description: 'Disable/enable your camera.',
         callback: function() { RoomService.toggleChannel('video'); }
       })
       .add({
         combo: 'alt+q',
-        description: 'Sign out',
-        callback: function() { UserService.signout(); }
+        description: 'Sign out.',
+        callback: function() {
+          RoomService.setRoom(null);
+          $state.go('signin');
+        }
       });
     $scope.hotkeys = hotkeys;
   }
