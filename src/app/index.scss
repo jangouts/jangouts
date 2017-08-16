@@ -203,6 +203,7 @@ button, .btn-default {
 
   &:active, &:focus, &:hover {
     background: inherit;
+    border-color: transparent;
     outline: none !important;
   }
 }
@@ -559,7 +560,7 @@ kbd {
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
 
-  .chat {
+  #chat-header {
     height: 30px;
     cursor: pointer;
     background: $color3;

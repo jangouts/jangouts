@@ -18,7 +18,7 @@
       restrict: 'EA',
       templateUrl: 'app/components/chat/jh-chat.html',
       scope: {
-        messages: '='
+        message: '='
       },
       link: jhChatLink,
       controllerAs: 'vm',
@@ -27,20 +27,53 @@
     };
 
     function jhChatLink(scope) {
-      scope.$watch('vm.messages.length', function(newVal) {
-        /* Update messages */
-        if (newVal !== undefined) {
-          // Scroll to bottom of messages list.
-          var messagesList = document.getElementById('chat-messages-box');
-          setTimeout(function() {
-            messagesList.scrollTop = messagesList.scrollHeight;
-          }, 100);
+      scope.messagesCount = 0;
+      scope.lastSeenMessage = 0;
+      scope.isChatVisible = false;
+
+      scope.$watch('vm.logEntries().length', function(newMessageCount) {
+
+        // True only at the beginning when there are no chat messages
+        if (newMessageCount === undefined) {
+          return;
+        }
+        // Scroll to bottom of messages list.
+        var messagesList = document.getElementById('chat-messages-box');
+        setTimeout(function() {
+          messagesList.scrollTop = messagesList.scrollHeight;
+        }, 100);
+
+        // Update the chat message count
+        scope.messagesCount = newMessageCount;
+        var chatHeader = document.getElementById('chat-header');
+        chatHeader.innerHTML = scope.messagesCount-scope.lastSeenMessage;
+      });
+
+      scope.$watch('vm.messagesCount', function() {
+        // var chatHeader = document.getElementById('chat-header');
+        // chatHeader.innerHTML = scope.messagesCount-scope.lastSeenMessage;
+      });
+
+      scope.$watch('vm.isChatVisible', function(isVisible) {
+        if (isVisible === undefined) {
+          return;
+        }
+        var chatHeader = document.getElementById('chat-header');
+        if (isVisible) {
+          scope.isChatVisible = true;
+          scope.lastSeenMessage = scope.messagesCount;
+          chatHeader.innerHTML = scope.messagesCount-scope.lastSeenMessage;
+        } else {
+          scope.isChatVisible = false;
+          chatHeader.innerHTML = "";
         }
       });
     }
 
     function JhChatCtrl() {
       var vm = this;
+
+      vm.isChatVisible = false;
 
       vm.toggleChat = toggleChat;
       vm.logEntries = logEntries;
@@ -49,6 +82,11 @@
       // directly from Angular instead of using jQuery here.
       function toggleChat() {
         $("#chat-wrapper").toggleClass("toggled");
+        if (vm.isChatVisible) {
+          vm.isChatVisible = false;
+        } else {
+          vm.isChatVisible = true;
+        }
       }
 
       function logEntries() {
