@@ -44,7 +44,7 @@
           messagesList.scrollTop = messagesList.scrollHeight;
         }, 100);
 
-        // Update the chat message count
+        // Update the chat messages count
         for (var i = scope.entriesCount; i < entries.length; i++) {
           if (entries[i].type === 'chatMsg') {
             scope.messagesCount++;
@@ -52,12 +52,13 @@
               scope.lastSeenMessage++;
             } else {
               var chatHeader = document.getElementById('chat-header');
-              chatHeader.innerHTML = scope.messagesCount-scope.lastSeenMessage;
+              chatHeader.innerHTML = scope.messagesCount - scope.lastSeenMessage;
             }
           } else {
             // We don't notify the user when the entry is not of type 'chatMsg'
           }
         }
+        scope.entriesCount = entries.length;
       });
 
       scope.$watch('vm.isChatVisible', function(isVisible) {
@@ -73,7 +74,7 @@
           scope.isChatVisible = false;
           if (scope.messagesCount === 0) {
             chatHeader.innerHTML = "Join the chat!";
-          } else if (scope.messagesCount === 1) {
+          } else if ((scope.messagesCount - scope.lastSeenMessage) === 1) {
             chatHeader.innerHTML = "1 unread message";
           } else {
             chatHeader.innerHTML = (scope.messagesCount - scope.lastSeenMessage) + " unread messages";
