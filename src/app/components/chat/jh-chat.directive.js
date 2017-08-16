@@ -27,16 +27,17 @@
     };
 
     function jhChatLink(scope) {
-      scope.messagesCount = 0;
-      scope.lastSeenMessage = 0;
+      scope.entriesCount = 0;       // number of all types of entries
+      scope.messagesCount = 0;      // number of entries of type 'chatMsg'
+      scope.lastSeenMessage = 0;    // last seen entry of type 'chatMsg'
       scope.isChatVisible = false;
 
-      scope.$watch('vm.logEntries().length', function(newMessageCount) {
-
+      scope.$watch('vm.logEntries()', function(entries) {
         // True only at the beginning when there are no chat messages
-        if (newMessageCount === undefined) {
+        if (entries.length === 0) {
           return;
         }
+
         // Scroll to bottom of messages list.
         var messagesList = document.getElementById('chat-messages-box');
         setTimeout(function() {
@@ -44,14 +45,19 @@
         }, 100);
 
         // Update the chat message count
-        scope.messagesCount = newMessageCount;
-        var chatHeader = document.getElementById('chat-header');
-        chatHeader.innerHTML = scope.messagesCount-scope.lastSeenMessage;
-      });
-
-      scope.$watch('vm.messagesCount', function() {
-        // var chatHeader = document.getElementById('chat-header');
-        // chatHeader.innerHTML = scope.messagesCount-scope.lastSeenMessage;
+        for (var i = scope.entriesCount; i < entries.length; i++) {
+          if (entries[i].type === 'chatMsg') {
+            scope.messagesCount++;
+            if (scope.isChatVisible) {
+              scope.lastSeenMessage++;
+            } else {
+              var chatHeader = document.getElementById('chat-header');
+              chatHeader.innerHTML = scope.messagesCount-scope.lastSeenMessage;
+            }
+          } else {
+            // We don't notify the user when the entry is not of type 'chatMsg'
+          }
+        }
       });
 
       scope.$watch('vm.isChatVisible', function(isVisible) {
@@ -62,10 +68,16 @@
         if (isVisible) {
           scope.isChatVisible = true;
           scope.lastSeenMessage = scope.messagesCount;
-          chatHeader.innerHTML = scope.messagesCount-scope.lastSeenMessage;
+          chatHeader.innerHTML = ""; // Display nothing when chat is open
         } else {
           scope.isChatVisible = false;
-          chatHeader.innerHTML = "";
+          if (scope.messagesCount === 0) {
+            chatHeader.innerHTML = "Join the chat!";
+          } else if (scope.messagesCount === 1) {
+            chatHeader.innerHTML = "1 unread message";
+          } else {
+            chatHeader.innerHTML = (scope.messagesCount - scope.lastSeenMessage) + " unread messages";
+          }
         }
       });
     }
