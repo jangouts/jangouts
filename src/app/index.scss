@@ -563,10 +563,13 @@ kbd {
   #chat-header {
     height: 30px;
     cursor: pointer;
-    background: $color3;
+    background: rgba($color3, 0.9);
+    color: white;
+    font-size: 12px;
+    padding: 7px;
 
     &:hover {
-    background-color: black;
+    background: $color3;
     }
   }
 }
