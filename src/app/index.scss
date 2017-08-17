@@ -554,6 +554,7 @@ kbd {
   width: 350px;
   height: 330px;
   margin-bottom: -350px;
+  margin-left: 10px;
   overflow-y: auto;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
@@ -564,7 +565,7 @@ kbd {
     height: 30px;
     cursor: pointer;
     background: rgba($color3, 0.95);
-    color: white;
+    color: $color4;
     font-size: 12px;
     padding: 7px;
 
