@@ -32,17 +32,19 @@
       scope.lastSeenMessage = 0;    // last seen entry of type 'chatMsg'
       scope.isChatVisible = false;
 
-      scope.$watch('vm.logEntries()', function(entries) {
-        // True only at the beginning when there are no chat messages
-        if (entries.length === 0) {
-          return;
-        }
-
+      scope.$watch('vm.logEntries().length', function() {
         // Scroll to bottom of messages list.
         var messagesList = document.getElementById('chat-messages-box');
         setTimeout(function() {
           messagesList.scrollTop = messagesList.scrollHeight;
         }, 100);
+      });
+
+      scope.$watch('vm.logEntries()', function(entries) {
+        // True only at the beginning when there are no chat messages
+        if (entries.length === 0) {
+          return;
+        }
 
         // Update the chat messages count
         for (var i = scope.entriesCount; i < entries.length; i++) {
