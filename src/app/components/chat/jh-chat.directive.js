@@ -74,12 +74,13 @@
           chatHeader.innerHTML = ""; // Display nothing when chat is open
         } else {
           scope.isChatVisible = false;
-          if (scope.messagesCount === 0) {
+          var unreadMessages = scope.messagesCount - scope.lastSeenMessage;
+          if (unreadMessages === 0) {
             chatHeader.innerHTML = "Join the chat!";
-          } else if ((scope.messagesCount - scope.lastSeenMessage) === 1) {
+          } else if (unreadMessages === 1) {
             chatHeader.innerHTML = "1 unread message";
           } else {
-            chatHeader.innerHTML = (scope.messagesCount - scope.lastSeenMessage) + " unread messages";
+            chatHeader.innerHTML = unreadMessages + " unread messages";
           }
         }
       });
