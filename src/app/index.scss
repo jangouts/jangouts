@@ -563,7 +563,7 @@ kbd {
   #chat-header {
     height: 30px;
     cursor: pointer;
-    background: rgba($color3, 0.9);
+    background: rgba($color3, 0.95);
     color: white;
     font-size: 12px;
     padding: 7px;
@@ -572,12 +572,20 @@ kbd {
     background: $color3;
     }
   }
+
+  #chat-header.read {
+    background: rgba($color3, 0.95);
+  }
+
+  #chat-header.unread {
+    background: rgba($color1, 0.95);
+  }
 }
 
 #chat-wrapper.toggled {
   padding-bottom: -350px;
   height: 30px;
-  width: 200px;
+  width: 170px;
   position: fixed;
   overflow-y: hidden;
 }

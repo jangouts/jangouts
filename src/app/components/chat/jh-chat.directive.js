@@ -68,19 +68,27 @@
           return;
         }
         var chatHeader = document.getElementById('chat-header');
+        var unreadMessages = scope.messagesCount - scope.lastSeenMessage;
         if (isVisible) {
           scope.isChatVisible = true;
           scope.lastSeenMessage = scope.messagesCount;
           chatHeader.innerHTML = ""; // Display nothing when chat is open
+          if (unreadMessages === 0) {
+            $("#chat-header").toggleClass("read");
+          } else {
+            $("#chat-header").toggleClass("unread");
+          }
         } else {
           scope.isChatVisible = false;
-          var unreadMessages = scope.messagesCount - scope.lastSeenMessage;
           if (unreadMessages === 0) {
             chatHeader.innerHTML = "Join the chat!";
+            $("#chat-header").toggleClass("read");
           } else if (unreadMessages === 1) {
             chatHeader.innerHTML = "1 unread message";
+            $("#chat-header").toggleClass("unread");
           } else {
             chatHeader.innerHTML = unreadMessages + " unread messages";
+            $("#chat-header").toggleClass("unread");
           }
         }
       });
