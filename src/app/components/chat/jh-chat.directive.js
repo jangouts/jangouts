@@ -47,19 +47,18 @@
         }
 
         // Update the chat messages count
-        for (var i = scope.entriesCount; i < entries.length; i++) {
-          if (entries[i].type === 'chatMsg') {
-            scope.messagesCount++;
-            if (scope.isChatVisible) {
-              scope.lastSeenMessage++;
-            } else {
-              var chatHeader = document.getElementById('chat-header');
-              chatHeader.innerHTML = scope.messagesCount - scope.lastSeenMessage;
-            }
+        entries.slice(scope.entriesCount).filter(function(entry) {
+          // We don't notify the user when the entry is not of type 'chatMsg'
+          return entry.type === "chatMsg";
+        }).forEach(function(entry) {
+          scope.messagesCount++;
+          if (scope.isChatVisible) {
+            scope.lastSeenMessage++;
           } else {
-            // We don't notify the user when the entry is not of type 'chatMsg'
+            var chatHeader = document.getElementById('chat-header');
+            chatHeader.innerHTML = scope.messagesCount - scope.lastSeenMessage;
           }
-        }
+        });
         scope.entriesCount = entries.length;
       });
 
@@ -69,28 +68,32 @@
         }
         var chatHeader = document.getElementById('chat-header');
         var unreadMessages = scope.messagesCount - scope.lastSeenMessage;
+        var innerHTML;
+        var cssClass;
         if (isVisible) {
           scope.isChatVisible = true;
           scope.lastSeenMessage = scope.messagesCount;
-          chatHeader.innerHTML = ""; // Display nothing when chat is open
+          innerHTML = ""; // Display nothing when chat is open
           if (unreadMessages === 0) {
-            $("#chat-header").toggleClass("read");
+            cssClass = "read";
           } else {
-            $("#chat-header").toggleClass("unread");
+            cssClass = "unread";
           }
         } else {
           scope.isChatVisible = false;
           if (unreadMessages === 0) {
-            chatHeader.innerHTML = "Join the chat!";
-            $("#chat-header").toggleClass("read");
+            innerHTML = "Click to open the chat!";
+            cssClass = "read";
           } else if (unreadMessages === 1) {
-            chatHeader.innerHTML = "1 unread message";
-            $("#chat-header").toggleClass("unread");
+            innerHTML = "1 unread message";
+            cssClass = "unread";
           } else {
-            chatHeader.innerHTML = unreadMessages + " unread messages";
-            $("#chat-header").toggleClass("unread");
+            innerHTML = unreadMessages + " unread messages";
+            cssClass = "unread";
           }
         }
+        chatHeader.innerHTML = innerHTML;
+        $("#chat-header").toggleClass(cssClass);
       });
     }
 
