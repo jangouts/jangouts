@@ -6,8 +6,8 @@ $color4: #EDEDED; // Light Grey
 $color5: #BEBEBE; // Dark Grey
 
 // Colour variables
-$jangouts-bg:  $color4;
-$jangouts-video-bg: $color2;
+$jangouts-bg: $color4;
+$jangouts-video-bg: $color4;
 
 body {
   background: $jangouts-bg;
@@ -314,7 +314,11 @@ footer {
 #main-video {
   margin: 0;
   padding: 0;
-  text-align: center;
+  text-align: right;
+}
+
+video {
+  width: 100%;
 }
 
 // Overriding of bootstrap's default negative margin, just a hack actually
@@ -390,7 +394,7 @@ footer {
 #page-content-wrapper {
   width: 100%;
   position: absolute;
-  padding: 15px;
+  padding: 0px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -428,10 +432,6 @@ footer {
   }
   #sidebar-wrapper {
     width: 80px;
-  }
-  #page-content-wrapper {
-    padding: 20px;
-    position: relative;
   }
 }
 
