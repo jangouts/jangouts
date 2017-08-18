@@ -55,8 +55,7 @@
         if (scope.isChatVisible) {
           scope.lastSeenMessage += scope.messagesCount;
         } else {
-          var chatHeader = document.getElementById('chat-header');
-          chatHeader.innerHTML = scope.messagesCount - scope.lastSeenMessage;
+          scope.headerHTML = scope.messagesCount - scope.lastSeenMessage;
         }
         scope.entriesCount = entries.length;
       });
@@ -67,55 +66,27 @@
         if (isVisible === undefined) {
           return;
         }
-        var chatHeader = document.getElementById('chat-header');
         var unreadMessages = scope.messagesCount - scope.lastSeenMessage;
-        var innerHTML;
-        var cssClass;
         if (isVisible) {
           scope.isChatVisible = true;
           scope.lastSeenMessage = scope.messagesCount;
-          innerHTML = "";
-          if (unreadMessages === 0) {
-            cssClass = "read";
-          } else {
-            cssClass = "unread";
-          }
+          scope.headerHTML = "";
         } else {
           scope.isChatVisible = false;
           if (unreadMessages === 0) {
-            innerHTML = "Click to open the chat!";
-            cssClass = "read";
+            scope.headerHTML = "Click to open the chat!";
           } else if (unreadMessages === 1) {
-            innerHTML = "1 unread message";
-            cssClass = "unread";
+            scope.headerHTML = "1 unread message";
           } else {
-            innerHTML = unreadMessages + " unread messages";
-            cssClass = "unread";
+            scope.headerHTML = unreadMessages + " unread messages";
           }
         }
-        chatHeader.innerHTML = innerHTML;
-        $("#chat-header").toggleClass(cssClass);
       });
     }
 
     function JhChatCtrl() {
       var vm = this;
-
-      vm.isChatVisible = false;
-
-      vm.toggleChat = toggleChat;
       vm.logEntries = logEntries;
-
-      // XXX: Maybe it is possible to get the element we want to toggle
-      // directly from Angular instead of using jQuery here.
-      function toggleChat() {
-        $("#chat-wrapper").toggleClass("toggled");
-        if (vm.isChatVisible) {
-          vm.isChatVisible = false;
-        } else {
-          vm.isChatVisible = true;
-        }
-      }
 
       function logEntries() {
         return LogService.allEntries();

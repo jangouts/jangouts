@@ -1,5 +1,13 @@
-<div id="chat-wrapper" class="toggled">
-  <div id="chat-header" ng-click="vm.toggleChat()"></div>
+<div ng-init="vm.isChatVisible = false" ng-class="{'toggled': !vm.isChatVisible, 'chat-wrapper': true}">
+  <div
+    ng-bind-HTML="headerHTML"
+    ng-class="{
+      'chat-header': true,
+      'read': messagesCount - lastSeenMessage == 0,
+      'unread': messagesCount - lastSeenMessage > 0
+    }"
+    ng-click="vm.isChatVisible = !vm.isChatVisible">
+  </div>
   <div class="jh-chat panel panel-default">
     <div class="panel-body" id="chat-messages-box">
       <ul>

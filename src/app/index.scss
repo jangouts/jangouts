@@ -546,7 +546,7 @@ kbd {
 }
 
 // Chat styles
-#chat-wrapper {
+.chat-wrapper {
   z-index: 10000;
   padding-bottom: 0;
   position: fixed;
@@ -562,7 +562,7 @@ kbd {
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
 
-  #chat-header {
+  .chat-header {
     height: 30px;
     cursor: pointer;
     background: rgba($color3, 0.95);
@@ -575,16 +575,16 @@ kbd {
     }
   }
 
-  #chat-header.read {
+  .chat-header.read {
     background: rgba($color3, 0.95);
   }
 
-  #chat-header.unread {
+  .chat-header.unread {
     background: rgba($color1, 0.95);
   }
 }
 
-#chat-wrapper.toggled {
+.chat-wrapper.toggled {
   padding-bottom: -350px;
   height: 30px;
   width: 170px;
