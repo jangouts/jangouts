@@ -32,36 +32,37 @@
       scope.lastSeenMessage = 0;    // last seen entry of type 'chatMsg'
       scope.isChatVisible = false;
 
+      // Scroll to the bottom of messages list.
       scope.$watch('vm.logEntries().length', function() {
-        // Scroll to bottom of messages list.
         var messagesList = document.getElementById('chat-messages-box');
         setTimeout(function() {
           messagesList.scrollTop = messagesList.scrollHeight;
         }, 100);
       });
 
+      // Update the chat messages count in the chat header.
       scope.$watch('vm.logEntries()', function(entries) {
-        // True only at the beginning when there are no chat messages
+        // True only at the beginning when there are no chat messages.
         if (entries.length === 0) {
           return;
         }
-
-        // Update the chat messages count
-        entries.slice(scope.entriesCount).filter(function(entry) {
-          // We don't notify the user when the entry is not of type 'chatMsg'
+        // Filter out entries of type 'chatMsg' from all entries as we are not
+        // interested in displaying logs (e.g. logging in or screen sharing).
+        var newMessages = entries.slice(scope.entriesCount).filter(function(entry) {
           return entry.type === "chatMsg";
-        }).forEach(function(entry) {
-          scope.messagesCount++;
-          if (scope.isChatVisible) {
-            scope.lastSeenMessage++;
-          } else {
-            var chatHeader = document.getElementById('chat-header');
-            chatHeader.innerHTML = scope.messagesCount - scope.lastSeenMessage;
-          }
         });
+        scope.messagesCount += newMessages.length;
+        if (scope.isChatVisible) {
+          scope.lastSeenMessage += scope.messagesCount;
+        } else {
+          var chatHeader = document.getElementById('chat-header');
+          chatHeader.innerHTML = scope.messagesCount - scope.lastSeenMessage;
+        }
         scope.entriesCount = entries.length;
       });
 
+      // Change the text and style of the chat header depending on the number of
+      // read/unread messages and whether it is open or not.
       scope.$watch('vm.isChatVisible', function(isVisible) {
         if (isVisible === undefined) {
           return;
@@ -73,7 +74,7 @@
         if (isVisible) {
           scope.isChatVisible = true;
           scope.lastSeenMessage = scope.messagesCount;
-          innerHTML = ""; // Display nothing when chat is open
+          innerHTML = "";
           if (unreadMessages === 0) {
             cssClass = "read";
           } else {
