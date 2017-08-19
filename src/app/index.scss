@@ -144,6 +144,7 @@ body {
   background-color: $color1;
   color: white;
   font-style: bold;
+  margin-right: -1px;
 }
 
 .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group {
@@ -184,6 +185,8 @@ body {
 
   .panel-footer {
     padding: 0px;
+    border-top: 1px solid rgba($color1, 0.5);
+    border-top-width: thin;
   }
 }
 
