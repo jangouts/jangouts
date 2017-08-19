@@ -319,6 +319,14 @@ footer {
 
 video {
   width: 100%;
+  background-color: $color3;
+}
+
+@media(min-width:992px) {
+  video {
+    height: 100vh;
+    padding: 0px;
+  }
 }
 
 // Overriding of bootstrap's default negative margin, just a hack actually
@@ -381,6 +389,8 @@ video {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+  border-right: solid;
+  border-right-width: thin;
 }
 
 #header-wrapper {
@@ -572,6 +582,10 @@ kbd {
     color: $color4;
     font-size: 12px;
     padding: 7px;
+    border: solid;
+    border-width: thin;
+    border-color: rgba($color5, 0.2);
+    border-bottom-style: hidden;
 
     &:hover {
     background: $color3;
