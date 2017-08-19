@@ -1,9 +1,9 @@
 <form name="chatMessage" ng-submit="vm.submit()">
   <div class="input-group">
-    <input class="form-control input-sm" placeholder="Type your message here..."
+    <input class="form-control input-sm" id="type-box" placeholder="Type your message here..."
     type="text" ng-model="vm.text" required>
     <span class="input-group-btn">
-      <button class="btn btn-sm" ng-disabled="chatMessage.$invalid">Send</button>
+      <button class="btn btn-sm" id="btn-send" ng-disabled="chatMessage.$invalid">Send</button>
     </span>
   </div>
 </form>

@@ -3,7 +3,7 @@ $color1: #F04559; // Red-ish
 $color2: #0BADBA; // Blue-ish
 $color3: #222222; // Dark Navy
 $color4: #EDEDED; // Light Grey
-$color5: #BEBEBE; // Dark Grey;
+$color5: #BEBEBE; // Dark Grey
 
 // Colour variables
 $jangouts-bg:  $color4;
@@ -121,20 +121,50 @@ body {
   -moz-transform:rotateY(180deg); /* Firefox */
 }
 
-#jh-chat-messages {
-  height: 40px;
+#chat-messages-box {
+  height: 270px;
+}
+
+.form-control {
+  box-shadow: inset 0px 0px 0px;
+
+  &:focus {
+    box-shadow: inset 0px 0px 0px;
+  }
+}
+
+#type-box {
+  border-radius: 0px;
+  font-style: italic;
+  border-style: none;
+}
+
+#btn-send {
+  border-radius: 0px;
+  background-color: $color1;
+  color: white;
+  font-style: bold;
+  margin-right: -1px;
+}
+
+.input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group {
+    margin-left: 0px;
 }
 
 .jh-chat.panel.panel-default {
   margin-bottom: 0;
+  border-radius: 0px;
+  border-style: hidden;
 }
 
 .jh-chat {
   font-size: 12px;
+
   .panel-body {
     height: 60vh;
     overflow: auto;
     padding: 8px;
+    border-style: none;
   }
 
   ul {
@@ -145,16 +175,18 @@ body {
     li {
       margin-bottom: 5px;
       padding-bottom: 2px;
-      border-bottom: 1px dotted #aaa;
+      border-bottom: 1px solid rgba($color5, 0.4);
       .log-entry {
         font-style: oblique;
-        color: #3388AA;
+        color: $color2;
       }
     }
   }
 
   .panel-footer {
-    padding: 3px;
+    padding: 0px;
+    border-top: 1px solid rgba($color1, 0.5);
+    border-top-width: thin;
   }
 }
 
@@ -175,6 +207,7 @@ button, .btn-default {
   &:active, &:focus, &:hover {
     background: inherit;
     border-color: transparent;
+    outline: none !important;
   }
 }
 
@@ -239,9 +272,9 @@ footer {
   border: 0;
   padding: 10px;
 
-    #text {
-      margin-top: -5px;
-    }
+  #text {
+    margin-top: -5px;
+  }
 }
 
 //styles by sections
@@ -434,7 +467,6 @@ footer {
 
 .btn:hover, #btn-info:hover {
   background-color: black;
-  border-color: black;
 }
 
 .btn-danger, .btn-danger:hover {
@@ -514,4 +546,51 @@ kbd {
 .cfp-hotkeys-close:hover {
   color: $color1;
   background-color: transparent;
+}
+
+// Chat styles
+.chat-wrapper {
+  z-index: 10000;
+  padding-bottom: 0;
+  position: fixed;
+  bottom: 350px;
+  width: 350px;
+  height: 330px;
+  margin-bottom: -350px;
+  margin-left: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+
+  .chat-header {
+    height: 30px;
+    cursor: pointer;
+    background: rgba($color3, 0.95);
+    color: $color4;
+    font-size: 12px;
+    padding: 7px;
+
+    &:hover {
+    background: $color3;
+    }
+  }
+
+  .chat-header.read {
+    background: rgba($color3, 0.95);
+  }
+
+  .chat-header.unread {
+    background: rgba($color1, 0.95);
+  }
+}
+
+.chat-wrapper.toggled {
+  padding-bottom: -350px;
+  height: 30px;
+  width: 170px;
+  position: fixed;
+  overflow-y: hidden;
 }

@@ -1,13 +1,24 @@
-<div class="jh-chat panel panel-default">
-  <div class="panel-body" id="jh-chat-messages">
-    <ul>
-      <li ng-repeat="m in vm.messages">
-        <jh-chat-message message="m" ng-if="m.type === 'chatMsg'"></jh-chat-message>
-        <jh-log-entry message="m" ng-if="m.type !== 'chatMsg'"></jh-log-entry>
-      </li>
-    </ul>
+<div ng-init="vm.isChatVisible = false" ng-class="{'toggled': !vm.isChatVisible, 'chat-wrapper': true}">
+  <div
+    ng-bind-HTML="headerHTML"
+    ng-class="{
+      'chat-header': true,
+      'read': messagesCount - lastSeenMessage == 0,
+      'unread': messagesCount - lastSeenMessage > 0
+    }"
+    ng-click="vm.isChatVisible = !vm.isChatVisible">
   </div>
-  <div class="panel-footer" id="chat-form-footer">
-    <jh-chat-form></jh-chat-form>
+  <div class="jh-chat panel panel-default">
+    <div class="panel-body" id="chat-messages-box">
+      <ul>
+        <li ng-repeat="m in vm.logEntries()">
+          <jh-chat-message message="m" ng-if="m.type === 'chatMsg'"></jh-chat-message>
+          <jh-log-entry message="m" ng-if="m.type !== 'chatMsg'"></jh-log-entry>
+        </li>
+      </ul>
+    </div>
+    <div class="panel-footer" id="chat-form-footer">
+      <jh-chat-form></jh-chat-form>
+    </div>
   </div>
 </div>
