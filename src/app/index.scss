@@ -568,7 +568,7 @@ kbd {
   width: 350px;
   height: 330px;
   margin-bottom: -350px;
-  margin-left: 10px;
+  margin-left: 0px;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-transition: all 0.5s ease;
@@ -583,6 +583,12 @@ kbd {
     color: $color4;
     font-size: 12px;
     padding: 7px;
+    font-weight: bold;
+    border: solid;
+    border-color: rgba($color4, 0.2);
+    border-width: thin;
+    border-bottom: hidden;
+    border-left: hidden;
   }
 
   #chat-header.read {
