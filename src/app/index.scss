@@ -318,16 +318,18 @@ footer {
   }
 }
 
+video {
+  width: 100%;
+}
+
 #main-video {
   margin: 0;
   padding: 0;
   text-align: right;
-}
 
-video {
-  width: 100%;
-  margin: 0;
-  margin-bottom: -5px;
+  video {
+    margin-bottom: -5px;
+  }
 }
 
 // Overriding of bootstrap's default negative margin, just a hack actually
@@ -373,10 +375,6 @@ video {
   transition: all 0.5s ease;
 }
 
-#wrapper.toggled {
-  padding-left: 80px;
-}
-
 #sidebar-wrapper {
   z-index: 1000;
   position: fixed;
@@ -392,14 +390,84 @@ video {
   transition: all 0.5s ease;
   border-right: solid;
   border-right-width: thin;
+
+  .sidebar-nav {
+    position: absolute;
+    top: 0px;
+    width: 80px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .sidebar-box {
+      width: 80px;
+      height: 80px;
+      text-align: center;
+      margin: auto;
+      border-bottom: solid;
+      border-bottom-width: thin;
+
+      .btn-sidebar {
+        display: block;
+        width: 80px;
+        height: 80px;
+        border-radius: 0 !important;
+      }
+
+      #btn-info {
+        background-color: $color1;
+        height: 60px;
+      }
+
+      .btn-img {
+        width: 50px;
+        height: auto;
+      }
+
+      .btn:hover, #btn-info:hover {
+        background-color: black;
+      }
+
+      .btn-danger, .btn-danger:hover {
+        background-color: $color2;
+        border-color: $color2;
+      }
+
+      kbd {
+        background-color: (black, 0.3);
+        padding: 5px;
+        font-size: 10px;
+      }
+
+      #btn-hotkey {
+        margin-top: -6px;
+        margin-left: -2px;
+      }
+    }
+
+    #sidebar-box-info {
+      height: 60px;
+    }
+  }
 }
 
 #header-wrapper {
   height: 60px;
-}
 
-#wrapper.toggled #sidebar-wrapper {
-  width: 80px;
+  .glyphicon {
+    color: $color4;
+    padding: 15px;
+    margin: 0px;
+  }
+
+  .glyphicon:hover {
+    color: $color1;
+  }
+
+  .room-username-separator {
+    color: $color1;
+    margin: 0px 5px;
+  }
 }
 
 #page-content-wrapper {
@@ -408,33 +476,17 @@ video {
   padding: 0px;
 }
 
+#wrapper.toggled {
+  padding-left: 80px;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 80px;
+}
+
 #wrapper.toggled #page-content-wrapper {
   position: absolute;
   margin-right: -80px;
-}
-
-.sidebar-nav {
-  position: absolute;
-  top: 0px;
-  width: 80px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.sidebar-nav > .sidebar-brand {
-  height: 65px;
-  font-size: 18px;
-  line-height: 60px;
-}
-
-.sidebar-nav > .sidebar-brand a {
-  color: #999999;
-}
-
-.sidebar-nav > .sidebar-brand a:hover {
-  color: #fff;
-  background: none;
 }
 
 @media(min-width:768px) {
@@ -444,71 +496,6 @@ video {
   #sidebar-wrapper {
     width: 80px;
   }
-}
-
-.sidebar-box {
-  width: 80px;
-  height: 80px;
-  text-align: center;
-  margin: auto;
-  border-bottom: solid;
-  border-bottom-width: thin;
-}
-
-#sidebar-box-info {
-  height: 60px;
-}
-
-.btn-sidebar {
-  display: block;
-  width: 80px;
-  height: 80px;
-  border-radius: 0 !important;
-}
-
-#btn-info {
-  background-color: $color1;
-  height: 60px;
-}
-
-.btn-img {
-  width: 50px;
-  height: auto;
-}
-
-.btn:hover, #btn-info:hover {
-  background-color: black;
-}
-
-.btn-danger, .btn-danger:hover {
-  background-color: $color2;
-  border-color: $color2;
-}
-
-.glyphicon {
-  color: $color4;
-  padding: 15px;
-  margin: 0px;
-}
-
-.glyphicon:hover {
-  color: $color1;
-}
-
-kbd {
-  background-color: (black, 0.3);
-  padding: 5px;
-  font-size: 10px;
-}
-
-#btn-hotkey {
-  margin-top: -6px;
-  margin-left: -2px;
-}
-
-.room-username-separator {
-  color: $color1;
-  margin: 0px 5px;
 }
 
 // Cheatsheet styles
@@ -591,7 +578,7 @@ kbd {
     border-left: hidden;
   }
 
-  #chat-header.read {
+  .chat-header.read {
     background: rgba(black, 0.95);
   }
 
