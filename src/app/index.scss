@@ -35,11 +35,13 @@ body {
   flex-flow: row wrap;
   align-content: flex-start;
   margin: 0 auto;
+  padding: 5px;
   overflow: hidden;
   background-color: $color4;
 
   figure {
     margin: 0px;
+    padding: 5px;
     border: 2px solid transparent;
     border-radius: 4px;
 
@@ -48,8 +50,8 @@ body {
 
       .face {
         vertical-align: middle;
-        width: 64px;
-        height: 48px;
+        width: 121px;
+        height: 91px;
         // This transition causes some artifacts in some corner cases
         // transition: width .3s, height .3s;
       }
@@ -57,7 +59,7 @@ body {
 
     figcaption {
       line-height: 1.4;
-      font-size: 13px;
+      font-size: 11px;
       padding: 2px 3px 3px 3px;
       height: 26px;
       position: relative;
@@ -105,13 +107,12 @@ body {
 
     &.own-feed {
       figcaption {
-        color: #fff;
-        background: rgba(0,0,0,0.3);
+        font-weight: bold;
       }
     }
 
     &.sticky {
-      border-color: $color1;
+      background-color: rgba(white, 0.7);
     }
   }
 }
