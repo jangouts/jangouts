@@ -106,13 +106,33 @@
       var $$rootScope = $rootScope;
       var connection = null;
 
+      // adding username to jhEventsProvider
+      jhEventsProvider.username = username;
       // adding room details to jhEventsProvider
       jhEventsProvider.roomDesc = that.room.description;
+       
+      // sending user joining event
+      jhEventsProvider.emitEvent({
+        type: "user",
+        data: {
+          status: "joining"
+        }
+      });
       
+      // send user joining event
       // Create new session
       that.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
+          // sending 'pluginHandle attached' event
+          jhEventsProvider.emitEvent({
+            type: "pluginHandle",
+            data: {
+              status: "attached",
+              for: "user",
+              pluginHandle: pluginHandle
+            }
+          });
           // Step 1. Right after attaching to the plugin, we send a
           // request to join
           connection = new FeedConnection(pluginHandle, that.room.id, "main");
@@ -141,6 +161,15 @@
           // Send the created stream to the UI, so it can be attached to
           // some element of the local DOM
           console.log(" ::: Got a local stream :::");
+          // local stream attached event
+          jhEventsProvider.emitEvent({
+            type: "stream",
+            data: {
+              stream: "local",
+              for: "user",
+              peerconnection: connection.pluginHandle.webrtcStuff.pc
+            }
+          });
           var feed = FeedsService.findMain();
           feed.setStream(stream);
         },
@@ -154,6 +183,13 @@
           // Step 2. Response from janus confirming we joined
           if (event === "joined") {
             console.log("Successfully joined room " + msg.room);
+            // sending user joined event
+            jhEventsProvider.emitEvent({
+              type: "user",
+              data: {
+                status: "joined"
+              }
+            });
             ActionService.enterRoom(msg.id, username, connection);
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
@@ -233,8 +269,6 @@
 
     // Enter the room
     function enter(username) {
-      // adding username to jhEventsProvider
-      jhEventsProvider.username = username;
       
       var deferred = $q.defer();
 
@@ -294,10 +328,28 @@
       if (feed) {
         display = feed.display;
       }
-
+      
+      // emit 'subscribe' event
+      jhEventsProvider.emitEvent({
+        type: "subscriber",
+        data: {
+          status: "subscribing",
+          to: display
+        }
+      });
+      
       this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
+          // emit subscriber plugin attached event
+          jhEventsProvider.emitEvent({
+            type: "pluginHandle",
+            data: {
+              status: "attached",
+              for: "subscriber",
+              pluginHandle: pluginHandle
+            }
+          });
           connection = new FeedConnection(pluginHandle, that.room.id, "subscriber");
           connection.listen(id, UserService.getPin());
         },
@@ -311,6 +363,14 @@
           console.log("Event: " + event);
           if (event === "attached") {
             // Subscriber created and attached
+            // emit 'subscriber attached' event
+            jhEventsProvider.emitEvent({
+              type: "subscriber",
+              data: {
+                status: "susbscribed",
+                to: display
+              }
+            });
             $timeout(function() {
               if (feed) {
                 ActionService.stopIgnoringFeed(id, connection);
@@ -333,6 +393,15 @@
           }
         },
         onremotestream: function(stream) {
+          // emit `remotestream` event
+          jhEventsProvider.emitEvent({
+            type: "stream",
+            data: {
+              stream: "remote",
+              for: "subscriber",
+              peerconnection: connection.pluginHandle.webrtcStuff.pc
+            }
+          });
           FeedsService.waitFor(id).then(function (feed) {
             feed.setStream(stream);
           }, function (reason) {
@@ -359,10 +428,27 @@
       var display = FeedsService.findMain().display;
       var connection;
       var id;
-
+      
+      // emit `screenshare` event 
+      jhEventsProvider.emitEvent({
+        type: "screenshare",
+        data: {
+          status: "starting"
+        }
+      });
+      
       this.janus.attach({
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
+          // emit screenshare plugin attached event
+          jhEventsProvider.emitEvent({
+            type: "pluginHandle",
+            data: {
+              status: "attached",
+              for: "screenshare",
+              pluginHandle: pluginHandle
+            }
+          });
           connection = new FeedConnection(pluginHandle, that.room.id, videoSource);
           connection.register(display, UserService.getPin());
           ScreenShareService.setInProgress(true);
@@ -374,9 +460,36 @@
           console.log(" ::: Got the screen stream :::");
           var feed = FeedsService.find(id);
           feed.setStream(stream);
-
+          
+          // emit 'localstream' event
+          jhEventsProvider.emitEvent({
+            type: "stream",
+            data: {
+              stream: "local",
+              for: "screenshare",
+              peerconnection: connection.pluginHandle.webrtcStuff.pc
+            }
+          });
+            
+          // emit 'screenshare started' event 
+          jhEventsProvider.emitEvent({
+            type: "screenshare",
+            data: {
+              status: "started",
+              peerconnection: connection.pluginHandle.webrtcStuff.pc
+            }
+          });
+          
           // Unpublish feed when screen sharing stops
           stream.onended = function () {
+            // emit 'screenshareStop' event
+            jhEventsProvider.emitEvent({
+              type: "screenshare",
+              data: {
+                status: "stopped",
+                peerconnection: connection.pluginHandle.webrtcStuff.pc
+              }
+            }); 
             unPublishFeed(id);
             ScreenShareService.setInProgress(false);
           };
