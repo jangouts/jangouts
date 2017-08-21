@@ -13,7 +13,7 @@
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
-      'ScreenShareService', 'RequestService', 'UserService'];
+      'ScreenShareService', 'RequestService', 'UserService', 'jhEventsProvider'];
 
   /**
    * Service to communication with janus room
@@ -22,7 +22,7 @@
    */
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       FeedConnection, DataChannelService, ActionService, jhConfig,
-      ScreenShareService, RequestService, UserService) {
+      ScreenShareService, RequestService, UserService, jhEventsProvider) {
     this.enter = enter;
     this.leave = leave;
     this.setRoom = setRoom;
@@ -106,6 +106,9 @@
       var $$rootScope = $rootScope;
       var connection = null;
 
+      // adding room details to jhEventsProvider
+      jhEventsProvider.roomDesc = that.room.description;
+      
       // Create new session
       that.janus.attach({
         plugin: "janus.plugin.videoroom",
@@ -230,6 +233,9 @@
 
     // Enter the room
     function enter(username) {
+      // adding username to jhEventsProvider
+      jhEventsProvider.username = username;
+      
       var deferred = $q.defer();
 
       connect().then(function () {

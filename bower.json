@@ -21,11 +21,12 @@
     "angular-gridster": "~0.13.5",
     "angular-extended-notifications": "~1.0.4",
     "angular-audio": "~1.7.1",
-    "angular-local-storage": "~0.2.3"
+    "angular-local-storage": "~0.2.3",
+    "rxjs": "^4.1.0"
   },
   "overrides": {
     "mousetrap": {
-        "main": "plugins/record/mousetrap-record.js"
+      "main": "plugins/record/mousetrap-record.js"
     }
   },
   "devDependencies": {
