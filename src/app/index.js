@@ -9,7 +9,7 @@
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
                'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
-               'janusHangouts.config', 'cfp.hotkeys', 'gridster',
+               'janusHangouts.config', 'janusHangouts.eventsProvider', 'cfp.hotkeys', 'gridster',
                'ngAudio', 'angular-extended-notifications', 'LocalStorageModule'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -91,6 +91,14 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
       });
     } else {
       console.warn('No configuration found');
+    }
+  })
+  .run(function(jhEventsProvider){
+    // setting Rx Subject
+    jhEventsProvider.eventsSubject = new window.Rx.Subject();
+    if (jhEventsProvider.eventsSubject === null ||
+        jhEventsProvider.eventsSubject === undefined) {
+      console.log("Could not load rx.js! Event emitter will not work.");
     }
   })
   .run(function ($rootScope, $state, RoomService) {

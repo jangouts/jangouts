@@ -22,10 +22,11 @@
          *  @param {object} event - carries 'type' and 'data' for event
          */
         emitEvent: function (event) {
-          event['username'] = this.username; 
-          event['roomDesc'] = this.roomDesc;
+          event.username = this.username; 
+          event.roomDesc = this.roomDesc;
           // timestamp shows the time when event gets emitted
-          event['timestamp'] = Date.now();
+          event.timestamp = Date.now();
+          console.log('Created Event: ', event);
           this.eventsSubject.onNext(event);
         }
     };
