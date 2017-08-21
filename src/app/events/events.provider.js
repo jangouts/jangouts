@@ -26,7 +26,6 @@
           event.roomDesc = this.roomDesc;
           // timestamp shows the time when event gets emitted
           event.timestamp = Date.now();
-          console.log('Created Event: ', event);
           this.eventsSubject.onNext(event);
         }
     };
