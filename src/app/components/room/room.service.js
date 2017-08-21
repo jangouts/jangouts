@@ -129,7 +129,7 @@
             type: "pluginHandle",
             data: {
               status: "attached",
-              for: "user",
+              for: "main",
               pluginHandle: pluginHandle
             }
           });
@@ -166,7 +166,7 @@
             type: "stream",
             data: {
               stream: "local",
-              for: "user",
+              for: "main",
               peerconnection: connection.pluginHandle.webrtcStuff.pc
             }
           });
@@ -445,7 +445,7 @@
             type: "pluginHandle",
             data: {
               status: "attached",
-              for: "screenshare",
+              for: "screen",
               pluginHandle: pluginHandle
             }
           });
@@ -466,7 +466,7 @@
             type: "stream",
             data: {
               stream: "local",
-              for: "screenshare",
+              for: "screen",
               peerconnection: connection.pluginHandle.webrtcStuff.pc
             }
           });

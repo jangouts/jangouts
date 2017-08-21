@@ -43,7 +43,8 @@
           type: "pluginHandle",
           data: {
             status: "detached",
-            pluginHandle: pluginHandle
+            for: that.role,
+            pluginHandle: that.pluginHandle
           }
         });
         this.config = null;

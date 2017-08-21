@@ -15,14 +15,16 @@
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
-  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver'];
+  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver', 
+                         'jhEventsProvider'];
 
   /**
    * Factory representing a janus feed
    * @constructor
    * @memberof module:janusHangouts
    */
-  function feedFactory($timeout, DataChannelService, SpeakObserver) {
+  function feedFactory($timeout, DataChannelService, SpeakObserver, 
+                       jhEventsProvider) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -290,6 +292,26 @@
                 if (options.after) { options.after(); }
                 // Send the new status to remote peers
                 DataChannelService.sendStatus(that, {exclude: "picture"});
+                
+                if (type === 'video') { 
+                  // Sending videoPause OR videoResume event to callstats.io
+                  jhEventsProvider.emitEvent({
+                    type: "video",
+                    data: {
+                      status: ((enabled === false) ? "paused" : "resumed"),
+                      peerconnection: that.connection.pluginHandle.webrtcStuff.pc
+                    }
+                  });
+                } else if (type === 'audio') {
+                  // Sending audioMute OR audioUnmute event to callstats.io
+                  jhEventsProvider.emitEvent({
+                    type: "audio",
+                    data: {
+                      status: ((enabled === false) ? "muted" : "unmuted"),
+                      peerconnection: that.connection.pluginHandle.webrtcStuff.pc
+                    }
+                  });
+                }
               });
             }
           });
