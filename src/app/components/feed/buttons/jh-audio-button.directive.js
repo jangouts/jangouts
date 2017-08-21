@@ -19,7 +19,8 @@
       templateUrl: 'app/components/feed/buttons/jh-audio-button.html',
       scope: {
         feed: '=',
-        withMonitor: '='
+        withMonitor: '=',
+        thumbnailIcon: '='
       },
       controllerAs: 'vm',
       bindToController: true,
@@ -35,6 +36,7 @@
       vm.showsDisable = showsDisable;
       vm.showsAudioOff = showsAudioOff;
       vm.isSpeaking = isSpeaking;
+      vm.isThumbnailIcon = isThumbnailIcon;
 
       function toggle() {
         var feed = vm.feed;
@@ -62,6 +64,10 @@
 
       function isSpeaking() {
         return (vm.withMonitor && vm.feed && vm.feed.getSpeaking());
+      }
+
+      function isThumbnailIcon() {
+        return vm.thumbnailIcon;
       }
     }
   }

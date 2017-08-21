@@ -4,20 +4,46 @@
   ng-class="{'btn-primary': vm.isSpeaking(), 'btn-default': !vm.isSpeaking()}"
   ng-click="vm.toggle()"
   title="Disable audio"
-  ng-show="vm.showsDisable()">
+  ng-show="vm.showsDisable() && !vm.isThumbnailIcon()">
   <img class="btn-img" src="images/buttons/buttons_audio-on.svg">
-</button><button
+</button>
+<div
+  type="button"
+  ng-class="{'btn-primary': vm.isSpeaking(), 'btn-default': !vm.isSpeaking()}"
+  ng-click="vm.toggle()"
+  title="Disable audio"
+  ng-show="vm.showsDisable() && vm.isThumbnailIcon()">
+  <img class="btn-img-thumb" src="images/buttons/buttons_thumb-globalmute-off.svg">
+</div>
+<button
   type="button"
   class="btn btn-danger btn-sidebar"
   ng-click="vm.toggle()"
   title="Enable audio"
-  ng-show="vm.showsEnable()">
+  ng-show="vm.showsEnable() && !vm.isThumbnailIcon()">
   <img class="btn-img" src="images/buttons/buttons_audio-off.svg">
-</button><button
+</button>
+<div
+  type="button"
+  ng-class="{'btn-primary': vm.isSpeaking(), 'btn-default': !vm.isSpeaking()}"
+  ng-click="vm.toggle()"
+  title="Enable audio"
+  ng-show="vm.showsEnable() && vm.isThumbnailIcon()">
+  <img class="btn-img-thumb" src="images/buttons/buttons_thumb-globalmute-on.svg">
+</div>
+<button
   type="button"
   disabled
   class="btn btn-danger btn-sidebar"
   title="Audio disabled"
-  ng-show="vm.showsAudioOff()">
+  ng-show="vm.showsAudioOff() && !vm.isThumbnailIcon()">
   <img class="btn-img" src="images/buttons/buttons_audio-off.svg">
 </button>
+<div
+  type="button"
+  ng-class="{'btn-primary': vm.isSpeaking(), 'btn-default': !vm.isSpeaking()}"
+  ng-click="vm.toggle()"
+  title="Audio disabled"
+  ng-show="vm.showsAudioOff() && vm.isThumbnailIcon()">
+  <img class="btn-img-thumb" src="images/buttons/buttons_thumb-globalmute-on.svg">
+</div>

@@ -3,13 +3,28 @@
   class="btn btn-default btn-sidebar"
   ng-click="vm.toggle()"
   title="Disable video"
-  ng-show="vm.showsDisable()">
+  ng-show="vm.showsDisable() && !vm.isThumbnailIcon()">
   <img class="btn-img" src="images/buttons/buttons_video-on.svg">
-</button><button
+</button>
+<div
+  type="button"
+  ng-click="vm.toggle()"
+  title="Disable video"
+  ng-show="vm.showsDisable() && vm.isThumbnailIcon()">
+  <img class="btn-img-thumb" src="images/buttons/buttons_thumb-video-on.svg">
+</div>
+<button
   type="button"
   class="btn btn-danger btn-sidebar"
   ng-click="vm.toggle()"
   title="Enable video"
-  ng-show="vm.showsEnable()">
+  ng-show="vm.showsEnable() && !vm.isThumbnailIcon()">
   <img class="btn-img" src="images/buttons/buttons_video-off.svg">
 </button>
+<div
+  type="button"
+  ng-click="vm.toggle()"
+  title="Enable video"
+  ng-show="vm.showsEnable() && vm.isThumbnailIcon()">
+  <img class="btn-img-thumb" src="images/buttons/buttons_thumb-video-off.svg">
+</div>
