@@ -15,10 +15,17 @@
         </button>
       </div>
       <!-- Settings Button -->
-      <div class="sidebar-box">
-        <button class="btn btn-sidebar">
+      <div class="sidebar-box" uib-dropdown is-open="status.isopen">
+        <button class="btn btn-sidebar" type="button" uib-dropdown-toggle ng-disabled="disabled">
           <img class="btn-img" src="images/buttons/buttons_settings.svg">
         </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+          <li role="menuitem"><a href="#">Mute all</a></li>
+          <li role="menuitem"><a href="#">Disable video for all</a></li>
+          <li role="menuitem"><a href="#">Ignore all</a></li>
+          <li role="menuitem"><a href="#">Thumbnails order</a></li>
+          <li role="menuitem"><a href="#">Slow connection mode</a></li>
+        </ul>
       </div>
       <!-- Hotkey Button -->
       <div class="sidebar-box">
@@ -105,8 +112,6 @@
     </div>
   </div>
 </div>
-<!-- /wrapper -->
-
 
 <script>
 $("#menu-toggle").click(function(e) {

@@ -376,6 +376,7 @@ video {
 
 #wrapper {
   padding-left: 0;
+  overflow: hidden;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -389,12 +390,8 @@ video {
   width: 0;
   height: 100%;
   margin-left: -80px;
-  overflow-y: auto;
+  overflow: inherit;
   background: $color3;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
   border-right: solid;
   border-right-width: thin;
 
@@ -405,6 +402,7 @@ video {
     margin: 0;
     padding: 0;
     list-style: none;
+    overflow: inherit;
 
     .sidebar-box {
       width: 80px;
@@ -413,6 +411,10 @@ video {
       margin: auto;
       border-bottom: solid;
       border-bottom-width: thin;
+      -webkit-transition: all 1s ease;
+      -moz-transition: all 1s ease;
+      -o-transition: all 1s ease;
+      transition: all 1s ease;
 
       .btn-sidebar {
         display: block;
@@ -485,6 +487,7 @@ video {
 
 #wrapper.toggled {
   padding-left: 80px;
+  overflow: visible;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -499,6 +502,7 @@ video {
 @media(min-width:768px) {
   #wrapper {
     padding-left: 80px;
+    overflow: visible;
   }
   #sidebar-wrapper {
     width: 80px;
