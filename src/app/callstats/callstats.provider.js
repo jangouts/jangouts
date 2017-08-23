@@ -1,4 +1,4 @@
-/** 
+/**
  * @file      callstats.provider.js
  * @author    Bimalkant Lauhny <lauhny.bimalk@gmail.com>
  * @copyright MIT License
@@ -27,14 +27,14 @@
        * this is set inside index.js (see .run())
        */
       callstats: null,
- 
+
       // Step 2: Initialize with AppSecret
       /**
        * Initialize the app with application tokens
        * @param {string} localUserID - display of the user
        */
       initializeCallstats: function (localUserID) {
-        
+
         console.log("Received localUserID: ", localUserID);
         var res = this.callstats.initialize(this.AppID,
                                             this.AppSecret,
@@ -42,7 +42,7 @@
                                             csInitCallback,
                                             csStatsCallback,
                                             configParams);
-        
+
         console.log("callstats.initialize response object", res);
         /**
          * reports different success and failure cases
@@ -51,12 +51,12 @@
         function csInitCallback(csError, csErrMsg) {
           console.log("Initialize return status: errCode= " + csError + " errMsg= " + csErrMsg );
         }
-        
+
         var reportType = {
           inbound: 'inbound',
           outbound: 'outbound'
         };
-        
+
         /**
          * callback function to receive the stats
          * @param stats
@@ -75,14 +75,14 @@
             }
           }
         }
-        
+
         var configParams = {
           disableBeforeUnloadHandler: false, // disables callstats.js's window.onbeforeunload parameter.
           applicationVersion: "0.4.6" // Application version specified by the developer.
         };
-        
+
       },
-      
+
       // Step 3: Pass the PeerConnection object to the library - adding new Fabric
       /**
        * function for sending PeerConnection Object
@@ -92,7 +92,7 @@
         console.log("Send PC Object Parameters: ", pcObject, remoteUserID, conferenceID);
         // PeerConnection carrying multiple media streams on the same port
         var usage = this.callstats.fabricUsage.multiplex;
-        
+
         /**
          * callback asynchronously reporting failure or success for pcObject.
          * @param msg error message
@@ -100,15 +100,15 @@
         function pcCallback (err, msg) {
           console.log("Monitoring status: "+ err + " msg: " + msg);
         }
-        
+
         if (remoteUserID && conferenceID && pcObject) {
           this.callstats.addNewFabric(pcObject, remoteUserID, usage, conferenceID, pcCallback);
         } else {
           console.log("ERROR: Faulty Parameters! ", pcObject, remoteUserID, conferenceID);
         }
-        
+
       },
-      
+
       // Step 4: Error Reporting
       /**
        * function reporting error and WebRTC functionType to callstats.io
@@ -119,9 +119,9 @@
         console.log("::: reporting error ::: ", err, functionType);
         this.callstats.reportError(pcObject, conferenceID, this.callstats.webRTCFunctions[functionType], err);
       },
-      
+
       // OPTIONAL STEPS
-      
+
       // Step 5: Send fabric events
       /**
        * function reporting fabric events to callstats.io
@@ -131,15 +131,15 @@
         console.log("::: Sending Event ::: ", event);
         this.callstats.sendFabricEvent(pcObject, this.callstats.fabricEvent[event], conferenceID);
       },
- 
+
       /**
-       * function subscribing to eventsProvider subject and providing eventHandler 
-       * @param Observable 
+       * function subscribing to eventsProvider subject and providing eventHandler
+       * @param Observable
        */
       subscribeToEventsSubject: function(Observable) {
-      
+
         Observable.subscribe(eventHandler.bind(this));
-        
+
         function eventHandler(event) {
           console.log("Received Event: ", event);
           var eventType = event.type;
@@ -159,7 +159,7 @@
                 this.sendPCObject(event.data.peerconnection, "Janus", event.roomDesc);
               }
               break;
-              
+
             case 'screenshare':
               if (event.data.status === "started") {
                 // screenshare started
@@ -169,27 +169,16 @@
                 this.sendEvents(event.data.peerconnection, event.roomDesc, "screenShareStop");
               }
               break;
-              
-            case 'video':
-              if (event.data.status === "paused") {
-                // Video paused 
-                this.sendEvents(event.data.peerconnection, event.roomDesc, "videoPause");
-              } else if (event.data.status === "resumed") {
-                // Video resumed 
-                this.sendEvents(event.data.peerconnection, event.roomDesc, "videoResumed");
+            case 'channel':
+              var eventString = null;
+              if (event.data.channel === 'audio') {
+                eventString = 'audio' + (event.data.status?'Unmute': 'Mute');
+              } else {
+                eventString = 'video' + (event.data.status?'Resume': 'Pause');
               }
+              this.sendEvents(event.data.peerconnection, event.roomDesc, eventString);
               break;
-              
-            case 'audio':
-              if (event.data.status === "muted") {
-                // Audio Muted
-                this.sendEvents(event.data.peerconnection, event.roomDesc, "audioMute");
-              } else if (event.data.status === "unmuted") {
-                // Audio Unmuted 
-                this.sendEvents(event.data.peerconnection, event.roomDesc, "audioUnmute");
-              }
-              break;
-              
+
             case 'pluginHandle':
               if (event.data.status === "detached" && event.data.for === "main") {
                 this.sendEvents(event.data.peerconnection, event.roomDesc, "fabricTerminated");
@@ -197,7 +186,7 @@
                 this.sendEvents(event.data.peerconnection, event.roomDesc, "fabricTerminated");
               }
               break;
-              
+
             case 'error':
               if (event.data.status === "createOffer") {
                 this.reportErrors(event.data.peerconnection, event.roomDesc, event.data.error, "createOffer");
@@ -205,15 +194,15 @@
                 this.reportErrors(event.data.peerconnection, event.roomDesc, event.data.error, "createAnswer");
               }
               break;
-              
-            default: 
+
+            default:
               console.log("Unknown type of event: ", event);
               break;
           }
         }
       }
-    }; 
-    
+    };
+
     return {
       $get: function() {
         return callstatsConfig;

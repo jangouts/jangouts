@@ -15,7 +15,7 @@
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
-  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver', 
+  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver',
                          'jhEventsProvider'];
 
   /**
@@ -23,7 +23,7 @@
    * @constructor
    * @memberof module:janusHangouts
    */
-  function feedFactory($timeout, DataChannelService, SpeakObserver, 
+  function feedFactory($timeout, DataChannelService, SpeakObserver,
                        jhEventsProvider) {
     return function(attrs) {
       attrs = attrs || {};
@@ -292,26 +292,17 @@
                 if (options.after) { options.after(); }
                 // Send the new status to remote peers
                 DataChannelService.sendStatus(that, {exclude: "picture"});
-                
-                if (type === 'video') { 
-                  // Sending videoPause OR videoResume event to callstats.io
-                  jhEventsProvider.emitEvent({
-                    type: "video",
-                    data: {
-                      status: ((enabled === false) ? "paused" : "resumed"),
-                      peerconnection: that.connection.pluginHandle.webrtcStuff.pc
-                    }
-                  });
-                } else if (type === 'audio') {
-                  // Sending audioMute OR audioUnmute event to callstats.io
-                  jhEventsProvider.emitEvent({
-                    type: "audio",
-                    data: {
-                      status: ((enabled === false) ? "muted" : "unmuted"),
-                      peerconnection: that.connection.pluginHandle.webrtcStuff.pc
-                    }
-                  });
-                }
+
+                // send 'channel' event with status (enabled or disabled)
+                jhEventsProvider.emitEvent({
+                  type: "channel",
+                  data: {
+                    channel: type,
+                    status: enabled,
+                    peerconnection: that.connection.pluginHandle.webrtcStuff.pc
+                  }
+                });
+
               });
             }
           });
@@ -355,7 +346,7 @@
           DataChannelService.sendStatus(that);
         });
       };
-      
+
       /**
        * Updates the value of the display attribute for this publisher feed,
        * notifying changes to the remote peers.
@@ -376,10 +367,10 @@
       this.getDisplay = function() {
         return this.display;
       };
-    
+
       /**
-       * Sets the name for publisher 
-       * @param {string} - val - new display 
+       * Sets the name for publisher
+       * @param {string} - val - new display
        */
       this.setDisplay = function (val) {
         this.display = val;
