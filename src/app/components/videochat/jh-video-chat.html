@@ -19,12 +19,17 @@
         <button class="btn btn-sidebar" type="button" uib-dropdown-toggle ng-disabled="disabled">
           <img class="btn-img" src="images/buttons/buttons_settings.svg">
         </button>
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-          <li role="menuitem"><a href="#">Mute all</a></li>
-          <li role="menuitem"><a href="#">Disable video for all</a></li>
-          <li role="menuitem"><a href="#">Ignore all</a></li>
-          <li role="menuitem"><a href="#">Thumbnails order</a></li>
-          <li role="menuitem"><a href="#">Slow connection mode</a></li>
+        <ul
+          class="dropdown-menu"
+          uib-dropdown-menu role="menu"
+          aria-labelledby="single-button"
+          ng-click="$event.stopPropagation()">
+          <li class="btn-settings-options" role="menuitem">Mute all</li>
+          <li class="btn-settings-options" role="menuitem">Video off for all</li>
+          <li class="btn-settings-options" role="menuitem">Ignore all</li>
+          <li class="btn-settings-options" role="menuitem">Thumbnails order</li>
+          <li class="btn-settings-options btn-order" role="menuitem">Alphabetical</li>
+          <li class="btn-settings-options btn-order" role="menuitem">Appearance-wise</li>
         </ul>
       </div>
       <!-- Hotkey Button -->

@@ -452,6 +452,88 @@ video {
         margin-top: -6px;
         margin-left: -2px;
       }
+
+      .dropdown-menu {
+        width: 200px;
+        top: 0px;
+        left: 80px;
+        padding: 0px;
+        margin: 0px;
+        border-radius: 0px;
+        border-style: none;
+        background-color: rgba($color3, 0.95);
+        animation: fadein 0.1s;
+        -moz-animation: fadein 0.1s;
+        -webkit-animation: fadein 0.1s;
+        -o-animation: fadein 0.1s;
+
+        .btn-settings-options {
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-weight: 500;
+          color: $color4;
+          padding: 5px;
+          cursor: pointer;
+          border-bottom: 1px solid rgba($color5, 0.2);
+          border-bottom-width: thin;
+
+          &:hover {
+            background-color: $color2;
+          }
+        }
+
+        .btn-order {
+          padding-left: 20px;
+          font-weight: 300;
+          letter-spacing: 1px;
+        }
+
+        .btn-bandwith {
+          border-bottom: none;
+        }
+
+        .text {
+          margin-left: 3px;
+          display: inline-block;
+        }
+      }
+
+      @keyframes fadein {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @-moz-keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+      }
+
+      @-webkit-keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+      }
+
+      @-o-keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+      }
     }
 
     #sidebar-box-info {
