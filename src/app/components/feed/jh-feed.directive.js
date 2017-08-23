@@ -21,7 +21,8 @@
         feed: '=',
         toggleHighlightFn: '&',
         highlighted: '=',
-        highlightedByUser: '='
+        highlightedByUser: '=',
+        isLayoutWithMainVideoFn: '&',
       },
       controllerAs: 'vm',
       bindToController: true,
