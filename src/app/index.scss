@@ -493,6 +493,20 @@ video {
           border-bottom: none;
         }
 
+        .circle-inactive {
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          display: inline-block;
+          padding-right: 5px;
+          border: 1px solid $color4;
+        }
+
+        .circle-active {
+          border: 1px solid $color1;
+          background-color: $color1;
+        }
+
         .text {
           margin-left: 3px;
           display: inline-block;

@@ -2,5 +2,6 @@
   class="btn-settings-options btn-bandwith"
   ng-click="vm.click()"
   title="Toggle Picture/Video thumbnails. Use picture mode to lower bandwidth and CPU usage">
+  <div class="circle-inactive" ng-class="{ 'circle-active': !vm.isChecked() }"></div>
   <div class="text">Slow connection mode</div>
 </div>
