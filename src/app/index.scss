@@ -17,6 +17,39 @@ body {
   margin: 3em 0;
 }
 
+#global-notifications {
+  position: fixed;
+  z-index: 1030;
+  top: 51px;
+  left: 0;
+  text-align: center;
+  background-color: #cfe1e9;
+  color: #212121;
+  width: 100%;
+}
+
+.global-notification {
+  padding: 4px 10px;
+
+  .icon {
+    margin-right: 5px !important;
+  }
+
+  .close-button {
+    color: #777;
+    margin-left: 10px !important;
+    cursor: pointer;
+
+    &:hover {
+      color: #3b3b3b;
+    }
+  }
+}
+
+.global-notification.notification-warning {
+  background-color: #ffe479;
+}
+
 .global-notification.notification-info {
   z-index: 1000;
   overflow: visible;
@@ -24,6 +57,24 @@ body {
   top: 35px;
   left: 0px;
   width: 100%;
+  background-color: #9dd3eb;
+}
+
+.global-notification.notification-success {
+  background-color: #C5ED73;
+}
+
+.global-notification.notification-error {
+  background-color: #d9534f;
+  color: #fff;
+
+  .close-button {
+    color: #fff;
+
+    &:hover {
+      color: #ff9898;
+    }
+  }
 }
 
 #videochat-playroom {
