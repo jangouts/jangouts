@@ -580,24 +580,15 @@ video {
   }
 }
 
-#page-content-wrapper {
-  width: 100%;
-  position: absolute;
-  padding: 0px;
-}
-
 #wrapper.toggled {
   padding-left: 80px;
   overflow: visible;
+  position: absolute;
+  margin-right: -80px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
   width: 80px;
-}
-
-#wrapper.toggled #page-content-wrapper {
-  position: absolute;
-  margin-right: -80px;
 }
 
 @media(min-width:768px) {
