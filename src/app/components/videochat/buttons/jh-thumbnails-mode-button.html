@@ -1,10 +1,6 @@
-<button
-   ng-class="{ 'btn-danger': !vm.isChecked() }"
-   class="btn"
-   ng-click="vm.click()"
-   title="Toggle Picture/Video thumbnails.
-Use picture mode to lower bandwidth and CPU usage">
-  <span class="glyphicon"
-    ng-class="{ 'glyphicon-picture': !vm.isChecked(), 'glyphicon-facetime-video': vm.isChecked() }"
-    aria-hidden="true"></span>
-</button>
+<div
+  class="btn-settings-options btn-bandwith"
+  ng-click="vm.click()"
+  title="Toggle Picture/Video thumbnails. Use picture mode to lower bandwidth and CPU usage">
+  <div class="text">Slow connection mode</div>
+</div>
