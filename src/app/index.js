@@ -82,6 +82,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
           '<p><span>Video off for all.</span>Turns off cameras of all participants.</p>' +
           '<p><span>Ignore all.</span>Makes all participants invisible.</p>' +
           '<p><span>Thumbnails Order.</span>Determines the order of the thumbnails based on the participants’ names or the time they joined the call.</p>' +
+          '<p><span>Slow Connection Mode.</span>Turns on picture thumbnails to lower bandwith and CPU usage.</p>' +
         '</div>' +
         '<div class="left-item"><img src="../images/buttons/buttons_hotkey.svg"></div>' +
         '<div class="right-item"><p><span>Hotkey.</span>Sets the push-to-talk key.</p></div>' +
@@ -108,7 +109,7 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
         '<hr>' +
         // Shortcuts
         '<div class="right-item" ng-repeat="hotkey in hotkeys | filter:{ description: \'!$$undefined$$\' }">' +
-          '<p><span ng-repeat="key in hotkey.format() track by $index">{{ key }}</span> : {{ hotkey.description }}</p>' +
+          '<p><span ng-repeat="key in hotkey.format() track by $index">{{ key }}</span>: {{ hotkey.description }}</p>' +
         '</div>' +
         // Close Button
         '<div ng-bind-html="footer" ng-if="footer"></div>' +

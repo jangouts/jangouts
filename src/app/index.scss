@@ -6,8 +6,8 @@ $color4: #EDEDED; // Light Grey
 $color5: #BEBEBE; // Dark Grey
 
 // Colour variables
-$jangouts-bg:  $color4;
-$jangouts-video-bg: $color2;
+$jangouts-bg: $color3;
+$jangouts-video-bg: $color3;
 
 body {
   background: $jangouts-bg;
@@ -35,10 +35,13 @@ body {
   flex-flow: row wrap;
   align-content: flex-start;
   margin: 0 auto;
+  padding: 5px;
   overflow: hidden;
+  background-color: $color4;
 
   figure {
     margin: 0px;
+    padding: 5px;
     border: 2px solid transparent;
     border-radius: 4px;
 
@@ -47,48 +50,54 @@ body {
 
       .face {
         vertical-align: middle;
-        width: 64px;
-        height: 48px;
+        width: 121px;
+        height: 91px;
         // This transition causes some artifacts in some corner cases
         // transition: width .3s, height .3s;
       }
     }
 
     figcaption {
-      line-height: 1.4;
-      font-size: 13px;
-      padding: 2px 3px 3px 3px;
-      height: 26px;
+      font-size: 12px;
+      padding: 0px;
+      height: 20px;
       position: relative;
 
       .caption {
         position: absolute;
-        width: 80%;
+        width: 95%;
         height: 20px;
         overflow: hidden;
         white-space: nowrap;
         cursor: pointer;
-      }
 
-      .buttons {
-        z-index: 10;
-        position: absolute;
-        top: 2px;
-        right: 2px;
+        &:hover {
+          color: $color1;
+        }
       }
 
       .additional-buttons {
         z-index: 10;
         position: absolute;
-        bottom: 22px;
+        background-color: rgba($color3, 0.9);
+        width: 100%;
+        margin: 0;
         padding: 1px;
-        background-clip: padding-box;
-        background-color: #fff;
-        border: 1px solid rgba(0, 0, 0, 0.07);
-        border-radius: 4px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-        button {
-          margin: 2px;
+        bottom: 20px;
+        border-radius: 0px;
+
+        .btn-thumb-container {
+          display: inline-block;
+        }
+
+        .btn-img-thumb {
+          width: 25px;
+          height: auto;
+
+          &:hover, &:focus {
+            opacity: 0.5;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -104,14 +113,19 @@ body {
 
     &.own-feed {
       figcaption {
-        color: #fff;
-        background: rgba(0,0,0,0.3);
+        font-weight: bold;
       }
     }
 
     &.sticky {
-      border-color: $color1;
+      background-color: rgba(white, 0.7);
     }
+  }
+}
+
+@media(min-width:992px) {
+  #thumbnails {
+    height: 100vh;
   }
 }
 
@@ -311,10 +325,18 @@ footer {
   }
 }
 
+video {
+  width: 100%;
+}
+
 #main-video {
   margin: 0;
   padding: 0;
-  text-align: center;
+  text-align: right;
+
+  video {
+    margin-bottom: -5px;
+  }
 }
 
 // Overriding of bootstrap's default negative margin, just a hack actually
@@ -354,14 +376,11 @@ footer {
 
 #wrapper {
   padding-left: 0;
+  overflow: hidden;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
-}
-
-#wrapper.toggled {
-  padding-left: 80px;
 }
 
 #sidebar-wrapper {
@@ -371,26 +390,204 @@ footer {
   width: 0;
   height: 100%;
   margin-left: -80px;
-  overflow-y: auto;
+  overflow: inherit;
   background: $color3;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+  border-right: solid;
+  border-right-width: thin;
+
+  .sidebar-nav {
+    position: absolute;
+    top: 0px;
+    width: 80px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: inherit;
+
+    .sidebar-box {
+      width: 80px;
+      height: 80px;
+      text-align: center;
+      margin: auto;
+      border-bottom: solid;
+      border-bottom-width: thin;
+      -webkit-transition: all 1s ease;
+      -moz-transition: all 1s ease;
+      -o-transition: all 1s ease;
+      transition: all 1s ease;
+
+      .btn-sidebar {
+        display: block;
+        width: 80px;
+        height: 80px;
+        border-radius: 0 !important;
+      }
+
+      #btn-info {
+        background-color: $color1;
+        height: 60px;
+      }
+
+      .btn-img {
+        width: 50px;
+        height: auto;
+      }
+
+      .btn:hover, #btn-info:hover {
+        background-color: black;
+      }
+
+      .btn-danger, .btn-danger:hover {
+        background-color: $color2;
+        border-color: $color2;
+      }
+
+      kbd {
+        background-color: (black, 0.3);
+        padding: 5px;
+        font-size: 10px;
+      }
+
+      #btn-hotkey {
+        margin-top: -6px;
+        margin-left: -2px;
+      }
+
+      .dropdown-menu {
+        width: 200px;
+        top: 0px;
+        left: 80px;
+        padding: 0px;
+        margin: 0px;
+        border-radius: 0px;
+        border-style: none;
+        background-color: rgba($color3, 0.95);
+        animation: fadein 0.1s;
+        -moz-animation: fadein 0.1s;
+        -webkit-animation: fadein 0.1s;
+        -o-animation: fadein 0.1s;
+
+        .btn-settings-options {
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          font-weight: 500;
+          color: $color4;
+          padding: 5px;
+          cursor: pointer;
+          border-bottom: 1px solid rgba($color5, 0.2);
+          border-bottom-width: thin;
+
+          &:hover {
+            background-color: $color2;
+          }
+        }
+
+        .btn-order {
+          padding-left: 20px;
+          font-weight: 300;
+          letter-spacing: 1px;
+        }
+
+        .btn-bandwith {
+          border-bottom: none;
+        }
+
+        .circle-inactive {
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          display: inline-block;
+          padding-right: 5px;
+          border: 1px solid $color4;
+        }
+
+        .circle-active {
+          border: 1px solid $color1;
+          background-color: $color1;
+        }
+
+        .text {
+          margin-left: 3px;
+          display: inline-block;
+        }
+      }
+
+      @keyframes fadein {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @-moz-keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+      }
+
+      @-webkit-keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+      }
+
+      @-o-keyframes fadein {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+      }
+    }
+
+    #sidebar-box-info {
+      height: 60px;
+    }
+  }
 }
 
 #header-wrapper {
   height: 60px;
-}
 
-#wrapper.toggled #sidebar-wrapper {
-  width: 80px;
+  .glyphicon {
+    color: $color4;
+    padding: 15px;
+    margin: 0px;
+  }
+
+  .glyphicon:hover {
+    color: $color1;
+  }
+
+  .room-username-separator {
+    color: $color1;
+    margin: 0px 5px;
+  }
 }
 
 #page-content-wrapper {
   width: 100%;
   position: absolute;
-  padding: 15px;
+  padding: 0px;
+}
+
+#wrapper.toggled {
+  padding-left: 80px;
+  overflow: visible;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 80px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -398,106 +595,14 @@ footer {
   margin-right: -80px;
 }
 
-.sidebar-nav {
-  position: absolute;
-  top: 0px;
-  width: 80px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.sidebar-nav > .sidebar-brand {
-  height: 65px;
-  font-size: 18px;
-  line-height: 60px;
-}
-
-.sidebar-nav > .sidebar-brand a {
-  color: #999999;
-}
-
-.sidebar-nav > .sidebar-brand a:hover {
-  color: #fff;
-  background: none;
-}
-
 @media(min-width:768px) {
   #wrapper {
     padding-left: 80px;
+    overflow: visible;
   }
   #sidebar-wrapper {
     width: 80px;
   }
-  #page-content-wrapper {
-    padding: 20px;
-    position: relative;
-  }
-}
-
-.sidebar-box {
-  width: 80px;
-  height: 80px;
-  text-align: center;
-  margin: auto;
-  border-bottom: solid;
-  border-bottom-width: thin;
-}
-
-#sidebar-box-info {
-  height: 60px;
-}
-
-.btn-sidebar {
-  display: block;
-  width: 80px;
-  height: 80px;
-  border-radius: 0 !important;
-}
-
-#btn-info {
-  background-color: $color1;
-  height: 60px;
-}
-
-.btn-img {
-  width: 50px;
-  height: auto;
-}
-
-.btn:hover, #btn-info:hover {
-  background-color: black;
-}
-
-.btn-danger, .btn-danger:hover {
-  background-color: $color2;
-  border-color: $color2;
-}
-
-.glyphicon {
-  color: $color4;
-  padding: 15px;
-  margin: 0px;
-}
-
-.glyphicon:hover {
-  color: $color1;
-}
-
-kbd {
-  background-color: (black, 0.3);
-  padding: 5px;
-  font-size: 10px;
-}
-
-#btn-hotkey {
-  margin-top: -6px;
-  margin-left: -2px;
-}
-
-.room-username-separator {
-  color: $color1;
-  margin: 0px 5px;
 }
 
 // Cheatsheet styles
@@ -557,7 +662,7 @@ kbd {
   width: 350px;
   height: 330px;
   margin-bottom: -350px;
-  margin-left: 10px;
+  margin-left: 0px;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-transition: all 0.5s ease;
@@ -568,18 +673,20 @@ kbd {
   .chat-header {
     height: 30px;
     cursor: pointer;
-    background: rgba($color3, 0.95);
+    background: rgba(black, 0.95);
     color: $color4;
     font-size: 12px;
     padding: 7px;
-
-    &:hover {
-    background: $color3;
-    }
+    font-weight: bold;
+    border: solid;
+    border-color: rgba($color4, 0.2);
+    border-width: thin;
+    border-bottom: hidden;
+    border-left: hidden;
   }
 
   .chat-header.read {
-    background: rgba($color3, 0.95);
+    background: rgba(black, 0.95);
   }
 
   .chat-header.unread {

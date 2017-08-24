@@ -18,7 +18,8 @@
       restrict: 'EA',
       templateUrl: 'app/components/feed/buttons/jh-video-button.html',
       scope: {
-        feed: '='
+        feed: '=',
+        thumbnailIcon: '='
       },
       controllerAs: 'vm',
       bindToController: true,
@@ -31,6 +32,7 @@
       vm.toggle = toggle;
       vm.showsEnable =showsEnable;
       vm.showsDisable = showsDisable;
+      vm.isThumbnailIcon = isThumbnailIcon;
 
       function toggle() {
         RoomService.toggleChannel("video", vm.feed);
@@ -42,6 +44,10 @@
 
       function showsDisable() {
         return (vm.feed && vm.feed.isPublisher && vm.feed.getVideoEnabled());
+      }
+
+      function isThumbnailIcon() {
+        return vm.thumbnailIcon;
       }
     }
   }

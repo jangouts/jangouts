@@ -15,10 +15,23 @@
         </button>
       </div>
       <!-- Settings Button -->
-      <div class="sidebar-box">
-        <button class="btn btn-sidebar">
+      <div class="sidebar-box" uib-dropdown is-open="status.isopen">
+        <button class="btn btn-sidebar" type="button" uib-dropdown-toggle ng-disabled="disabled">
           <img class="btn-img" src="images/buttons/buttons_settings.svg">
         </button>
+        <ul
+          class="dropdown-menu"
+          uib-dropdown-menu role="menu"
+          aria-labelledby="single-button"
+          ng-click="$event.stopPropagation()">
+          <li class="btn-settings-options" role="menuitem">Mute all</li>
+          <li class="btn-settings-options" role="menuitem">Video off for all</li>
+          <li class="btn-settings-options" role="menuitem">Ignore all</li>
+          <li class="btn-settings-options" role="menuitem">Thumbnails order</li>
+          <li class="btn-settings-options btn-order" role="menuitem">Alphabetical</li>
+          <li class="btn-settings-options btn-order" role="menuitem">Appearance-wise</li>
+          <li role="menuitem"><jh-thumbnails-mode-button></jh-thumbnails-mode-button></li>
+        </ul>
       </div>
       <!-- Hotkey Button -->
       <div class="sidebar-box">
@@ -26,11 +39,11 @@
       </div>
       <!-- Audio Button -->
       <div class="sidebar-box">
-        <jh-audio-button feed="vm.mainFeed()"></jh-audio-button>
+        <jh-audio-button feed="vm.mainFeed()" thumbnail-icon="false"></jh-audio-button>
       </div>
       <!-- Video Button -->
       <div class="sidebar-box">
-        <jh-video-button feed="vm.mainFeed()"></jh-video-button>
+        <jh-video-button feed="vm.mainFeed()" thumbnail-icon="false"></jh-video-button>
       </div>
       <!-- Window Share Button -->
       <div class="sidebar-box">
@@ -74,56 +87,37 @@
   <!-- Chat -->
   <jh-chat></jh-chat>
 
-  <!-- Page Content -->
-  <div id="page-content-wrapper">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          <!-- <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> -->
+  <!-- Activity features -->
+  <div id="page-content-wrapper videochat-body">
+    <div class="row" id="videochat-playroom">
+      <div activity-item ng-repeat="item in vm.activityItems">
+        <!-- Main video -->
+        <div
+        ng-if="item.content === 'Speaker'"
+        class="grid-item-content col-xs-24 col-sm-24 col-md-12 col-lg-14"
+        id="main-video"
+        jh-main-feed="true"
+        feed="vm.highlightedFeed()"
+        ng-class="{mirrored: vm.mirrored()}">
+        </div>
+        <!-- Thumbnails -->
+        <div
+        ng-if="item.content === 'Participants'"
+        class="grid-item-content col-xs-0 col-sm-0 col-md-12 col-lg-10"
+        id="thumbnails">
+          <div
+          jh-feed="true"
+          feed="f"
+          ng-repeat="f in vm.feeds() | orderBy:'+display'"
+          toggle-highlight-fn="vm.toggleHighlightedFeed(f)"
+          highlighted="vm.isHighlighted(f)"
+          highlighted-by-user="vm.isHighlightedByUser(f)">
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- Activity features -->
-    <div class="row" id="videochat-body">
-      <div id="videochat-playroom">
-        <ul>
-          <li activity-item
-          row="item.position[0]" col="item.position[1]"
-          size-x="item.size[0]" size-y="item.size[1]"
-          ng-repeat="item in vm.activityItems">
-            <div
-            ng-if="item.content === 'Speaker'"
-            class="grid-item-content"
-            id="main-video"
-            jh-main-feed="true"
-            feed="vm.highlightedFeed()"
-            ng-class="{mirrored: vm.mirrored()}">
-            </div>
-            <div
-            ng-if="item.content === 'Participants'"
-            class="grid-item-content"
-            id="thumbnails">
-              <div
-              jh-feed="true"
-              feed="f"
-              ng-repeat="f in vm.feeds() | orderBy:'+display'"
-              toggle-highlight-fn="vm.toggleHighlightedFeed(f)"
-              highlighted="vm.isHighlighted(f)"
-              highlighted-by-user="vm.isHighlightedByUser(f)">
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <!-- /videochat-playroom -->
-    </div>
-    <!-- /videochat-body -->
   </div>
-  <!-- /page-content-wrapper -->
 </div>
-<!-- /wrapper -->
-
 
 <script>
 $("#menu-toggle").click(function(e) {

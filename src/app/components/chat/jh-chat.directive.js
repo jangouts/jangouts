@@ -74,7 +74,7 @@
         } else {
           scope.isChatVisible = false;
           if (unreadMessages === 0) {
-            scope.headerHTML = "Click to open the chat!";
+            scope.headerHTML = "Chat";
           } else if (unreadMessages === 1) {
             scope.headerHTML = "1 unread message";
           } else {

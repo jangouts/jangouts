@@ -1,15 +1,15 @@
-<button
+<div
   type="button"
-  class="btn btn-default"
+  class="btn-thumb-container"
   ng-click="vm.toggle()"
   title="Don't play audio"
   ng-show="vm.showsIgnore()">
-  <span class="glyphicon glyphicon-volume-off"></span>
-</button><button
+  <img class="btn-img-thumb" src="images/buttons/buttons_thumb-audio-on.svg">
+</div><div
   type="button"
-  class="btn btn-danger"
+  class="btn-thumb-container"
   ng-click="vm.toggle()"
   title="Restore audio"
   ng-show="vm.showsStopIgnoring()">
-  <span class="glyphicon glyphicon-volume-off"></span>
-</button>
+  <img class="btn-img-thumb" src="images/buttons/buttons_thumb-audio-off.svg">
+</div>

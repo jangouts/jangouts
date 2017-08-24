@@ -127,7 +127,7 @@
         canvasTag.height = Math.round(canvasTag.width * 0.75);
 
         var placeholder = new window.Image();
-        placeholder.src = "assets/images/placeholder.png";
+        placeholder.src = "assets/images/placeholder.svg";
         placeholder.onload = function() {
           context.drawImage(placeholder, 0, 0, canvasTag.width, canvasTag.height);
         };
