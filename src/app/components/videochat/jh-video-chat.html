@@ -10,7 +10,7 @@
       </div>
       <!-- Layout Change Button -->
       <div class="sidebar-box">
-        <button class="btn btn-sidebar">
+        <button class="btn btn-sidebar" ng-click="vm.toggleLayout()">
           <img class="btn-img" src="images/buttons/buttons_layout-change.svg">
         </button>
       </div>
@@ -94,6 +94,7 @@
         <!-- Main video -->
         <div
         ng-if="item.content === 'Speaker'"
+        ng-show="vm.isLayoutWithMainVideo()"
         class="grid-item-content col-xs-24 col-sm-24 col-md-12 col-lg-14"
         id="main-video"
         jh-main-feed="true"
@@ -103,13 +104,18 @@
         <!-- Thumbnails -->
         <div
         ng-if="item.content === 'Participants'"
-        class="grid-item-content col-xs-0 col-sm-0 col-md-12 col-lg-10"
+        class="grid-item-content"
+        ng-class="{
+          'col-xs-0 col-sm-0 col-md-12 col-lg-10': vm.isLayoutWithMainVideo(),
+          'col-xs-24 col-sm-24 col-md-24 col-lg-24 withoutMainVideo': !vm.isLayoutWithMainVideo()
+        }"
         id="thumbnails">
           <div
           jh-feed="true"
           feed="f"
           ng-repeat="f in vm.feeds() | orderBy:'+display'"
           toggle-highlight-fn="vm.toggleHighlightedFeed(f)"
+          is-layout-with-main-video-fn="vm.isLayoutWithMainVideo()"
           highlighted="vm.isHighlighted(f)"
           highlighted-by-user="vm.isHighlightedByUser(f)">
           </div>

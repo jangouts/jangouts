@@ -3,20 +3,29 @@
     <video
       autoplay
       class="face"
-      ng-class="{mirrored: vm.mirrored}"
+      ng-class="{
+        withoutMainVideo: !vm.isLayoutWithMainVideoFn(),
+        mirrored: vm.mirrored
+      }"
       poster="assets/images/placeholder.svg"
       ng-show="vm.thumbnailTag() === 'video'">
     </video>
     <img
       ng-src="{{vm.feed.getPicture()}}"
       class="face"
-      ng-class="{mirrored: vm.mirrored}"
+      ng-class="{
+        withoutMainVideo: !vm.isLayoutWithMainVideoFn(),
+        mirrored: vm.mirrored
+      }"
       ng-show="vm.thumbnailTag() === 'picture'">
     </img>
     <img
       ng-src="assets/images/placeholder.svg"
       class="face"
-      ng-class="{mirrored: vm.mirrored}"
+      ng-class="{
+        withoutMainVideo: !vm.isLayoutWithMainVideoFn(),
+        mirrored: vm.mirrored
+      }"
       ng-show="vm.thumbnailTag() === 'placeholder'">
     </img>
     <canvas

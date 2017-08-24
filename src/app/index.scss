@@ -55,6 +55,11 @@ body {
         // This transition causes some artifacts in some corner cases
         // transition: width .3s, height .3s;
       }
+
+      .face.withoutMainVideo {
+        width: 242px;
+        height: 182px;
+      }
     }
 
     figcaption {

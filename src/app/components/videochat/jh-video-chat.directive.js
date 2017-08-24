@@ -34,6 +34,9 @@
       var NUMBER_OF_COLS = 16;
       vm.activityItems = UserService.getSetting('activityItems') || defaultActivityItems();
 
+      // There are 2 layouts: with and w/o the main video (speaker)
+      vm.layoutWithMainVideo = true;
+
       /* Data */
       vm.highlight = {
         // Feed explicitly selected as highlight by the user (using the UI)
@@ -52,6 +55,8 @@
       vm.isHighlighted = isHighlighted;
       vm.isHighlightedByUser = isHighlightedByUser;
       vm.showHotkeys = showHotkeys;
+      vm.toggleLayout = toggleLayout;
+      vm.isLayoutWithMainVideo = isLayoutWithMainVideo;
 
       function defaultActivityItems() {
         // Window width minus the paddings
@@ -144,6 +149,14 @@
 
       function showHotkeys() {
         hotkeys.toggleCheatSheet();
+      }
+
+      function toggleLayout() {
+        vm.layoutWithMainVideo = !vm.layoutWithMainVideo;
+      }
+
+      function isLayoutWithMainVideo() {
+        return vm.layoutWithMainVideo;
       }
     }
   }
