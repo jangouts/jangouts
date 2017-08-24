@@ -20,44 +20,81 @@ body {
 #global-notifications {
   position: fixed;
   z-index: 1030;
-  top: 51px;
-  left: 0;
   text-align: center;
-  background-color: #cfe1e9;
-  color: #212121;
+  background-color: $color2;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .global-notification {
-  padding: 4px 10px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
 
   .icon {
     margin-right: 5px !important;
   }
 
-  .close-button {
-    color: #777;
-    margin-left: 10px !important;
-    cursor: pointer;
+  .notif-message-container {
+    padding-right: 10px;
+    display: inline-block;
+  }
 
-    &:hover {
-      color: #3b3b3b;
+  .notif-btn-container {
+    display: inline-block;
+
+    .btn.btn-default {
+      padding: 0px 5px 0px 0px;
+      color: $color4;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-top: -1px;
+      font-size: 11px;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    .btn:focus, .btn:active, .btn.active, .btn:focus:active {
+      outline: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
     }
   }
-}
 
-.global-notification.notification-warning {
-  background-color: #ffe479;
+  .close-button {
+    cursor: pointer;
+    top: 20px;
+    right: 20px;
+    position: fixed;
+
+    &:hover {
+      color: $color4;
+    }
+  }
 }
 
 .global-notification.notification-info {
   z-index: 1000;
   overflow: visible;
   position: fixed;
-  top: 35px;
-  left: 0px;
+  top: 0px;
   width: 100%;
-  background-color: #9dd3eb;
+  height: 60px;
+  background-color: rgba($color2, 0.95);
+  color: $color3;
+}
+
+@media(min-width:576px) {
+  .global-notification.notification-info {
+    padding-right: 80px;
+  }
+}
+
+.global-notification.notification-warning {
+  background-color: #ffe479;
 }
 
 .global-notification.notification-success {
@@ -66,15 +103,6 @@ body {
 
 .global-notification.notification-error {
   background-color: #d9534f;
-  color: #fff;
-
-  .close-button {
-    color: #fff;
-
-    &:hover {
-      color: #ff9898;
-    }
-  }
 }
 
 #videochat-playroom {

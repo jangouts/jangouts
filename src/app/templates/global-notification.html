@@ -1,8 +1,17 @@
-<div class="global-notification notification-{{data.type}}">
-  <i ng-class="data.faIcon" ng-if="data.faIcon" class="fa fa-fw icon"></i>
-  <strong ng-if="data.title">{{data.title}}:&nbsp;</strong><span ng-click="close()" ng-if="data.closeButton" class="close-button pull-right">✖</span>
-  <span>{{data.message}}</span>
-  <a ng-repeat="action in data.actions" ng-click="action.fn()" ng-class="action.className">
-    {{action.label}} 
-  </a>
+<div class="row global-notification notification-{{data.type}}">
+  <div>
+    <i ng-class="data.faIcon" ng-if="data.faIcon" class="fa fa-fw icon"></i>
+    <div class="notif-message-container">
+      <strong ng-if="data.title">{{data.title}}:</strong>
+      <span>{{data.message}}</span>
+    </div>
+    <div class="notif-btn-container">
+      <a ng-repeat="action in data.actions" ng-click="action.fn()" ng-class="action.className">
+        {{action.label}} 
+      </a>
+    </div>
+  </div>
+  <div>
+    <span ng-click="close()" ng-if="data.closeButton" class="glyphicon glyphicon-remove close-button"></span>
+  </div>
 </div>
