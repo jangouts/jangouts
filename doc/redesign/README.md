@@ -23,11 +23,11 @@ The first step to redesign Jangouts was to understand its users. Thus, we conduc
 
 [1]: ./survey.md
 [2]: ./personas.md
-[3]: ./survery-results.md
+[3]: ./survey-results.md
 [4]: ./personas-requirements.md
 [5]: ./ui-requirements-spec.md
 [6]: ./wireframes/draft1
 [7]: ./wireframes-design-explanations.md
 [8]: ./wireframes/draft2
-[9]: ./prototype/jangout-prototype.pdf
+[9]: ./prototype/jangouts-prototype.pdf
 [10]: https://xd.adobe.com/view/b7a3c86e-f2a4-46cc-95ce-392ee209379b/
