@@ -7,3 +7,4 @@ dist/
 Vagrantfile
 .vagrant/
 src/config.json
+src/app/callstats/callstats.config.json
