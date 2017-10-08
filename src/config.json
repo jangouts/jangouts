@@ -1,0 +1,9 @@
+{
+  "janusServer": null,
+  "janusServerSSL": "https://localhost:8089/janus",
+  "janusDebug": false,
+  "httpsAvailable": true,
+  "httpsUrl": null,
+  "videoThumbnails": true,
+  "joinUnmutedLimit": 3
+}
