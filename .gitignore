@@ -6,4 +6,3 @@ bower_components
 dist/
 Vagrantfile
 .vagrant/
-src/app/callstats/callstats.config.json
