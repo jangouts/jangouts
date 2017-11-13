@@ -13,7 +13,7 @@
 
     RoomService.$inject = ['$q', '$rootScope', '$timeout', 'FeedsService', 'Room',
       'FeedConnection', 'DataChannelService', 'ActionService', 'jhConfig',
-      'ScreenShareService', 'RequestService', 'UserService', 'jhEventsProvider'];
+      'ScreenShareService', 'RequestService', 'UserService', 'EventsService'];
 
   /**
    * Service to communication with janus room
@@ -22,7 +22,7 @@
    */
   function RoomService($q, $rootScope, $timeout, FeedsService, Room,
       FeedConnection, DataChannelService, ActionService, jhConfig,
-      ScreenShareService, RequestService, UserService, jhEventsProvider) {
+      ScreenShareService, RequestService, UserService, EventsService) {
     this.enter = enter;
     this.leave = leave;
     this.setRoom = setRoom;
@@ -106,13 +106,11 @@
       var $$rootScope = $rootScope;
       var connection = null;
 
-      // adding username to jhEventsProvider
-      jhEventsProvider.username = username;
-      // adding room details to jhEventsProvider
-      jhEventsProvider.roomDesc = that.room.description;
+      // adding room to EventsService
+      EventsService.setRoom(that.room);
        
       // sending user joining event
-      jhEventsProvider.emitEvent({
+      EventsService.emitEvent({
         type: "user",
         data: {
           status: "joining"
@@ -125,7 +123,7 @@
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           // sending 'pluginHandle attached' event
-          jhEventsProvider.emitEvent({
+          EventsService.emitEvent({
             type: "pluginHandle",
             data: {
               status: "attached",
@@ -162,7 +160,7 @@
           // some element of the local DOM
           console.log(" ::: Got a local stream :::");
           // local stream attached event
-          jhEventsProvider.emitEvent({
+          EventsService.emitEvent({
             type: "stream",
             data: {
               stream: "local",
@@ -184,7 +182,7 @@
           if (event === "joined") {
             console.log("Successfully joined room " + msg.room);
             // sending user joined event
-            jhEventsProvider.emitEvent({
+            EventsService.emitEvent({
               type: "user",
               data: {
                 status: "joined"
@@ -330,7 +328,7 @@
       }
       
       // emit 'subscribe' event
-      jhEventsProvider.emitEvent({
+      EventsService.emitEvent({
         type: "subscriber",
         data: {
           status: "subscribing",
@@ -342,7 +340,7 @@
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           // emit subscriber plugin attached event
-          jhEventsProvider.emitEvent({
+          EventsService.emitEvent({
             type: "pluginHandle",
             data: {
               status: "attached",
@@ -364,7 +362,7 @@
           if (event === "attached") {
             // Subscriber created and attached
             // emit 'subscriber attached' event
-            jhEventsProvider.emitEvent({
+            EventsService.emitEvent({
               type: "subscriber",
               data: {
                 status: "susbscribed",
@@ -394,7 +392,7 @@
         },
         onremotestream: function(stream) {
           // emit `remotestream` event
-          jhEventsProvider.emitEvent({
+          EventsService.emitEvent({
             type: "stream",
             data: {
               stream: "remote",
@@ -430,7 +428,7 @@
       var id;
       
       // emit `screenshare` event 
-      jhEventsProvider.emitEvent({
+      EventsService.emitEvent({
         type: "screenshare",
         data: {
           status: "starting"
@@ -441,7 +439,7 @@
         plugin: "janus.plugin.videoroom",
         success: function(pluginHandle) {
           // emit screenshare plugin attached event
-          jhEventsProvider.emitEvent({
+          EventsService.emitEvent({
             type: "pluginHandle",
             data: {
               status: "attached",
@@ -462,7 +460,7 @@
           feed.setStream(stream);
           
           // emit 'localstream' event
-          jhEventsProvider.emitEvent({
+          EventsService.emitEvent({
             type: "stream",
             data: {
               stream: "local",
@@ -472,7 +470,7 @@
           });
             
           // emit 'screenshare started' event 
-          jhEventsProvider.emitEvent({
+          EventsService.emitEvent({
             type: "screenshare",
             data: {
               status: "started",
@@ -483,7 +481,7 @@
           // Unpublish feed when screen sharing stops
           stream.onended = function () {
             // emit 'screenshareStop' event
-            jhEventsProvider.emitEvent({
+            EventsService.emitEvent({
               type: "screenshare",
               data: {
                 status: "stopped",

@@ -9,9 +9,8 @@
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize',
                'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed', 'cfp.hotkeys',
-               'janusHangouts.config', 'janusHangouts.eventsProvider', 'gridster',
-               'CallstatsModule', 'ngAudio', 'angular-extended-notifications', 
-               'LocalStorageModule'])
+               'janusHangouts.config', 'gridster', 'CallstatsModule', 'ngAudio',
+               'angular-extended-notifications', 'LocalStorageModule'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
@@ -94,15 +93,10 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
       console.warn('No configuration found');
     }
   })
+  .run(function(EventsService) {
+    EventsService.init();
+  })
   .run(function($http, jhEventsProvider, Callstats){
-    
-    // setting Rx Subject
-    jhEventsProvider.eventsSubject = new window.Rx.Subject();
-    if (jhEventsProvider.eventsSubject === null ||
-        jhEventsProvider.eventsSubject === undefined) {
-      console.log("Could not load rx.js! Event emitter will not work.");
-    }
-    
     // reading callstats.config.json
     var request = new XMLHttpRequest();
     request.open('GET', 'app/callstats/callstats.config.json', false);
