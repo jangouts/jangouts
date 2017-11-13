@@ -11,7 +11,7 @@
   angular.module('janusHangouts')
     .factory('FeedConnection', feedConnectionFactory);
 
-  feedConnectionFactory.$inject = ['ConnectionConfig'];
+  feedConnectionFactory.$inject = ['ConnectionConfig', 'jhEventsProvider'];
 
   /**
    * Manages the connection of a feed to the Janus server
@@ -27,7 +27,7 @@
    *  former to share the whole screen and the latter for sharing individual
    *  windows.
    */
-  function feedConnectionFactory(ConnectionConfig) {
+  function feedConnectionFactory(ConnectionConfig, jhEventsProvider) {
     return function(pluginHandle, roomId, role) {
       var that = this;
 
@@ -38,6 +38,15 @@
       console.log(this.role + " plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
 
       this.destroy = function() {
+        // emit 'handle detached' event
+        jhEventsProvider.emitEvent({
+          type: "pluginHandle",
+          data: {
+            status: "detached",
+            for: that.role,
+            pluginHandle: that.pluginHandle
+          }
+        });
         this.config = null;
         this.pluginHandle.detach();
       };
@@ -107,6 +116,15 @@
           error: function(error) {
             console.error("WebRTC error publishing");
             console.error(error);
+            // emit 'error Create Offer' event
+            jhEventsProvider.emitEvent({
+              type: "error",
+              data: {
+                status: "createOffer",
+                error: error,
+                peerconnection: that.pluginHandle.webrtcStuff.pc
+              }
+            });
             // Call the provided callback for extra actions
             if (options.error) { options.error(); }
           }
@@ -134,6 +152,15 @@
           error: function(error) {
             console.error("WebRTC error subscribing");
             console.error(error);
+            // emit 'error CreateAnswer' event
+            jhEventsProvider.emitEvent({
+              type: "error",
+              data: {
+                status: "createAnswer",
+                error: error,
+                peerconnection: that.pluginHandle.webrtcStuff.pc
+              }
+            });
           }
         });
       };

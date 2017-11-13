@@ -7,10 +7,11 @@
 
 'use strict';
 
-angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
-               'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
-               'janusHangouts.config', 'cfp.hotkeys', 'gridster',
-               'ngAudio', 'angular-extended-notifications', 'LocalStorageModule'])
+angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize',
+               'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed', 'cfp.hotkeys',
+               'janusHangouts.config', 'janusHangouts.eventsProvider', 'gridster',
+               'CallstatsModule', 'ngAudio', 'angular-extended-notifications', 
+               'LocalStorageModule'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
@@ -92,6 +93,39 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     } else {
       console.warn('No configuration found');
     }
+  })
+  .run(function($http, jhEventsProvider, Callstats){
+    
+    // setting Rx Subject
+    jhEventsProvider.eventsSubject = new window.Rx.Subject();
+    if (jhEventsProvider.eventsSubject === null ||
+        jhEventsProvider.eventsSubject === undefined) {
+      console.log("Could not load rx.js! Event emitter will not work.");
+    }
+    
+    // reading callstats.config.json
+    var request = new XMLHttpRequest();
+    request.open('GET', 'app/callstats/callstats.config.json', false);
+    request.send(null);
+    if (request.status === 200) {
+      var config = JSON.parse(request.responseText);
+      angular.forEach(config, function (value, key) {
+        //assigning config value with replaced value of placeholder
+        Callstats[key] = value;
+      });
+    } else {
+      console.warn('No Callstats configuration found!');
+    } 
+    
+    // setting callstats object
+    Callstats.callstats = new window.callstats();
+    if (Callstats.callstats === null ||
+        Callstats.callstats === undefined) {
+      console.log("Could not load callstats.min.js!");
+    }
+    
+    // enabling callstatsModule to receive events by subscribing to the events Subject
+    Callstats.subscribeToEventsSubject(jhEventsProvider.eventsSubject);
   })
   .run(function ($rootScope, $state, RoomService) {
     $rootScope.$on('$stateChangeStart', function () {
