@@ -9,8 +9,8 @@
 
 angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize',
                'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed', 'cfp.hotkeys',
-               'janusHangouts.config', 'gridster', 'CallstatsModule', 'ngAudio',
-               'angular-extended-notifications', 'LocalStorageModule'])
+               'janusHangouts.config', 'gridster', 'ngAudio', 'LocalStorageModule',
+               'angular-extended-notifications'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
@@ -96,30 +96,8 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitiz
   .run(function(EventsService) {
     EventsService.init();
   })
-  .run(function($http, jhEventsProvider, Callstats){
-    // reading callstats.config.json
-    var request = new XMLHttpRequest();
-    request.open('GET', 'app/callstats/callstats.config.json', false);
-    request.send(null);
-    if (request.status === 200) {
-      var config = JSON.parse(request.responseText);
-      angular.forEach(config, function (value, key) {
-        //assigning config value with replaced value of placeholder
-        Callstats[key] = value;
-      });
-    } else {
-      console.warn('No Callstats configuration found!');
-    } 
-    
-    // setting callstats object
-    Callstats.callstats = new window.callstats();
-    if (Callstats.callstats === null ||
-        Callstats.callstats === undefined) {
-      console.log("Could not load callstats.min.js!");
-    }
-    
-    // enabling callstatsModule to receive events by subscribing to the events Subject
-    Callstats.subscribeToEventsSubject(jhEventsProvider.eventsSubject);
+  .run(function(PluginsService) {
+    PluginsService.initPlugins();
   })
   .run(function ($rootScope, $state, RoomService) {
     $rootScope.$on('$stateChangeStart', function () {
