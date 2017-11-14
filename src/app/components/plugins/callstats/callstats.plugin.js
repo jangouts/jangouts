@@ -15,6 +15,10 @@
 
   /*
    * Service connecting CallstatsProvider with PluginsService
+   *
+   * In order to use this plugin, the enabledPlugins property of config.json
+   * must include "callstats" and a config.callstats.json file must exist.
+   * See config.callstats.json.sample.
    */
   function CallstatsPlugin($document, $q, $timeout, EventsService, CallstatsProvider) {
     this.init = function() {
