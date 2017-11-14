@@ -16,7 +16,7 @@
     .factory('Feed', feedFactory);
 
   feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver',
-                         'jhEventsProvider'];
+                         'EventsService'];
 
   /**
    * Factory representing a janus feed
@@ -24,7 +24,7 @@
    * @memberof module:janusHangouts
    */
   function feedFactory($timeout, DataChannelService, SpeakObserver,
-                       jhEventsProvider) {
+                       EventsService) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -294,7 +294,7 @@
                 DataChannelService.sendStatus(that, {exclude: "picture"});
 
                 // send 'channel' event with status (enabled or disabled)
-                jhEventsProvider.emitEvent({
+                EventsService.emitEvent({
                   type: "channel",
                   data: {
                     channel: type,

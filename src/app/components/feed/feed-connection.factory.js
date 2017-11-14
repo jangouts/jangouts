@@ -11,7 +11,7 @@
   angular.module('janusHangouts')
     .factory('FeedConnection', feedConnectionFactory);
 
-  feedConnectionFactory.$inject = ['ConnectionConfig', 'jhEventsProvider'];
+  feedConnectionFactory.$inject = ['ConnectionConfig', 'EventsService'];
 
   /**
    * Manages the connection of a feed to the Janus server
@@ -27,7 +27,7 @@
    *  former to share the whole screen and the latter for sharing individual
    *  windows.
    */
-  function feedConnectionFactory(ConnectionConfig, jhEventsProvider) {
+  function feedConnectionFactory(ConnectionConfig, EventsService) {
     return function(pluginHandle, roomId, role) {
       var that = this;
 
@@ -39,7 +39,7 @@
 
       this.destroy = function() {
         // emit 'handle detached' event
-        jhEventsProvider.emitEvent({
+        EventsService.emitEvent({
           type: "pluginHandle",
           data: {
             status: "detached",
@@ -117,7 +117,7 @@
             console.error("WebRTC error publishing");
             console.error(error);
             // emit 'error Create Offer' event
-            jhEventsProvider.emitEvent({
+            EventsService.emitEvent({
               type: "error",
               data: {
                 status: "createOffer",
@@ -153,7 +153,7 @@
             console.error("WebRTC error subscribing");
             console.error(error);
             // emit 'error CreateAnswer' event
-            jhEventsProvider.emitEvent({
+            EventsService.emitEvent({
               type: "error",
               data: {
                 status: "createAnswer",

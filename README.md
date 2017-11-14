@@ -62,6 +62,9 @@ defaults that should work out of the box for most cases. It's fine to have some
 configuration parameters set to `null` in that file, Jangouts will try to guess
 the proper value during runtime.
 
+If some Jangouts plugin is activated, it may need additional configuration in a
+separate file. See the corresponding section below.
+
 ### Step 3. Serve the `dist` folder
 
 Given than a Janus Gateway server is running and reachable and that
@@ -78,6 +81,24 @@ system would be:
 
 See the [deployment instructions](DEPLOYMENT.md) for more information about how
 to properly configure Apache.
+
+## Plugins
+
+Jangouts includes limited support for plugins in order to provide additional
+functionality. At the time of writing, the only available plugin provides
+integration with [Callstats.io](https://www.callstats.io/), a propietary
+third-party service to analyze WebRTC traffic and diagnose potential problems.
+In order to enable this plugin, write your credentials in a
+`config.callstats.json` file (following the syntax in
+`config.callstats.json.sample`) and set the following value in `config.json`.
+
+```
+enabledPlugins: ["callstats"]
+```
+
+If "callstats" is not listed in the list of enabled plugins, Jangouts will not
+include, download or execute any code coming from Callstats.io and will not
+connect to the Callstats.io servers in any other form.
 
 ## A note about security and browsers
 

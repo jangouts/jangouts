@@ -9,13 +9,13 @@
 (function () {
   'use strict';
 
-  angular.module('CallstatsModule', [])
-    .provider('Callstats',  Callstats);
+  angular.module('janusHangouts')
+    .provider('CallstatsProvider',  CallstatsProvider);
 
   /**
    * Module to communicate with callstats
    */
-  function Callstats() {
+  function CallstatsProvider() {
     // Step 1: Include callstats.js - done {index.html}
     var callstatsConfig = {
       // AppID is provided by callstats.io, set it inside callstats/callstats.config.json
@@ -147,26 +147,26 @@
             case 'user':
               if (event.data.status === "joining") {
                 // new user joined
-                this.initializeCallstats(event.username);
+                this.initializeCallstats(event.user.username);
               }
               break;
             case 'subscriber':
               break;
             case 'stream':
               if (event.data.stream === "local" && event.data.for === "main") {
-                this.sendPCObject(event.data.peerconnection, "Janus", event.roomDesc);
+                this.sendPCObject(event.data.peerconnection, "Janus", event.room.description);
               } else if (event.data.stream === "remote" && event.data.for === "subscriber") {
-                this.sendPCObject(event.data.peerconnection, "Janus", event.roomDesc);
+                this.sendPCObject(event.data.peerconnection, "Janus", event.room.description);
               }
               break;
 
             case 'screenshare':
               if (event.data.status === "started") {
                 // screenshare started
-                this.sendEvents(event.data.peerconnection, event.roomDesc, "screenShareStart");
+                this.sendEvents(event.data.peerconnection, event.room.description, "screenShareStart");
               } else if (event.data.status === "stopped") {
                 // screenshare stopped
-                this.sendEvents(event.data.peerconnection, event.roomDesc, "screenShareStop");
+                this.sendEvents(event.data.peerconnection, event.room.description, "screenShareStop");
               }
               break;
             case 'channel':
@@ -176,22 +176,22 @@
               } else {
                 eventString = 'video' + (event.data.status?'Resume': 'Pause');
               }
-              this.sendEvents(event.data.peerconnection, event.roomDesc, eventString);
+              this.sendEvents(event.data.peerconnection, event.room.description, eventString);
               break;
 
             case 'pluginHandle':
               if (event.data.status === "detached" && event.data.for === "main") {
-                this.sendEvents(event.data.peerconnection, event.roomDesc, "fabricTerminated");
+                this.sendEvents(event.data.peerconnection, event.room.description, "fabricTerminated");
               } else if (event.data.status === "detached" && event.data.for === "subscriber") {
-                this.sendEvents(event.data.peerconnection, event.roomDesc, "fabricTerminated");
+                this.sendEvents(event.data.peerconnection, event.room.description, "fabricTerminated");
               }
               break;
 
             case 'error':
               if (event.data.status === "createOffer") {
-                this.reportErrors(event.data.peerconnection, event.roomDesc, event.data.error, "createOffer");
+                this.reportErrors(event.data.peerconnection, event.room.description, event.data.error, "createOffer");
               } else if (event.data.status === "createAnswer") {
-                this.reportErrors(event.data.peerconnection, event.roomDesc, event.data.error, "createAnswer");
+                this.reportErrors(event.data.peerconnection, event.room.description, event.data.error, "createAnswer");
               }
               break;
 
