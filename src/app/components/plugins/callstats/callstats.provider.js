@@ -180,10 +180,9 @@
               break;
 
             case 'pluginHandle':
-              if (event.data.status === "detached" && event.data.for === "main") {
-                this.sendEvents(event.data.peerconnection, event.room.description, "fabricTerminated");
-              } else if (event.data.status === "detached" && event.data.for === "subscriber") {
-                this.sendEvents(event.data.peerconnection, event.room.description, "fabricTerminated");
+              if (event.data.status === "detached" && ["main", "subscriber"].includes(event.data.for)) {
+                var pc = event.data.pluginHandle.webrtcStuff.pc;
+                this.sendEvents(pc, event.room.description, "fabricTerminated");
               }
               break;
 
