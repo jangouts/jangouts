@@ -1,4 +1,5 @@
 {
   "AppID": null,
-  "AppSecret": null 
+  "AppSecret": null,
+  "debug": false
 }
