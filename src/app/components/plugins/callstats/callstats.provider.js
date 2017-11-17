@@ -16,17 +16,26 @@
    * Module to communicate with callstats
    */
   function CallstatsProvider() {
-    // Step 1: Include callstats.js - done {index.html}
+    // Step 1: Include callstats.js - done in {CallstatsPlugin}
     var callstatsConfig = {
-      // AppID is provided by callstats.io, set it inside callstats/callstats.config.json
+      // AppID is provided by callstats.io, set it inside config.callstats.json
       AppID: null,
-      // AppSecret is provided by callstats.io, set it inside callstats/callstats.config.json
+      // AppSecret is provided by callstats.io, set it inside config.callstats.json
       AppSecret: null,
+      // Whether to print debug information, set it inside config.callstats.json
+      debug: false,
       /**
        * callstats object is accessible as new window.callstats()
-       * this is set inside index.js (see .run())
+       * this is set in CallstatsPlugin.init()
        */
       callstats: null,
+
+      /*
+       * Logging function
+       */
+      log: function () {
+        if (this.debug) { console.log.apply(this, arguments); }
+      },
 
       // Step 2: Initialize with AppSecret
       /**
@@ -35,7 +44,8 @@
        */
       initializeCallstats: function (localUserID) {
 
-        console.log("Received localUserID: ", localUserID);
+        var that = this;
+        this.log("Received localUserID: ", localUserID);
         var res = this.callstats.initialize(this.AppID,
                                             this.AppSecret,
                                             localUserID,
@@ -43,13 +53,13 @@
                                             csStatsCallback,
                                             configParams);
 
-        console.log("callstats.initialize response object", res);
+        this.log("callstats.initialize response object", res);
         /**
          * reports different success and failure cases
          * @param {string} csErrMsg - a descriptive error returned by callstats.io
          */
         function csInitCallback(csError, csErrMsg) {
-          console.log("Initialize return status: errCode= " + csError + " errMsg= " + csErrMsg );
+          that.log("Initialize return status: errCode= " + csError + " errMsg= " + csErrMsg );
         }
 
         var reportType = {
@@ -62,16 +72,16 @@
          * @param stats
          */
         function csStatsCallback (stats) {
-          console.log("These are Initialize recieved stats: ", stats);
+          that.log("These are Initialize recieved stats: ", stats);
           var ssrc;
           for (ssrc in stats.streams) {
-            console.log("SSRC is: ", ssrc);
+            that.log("SSRC is: ", ssrc);
             var dataSsrc = stats.streams[ssrc];
-            console.log("SSRC Type ", dataSsrc.reportType);
+            that.log("SSRC Type ", dataSsrc.reportType);
             if (dataSsrc.reportType === reportType.outbound) {
-              console.log("RTT is: ", dataSsrc.rtt);
+              that.log("RTT is: ", dataSsrc.rtt);
             } else if (dataSsrc.reportType === reportType.inbound) {
-              console.log("Inbound loss rate is: ", dataSsrc.fractionLoss);
+              that.log("Inbound loss rate is: ", dataSsrc.fractionLoss);
             }
           }
         }
@@ -89,7 +99,8 @@
        * @param {object} pcObject - RTCPeerConnectionObject
        */
       sendPCObject: function (pcObject, remoteUserID, conferenceID) {
-        console.log("Send PC Object Parameters: ", pcObject, remoteUserID, conferenceID);
+        var that = this;
+        this.log("Send PC Object Parameters: ", pcObject, remoteUserID, conferenceID);
         // PeerConnection carrying multiple media streams on the same port
         var usage = this.callstats.fabricUsage.multiplex;
 
@@ -98,13 +109,13 @@
          * @param msg error message
          */
         function pcCallback (err, msg) {
-          console.log("Monitoring status: "+ err + " msg: " + msg);
+          that.log("Monitoring status: "+ err + " msg: " + msg);
         }
 
         if (remoteUserID && conferenceID && pcObject) {
           this.callstats.addNewFabric(pcObject, remoteUserID, usage, conferenceID, pcCallback);
         } else {
-          console.log("ERROR: Faulty Parameters! ", pcObject, remoteUserID, conferenceID);
+          this.log("ERROR: Faulty Parameters! ", pcObject, remoteUserID, conferenceID);
         }
 
       },
@@ -116,7 +127,7 @@
        * @param functionType WebRTC function in which error occurred
        */
       reportErrors: function (pcObject, conferenceID, err, functionType) {
-        console.log("::: reporting error ::: ", err, functionType);
+        this.log("::: reporting error ::: ", err, functionType);
         this.callstats.reportError(pcObject, conferenceID, this.callstats.webRTCFunctions[functionType], err);
       },
 
@@ -128,7 +139,7 @@
        * @param {string} event - eventType for userEvents
        */
       sendEvents: function (pcObject, conferenceID, event) {
-        console.log("::: Sending Event ::: ", event);
+        this.log("::: Sending Event ::: ", event);
         this.callstats.sendFabricEvent(pcObject, this.callstats.fabricEvent[event], conferenceID);
       },
 
@@ -138,10 +149,11 @@
        */
       subscribeToEventsSubject: function(Observable) {
 
+        var that = this;
         Observable.subscribe(eventHandler.bind(this));
 
         function eventHandler(event) {
-          console.log("Received Event: ", event);
+          that.log("Received Event: ", event);
           var eventType = event.type;
           switch(eventType) {
             case 'user':
@@ -180,10 +192,9 @@
               break;
 
             case 'pluginHandle':
-              if (event.data.status === "detached" && event.data.for === "main") {
-                this.sendEvents(event.data.peerconnection, event.room.description, "fabricTerminated");
-              } else if (event.data.status === "detached" && event.data.for === "subscriber") {
-                this.sendEvents(event.data.peerconnection, event.room.description, "fabricTerminated");
+              if (event.data.status === "detached" && ["main", "subscriber"].includes(event.data.for)) {
+                var pc = event.data.pluginHandle.webrtcStuff.pc;
+                this.sendEvents(pc, event.room.description, "fabricTerminated");
               }
               break;
 
@@ -196,7 +207,7 @@
               break;
 
             default:
-              console.log("Unknown type of event: ", event);
+              that.log("Unknown type of event: ", event);
               break;
           }
         }
