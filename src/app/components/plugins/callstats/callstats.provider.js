@@ -16,15 +16,15 @@
    * Module to communicate with callstats
    */
   function CallstatsProvider() {
-    // Step 1: Include callstats.js - done {index.html}
+    // Step 1: Include callstats.js - done in {CallstatsPlugin}
     var callstatsConfig = {
-      // AppID is provided by callstats.io, set it inside callstats/callstats.config.json
+      // AppID is provided by callstats.io, set it inside config.callstats.json
       AppID: null,
-      // AppSecret is provided by callstats.io, set it inside callstats/callstats.config.json
+      // AppSecret is provided by callstats.io, set it inside config.callstats.json
       AppSecret: null,
       /**
        * callstats object is accessible as new window.callstats()
-       * this is set inside index.js (see .run())
+       * this is set in CallstatsPlugin.init()
        */
       callstats: null,
 
