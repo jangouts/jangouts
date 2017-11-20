@@ -6,3 +6,4 @@ bower_components
 Vagrantfile
 .vagrant/
 src/config.json
+src/config.*.json

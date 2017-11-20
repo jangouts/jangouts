@@ -29,7 +29,8 @@
       vm.name = name;
 
       function name() {
-        return RoomService.getRoom().description;
+        var room = RoomService.getRoom();
+        return room ? room.description : "";
       }
     }
   }

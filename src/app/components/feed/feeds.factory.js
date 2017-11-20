@@ -15,14 +15,16 @@
   angular.module('janusHangouts')
     .factory('Feed', feedFactory);
 
-  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver'];
+  feedFactory.$inject = ['$timeout', 'DataChannelService', 'SpeakObserver',
+                         'EventsService'];
 
   /**
    * Factory representing a janus feed
    * @constructor
    * @memberof module:janusHangouts
    */
-  function feedFactory($timeout, DataChannelService, SpeakObserver) {
+  function feedFactory($timeout, DataChannelService, SpeakObserver,
+                       EventsService) {
     return function(attrs) {
       attrs = attrs || {};
       var that = this;
@@ -290,6 +292,17 @@
                 if (options.after) { options.after(); }
                 // Send the new status to remote peers
                 DataChannelService.sendStatus(that, {exclude: "picture"});
+
+                // send 'channel' event with status (enabled or disabled)
+                EventsService.emitEvent({
+                  type: "channel",
+                  data: {
+                    channel: type,
+                    status: enabled,
+                    peerconnection: that.connection.pluginHandle.webrtcStuff.pc
+                  }
+                });
+
               });
             }
           });
@@ -333,7 +346,7 @@
           DataChannelService.sendStatus(that);
         });
       };
-      
+
       /**
        * Updates the value of the display attribute for this publisher feed,
        * notifying changes to the remote peers.
@@ -354,10 +367,10 @@
       this.getDisplay = function() {
         return this.display;
       };
-    
+
       /**
-       * Sets the name for publisher 
-       * @param {string} - val - new display 
+       * Sets the name for publisher
+       * @param {string} - val - new display
        */
       this.setDisplay = function (val) {
         this.display = val;

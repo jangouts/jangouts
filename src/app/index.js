@@ -7,10 +7,10 @@
 
 'use strict';
 
-angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
-               'ngSanitize', 'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed',
-               'janusHangouts.config', 'cfp.hotkeys', 'gridster',
-               'ngAudio', 'angular-extended-notifications', 'LocalStorageModule'])
+angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize',
+               'blockUI', 'ui.router', 'ui.bootstrap', 'ngEmbed', 'cfp.hotkeys',
+               'janusHangouts.config', 'gridster', 'ngAudio', 'LocalStorageModule',
+               'angular-extended-notifications'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('signin', {
@@ -92,6 +92,12 @@ angular.module('janusHangouts', ['ngAnimate', 'ngCookies', 'ngTouch',
     } else {
       console.warn('No configuration found');
     }
+  })
+  .run(function(EventsService) {
+    EventsService.init();
+  })
+  .run(function(PluginsService) {
+    PluginsService.initPlugins();
   })
   .run(function ($rootScope, $state, RoomService) {
     $rootScope.$on('$stateChangeStart', function () {

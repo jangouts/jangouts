@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .service('UserService', UserService);
 
-  UserService.$inject = ['localStorageService'];
+  UserService.$inject = ['localStorageService', 'EventsService'];
 
-  function UserService(localStorageService) {
+  function UserService(localStorageService, EventsService) {
     var USER_SETTINGS_KEY = 'userSettings'; // 'const' is not available in all platforms.
     this.user = null;
     this.settings = localStorageService.get(USER_SETTINGS_KEY) || {};
@@ -35,6 +35,7 @@
     this.signin = function(username) {
       this.setSetting('lastUsername', username);
       this.user = { username: username };
+      EventsService.setUser(this.user);
     };
 
     /*

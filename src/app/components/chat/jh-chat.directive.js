@@ -31,7 +31,9 @@
           // Scroll to bottom of messages list.
           var messagesList = document.getElementById('jh-chat-messages');
           setTimeout(function() {
-            messagesList.scrollTop = messagesList.scrollHeight;
+            if (messagesList) {
+              messagesList.scrollTop = messagesList.scrollHeight;
+            }
           }, 100);
         }
       });
