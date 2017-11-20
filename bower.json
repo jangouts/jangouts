@@ -1,7 +1,7 @@
 {
   "name": "jangouts",
   "license": "MIT",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "dependencies": {
     "angular-animate": "~1.4.8",
     "angular-cookies": "~1.4.8",
@@ -12,7 +12,7 @@
     "bootstrap-sass-official": "3.3 <= 3.3.4",
     "angular-bootstrap": "~0.14.3",
     "angular": "~1.4.8",
-    "janus-gateway": "git://github.com/meetecho/janus-gateway.git#9786353526c2f2",
+    "janus-gateway": "git://github.com/meetecho/janus-gateway.git#96b866904d76d4",
     "angular-block-ui": "~0.2.0",
     "lodash": "~3.10.1",
     "ngEmbed": "git://github.com/ritz078/ng-embed.git#5b2fa818197838f",
