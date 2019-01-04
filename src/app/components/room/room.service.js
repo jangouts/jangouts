@@ -80,6 +80,7 @@
         Janus.init({debug: jhConfig.janusDebug});
         that.janus = new Janus({
           server: that.server,
+          token: '1573993833,janus,janus.plugin.videoroom,janus.plugin.echotest,janus.plugin.textroom:EcNe0NJjmGDzpBrff/faEVN2mw8=',
           success: function() {
             deferred.resolve();
           },
