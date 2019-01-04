@@ -9,7 +9,6 @@
     "angular-sanitize": "~1.4.8",
     "jquery": "~2.1.1",
     "angular-ui-router": "~0.2.15",
-    "bootstrap-sass-official": "3.3 <= 3.3.4",
     "angular-bootstrap": "~0.14.3",
     "angular": "~1.4.8",
     "janus-gateway": "git://github.com/meetecho/janus-gateway.git#96b866904d76d4",

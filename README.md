@@ -1,3 +1,8 @@
+# Yojume
+theme base : https://bootswatch.com/lux/
+## library : 
+animate-scss https://github.com/geoffgraham/animate.scss
+
 # Jangouts
 
 Jangouts (for "Janus Hangouts") is a solution for videoconferencing based

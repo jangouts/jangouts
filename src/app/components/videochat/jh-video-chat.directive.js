@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhVideoChat', jhVideoChatDirective);
 
-  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'UserService', 'Notifier', 'hotkeys', '$timeout'];
+  jhVideoChatDirective.$inject = ['$window', 'LogService', 'FeedsService', 'UserService', 'Notifier', 'hotkeys', '$timeout', '$location'];
 
-  function jhVideoChatDirective($window, LogService, FeedsService, UserService, Notifier, hotkeys, $timeout) {
+  function jhVideoChatDirective($window, LogService, FeedsService, UserService, Notifier, hotkeys, $timeout, $location) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/videochat/jh-video-chat.html',
@@ -56,7 +56,6 @@
       vm.gridsterDirtyBit = false;
       vm.gridsterIgnoreNextChange = true;
       vm.gridsterItems = UserService.getSetting('gridsterItems') || defaultGridsterItems();
-
       vm.gridsterOpts = {
         columns: GRIDSTER_COLS,
         resizable: { enabled: false },
@@ -87,6 +86,7 @@
       vm.windowResizeModeOn = false;
       vm.toggleWindowResizeMode = toggleWindowResizeMode;
       vm.setDefaultLayout = setDefaultLayout;
+      vm.location_url = $location.absUrl();
 
       function defaultGridsterItems() {
         // Window width minus the paddings

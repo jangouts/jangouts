@@ -73,6 +73,7 @@
       ];
     }
 
+    // TODO(cloverhearts): token 항목을 동적으로 수신하거나 입력받을 수 있어야한다.
     function connect() {
       var deferred = $q.defer();
 

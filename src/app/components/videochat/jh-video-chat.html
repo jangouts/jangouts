@@ -1,8 +1,50 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark nav-slim">
+  <a class="navbar-brand yojume-logo-color" href="{{  vm.location_url }}">Yojume</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Pricing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search">
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+<div class="row">
+  <div class="col-md-12">
+    <jh-room-info></jh-room-info>
+  </div>
+</div>
+<div class="youjume-room-container">
+  <div class="row user-video-face-container">
+    <div
+      class="col-md-2 user-video-area" ng-repeat="user in vm.feeds() | orderBy: '-isPublisher'"
+      jh-feed="true"
+      feed="user">
+    </div>
+    </div>
+  </div>
+</div>
+
+{{vm.gridsterItems}}
+
+<!-- nav -->
 <div class="row">
   <header>
     <div class="row">
       <div class="col-xs-6 col-sm-5">
-        <jh-room-info></jh-room-info>
+
         <button
            class="btn"
            ng-click="vm.showHotkeys()"
@@ -30,40 +72,42 @@
   </header>
 </div>
 
+<!-- nav:end -->
+
 <div class="row" id="videochat-body">
   <div gridster="vm.gridsterOpts" id="videochat-playroom">
-    <ul>
-      <li gridster-item
-          row="item.position[0]" col="item.position[1]"
-          size-x="item.size[0]" size-y="item.size[1]"
-          ng-repeat="item in vm.gridsterItems">
-        <div
-          ng-if="item.content === 'Speaker'"
-          class="grid-item-content"
-          id="main-video"
-          jh-main-feed="true"
-          feed="vm.highlightedFeed()"
-          ng-class="{mirrored: vm.mirrored()}">
-        </div>
-        <div
-          ng-if="item.content === 'Participants'"
-          class="grid-item-content"
-          id="thumbnails">
-          <div
-            jh-feed="true"
-            feed="f"
-            ng-repeat="f in vm.feeds() | orderBy:'+display'"
-            toggle-highlight-fn="vm.toggleHighlightedFeed(f)"
-            highlighted="vm.isHighlighted(f)"
-            highlighted-by-user="vm.isHighlightedByUser(f)">
-          </div>
-        </div>
-        <div
-          ng-if="item.content === 'Chat'"
-          class="grid-item-content">
-          <jh-chat messages="vm.logEntries()"></jh-chat>
-        </div>
-      </li>
-    </ul>
+    <!--<ul>-->
+      <!--<li gridster-item-->
+          <!--row="item.position[0]" col="item.position[1]"-->
+          <!--size-x="item.size[0]" size-y="item.size[1]"-->
+          <!--ng-repeat="item in vm.gridsterItems">-->
+        <!--<div-->
+          <!--ng-if="item.content === 'Speaker'"-->
+          <!--class="grid-item-content"-->
+          <!--id="main-video"-->
+          <!--jh-main-feed="true"-->
+          <!--feed="vm.highlightedFeed()"-->
+          <!--ng-class="{mirrored: vm.mirrored()}">-->
+        <!--</div>-->
+        <!--<div-->
+          <!--ng-if="item.content === 'Participants'"-->
+          <!--class="grid-item-content"-->
+          <!--id="thumbnails">-->
+          <!--<div-->
+            <!--jh-feed="true"-->
+            <!--feed="f"-->
+            <!--ng-repeat="f in vm.feeds() | orderBy:'+display'"-->
+            <!--toggle-highlight-fn="vm.toggleHighlightedFeed(f)"-->
+            <!--highlighted="vm.isHighlighted(f)"-->
+            <!--highlighted-by-user="vm.isHighlightedByUser(f)">-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div-->
+          <!--ng-if="item.content === 'Chat'"-->
+          <!--class="grid-item-content">-->
+          <!--<jh-chat messages="vm.logEntries()"></jh-chat>-->
+        <!--</div>-->
+      <!--</li>-->
+    <!--</ul>-->
   </div>
 </div>
