@@ -32,7 +32,7 @@ html body {
         text-align: center;
         .user-name {
           display: inline-block;
-          padding: 5px;
+          padding: 5px 10px;
           text-align: center;
           margin: 0 auto;
           color: #ffffff;
@@ -80,14 +80,18 @@ html body {
     }
 
     .user-video-area {
-      background-color: rgba(158, 158, 158, .5);
+      background-color: rgba(158, 158, 158, .1);
       border-radius: 30px;
       margin: 10px;
       padding: 5px;
+      transition:  background-color .5s, transform .5s;
       figure {
         margin: 0;
       }
       .my-video-face {
+      }
+      &:hover {
+        background-color: rgba(158, 158, 158, .4);
       }
     }
   }
@@ -101,7 +105,6 @@ html body {
 
 .room-info {
   background-color: #3ca861;
-  padding: 5px 20px;
   font-weight: 600;
   color: #ffffff;
   z-index: -1000;
