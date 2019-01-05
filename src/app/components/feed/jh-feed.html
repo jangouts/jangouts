@@ -1,4 +1,5 @@
-<div class="user-video-container">
+<div class="user-video-container" ng-mouseover="mouseover = true" ng-mouseleave="mouseover = false">
+
   <figure class="" ng-class="{'my-video-face': vm.feed.isPublisher, sticky: vm.highlightedByUser}">
     <div class="thumb" ng-click="vm.toggleHighlightFn()">
       <video
@@ -33,10 +34,10 @@
         <!--<span class="caret"></span>-->
         <!--{{ vm.feed.display }}-->
       <!--</span>-->
-      <!--<div class="buttons">-->
-      <!--<jh-unpublish-button feed="vm.feed"></jh-unpublish-button>-->
-      <!--<jh-audio-button feed="vm.feed" with-monitor="true"></jh-audio-button>-->
-      <!--</div>-->
+      <div class="buttons" style="position: relative;">
+        <jh-unpublish-button feed="vm.feed"></jh-unpublish-button>
+        <jh-audio-button style="position: absolute; top:-20px;" ng-show="mouseover" feed="vm.feed" with-monitor="true"></jh-audio-button>
+      </div>
       <!--<div-->
       <!--class="additional-buttons"-->
       <!--ng-show="buttons">-->

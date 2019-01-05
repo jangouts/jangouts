@@ -16,7 +16,19 @@ html body {
 .youjume-room-container {
   min-height: 100px;
   padding: 35px;
-
+  .mic {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: green;
+    padding: 0;
+  }
+  .my-mic {
+    border-radius: 50%;
+  }
+  .mic-off {
+    background-color: red !important;
+  }
   .user-video-face-container {
     .user-video-container {
       padding: 20px;
@@ -27,6 +39,9 @@ html body {
         $function: ease,
         $fill: both
       );
+
+
+
       .information {
         margin-top: 10px;
         text-align: center;
@@ -65,7 +80,7 @@ html body {
         @include zoomInDown(
           $duration: .5s,
           $count: 1,
-          $delay: .2s,
+          $delay: 0s,
           $function: ease,
           $fill: both
         );
@@ -110,9 +125,9 @@ html body {
   z-index: -1000;
 
   @include fadeInDown(
-    $duration: .5s,
+    $duration: .1s,
     $count: 1,
-    $delay: .2s,
+    $delay: 0,
     $function: ease,
     $fill: both
   );
