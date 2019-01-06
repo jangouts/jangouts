@@ -1,5 +1,5 @@
 @import '../../node_modules/animate-scss/animate.scss';
-
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 html {
   height: 100%;
 }
@@ -7,6 +7,8 @@ html {
 html body {
   background-image: url('/assets/images/background-board.jpg');
   height: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
 }
 
 .full-height {
@@ -234,6 +236,7 @@ html body {
       padding: 10px;
       max-width: 80%;
       color: black;
+      word-break: break-all;
     }
     .speech-bubble-other:after {
       content: '';
@@ -258,6 +261,7 @@ html body {
       padding: 10px;
       max-width: 80%;
       color: black;
+      word-break: break-all;
     }
 
     .speech-bubble-mine:after {
@@ -322,6 +326,7 @@ html body {
       padding: 10px;
       color: black;
       width: 150px;
+      word-break: break-all;
     }
 
     .speech-bubble:after {

@@ -55,7 +55,7 @@
               user_uuid: message.content.feed.id,
               display: message.content.feed.display,
               isPublisher: message.content.feed.isPublisher,
-              text: message.content.text
+              text: message.content.text.length > 100 ? message.content.text.slice(0, 100) + '...' : message.content.text
             }
           );
         if (vm.mySpeakMessageRemoveTimer) {
