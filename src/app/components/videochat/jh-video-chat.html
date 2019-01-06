@@ -25,16 +25,18 @@
     <jh-room-info></jh-room-info>
   </div>
 <div class="youjume-room-container">
-  <div class="row user-video-face-container">
+  <div class="user-video-face-container text-center">
     <div
-      class="col-md-2 user-video-area" ng-repeat="user in vm.feeds() | orderBy: '-isPublisher'"
+      class="user-video-area" ng-repeat="user in vm.feeds() | orderBy: '+Display' | orderBy: '-isPublisher'"
       jh-feed="true"
       feed="user">
     </div>
     </div>
   </div>
 </div>
-
+<div class="col-md-12">
+  dddd
+</div>
 
 <div class="row" id="videochat-body">
   <div gridster="vm.gridsterOpts" id="videochat-playroom">

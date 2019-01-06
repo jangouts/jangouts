@@ -32,6 +32,8 @@ html body {
   .user-video-face-container {
     .user-video-container {
       padding: 20px;
+      background-color: rgba(158, 158, 158, .1);
+      border-radius: 30px;
       @include flipInX(
         $duration: .5s,
         $count: 1,
@@ -39,9 +41,6 @@ html body {
         $function: ease,
         $fill: both
       );
-
-
-
       .information {
         margin-top: 10px;
         text-align: center;
@@ -60,8 +59,8 @@ html body {
 
     }
     .thumb {
-      width: 150px;
-      height: 150px;
+      width: 100px;
+      height: 100px;
       display: block;
       margin: 0 auto;
       min-height: 100%;
@@ -95,13 +94,12 @@ html body {
     }
 
     .user-video-area {
-      background-color: rgba(158, 158, 158, .1);
-      border-radius: 30px;
-      margin: 10px;
+      display:inline-block;
+      margin: 0 10px;
       padding: 5px;
       transition:  background-color .5s, transform .5s;
       figure {
-        margin: 0;
+        margin: 0 auto;
       }
       .my-video-face {
       }
