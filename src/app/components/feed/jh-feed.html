@@ -32,7 +32,7 @@
     </div>
     <div class="user-live-chat-container">
       <div class="user-live-chat" ng-repeat="msg in vm.mySpeakMessage">
-        <div class="speech-bubble {{msg.user_uuid}}-live-message">
+        <div class="speech-bubble {{msg.user_uuid}}-live-message" ng-class="{ mine : msg.isPublisher}">
           {{msg.text}}
         </div>
       </div>

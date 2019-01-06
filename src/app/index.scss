@@ -94,7 +94,7 @@ html body {
           color: #ffffff;
           background-color: #2a3133;
           width: 130px;
-          word-break: break-all;
+          word-break: keep-all;
         }
         .me {
           background-color: #7f007f;
@@ -180,8 +180,8 @@ html body {
     text-align: center;
     position: relative;
     width: 100%;
-    top: 100%;
-    transform: translateY(45%);
+    padding-top: 160px;
+    //transform: translateY(40%);
     video {
       width: 44vw;
       margin: 0 auto;
@@ -193,17 +193,18 @@ html body {
 }
 
 .main-chat-container {
-  background-color: rgba(255, 255, 255, .1);
+  background-color: rgba(0, 0, 0, .3);
   position: absolute;
-  top: 23vh;
+  top: 21vh;
   right: 0;
   width: 26vw;
   margin-right: 10px;
   transition: opacity .5s;
   opacity: .8;
+  z-index: 20;
   & * {
     transition: opacity .5s;
-    opacity: .8;
+    opacity: .9;
   }
   ul {
     list-style-type: none;
@@ -231,12 +232,13 @@ html body {
     }
     .speech-bubble-other {
       position: relative;
+      display: inline-block;
       background: #c0c0c0;
       border-radius: .4em;
       padding: 10px;
       max-width: 80%;
       color: black;
-      word-break: break-all;
+      word-break: keep-all;
     }
     .speech-bubble-other:after {
       content: '';
@@ -255,19 +257,21 @@ html body {
 
     .speech-bubble-mine {
       position: relative;
-      right: -50px;
+      display: inline-block;
+      right: 30px;
+      text-align: right;
       background: #87ed8c;
       border-radius: .4em;
       padding: 10px;
       max-width: 80%;
       color: black;
-      word-break: break-all;
+      word-break: keep-all;
     }
 
     .speech-bubble-mine:after {
       content: '';
       position: absolute;
-      right: 0;
+      right: 10;
       top: 50%;
       width: 0;
       height: 0;
@@ -299,7 +303,7 @@ html body {
   position: absolute;
   padding: 50px;
   right: 0;
-  bottom: 0;
+  bottom: -30px;
   button {
     padding: 20px 20px;
     border-radius: 50%;
@@ -326,7 +330,11 @@ html body {
       padding: 10px;
       color: black;
       width: 150px;
-      word-break: break-all;
+
+      word-break: keep-all;
+    }
+    .speech-bubble.mine {
+      background: #87ed8c;
     }
 
     .speech-bubble:after {
@@ -342,6 +350,9 @@ html body {
       border-right: 0;
       margin-left: -18px;
       margin-top: -8px;
+    }
+    .speech-bubble.mine:after {
+      border-bottom-color: #87ed8c;
     }
   }
 }
