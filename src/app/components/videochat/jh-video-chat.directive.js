@@ -180,6 +180,7 @@
         } else {
           vm.highlight.byUser = null;
         }
+        console.log('clover ', vm.highlight.byUser);
       }
 
       function isHighlighted(f) {

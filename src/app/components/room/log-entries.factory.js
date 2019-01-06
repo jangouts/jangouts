@@ -42,19 +42,19 @@
       };
 
       this.publishScreenText = function() {
-        return "Screen sharing started";
+        return "화면 공유를 시작합니다";
       };
 
       this.destroyFeedText = function() {
         if (this.content.feed.isLocalScreen) {
-          return "Screen sharing stopped";
+          return "화면 공유를 중지합니다";
         } else {
-          return this.content.feed.display + " has left the room";
+          return this.content.feed.display + "님이 방을 떠났습니다";
         }
       };
 
       this.newRemoteFeedText = function() {
-        return this.content.feed.display + " has joined the room";
+        return this.content.feed.display + " 님이 방에 들어왔습니다";
       };
 
       this.ignoreFeedText = function() {

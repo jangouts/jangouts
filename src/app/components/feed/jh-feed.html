@@ -1,61 +1,40 @@
-<div class="user-video-container">
-
+<div class="user-video-container" ng-click="vm.test()">
   <figure class="" ng-class="{'my-video-face': vm.feed.isPublisher, sticky: vm.highlightedByUser}">
     <div class="thumb" ng-class="{'me': vm.feed.isPublisher}" ng-click="vm.toggleHighlightFn()">
       <video
         autoplay
         class="user-video-face"
         poster="assets/images/placeholder.png"
-        ng-show="vm.thumbnailTag() === 'video'">
+        ng-show="vm.thumbnailTag() === 'video'"
+      >
       </video>
       <img
         ng-src="{{vm.feed.getPicture()}}"
         class="face"
         ng-class="{mirrored: vm.mirrored}"
-        ng-show="vm.thumbnailTag() === 'picture'">
+        ng-show="vm.thumbnailTag() === 'picture'" />
+
+      <img
+        ng-src="assets/images/placeholder.png"
+        class="face"
+        ng-class="{mirrored: vm.mirrored}"
+        ng-show="vm.thumbnailTag() === 'placeholder'">
       </img>
     </div>
-      <!--<img-->
-      <!--ng-src="assets/images/placeholder.png"-->
-      <!--class="face"-->
-      <!--ng-class="{mirrored: vm.mirrored}"-->
-      <!--ng-show="vm.thumbnailTag() === 'placeholder'">-->
-      <!--</img>-->
-      <!--<canvas-->
-      <!--ng-show="false">-->
-      <!--</canvas>-->
-      <!--</div>-->
-      <!--<figcaption-->
-      <!--ng-init="buttons=false">-->
-      <!--<span-->
-        <!--class="caption"-->
-        <!--ng-class="{dropdown: buttons, dropup: !buttons}"-->
-        <!--ng-click="buttons=!buttons">-->
-        <!--<span class="caret"></span>-->
-        <!--{{ vm.feed.display }}-->
-      <!--</span>-->
-      <div class="buttons" style="position: relative;">
-        <jh-unpublish-button feed="vm.feed"></jh-unpublish-button>
-        <jh-audio-button style="position: absolute; top:-20px;" feed="vm.feed" with-monitor="true"></jh-audio-button>
-      </div>
-      <!--<div-->
-      <!--class="additional-buttons"-->
-      <!--ng-show="buttons">-->
-      <!--<jh-sticky-button-->
-      <!--feed="vm.feed"-->
-      <!--click-fn="buttons=false; vm.toggleHighlightFn()"-->
-      <!--highlighted="vm.highlighted"-->
-      <!--sticky="vm.highlightedByUser">-->
-      <!--</jh-sticky-button>-->
-      <!--<jh-video-button feed="vm.feed" ng-click="buttons=false"></jh-video-button>-->
-      <!--<jh-ignore-button feed="vm.feed" ng-click="buttons=false"></jh-ignore-button>-->
-      <!--<jh-ignore-audio-button feed="vm.feed" ng-click="buttons=false"></jh-ignore-audio-button>-->
-      <!--</div>-->
-      <!--</figcaption>-->
-
+    <div class="buttons" style="position: relative;">
+      <jh-unpublish-button feed="vm.feed"></jh-unpublish-button>
+      <jh-audio-button style="position: absolute; top:-20px;" feed="vm.feed" with-monitor="true"></jh-audio-button>
+    </div>
     <div class="information">
       <div class="user-name" ng-class="{'me': vm.feed.isPublisher}">
         {{ vm.feed.display }} {{vm.feed.isPublisher ? '(나)' : ''}}
+      </div>
+    </div>
+    <div class="user-live-chat-container">
+      <div class="user-live-chat" ng-repeat="msg in vm.mySpeakMessage">
+        <div class="speech-bubble {{msg.user_uuid}}-live-message">
+          {{msg.text}}
+        </div>
       </div>
     </div>
   </figure>

@@ -84,7 +84,7 @@ html body {
         .user-name {
           position: absolute;
           display: inline;
-          top: 30px;
+          top: -130px;
           left: -15px;
           padding: 5px 10px;
           text-align: center;
@@ -300,5 +300,43 @@ html body {
     padding: 20px 20px;
     border-radius: 50%;
     color: #ffffff;
+  }
+}
+
+.user-live-chat-container {
+  position: relative;
+  left: -30px;
+  .user-live-chat {
+    position: absolute;
+    z-index: 10;
+    @include bounceIn(
+      $duration: .4s,
+      $count: 1,
+      $delay: 0
+    );
+    .speech-bubble {
+      position: relative;
+      z-index:10;
+      background: #c0c0c0;
+      border-radius: .4em;
+      padding: 10px;
+      color: black;
+      width: 150px;
+    }
+
+    .speech-bubble:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 22%;
+      width: 0;
+      height: 0;
+      border: 13px solid transparent;
+      border-bottom-color: #c0c0c0;
+      border-top: 0;
+      border-right: 0;
+      margin-left: -18px;
+      margin-top: -8px;
+    }
   }
 }

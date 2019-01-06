@@ -11,9 +11,9 @@
   angular.module('janusHangouts')
     .directive('jhFeed', jhFeed);
 
-  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'MuteNotifier'];
+  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'MuteNotifier', $timeout];
 
-  function jhFeed(RoomService, $interval, jhConfig, MuteNotifier) {
+  function jhFeed(RoomService, $interval, jhConfig, MuteNotifier, $timeout) {
     return {
       restrict: 'EA',
       templateUrl: 'app/components/feed/jh-feed.html',
@@ -21,7 +21,8 @@
         feed: '=',
         toggleHighlightFn: '&',
         highlighted: '=',
-        highlightedByUser: '='
+        highlightedByUser: '=',
+        messages: '='
       },
       controllerAs: 'vm',
       bindToController: true,
@@ -41,7 +42,30 @@
 
       var vm = scope.vm;
       var feed = vm.feed;
-
+      vm.mySpeakMessage = [];
+      scope.$watchCollection('vm.messages', function(newCol) {
+        var message = newCol[newCol.length - 1];
+        if (!message || message.type !== 'chatMsg' || vm.feed.id !== message.content.feed.id) {
+          return;
+        }
+        // vm.mySpeakMessage.shift();
+        $( '.' + message.content.feed.id + '-live-message').remove();
+        vm.mySpeakMessage.push(
+            {
+              user_uuid: message.content.feed.id,
+              display: message.content.feed.display,
+              isPublisher: message.content.feed.isPublisher,
+              text: message.content.text
+            }
+          );
+        if (vm.mySpeakMessageRemoveTimer) {
+          $timeout.cancel(vm.mySpeakMessageRemoveTimer);
+        }
+        vm.mySpeakMessageRemoveTimer = $timeout(function () {
+          // vm.mySpeakMessage.shift();
+          $( '.' + message.content.feed.id + '-live-message').remove();
+        }, 15000);
+      });
       // For publisher feeds, we have to constantly send video and photos
       if (feed.isPublisher) {
         vm.initPics(element);

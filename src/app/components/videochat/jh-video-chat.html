@@ -19,6 +19,8 @@
     <div
       class="user-video-area" ng-repeat="user in vm.feeds() | orderBy: '+Display' | orderBy: '-isPublisher'"
       jh-feed="true"
+      messages="vm.logEntries()"
+      toggle-highlight-fn="vm.toggleHighlightedFeed(user)"
       feed="user">
     </div>
   </div>
