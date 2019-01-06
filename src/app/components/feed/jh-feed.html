@@ -1,7 +1,7 @@
 <div class="user-video-container">
 
   <figure class="" ng-class="{'my-video-face': vm.feed.isPublisher, sticky: vm.highlightedByUser}">
-    <div class="thumb" ng-click="vm.toggleHighlightFn()">
+    <div class="thumb" ng-class="{'me': vm.feed.isPublisher}" ng-click="vm.toggleHighlightFn()">
       <video
         autoplay
         class="user-video-face"

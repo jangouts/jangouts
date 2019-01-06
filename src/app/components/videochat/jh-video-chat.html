@@ -8,70 +8,30 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-      </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-    </form>
   </div>
 </nav>
   <div class="col-md-12" style="padding: 0;">
     <jh-room-info></jh-room-info>
   </div>
-<div class="youjume-room-container">
-  <div class="user-video-face-container text-center">
+<div class="youjume-room-users-container text-center">
+  <div class="user-video-face-container">
     <div
       class="user-video-area" ng-repeat="user in vm.feeds() | orderBy: '+Display' | orderBy: '-isPublisher'"
       jh-feed="true"
       feed="user">
     </div>
-    </div>
   </div>
 </div>
-<div class="col-md-12">
-  dddd
+<div class="col-md-12 main-heightlit-container">
+  <div
+    class="main-highlight-screen"
+    jh-main-feed="true"
+    feed="vm.highlightedFeed()"
+    ng-class="{mirrored: vm.mirrored()}">
+  </div>
+</div>
+<div class="main-chat-container">
+  <jh-chat messages="vm.logEntries()"></jh-chat>
 </div>
 
-<div class="row" id="videochat-body">
-  <div gridster="vm.gridsterOpts" id="videochat-playroom">
-    <!--<ul>-->
-      <!--<li gridster-item-->
-          <!--row="item.position[0]" col="item.position[1]"-->
-          <!--size-x="item.size[0]" size-y="item.size[1]"-->
-          <!--ng-repeat="item in vm.gridsterItems">-->
-        <!--<div-->
-          <!--ng-if="item.content === 'Speaker'"-->
-          <!--class="grid-item-content"-->
-          <!--id="main-video"-->
-          <!--jh-main-feed="true"-->
-          <!--feed="vm.highlightedFeed()"-->
-          <!--ng-class="{mirrored: vm.mirrored()}">-->
-        <!--</div>-->
-        <!--<div-->
-          <!--ng-if="item.content === 'Participants'"-->
-          <!--class="grid-item-content"-->
-          <!--id="thumbnails">-->
-          <!--<div-->
-            <!--jh-feed="true"-->
-            <!--feed="f"-->
-            <!--ng-repeat="f in vm.feeds() | orderBy:'+display'"-->
-            <!--toggle-highlight-fn="vm.toggleHighlightedFeed(f)"-->
-            <!--highlighted="vm.isHighlighted(f)"-->
-            <!--highlighted-by-user="vm.isHighlightedByUser(f)">-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div-->
-          <!--ng-if="item.content === 'Chat'"-->
-          <!--class="grid-item-content">-->
-          <!--<jh-chat messages="vm.logEntries()"></jh-chat>-->
-        <!--</div>-->
-      <!--</li>-->
-    <!--</ul>-->
-  </div>
-</div>

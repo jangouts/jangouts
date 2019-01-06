@@ -1,8 +1,26 @@
-<div class="header">
-  <strong>{{ vm.message.content.feed.display }}</strong>
-  <small class="pull-right text-muted">
-    <span class="glyphicon glyphicon-time"></span>
-    {{ vm.message.timestamp | date:'shortTime' }}
-  </small>
+<div class="" style="margin-top: 10px;" ng-if="!vm.message.content.feed.isPublisher">
+  <div class="nickname">
+    <strong>{{ vm.message.content.feed.display }}</strong>
+  </div>
+  <div class="speech-bubble-other">
+    <ng-embed embed-data="vm.message.text()" embed-options="vm.embedOptions"></ng-embed>
+    <div class="datetime-container">
+      <div class="datetime">
+        {{ vm.message.timestamp | date:'shortTime' }}
+      </div>
+    </div>
+  </div>
 </div>
-<ng-embed embed-data="vm.message.text()" embed-options="vm.embedOptions"></ng-embed>
+<div class="" style="margin-top: 10px;" ng-if="vm.message.content.feed.isPublisher">
+  <div class="nickname text-right" style="margin-right:18px;">
+    <strong>{{ vm.message.content.feed.display }}</strong>
+  </div>
+  <div class="speech-bubble-mine">
+    <ng-embed embed-data="vm.message.text()" embed-options="vm.embedOptions"></ng-embed>
+    <div class="datetime-container">
+      <div class="datetime">
+        {{ vm.message.timestamp | date:'shortTime' }}
+      </div>
+    </div>
+  </div>
+</div>

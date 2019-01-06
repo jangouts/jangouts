@@ -1,9 +1,21 @@
 @import '../../node_modules/animate-scss/animate.scss';
 
-html body {
-  background-color: #dbdbdb;
+html {
+  height: 100%;
 }
 
+html body {
+  background-image: url('/assets/images/background-board.jpg');
+  height: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+#main-chat-session {
+  height: 100%;
+}
 .yojume-logo-color {
   color: red !important;
 }
@@ -13,27 +25,38 @@ html body {
   width: 100%;
 }
 
-.youjume-room-container {
-  min-height: 100px;
-  padding: 35px;
+.youjume-room-users-container {
+  position: relative;
+  height: 0;
+  z-index: 1;
   .mic {
+    margin-left: 20px;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    background-color: green;
+    width: 25px;
+    height: 25px;
     padding: 0;
+    transition: background-color .5s;
   }
   .my-mic {
     border-radius: 50%;
+    background-color: rgba(102, 0, 102, .9) !important;
+  }
+  .mic-on {
+    background-color: #3ca861 !important;
+    color: #ffffff;
   }
   .mic-off {
-    background-color: red !important;
+    background-color: #ff5046 !important;
+    color: #ffffff;
   }
   .user-video-face-container {
+    width: 100%;
+    position: absolute;
     .user-video-container {
       padding: 20px;
-      background-color: rgba(158, 158, 158, .1);
+      background-color: rgba(255, 255, 255, 0);
       border-radius: 30px;
+      transition:  background-color .5s, transform .5s;
       @include flipInX(
         $duration: .5s,
         $count: 1,
@@ -41,16 +64,35 @@ html body {
         $function: ease,
         $fill: both
       );
+      &:hover {
+        background-color: rgba(255, 255, 255, .4);
+        .information {
+          visibility: visible;
+        }
+        .thumb {
+          border: 5px solid rgba(255, 255, 255, .7);
+        }
+        .thumb.me {
+          border: 5px solid rgba(102, 0, 102, .9);
+        }
+      }
       .information {
+        visibility: hidden;
         margin-top: 10px;
         text-align: center;
+        position: relative;
         .user-name {
-          display: inline-block;
+          position: absolute;
+          display: inline;
+          top: 30px;
+          left: -15px;
           padding: 5px 10px;
           text-align: center;
           margin: 0 auto;
           color: #ffffff;
           background-color: #2a3133;
+          width: 130px;
+          word-break: break-all;
         }
         .me {
           background-color: #7f007f;
@@ -65,14 +107,15 @@ html body {
       margin: 0 auto;
       min-height: 100%;
       border-radius: 50%;
-      border: 5px solid transparent;
+      border: 5px solid rgba(255, 255, 255, .2);
       overflow: hidden;
       position: relative;
+      transition:  border .5s;
       video {
         //display: block;
         //margin: 0 auto;
         position: absolute;
-        left: -35px;
+        left: -25px;
         width: 150%;
         //min-height: 100%;
         //border-radius: 50%;
@@ -89,6 +132,9 @@ html body {
         border-radius: 200px;
       }
     }
+    .thumb.me {
+      border: 5px solid rgba(102, 0, 102, .5);
+    }
     .user-video-face {
 
     }
@@ -97,19 +143,14 @@ html body {
       display:inline-block;
       margin: 0 10px;
       padding: 5px;
-      transition:  background-color .5s, transform .5s;
       figure {
         margin: 0 auto;
       }
       .my-video-face {
       }
-      &:hover {
-        background-color: rgba(158, 158, 158, .4);
-      }
     }
   }
 }
-
 
 .nav-slim {
   height: 40px;
@@ -117,8 +158,9 @@ html body {
 }
 
 .room-info {
-  background-color: #3ca861;
+  background-color: rgba(145, 154, 161, .7);
   font-weight: 600;
+  padding: 0 20px;
   color: #ffffff;
   z-index: -1000;
 
@@ -129,4 +171,104 @@ html body {
     $function: ease,
     $fill: both
   );
+}
+
+.main-heightlit-container {
+  .main-highlight-screen {
+    text-align: center;
+    position: relative;
+    width: 100%;
+    top: 100%;
+    transform: translateY(45%);
+    video {
+      width: 44vw;
+      margin: 0 auto;
+      display: inline-block;
+      height: 100%;
+      box-shadow: 0 0 35px black;
+    }
+  }
+}
+
+.main-chat-container {
+  background-color: rgba(255, 255, 255, .3);
+  position: absolute;
+  top: 25vh;
+  right: 0;
+  width: 26vw;
+  margin-right: 10px;
+  ul {
+    list-style-type: none;
+  }
+  .chat-form-container {
+    height: 55vh;
+    overflow: auto;
+    .nickname {
+      font-weight: 800;
+      color: white;
+    }
+    .datetime-container {
+      .datetime {
+        font-size: 8px;
+        color: rgba(0, 0, 0, .8);
+        text-align: right;
+        font-weight: 800;
+      }
+    }
+    .speech-bubble-other {
+      position: relative;
+      background: #c0c0c0;
+      border-radius: .4em;
+      padding: 10px;
+      max-width: 80%;
+      color: black;
+    }
+    .speech-bubble-other:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 0;
+      height: 0;
+      border: 15px solid transparent;
+      border-right-color: #c0c0c0;
+      border-left: 0;
+      border-top: 0;
+      margin-top: -15px;
+      margin-left: -10px;
+    }
+
+    .speech-bubble-mine {
+      position: relative;
+      right: -50px;
+      background: #87ed8c;
+      border-radius: .4em;
+      padding: 10px;
+      max-width: 80%;
+      color: black;
+    }
+
+    .speech-bubble-mine:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 0;
+      height: 0;
+      border: 15px solid transparent;
+      border-left-color: #87ed8c;
+      border-right: 0;
+      border-top: 0;
+      margin-top: -15px;
+      margin-right: -10px;
+    }
+    .log-entry {
+      display: block;
+      width: 100%;
+      color: #b0b0b0;
+      text-align: center;
+      padding: 5px;
+      margin-left: -20px;
+    }
+  }
 }

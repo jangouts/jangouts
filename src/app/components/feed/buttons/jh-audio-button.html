@@ -1,25 +1,25 @@
 <button
   type="button"
-  disabled
-  class="btn mic my-mic mic-off"
+  class="btn mic mic-on"
   ng-class="{'btn-primary': vm.isSpeaking(), 'btn-default': !vm.isSpeaking()}"
-  title="음소거 됨"
+  ng-click="vm.toggle()"
+  title="음성 활성화"
   ng-show="vm.showsDisable()">
-  <span class="my-mic"><i class="fas fa-microphone-slash"></i></span>
+  <span class=""><i class="fas fa-microphone"></i></span>
 </button>
 <button
   type="button"
-  disabled
+  ng-click="vm.toggle()"
   class="btn mic btn-danger my-mic"
-  title="음성 활성화 됨"
+  title="음성 비활성화"
   ng-show="vm.showsEnable()">
-  <span class=""><i class="fas fa-microphone"></i></span>
+  <span class=""><i class="fas fa-microphone-slash"></i></span>
 </button>
 <button
   type="button"
   disabled
   class="btn mic btn-danger mic-off"
-  title="음소거 됨"
+  title="음성 사용할 수 없음"
   ng-show="vm.showsAudioOff()">
   <span class=""><i class="fas fa-microphone-slash"></i></span>
 </button>
