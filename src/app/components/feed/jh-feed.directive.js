@@ -64,7 +64,7 @@
         vm.mySpeakMessageRemoveTimer = $timeout(function () {
           // vm.mySpeakMessage.shift();
           $( '.' + message.content.feed.id + '-live-message').remove();
-        }, 15000);
+        }, 8000);
       });
       // For publisher feeds, we have to constantly send video and photos
       if (feed.isPublisher) {
