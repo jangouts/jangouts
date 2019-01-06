@@ -191,14 +191,26 @@ html body {
 }
 
 .main-chat-container {
-  background-color: rgba(255, 255, 255, .3);
+  background-color: rgba(255, 255, 255, .1);
   position: absolute;
-  top: 25vh;
+  top: 23vh;
   right: 0;
   width: 26vw;
   margin-right: 10px;
+  transition: opacity .5s;
+  opacity: .8;
+  & * {
+    transition: opacity .5s;
+    opacity: .8;
+  }
   ul {
     list-style-type: none;
+  }
+  &:hover {
+    opacity: 1;
+    & * {
+      opacity: 1;
+    }
   }
   .chat-form-container {
     height: 55vh;
@@ -263,6 +275,7 @@ html body {
       margin-right: -10px;
     }
     .log-entry {
+      font-size: 10px;
       display: block;
       width: 100%;
       color: #b0b0b0;
@@ -270,5 +283,22 @@ html body {
       padding: 5px;
       margin-left: -20px;
     }
+  }
+}
+
+.main-chat-container.hidden {
+  visibility: hidden;
+}
+
+.controller-buttons {
+  display: block;
+  position: absolute;
+  padding: 50px;
+  right: 0;
+  bottom: 0;
+  button {
+    padding: 20px 20px;
+    border-radius: 50%;
+    color: #ffffff;
   }
 }

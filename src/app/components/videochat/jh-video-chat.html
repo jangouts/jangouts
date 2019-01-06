@@ -31,7 +31,12 @@
     ng-class="{mirrored: vm.mirrored()}">
   </div>
 </div>
-<div class="main-chat-container">
+<div class="main-chat-container hidden" id="main-chat-box-container">
   <jh-chat messages="vm.logEntries()"></jh-chat>
+</div>
+<div class="controller-buttons">
+  <button class="btn btn-success" ng-click="vm.toggleChatBox()">
+    <i class="fa fa-comments fa-2x" aria-hidden="true"></i>
+  </button>
 </div>
 

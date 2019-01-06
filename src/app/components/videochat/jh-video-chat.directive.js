@@ -87,6 +87,7 @@
       vm.toggleWindowResizeMode = toggleWindowResizeMode;
       vm.setDefaultLayout = setDefaultLayout;
       vm.location_url = $location.absUrl();
+      vm.toggleChatBox = toggleChatBox;
 
       function defaultGridsterItems() {
         // Window width minus the paddings
@@ -226,6 +227,10 @@
 
       function showHotkeys() {
         hotkeys.toggleCheatSheet();
+      }
+
+      function toggleChatBox() {
+        $('#main-chat-box-container').toggleClass('hidden');
       }
 
       function toggleWindowResizeMode() {
