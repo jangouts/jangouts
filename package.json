@@ -8,16 +8,23 @@
   },
   "repository": "ancorgs/jangouts",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "setup": "node_modules/.bin/npm-run-all setup:*",
+    "setup:bower-install": "node_modules/.bin/bower install",
+    "dev": "node_modules/.bin/npm-run-all dev:*",
+    "dev:angular-web-dev": "node_modules/.bin/gulp serve",
+    "build": "node_modules/.bin/npm-run-all build:*",
+    "build:web-build": "node_modules/.bin/gulp build"
   },
   "devDependencies": {
+    "bower": "^1.8.4",
     "browser-sync": "~2.1.4",
     "browser-sync-spa": "~1.0.2",
     "chalk": "~0.5.1",
     "concat-stream": "~1.4.7",
     "del": "~1.1.1",
     "event-stream": "^3.3.2",
-    "gulp": "~3.8.10",
+    "gulp": "^3.8.11",
     "gulp-angular-filesort": "~1.0.4",
     "gulp-angular-templatecache": "~1.5.0",
     "gulp-autoprefixer": "~2.1.0",
@@ -50,6 +57,7 @@
     "lodash": "~3.2.0",
     "main-bower-files": "~2.5.0",
     "merge-stream": "~0.1.7",
+    "npm-run-all": "^4.1.5",
     "protractor": "~1.7.0",
     "require-dir": "~0.1.0",
     "uglify-save-license": "~0.4.1",

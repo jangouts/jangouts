@@ -11,7 +11,7 @@
   angular.module('janusHangouts')
     .directive('jhFeed', jhFeed);
 
-  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'MuteNotifier', $timeout];
+  jhFeed.$inject = ['RoomService', '$interval', 'jhConfig', 'MuteNotifier', '$timeout'];
 
   function jhFeed(RoomService, $interval, jhConfig, MuteNotifier, $timeout) {
     return {
