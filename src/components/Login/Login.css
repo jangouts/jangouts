@@ -1,0 +1,44 @@
+.Login {
+  background-color: #272727;
+  background: url('../../assets/login-bg.jpg');
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  height: 100vh;
+  text-align: center;
+}
+
+.Login .content {
+  margin: auto;
+  width: 25%;
+}
+
+.Login img.logo {
+  margin: 2rem auto;
+  width: 100%;
+}
+
+.Login form {
+  margin: 1rem auto;
+  text-align: left;
+}
+
+.Login .form-row {
+  margin-bottom: 1rem;
+}
+
+.Login label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.Login input,
+.Login select {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.Login .foot-notes {
+  font-size: 0.85rem;
+  text-align: left;
+}
