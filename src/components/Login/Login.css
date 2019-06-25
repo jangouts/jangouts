@@ -18,26 +18,6 @@
   width: 100%;
 }
 
-.Login form {
-  margin: 1rem auto;
-  text-align: left;
-}
-
-.Login .form-row {
-  margin-bottom: 1rem;
-}
-
-.Login label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.Login input,
-.Login select {
-  box-sizing: border-box;
-  width: 100%;
-}
-
 .Login .foot-notes {
   font-size: 0.85rem;
   text-align: left;

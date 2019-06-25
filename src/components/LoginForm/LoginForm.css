@@ -1,0 +1,20 @@
+.LoginForm {
+  margin: 1rem auto;
+  text-align: left;
+}
+
+.LoginForm .form-row {
+  margin-bottom: 1rem;
+}
+
+.LoginForm label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.LoginForm input,
+.LoginForm select {
+  box-sizing: border-box;
+  width: 100%;
+}
+
