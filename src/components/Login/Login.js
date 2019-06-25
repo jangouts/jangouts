@@ -1,13 +1,13 @@
 import React from 'react';
-import './Login.css';
+import Logo from '../Logo';
 
-import logo from '../../assets/logo.png';
+import './Login.css';
 
 function Login() {
   return (
     <div className="Login">
       <div className="content">
-        <img src={logo} className="logo" alt="Jangouts logo" />
+        <Logo />
         <form>
           <div className="form-row">
             <label htmlFor="username">Username</label>
