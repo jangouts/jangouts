@@ -16,9 +16,6 @@ export const createFeedConnection = (eventsService) =>
       isDataOpen: false,
       config: null
     };
-    // let that = {};
-    // let isDataOpen = false;
-    // let config = null;
 
     console.log(that.role + " plugin attached (" + pluginHandle.getPlugin() + ", id=" + pluginHandle.getId() + ")");
 
