@@ -1,0 +1,12 @@
+.Room {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-template-rows: 50px 1fr;
+  grid-template-areas:
+   "sidebar header"
+   "sidebar main";
+}
+
+.Room .content {
+  grid-area: main;
+}
