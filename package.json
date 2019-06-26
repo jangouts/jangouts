@@ -7,6 +7,7 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "rxjs": "^6.5.2",
     "webrtc-adapter": "^7.2.4"
   },
   "scripts": {
