@@ -7,8 +7,10 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-grid-layout": "^0.16.6",
+    "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "redux": "^4.0.1",
     "rxjs": "^6.5.2",
     "webrtc-adapter": "^7.2.4"
   },
@@ -28,7 +30,11 @@
   },
   "lint-staged": {
     "linters": {
-      "*.js": [ "eslint", "prettier --write", "git add" ]
+      "*.js": [
+        "eslint",
+        "prettier --write",
+        "git add"
+      ]
     }
   },
   "browserslist": {
