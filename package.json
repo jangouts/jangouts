@@ -21,6 +21,16 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      "*.js": [ "eslint", "prettier --write", "git add" ]
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -34,6 +44,9 @@
     ]
   },
   "devDependencies": {
+    "husky": "^2.4.1",
+    "lint-staged": "^8.2.1",
+    "prettier": "^1.18.2",
     "react-test-renderer": "^16.8.6"
   }
 }
