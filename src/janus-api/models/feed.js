@@ -32,6 +32,10 @@ export const createFeed = (dataChannelService, eventsService) =>
     var stream = null;
     var speakObserver = null; // TODO
 
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
     /**
      * Checks if a given channel is enabled
      *
@@ -268,16 +272,17 @@ export const createFeed = (dataChannelService, eventsService) =>
         that.connection.setConfig({
           values: config,
           ok: function() {
-            $timeout(function() {
+            // TODO: is setTimeout needed?
+            window.setTimeout(function() {
               if (type === 'audio' && enabled === false) {
                 speaking = false;
               }
               if (options.after) { options.after(); }
               // Send the new status to remote peers
-              DataChannelService.sendStatus(that, {exclude: "picture"});
+              dataChannelService.sendStatus(that, {exclude: "picture"});
 
               // send 'channel' event with status (enabled or disabled)
-              EventsService.emitEvent({
+              eventsService.emitEvent({
                 type: "channel",
                 data: {
                   channel: type,
@@ -295,7 +300,7 @@ export const createFeed = (dataChannelService, eventsService) =>
           that.setEnabledTrack("video", enabled);
         }
       } else if (type === "audio" && enabled === false) {
-        DataChannelService.sendMuteRequest(that);
+        dataChannelService.sendMuteRequest(that);
       }
     };
 
@@ -305,14 +310,15 @@ export const createFeed = (dataChannelService, eventsService) =>
      * remote peers if needed.
      */
     function updateLocalSpeaking(val) {
-      $timeout(function() {
+      // TODO: is setTimeout needed?
+      window.setTimeout(function() {
         if (that.isEnabled("audio") === false) {
           val = false;
         }
         if (speaking !== val) {
           speaking = val;
           if (val === false) { silentSince = Date.now(); }
-          DataChannelService.sendStatus(that, {exclude: "picture"});
+          dataChannelService.sendStatus(that, {exclude: "picture"});
         }
       });
     }
@@ -324,9 +330,9 @@ export const createFeed = (dataChannelService, eventsService) =>
     that.updateLocalPic = function(data) {
       var that = that;
 
-      $timeout(function() {
+      window.setTimeout(function() {
         picture = data;
-        DataChannelService.sendStatus(that);
+        dataChannelService.sendStatus(that);
       });
     };
 
@@ -337,9 +343,10 @@ export const createFeed = (dataChannelService, eventsService) =>
     that.updateDisplay = function(newDisplay) {
       var that = that;
 
-      $timeout(function() {
+      // TODO: is setTimeout needed?
+      window.setTimeout(function() {
         that.setDisplay(newDisplay);
-        DataChannelService.sendStatus(that);
+        dataChannelService.sendStatus(that);
       });
     };
 
@@ -373,9 +380,9 @@ export const createFeed = (dataChannelService, eventsService) =>
       var attrs = ["audioEnabled", "videoEnabled", "speaking", "picture", "display"];
       var status = {};
 
-      _.forEach(attrs, function(attr) {
-        if (!_.includes(options.exclude, attr)) {
-          status[attr] = that["get"+_.capitalize(attr)]();
+      attrs.forEach(function(attr) {
+        if (!options.exclude.includes(attr)) {
+          status[attr] = that["get" + capitalize(attr)]();
         }
       });
       return status;
@@ -387,12 +394,13 @@ export const createFeed = (dataChannelService, eventsService) =>
      */
     that.setStatus = function(attrs) {
       var that = that;
-      $timeout(function() {
+      // TODO: is setTimeout needed?
+      window.setTimeout(function() {
         if (speaking === true && attrs.speaking === false) {
           silentSince = Date.now();
         }
-        _.forEach(attrs, function(value, attr) {
-          that["set"+_.capitalize(attr)](value);
+        attrs.forEach(function(value, attr) {
+          that["set" + capitalize(attr)](value);
         });
       });
     };
@@ -432,7 +440,7 @@ export const createFeed = (dataChannelService, eventsService) =>
       if(stream === null || stream === undefined) {
         return null;
       }
-      var func = "get" + _.capitalize(type) + "Tracks";
+      var func = "get" + capitalize(type) + "Tracks";
       if(stream[func]() === null || stream[func]() === undefined) {
         return null;
       }
