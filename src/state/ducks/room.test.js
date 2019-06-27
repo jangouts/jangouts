@@ -1,5 +1,9 @@
-import reducer, { actionTypes, actionCreators } from './room';
+import reducer, {
+  actionTypes as types,
+  actionCreators as actions
+} from './room';
 
+const username = 'jangouts';
 const room = { id: 'misc', name: 'Misc' };
 
 describe('reducer', () => {
@@ -11,36 +15,29 @@ describe('reducer', () => {
     expect(reducer(initialState, action)).toEqual(initialState);
   });
 
-  it('handles ROOM_ENTER', () => {
-    const action = { type: actionTypes.ROOM_ENTER, payload: room };
+  it('handles ROOM_LOGIN', () => {
+    const action = { type: types.ROOM_LOGIN, payload: room };
 
     expect(reducer(initialState, action)).toEqual(room);
   });
 
-  it('handles ROOM_EXIT', () => {
-    const action = { type: actionTypes.ROOM_EXIT };
+  it('handles ROOM_LOGOUT', () => {
+    const action = { type: types.ROOM_LOGOUT };
 
-    expect(reducer(initialState, action)).toEqual({});
+    expect(reducer(initialState, action)).toEqual(initialState);
   });
 });
 
 describe('action creators', () => {
-  describe('#enterRoom', () => {
-    it('creates an action to enter in a room', () => {
-      const expectedAction = {
-        type: actionTypes.ROOM_ENTER,
-        payload: room
-      };
-
-      expect(actionCreators.enterRoom(room)).toEqual(expectedAction);
-    });
+  describe.skip('#login', () => {
+    it('creates an action to enter in a room', () => {});
   });
 
-  describe('#exitRoom', () => {
+  describe('#logout', () => {
     it('creates an action to exit of a room', () => {
-      const expectedAction = { type: actionTypes.ROOM_EXIT };
+      const expectedAction = { type: types.ROOM_LOGOUT };
 
-      expect(actionCreators.exitRoom(room)).toEqual(expectedAction);
+      expect(actions.logout(room)).toEqual(expectedAction);
     });
   });
 });
