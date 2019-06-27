@@ -42,7 +42,7 @@ export const createFeedFactory = (
    * Checks if a given channel is enabled
    *
    * @param {string} channel - "audio" or "video"
-   * @returns {boolean}
+   * @returns {boolean,null}
    */
   that.isEnabled = function(channel) {
     if (that.isPublisher) {
