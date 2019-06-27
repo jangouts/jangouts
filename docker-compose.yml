@@ -1,0 +1,11 @@
+version: '3'
+services:
+  janus:
+    image: "janus-gateway"
+    build:
+      context: "."
+      dockerfile: "Dockerfile.janus"
+    ports:
+      - "127.0.0.1:8188:8188"
+      - "127.0.0.1:8088:8088"
+      - "127.0.0.1:8989:8989"
