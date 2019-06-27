@@ -11,7 +11,7 @@ export const createFeedsService = () => {
   let that = {};
 
   /**
-   * @returns{Feed} gets feed with given id or null if not found
+   * @returns {Feed} gets feed with given id or null if not found
    */
   that.find = function(id) {
     return (feeds[id] || null);
