@@ -34,8 +34,6 @@ export default (function () {
     let defaultUrl = options.serverUrl || DEFAULT_URL;
 
     that.eventsService = createEventsService();
-    that.eventsService.getEventsSubject().subscribe((e) =>console.log("events subject", e)
-    );
     that.feedsService = createFeedsService();
     that.logService = createLogService();
     that.dataChannelService = createDataChannelService(that.feedsService, that.logService);
