@@ -7,7 +7,7 @@
 
 import { createSpeakObserver } from './speak-observer';
 
-export const createFeed = (dataChannelService, eventsService) =>
+export const createFeedFactory = (dataChannelService, eventsService) =>
   (attrs) => {
     attrs = attrs || {};
     let that = {

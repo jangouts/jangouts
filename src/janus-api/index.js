@@ -16,7 +16,6 @@ import { createLogService } from './log-service';
 import { createEventsService } from './events-service';
 import { createDataChannelService } from './data-channel-service';
 import { createActionService } from './action-service';
-import { createFeed } from './models/feed';
 
 // TODO: get this value from the configuration
 const DEFAULT_URL = 'ws://localhost:8188/janus';
@@ -41,13 +40,13 @@ export default (function () {
     that.logService = createLogService();
     that.dataChannelService = createDataChannelService(that.feedsService, that.logService);
 
-    const createFeedFactory = createFeed(that.dataChannelService, that.eventsService);
     that.actionService = createActionService(
       that.feedsService,
       that.logService,
       that.dataChannelService,
-      createFeedFactory
+      that.eventsService
     );
+
     that.roomService = createRoomService(
       { janusServer: defaultUrl },
       that.feedsService,
