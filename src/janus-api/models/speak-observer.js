@@ -22,6 +22,7 @@ const DEFAULT_THRESHOLD = -50;
 export const createSpeakObserver = (stream, options) => {
   options = options || {};
   let that = {};
+
   var interval = options.interval || DEFAULT_INTERVAL;
   var threshold = options.threshold || DEFAULT_THRESHOLD;
 
@@ -37,6 +38,7 @@ export const createSpeakObserver = (stream, options) => {
   sourceNode.connect(analyser);
 
   var speaking = false;
+  var loop = null;
   var history = new Array(10).fill(0);
 
   that.start = function() {
@@ -69,7 +71,7 @@ export const createSpeakObserver = (stream, options) => {
     if (audioDetected && !speaking) {
       // Make sure we have been above the threshold in, at least, 2 of the 3
       // previous iterations
-      sum = _.sum(_.slice(history, history.length - 3));
+      history.slice(history.length - 3).reduce((s, i) => (s + i), 0);
       if (sum >= 2) {
         speaking = true;
         if (options.start) { options.start(); }
@@ -77,7 +79,7 @@ export const createSpeakObserver = (stream, options) => {
     } else if (!audioDetected && speaking) {
       // Make sure we have been below the threshold for the whole history
       // (i.e. 10 iterations)
-      sum = _.sum(history);
+      sum = history.reduce((s, i) => (s + i), 0);
       if (sum === 0) {
         speaking = false;
         if (options.stop) { options.stop(); }

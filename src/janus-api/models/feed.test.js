@@ -5,7 +5,7 @@
 * of the MIT license.  See the LICENSE.txt file for details.
 */
 
-import { createFeed } from './feed';
+import { createFeedFactory } from './feed';
 
 const dataChannelService = {
 };
@@ -15,14 +15,14 @@ const connection = {
   getConfig: jest.fn()
 };
 
-const createFeedFactory = createFeed(dataChannelService, eventsService);
+const createFeed = createFeedFactory(dataChannelService, eventsService);
 
 
 describe('#isEnabled', () => {
   describe('when is a publisher', () => {
     describe('but the connection is not defined', () => {
       test('returns false', () => {
-        const feed = createFeedFactory({isPublisher: true});
+        const feed = createFeed({isPublisher: true});
         expect(feed.isEnabled("audio")).toBe(null);
         expect(feed.isEnabled("video")).toBe(null);
       });
@@ -34,7 +34,7 @@ describe('#isEnabled', () => {
       };
 
       test('returns true', () => {
-        const feed = createFeedFactory({isPublisher: true, connection});
+        const feed = createFeed({isPublisher: true, connection});
         expect(feed.isEnabled("audio")).toBe(true);
         expect(feed.isEnabled("video")).toBe(true);
       });
@@ -46,7 +46,7 @@ describe('#isEnabled', () => {
       };
 
       test('returns true', () => {
-        const feed = createFeedFactory({isPublisher: true, connection});
+        const feed = createFeed({isPublisher: true, connection});
         expect(feed.isEnabled("audio")).toBe(false);
         expect(feed.isEnabled("video")).toBe(false);
       });
@@ -55,14 +55,14 @@ describe('#isEnabled', () => {
 
   describe('when is not a publisher', () => {
     test('returns true', () => {
-      const feed = createFeedFactory({connection});
+      const feed = createFeed({connection});
       expect(feed.isEnabled("audio")).toBe(true);
       expect(feed.isEnabled("video")).toBe(true);
     });
 
     describe('and audio/video has been enabled', () => {
       test('returns true', () => {
-        const feed = createFeedFactory({connection});
+        const feed = createFeed({connection});
         feed.setVideoEnabled(true);
         feed.setAudioEnabled(true);
         expect(feed.isEnabled("audio")).toBe(true);
@@ -72,7 +72,7 @@ describe('#isEnabled', () => {
 
     describe('and audio/video has been disabled', () => {
       test('returns false', () => {
-        const feed = createFeedFactory({connection});
+        const feed = createFeed({connection});
         feed.setVideoEnabled(false);
         feed.setAudioEnabled(false);
         expect(feed.isEnabled("audio")).toBe(false);
