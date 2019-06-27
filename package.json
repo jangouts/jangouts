@@ -32,7 +32,7 @@
     "linters": {
       "*.js": [
         "eslint",
-        "prettier --write",
+        "precise-commits",
         "git add"
       ]
     }
@@ -52,6 +52,7 @@
   "devDependencies": {
     "husky": "^2.4.1",
     "lint-staged": "^8.2.1",
+    "precise-commits": "^1.0.2",
     "prettier": "^1.18.2",
     "react-test-renderer": "^16.8.6"
   }
