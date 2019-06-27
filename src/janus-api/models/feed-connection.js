@@ -140,7 +140,7 @@ export const createFeedConnection = (eventsService) =>
           console.error("WebRTC error subscribing");
           console.error(error);
           // emit 'error CreateAnswer' event
-          EventsService.emitEvent({
+          eventsService.emitEvent({
             type: "error",
             data: {
               status: "createAnswer",
@@ -160,16 +160,11 @@ export const createFeedConnection = (eventsService) =>
      *        * ok: callback to execute on confirmation from Janus
      */
     that.setConfig = function(options) {
-      console.log("SETTING");
       if (that.config) {
-              console.log("SETTING1");
         that.config.set(options);
       } else {
-        console.log("SETTING2");
         var cfg = createConnectionConfig(pluginHandle, options.values, null, options.ok);
-        console.log("cfg", cfg);
         that.config = cfg;
-        console.log("getConfig", that.getConfig());
       }
     };
 
