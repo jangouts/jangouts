@@ -138,7 +138,7 @@ describe('#receiveMessage', () => {
 
         ev = last_event();
         expect(ev.type).toStrictEqual('muted');
-        expect(ev.data.by).toStrictEqual('request');
+        expect(ev.data.cause).toStrictEqual('request');
       });
     });
 

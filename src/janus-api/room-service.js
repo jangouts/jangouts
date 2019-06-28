@@ -197,8 +197,7 @@ export const createRoomService = (config, feedsService, dataChannelService, even
         if(!on){
           //notify if joined muted
           if (startMuted) {
-            //  TODO: event?
-            //$$rootScope.$broadcast('muted.Join');
+            eventsService.emitEvent({ type: 'muted', data: { cause: 'join' } });
           }
         }
       },

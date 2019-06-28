@@ -34,7 +34,10 @@ export const createDataChannelService = (
       if (feed.isPublisher) {
         feed.setEnabledChannel('audio', false, {
           after: function() {
-            eventsService.emitEvent({ type: 'muted', data: { by: 'request' }  });
+            eventsService.emitEvent({
+              type: 'muted',
+              data: { cause: 'request' }
+            });
           }
         });
       }
