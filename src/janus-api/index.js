@@ -35,7 +35,7 @@ export default (function() {
 
     that.eventsService = createEventsService();
     that.feedsService = createFeedsService();
-    that.logService = createLogService();
+    that.logService = createLogService(that.eventsService);
     that.dataChannelService = createDataChannelService(
       that.feedsService,
       that.logService

@@ -5,14 +5,15 @@
 * of the MIT license.  See the LICENSE.txt file for details.
 */
 
-export const createLogService = () => {
+export const createLogService = eventsService => {
   let entries = [];
   let that = {};
 
-  that.add = (entry) => {
-    return new Promise((resolve) => {
+  that.add = entry => {
+    return new Promise(resolve => {
       setTimeout(() => {
         entries.push(entry);
+        eventsService.emitEvent({  type: 'log', entry  });
         resolve();
       });
     });
