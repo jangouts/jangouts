@@ -64,6 +64,10 @@ export default (function() {
   };
   that.getEventsSubject = () => that.eventsService.getEventsSubject();
   that.sendMessage = text => that.actionService.writeChatMessage(text);
+  that.getFeedStream = feedId => {
+    let feed = that.feedsService.find(feedId);
+    return feed !== undefined ? feed.getStream() : undefined;
+  };
 
   return that;
 })();
