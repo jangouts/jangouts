@@ -7,8 +7,15 @@
 
 import { createDataChannelService } from './data-channel-service';
 import { createLogService } from './log-service';
+import { createFeedsService } from './feeds-service';
+import { createFeedFactory } from './models/feed';
+import { createFeedConnection } from './models/feed-connection';
 
 describe('#sendChatMessage', () => {
+  const eventsService = {
+    emitEvent: jest.fn()
+  };
+
   const mainConnection = {
     sendData: jest.fn()
   };
@@ -24,7 +31,11 @@ describe('#sendChatMessage', () => {
 
   test('sends the message through the main connection', () => {
     let logService = createLogService;
-    let dataService = createDataChannelService(feedsService, logService);
+    let dataService = createDataChannelService(
+      feedsService,
+      logService,
+      eventsService
+    );
 
     dataService.sendChatMessage("Hello Dolly!");
     var sentData = mainConnection.sendData.mock.calls;
@@ -43,28 +54,107 @@ describe('#receiveMessage', () => {
     add: jest.fn()
   };
 
-  const feed = {};
-
-  const feedsService = {
-    find: (id) => id === 1 ? feed : null
+  const eventsService = {
+    emitEvent: jest.fn()
   };
+
+  const feedsService = createFeedsService(eventsService);
+
+  const dataService = createDataChannelService(
+    feedsService,
+    logService,
+    eventsService
+  );
+
+  const createFeed = createFeedFactory(dataService, eventsService);
+
+  const pluginHandle = {
+    getId: () => 1,
+    getPlugin: () => 'videoroom',
+    // Execute the callback if a confirmation is received
+    send: options => {
+      options['success']();
+    }
+  };
+  const createConnection = createFeedConnection(eventsService);
+
+  const publish_conn = createConnection(pluginHandle, 222, 'publisher');
+  const publish_feed = createFeed({
+    id: 1,
+    isPublisher: true,
+    connection: publish_conn
+  });
+  const subscribe_feed = createFeed({ id: 2 });
+
+  feedsService.add(publish_feed);
+  feedsService.add(subscribe_feed);
+
+  function last_log() {
+    var calls = logService.add.mock.calls;
+    var last_call = calls[calls.length - 1];
+    return last_call[0];
+  }
+
+  function last_event() {
+    var calls = eventsService.emitEvent.mock.calls;
+    var last_call = calls[calls.length - 1];
+    return last_call ? last_call[0] : null;
+  }
 
   describe('receiving a chatMsg', () => {
     test('register the corresponding log entry', () => {
-      let dataService = createDataChannelService(feedsService, logService);
       let data = JSON.stringify({
-        type: "chatMsg",
-        content: "Goodbye Molly!"
+        type: 'chatMsg',
+        content: 'Goodbye Molly!'
       });
 
       dataService.receiveMessage(data, 1);
-      var logged = logService.add.mock.calls;
-      var entry = logged[0][0];
+      var entry = last_log();
 
-      expect(logged.length).toBe(1);
-      expect(entry.type).toStrictEqual("chatMsg");
-      expect(entry.chatMsgText()).toStrictEqual("Goodbye Molly!");
-      expect(entry.content.feed).toBe(feed);
+      expect(entry.type).toStrictEqual('chatMsg');
+      expect(entry.chatMsgText()).toStrictEqual('Goodbye Molly!');
+      expect(entry.content.feed).toBe(publish_feed);
+    });
+  });
+
+  describe('receiving a muteRequest', () => {
+    describe('for the publisher feed', () => {
+      test('register the log entry and emits the event after receiving confirmation', () => {
+        let data = JSON.stringify({
+          type: 'muteRequest',
+          content: { target: 1 }
+        });
+
+        dataService.receiveMessage(data, 2);
+
+        var entry = last_log();
+        expect(entry.type).toStrictEqual('muteRequest');
+        expect(entry.content.target).toBe(publish_feed);
+
+        var ev = last_event();
+        expect(ev.type).not.toStrictEqual('muted');
+
+        publish_feed.connection.confirmConfig();
+
+        ev = last_event();
+        expect(ev.type).toStrictEqual('muted');
+        expect(ev.data.by).toStrictEqual('request');
+      });
+    });
+
+    describe('for a subscriber feed', () => {
+      test('register the log entry', () => {
+        let data = JSON.stringify({
+          type: 'muteRequest',
+          content: { target: 2 }
+        });
+
+        dataService.receiveMessage(data, 1);
+
+        var entry = last_log();
+        expect(entry.type).toStrictEqual('muteRequest');
+        expect(entry.content.target).toBe(subscribe_feed);
+      });
     });
   });
 });

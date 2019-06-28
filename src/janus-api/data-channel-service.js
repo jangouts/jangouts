@@ -7,7 +7,11 @@
 
 import { createLogEntry } from './models/log-entry';
 
-export const createDataChannelService = (feedsService, logService) => {
+export const createDataChannelService = (
+  feedsService,
+  logService,
+  eventsService
+) => {
   let that = {};
 
   that.receiveMessage = (data, remoteId) => {
@@ -17,39 +21,45 @@ export const createDataChannelService = (feedsService, logService) => {
     var feed;
     var logEntry;
 
-    if (type === "chatMsg") {
-      logEntry = createLogEntry("chatMsg", {feed: feedsService.find(remoteId), text: content});
+    if (type === 'chatMsg') {
+      logEntry = createLogEntry('chatMsg', {
+        feed: feedsService.find(remoteId),
+        text: content
+      });
       if (logEntry.hasText()) {
         logService.add(logEntry);
       }
-    } else if (type === "muteRequest") {
+    } else if (type === 'muteRequest') {
       feed = feedsService.find(content.target);
-      /* TODO $rootScope
       if (feed.isPublisher) {
-        feed.setEnabledChannel("audio", false, {after:
-          function() { $rootScope.$broadcast('muted.byRequest'); }
+        feed.setEnabledChannel('audio', false, {
+          after: function() {
+            eventsService.emitEvent({ type: 'muted', data: { by: 'request' }  });
+          }
         });
       }
-      END OF TODO */
       // Log the event
-      logEntry = createLogEntry("muteRequest", {source: feedsService.find(remoteId), target: feed});
+      logEntry = createLogEntry('muteRequest', {
+        source: feedsService.find(remoteId),
+        target: feed
+      });
       logService.add(logEntry);
-    } else if (type === "statusUpdate") {
+    } else if (type === 'statusUpdate') {
       feed = feedsService.find(content.source);
       if (feed && !feed.isPublisher) {
         feed.setStatus(content.status);
       }
     } else {
-      console.log("Unknown data type: " + type);
+      console.log('Unknown data type: ' + type);
     }
   };
 
-  that.sendMuteRequest = (feed) => {
+  that.sendMuteRequest = feed => {
     var content = {
-      target: feed.id,
+      target: feed.id
     };
 
-    that.sendMessage("muteRequest", content);
+    that.sendMessage('muteRequest', content);
   };
 
   that.sendStatus = (feed, statusOptions) => {
@@ -58,11 +68,11 @@ export const createDataChannelService = (feedsService, logService) => {
       status: feed.getStatus(statusOptions)
     };
 
-    that.sendMessage("statusUpdate", content);
+    that.sendMessage('statusUpdate', content);
   };
 
-  that.sendChatMessage = (text) => {
-    that.sendMessage("chatMsg", text);
+  that.sendChatMessage = text => {
+    that.sendMessage('chatMsg', text);
   };
 
   that.sendMessage = (type, content) => {
@@ -71,18 +81,24 @@ export const createDataChannelService = (feedsService, logService) => {
       content: content
     });
     var mainFeed = feedsService.findMain();
-    if (mainFeed === null) { return; }
+    if (mainFeed === null) {
+      return;
+    }
     if (!mainFeed.isDataOpen()) {
-      console.log("Data channel not open yet. Skipping");
+      console.log('Data channel not open yet. Skipping');
       return;
     }
     var connection = mainFeed.connection;
     connection.sendData({
       text: text,
-      error: function(reason) { alert(reason); },
-      success: function() { console.log("Data sent: " + type); }
+      error: function(reason) {
+        alert(reason);
+      },
+      success: function() {
+        console.log('Data sent: ' + type);
+      }
     });
   };
 
   return that;
-}
+};
