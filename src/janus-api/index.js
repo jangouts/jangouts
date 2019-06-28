@@ -34,7 +34,7 @@ export default (function() {
     let defaultUrl = options.serverUrl || DEFAULT_URL;
 
     that.eventsService = createEventsService();
-    that.feedsService = createFeedsService();
+    that.feedsService = createFeedsService(that.eventsService);
     that.logService = createLogService(that.eventsService);
     that.dataChannelService = createDataChannelService(
       that.feedsService,

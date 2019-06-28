@@ -5,7 +5,7 @@
 * of the MIT license.  See the LICENSE.txt file for details.
 */
 
-export const createFeedsService = () => {
+export const createFeedsService = eventsService => {
   let mainFeed = null;
   let feeds = {};
   let that = {};
@@ -14,7 +14,7 @@ export const createFeedsService = () => {
    * @returns {Feed} gets feed with given id or null if not found
    */
   that.find = function(id) {
-    return (feeds[id] || null);
+    return feeds[id] || null;
   };
 
   /**
@@ -38,18 +38,22 @@ export const createFeedsService = () => {
       attempts = attempts || 10;
       timeout = timeout || 1000;
 
-      if (feed === null) { // If feed is not found, set an interval to check again.
-        let interval = window.setTimeout(function () {
+      if (feed === null) {
+        // If feed is not found, set an interval to check again.
+        let interval = window.setTimeout(function() {
           feed = that.find(id);
-          if (feed === null) { // The feed was not found this time
+          if (feed === null) {
+            // The feed was not found this time
             attempts -= 1;
-          } else { // The feed was finally found
+          } else {
+            // The feed was finally found
             window.clearInterval(interval);
             resolve(feed);
           }
-          if (attempts === 0) { // No more attempts left and feed was not found
+          if (attempts === 0) {
+            // No more attempts left and feed was not found
             window.clearInterval(interval);
-            reject("feed with id " + id + " was not found");
+            reject('feed with id ' + id + ' was not found');
           }
         }, timeout);
       } else {
@@ -67,6 +71,7 @@ export const createFeedsService = () => {
    */
   that.add = function(feed, options) {
     feeds[feed.id] = feed;
+    eventsService.emitEvent({  type: 'addFeed', feed: feed });
     if (options && options.main) {
       mainFeed = feed;
     }
@@ -77,7 +82,8 @@ export const createFeedsService = () => {
    */
   that.destroy = function(id) {
     delete feeds[id];
-    if (mainFeed && (id === mainFeed.id)) {
+    eventsService.emitEvent({  type: 'removeFeed', feedId: id  });
+    if (mainFeed && id === mainFeed.id) {
       mainFeed = null;
     }
   };
