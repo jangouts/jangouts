@@ -20,6 +20,9 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     },
     removeFeed: (event) => {
       dispatchFn(actions.participants.removeParticipant(event.feedId));
+    },
+    stream: (event) => {
+      dispatchFn(actions.participants.setStream(event.feedId));
     }
   };
 

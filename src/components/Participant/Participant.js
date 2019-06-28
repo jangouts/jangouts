@@ -8,7 +8,7 @@ import './Participant.css';
 function setVideo(id, video) {
   const stream = janusApi.getFeedStream(id);
 
-  if (stream !== undefined) {
+  if (stream !== null) {
     Janus.attachMediaStream(video, stream);
   }
 }

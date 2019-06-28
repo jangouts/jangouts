@@ -211,16 +211,18 @@ export const createRoomService = (config, feedsService, dataChannelService, even
         // some element of the local DOM
         console.log(" ::: Got a local stream :::");
         // local stream attached event
+        let feed = feedsService.findMain();
+        feed.setStream(stream);
+
         eventsService.emitEvent({
           type: "stream",
+          feedId: feed.id,
           data: {
             stream: "local",
             for: "main",
             peerconnection: connection.pluginHandle.webrtcStuff.pc
           }
         });
-        var feed = feedsService.findMain();
-        feed.setStream(stream);
       },
       oncleanup: function () {
         console.log(" ::: Got a cleanup notification: we are unpublished now :::");

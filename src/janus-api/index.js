@@ -66,7 +66,7 @@ export default (function() {
   that.sendMessage = text => that.actionService.writeChatMessage(text);
   that.getFeedStream = feedId => {
     let feed = that.feedsService.find(feedId);
-    return feed !== undefined ? feed.getStream() : undefined;
+    return feed !== null ? feed.getStream() : null;
   };
 
   return that;
