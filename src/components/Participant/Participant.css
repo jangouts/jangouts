@@ -1,0 +1,14 @@
+.Participant {
+  background: url('../../assets/user_placeholder.png') no-repeat;
+  border-bottom: 1px solid #ccc;
+  height: 128px;
+  position: relative;
+  width: 128px;
+}
+
+.Participant .username {
+  bottom: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}

@@ -1,9 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { addParticipant, removeParticipant } from '../../redux/actionCreators';
+import Participant from '../Participant';
 
 import './Participants.css';
 
-function Participants() {
-  return <div className="Participants">Participants</div>;
-}
+const Participants = ({ participants }) => (
+  <div className="Participants">
+    {Object.keys(participants).map(key => (
+      <Participant key={key} {...participants[key]} />
+    ))}
+  </div>
+);
 
-export default Participants;
+const mapStateToProps = state => ({ participants: state.participants });
+
+export default connect(mapStateToProps)(Participants);
