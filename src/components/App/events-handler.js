@@ -14,6 +14,12 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     },
     log: (event) => {
       dispatchFn(actions.messages.receive(event.entry));
+    },
+    addFeed: (event) => {
+      dispatchFn(actions.participants.addParticipant(event.feed));
+    },
+    removeFeed: (event) => {
+      dispatchFn(actions.participants.removeParticipant(event.feedId));
     }
   };
 

@@ -1,14 +1,18 @@
 const PARTICIPANT_JOINED = 'jangouts/participant/JOIN';
 const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
 
-const addParticipant = participant => ({
-  type: PARTICIPANT_JOINED,
-  payload: participant
-});
+const addParticipant = participant => {
+  const { id, display, isPublisher, isLocalScreen, isIgnored } = participant;
 
-const removeParticipant = participant => ({
+  return {
+    type: PARTICIPANT_JOINED,
+    payload: { id, display, isPublisher, isLocalScreen, isIgnored }
+  };
+};
+
+const removeParticipant = participantId => ({
   type: PARTICIPANT_DETACHED,
-  payload: participant
+  payload: participantId
 });
 
 const actionCreators = {
@@ -24,9 +28,10 @@ const actionTypes = {
 const initialState = {};
 
 const reducer = function(state = initialState, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case PARTICIPANT_JOINED: {
-      const participant = action.payload;
+      const participant = payload;
 
       return {
         ...state,
@@ -35,8 +40,9 @@ const reducer = function(state = initialState, action) {
     }
 
     case PARTICIPANT_DETACHED: {
+      // TODO: use a Map instead of an object to avoid the parseInt call
       return Object.keys(state)
-        .filter(key => key !== action.payload.id)
+        .filter(key => parseInt(key) !== payload)
         .reduce((obj, key) => {
           obj[key] = state[key];
           return obj;
