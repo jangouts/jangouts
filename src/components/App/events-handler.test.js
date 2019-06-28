@@ -15,3 +15,12 @@ test('handles error events', () => {
   subject.next({type: "error"});
   expect(dispatchFn).toHaveBeenCalledWith({type: "error"});
 });
+
+test('handles log events', () => {
+  const dispatchFn = jest.fn();
+  const subject = new Subject();
+  const logEntry = { message: 'some message' };
+  addEventsHandlers(subject, dispatchFn);
+  subject.next({ type: 'log', entry: logEntry });
+  expect(dispatchFn).toHaveBeenCalledWith(logEntry);
+});

@@ -5,10 +5,15 @@
 * of the MIT license.  See the LICENSE.txt file for details.
 */
 
+import { actionCreators as actions } from '../../state/ducks';
+
 export const addEventsHandlers = (subject, dispatchFn) => {
   const handlers = {
     error: ({error}) => {
-      dispatchFn({type: "error"});
+      dispatchFn({type: 'error'});
+    },
+    log: (event) => {
+      dispatchFn(actions.messages.receive(event.entry));
     }
   };
 

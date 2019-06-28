@@ -13,7 +13,7 @@ export const createLogService = eventsService => {
     return new Promise(resolve => {
       setTimeout(() => {
         entries.push(entry);
-        eventsService.emitEvent({  type: 'log', entry  });
+        eventsService.emitEvent({ type: 'log', entry });
         resolve();
       });
     });
