@@ -36,7 +36,7 @@ describe('#add', () => {
     feedsService.add(firstFeed);
     expect(eventsService.emitEvent).toHaveBeenCalledWith({
       type: 'addFeed',
-      feed: firstFeed
+      data: firstFeed
     });
   });
 });
@@ -56,7 +56,7 @@ describe('#destroy', () => {
     feedsService.destroy(firstFeed.id);
     expect(eventsService.emitEvent).toHaveBeenCalledWith({
       type: 'removeFeed',
-      feedId: firstFeed.id
+      data: { feedId: firstFeed.id }
     });
   });
 });
