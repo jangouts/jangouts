@@ -21,17 +21,57 @@ const secondFeed = {
   getSpeaking: () => true
 };
 
+const emitEvent = jest.fn();
+const eventsService = { emitEvent };
+
+describe('#add', () => {
+  test('adds the feed', () => {
+    const feedsService = createFeedsService(eventsService);
+    feedsService.add(firstFeed);
+    expect(feedsService.allFeeds()).toStrictEqual([firstFeed]);
+  });
+
+  test('emits a new feed event', () => {
+    const feedsService = createFeedsService(eventsService);
+    feedsService.add(firstFeed);
+    expect(eventsService.emitEvent).toHaveBeenCalledWith({
+      type: 'addFeed',
+      feed: firstFeed
+    });
+  });
+});
+
+describe('#destroy', () => {
+  test('removes the feed', () => {
+    const feedsService = createFeedsService(eventsService);
+    feedsService.add(firstFeed);
+    feedsService.add(secondFeed);
+    feedsService.destroy(firstFeed.id);
+    expect(feedsService.allFeeds()).toStrictEqual([secondFeed]);
+  });
+
+  test('emits a new feed event', () => {
+    const feedsService = createFeedsService(eventsService);
+    feedsService.add(firstFeed);
+    feedsService.destroy(firstFeed.id);
+    expect(eventsService.emitEvent).toHaveBeenCalledWith({
+      type: 'removeFeed',
+      feedId: firstFeed.id
+    });
+  });
+});
+
 describe('#find', () => {
   describe('when the feed does not exist', () => {
     test('returns null', () => {
-      const feedsService = createFeedsService();
+      const feedsService = createFeedsService(eventsService);
       expect(feedsService.find(1)).toBe(null);
     });
   });
 
   describe('when the feed exists', () => {
     test('returns the feed with the given id', () => {
-      const feedsService = createFeedsService();
+      const feedsService = createFeedsService(eventsService);
       feedsService.add(firstFeed);
       feedsService.add(secondFeed);
       expect(feedsService.find(secondFeed.id)).toBe(secondFeed);
@@ -42,14 +82,14 @@ describe('#find', () => {
 describe('#find', () => {
   describe('when the feed does not exist', () => {
     test('returns null', () => {
-      const feedsService = createFeedsService();
+      const feedsService = createFeedsService(eventsService);
       expect(feedsService.find(1)).toBe(null);
     });
   });
 
   describe('when the feed exists', () => {
     test('returns the feed with the given id', () => {
-      const feedsService = createFeedsService();
+      const feedsService = createFeedsService(eventsService);
       feedsService.add(firstFeed);
       feedsService.add(secondFeed);
       expect(feedsService.find(secondFeed.id)).toBe(secondFeed);
@@ -59,7 +99,7 @@ describe('#find', () => {
 
 describe('#waitFor', () => {
   test('returns the feed with the given id', () => {
-    const feedsService = createFeedsService();
+    const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
     return feedsService.waitFor(secondFeed.id, 1, 100).then((result) => {
@@ -79,7 +119,7 @@ describe('#waitFor', () => {
 
 describe('#allFeeds', () => {
   test('returns an array containing the feeds', () => {
-    const feedsService = createFeedsService();
+    const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
     expect(feedsService.allFeeds()).toEqual(
@@ -89,7 +129,7 @@ describe('#allFeeds', () => {
 
   describe('when there are no feeds', () => {
     test('returns an empty array', () => {
-      const feedsService = createFeedsService();
+      const feedsService = createFeedsService(eventsService);
       expect(feedsService.allFeeds()).toStrictEqual([]);
     });
   });
@@ -97,7 +137,7 @@ describe('#allFeeds', () => {
 
 describe('#publisherFeeds', () => {
   test('returns an array containing the publisher feeds', () => {
-    const feedsService = createFeedsService();
+    const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
     expect(feedsService.publisherFeeds()).toEqual(
@@ -115,7 +155,7 @@ describe('#publisherFeeds', () => {
 
 describe('#localScreenFeeds', () => {
   test('returns an array containing the publisher feeds', () => {
-    const feedsService = createFeedsService();
+    const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
     expect(feedsService.localScreenFeeds()).toEqual(
@@ -133,7 +173,7 @@ describe('#localScreenFeeds', () => {
 
 describe('#speakingFeed', () => {
   test('returns the feed which is speaking', () => {
-    const feedsService = createFeedsService();
+    const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
     expect(feedsService.speakingFeed()).toBe(secondFeed);

@@ -34,8 +34,8 @@ export default (function() {
     let defaultUrl = options.serverUrl || DEFAULT_URL;
 
     that.eventsService = createEventsService();
-    that.feedsService = createFeedsService();
-    that.logService = createLogService();
+    that.feedsService = createFeedsService(that.eventsService);
+    that.logService = createLogService(that.eventsService);
     that.dataChannelService = createDataChannelService(
       that.feedsService,
       that.logService
@@ -63,6 +63,7 @@ export default (function() {
     return that.roomService.enter(username);
   };
   that.getEventsSubject = () => that.eventsService.getEventsSubject();
+  that.sendMessage = text => that.actionService.writeChatMessage(text);
 
   return that;
 })();

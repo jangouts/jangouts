@@ -1,19 +1,22 @@
+import janusApi from '../../janus-api';
+
 const MESSAGE_SENT = 'jangouts/message/SEND';
 const MESSAGE_RECEIVED = 'jangouts/message/RECEIVE';
 
-const sendMessage = message => ({
-  type: MESSAGE_SENT,
-  payload: message
-});
+const send = function(text) {
+  return function() {
+    janusApi.sendMessage(text);
+  };
+};
 
-const receiveMessage = message => ({
+const receive = message => ({
   type: MESSAGE_RECEIVED,
   payload: message
 });
 
 const actionCreators = {
-  sendMessage,
-  receiveMessage
+  send,
+  receive
 };
 
 const actionTypes = {
@@ -21,7 +24,7 @@ const actionTypes = {
   MESSAGE_RECEIVED
 };
 
-const initialState = {};
+const initialState = [];
 
 const reducer = function(state = initialState, action) {
   switch (action.type) {
@@ -29,10 +32,7 @@ const reducer = function(state = initialState, action) {
     case MESSAGE_RECEIVED: {
       const message = action.payload;
 
-      return {
-        ...state,
-        [message.id]: message
-      };
+      return [...state, message];
     }
     default:
       return state;
