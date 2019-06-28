@@ -11,7 +11,6 @@ import { actionCreators as chatActions } from '../../../state/ducks/messages';
 function handleSubmit(event, dispatch, textInput) {
   event.preventDefault();
 
-  console.log('pepe');
   const text = textInput.current.value;
 
   // TODO: validate data and give feedback
