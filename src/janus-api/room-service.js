@@ -215,12 +215,12 @@ export const createRoomService = (config, feedsService, dataChannelService, even
         feed.setStream(stream);
 
         eventsService.emitEvent({
-          type: "stream",
-          feedId: feed.id,
+          type: 'stream',
           data: {
-            stream: "local",
-            for: "main",
-            peerconnection: connection.pluginHandle.webrtcStuff.pc
+            stream: 'local',
+            for: 'main',
+            feedId: feed.id,
+            peerconnection: connection.pluginHandle.webrtcStuff.pc // TODO: is peerconnection needed?
           }
         });
       },

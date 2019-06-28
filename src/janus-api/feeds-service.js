@@ -71,7 +71,7 @@ export const createFeedsService = eventsService => {
    */
   that.add = function(feed, options) {
     feeds[feed.id] = feed;
-    eventsService.emitEvent({  type: 'addFeed', feed: feed });
+    eventsService.emitEvent({ type: 'addFeed', data: feed });
     if (options && options.main) {
       mainFeed = feed;
     }
@@ -82,7 +82,7 @@ export const createFeedsService = eventsService => {
    */
   that.destroy = function(id) {
     delete feeds[id];
-    eventsService.emitEvent({  type: 'removeFeed', feedId: id  });
+    eventsService.emitEvent({ type: 'removeFeed', data: { feedId: id } });
     if (mainFeed && id === mainFeed.id) {
       mainFeed = null;
     }

@@ -12,7 +12,7 @@ export const createLogService = eventsService => {
   that.add = entry => {
     return new Promise(resolve => {
       entries.push(entry);
-      eventsService.emitEvent({ type: 'log', entry });
+      eventsService.emitEvent({ type: 'log', data: entry });
       resolve();
     });
   };
