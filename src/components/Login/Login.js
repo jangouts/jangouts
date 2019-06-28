@@ -1,10 +1,18 @@
 import React from 'react';
+import { Redirect } from 'react-router';
+import { useSelector } from 'react-redux';
 import Logo from '../Logo';
 import LoginForm from '../LoginForm';
 
 import './Login.css';
 
 function Login() {
+  const room = useSelector(state => state.room);
+
+  if (room.logedIn) {
+    return <Redirect to={`/room/${room.id}`} />;
+  }
+
   return (
     <div className="Login">
       <div className="content">

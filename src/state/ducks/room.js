@@ -1,27 +1,56 @@
-const ROOM_ENTER = 'jangouts/room/ENTER';
-const ROOM_EXIT = 'jangouts/room/EXIT';
+import janusApi from '../../janus-api';
 
-const enterRoom = room => ({ type: ROOM_ENTER, payload: room });
-const exitRoom = room => ({ type: ROOM_EXIT });
+const ROOM_LOGIN = 'jangouts/room/LOGIN';
+const ROOM_LOGOUT = 'jangouts/room/LOGOUT';
+
+const login = (username, roomId) => {
+  return function(dispatch) {
+    const room = { id: parseInt(roomId) };
+
+    dispatch(loginRequest(room));
+
+    janusApi
+      .enterRoom(room, username)
+      .then(() => {
+        dispatch(loginSuccess({ ...room, username }));
+      })
+      .catch(error => {
+        dispatch(loginFailure());
+      });
+  };
+};
+
+const loginRequest = room => ({
+  type: ROOM_LOGIN,
+  payload: { ...room, logingIn: true }
+});
+const loginSuccess = room => ({
+  type: ROOM_LOGIN,
+  payload: { ...room, logedIn: true }
+});
+const loginFailure = () => ({ type: ROOM_LOGIN });
+const logout = () => ({ type: ROOM_LOGOUT });
 
 const actionCreators = {
-  enterRoom,
-  exitRoom
+  login,
+  logout
 };
 
 const actionTypes = {
-  ROOM_ENTER,
-  ROOM_EXIT
+  ROOM_LOGIN,
+  ROOM_LOGOUT
 };
 
 const initialState = {};
 
 const reducer = function(state = initialState, action) {
-  switch (action.type) {
-    case ROOM_ENTER: {
-      return action.payload;
+  const { type, payload } = action;
+
+  switch (type) {
+    case ROOM_LOGIN: {
+      return payload;
     }
-    case ROOM_EXIT: {
+    case ROOM_LOGOUT: {
       return initialState;
     }
     default:
