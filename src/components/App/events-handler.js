@@ -17,10 +17,16 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     }
   };
 
+  const defaultHandler = (event) => {
+    console.log("Unhandled event:", event.type, event);
+  };
+
   function handleEvent(event) {
     const handlerFn = handlers[event.type];
     if (handlerFn !== undefined) {
       handlerFn(event);
+    } else {
+      defaultHandler(event);
     }
   }
 
