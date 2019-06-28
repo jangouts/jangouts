@@ -64,11 +64,8 @@ export const createActionService = (
     if (feed === null) {
       return;
     }
-    window.setTimeout(function() {
-      // TODO: is the timeout really needed?
-      feed.disconnect();
-      feedsService.destroy(feedId);
-    });
+    feed.disconnect();
+    feedsService.destroy(feedId);
     // Log the event
     var entry = createLogEntry('destroyFeed', { feed: feed });
     logService.add(entry);
@@ -79,11 +76,8 @@ export const createActionService = (
     if (feed === null) {
       return;
     }
-    window.setTimeout(function() {
-      // TODO: is the timeout really needed?
-      feed.disconnect();
-      feedsService.destroy(feedId);
-    });
+    feed.disconnect();
+    feedsService.destroy(feedId);
   };
 
   that.ignoreFeed = function(feedId) {
@@ -140,8 +134,9 @@ export const createActionService = (
       // If we are muting the main feed (the only publisher that can be
       // actually muted) raise a signal
       if (type === 'audio' && feed.isPublisher) {
-        // TODO: dispatch an event?
-        //  callback = function() { $rootScope.$broadcast('muted.byUser'); };
+        callback = function() {
+          eventsService.emitEvent({ type: 'muted', data: { by: 'user' } });
+        };
       }
       feed.setEnabledChannel(type, false, { after: callback });
     } else {
