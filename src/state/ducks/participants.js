@@ -57,10 +57,9 @@ const reducer = function(state = initialState, action) {
     }
 
     case PARTICIPANT_STREAM_SET: {
-      const participant = {...payload, stream_timestamp: new Date()};
       return {
         ...state,
-        [participant.id]: participant
+        [payload]: { ...state[payload], stream_timestamp: new Date() }
       };
     }
 
