@@ -279,26 +279,23 @@ export const createFeedFactory = (
       that.connection.setConfig({
         values: config,
         ok: function() {
-          // TODO: is setTimeout needed?
-          window.setTimeout(function() {
-            if (type === 'audio' && enabled === false) {
-              speaking = false;
-            }
-            if (options.after) {
-              options.after();
-            }
-            // Send the new status to remote peers
-            dataChannelService.sendStatus(that, { exclude: 'picture' });
+          if (type === 'audio' && enabled === false) {
+            speaking = false;
+          }
+          if (options.after) {
+            options.after();
+          }
+          // Send the new status to remote peers
+          dataChannelService.sendStatus(that, { exclude: 'picture' });
 
-            // send 'channel' event with status (enabled or disabled)
-            eventsService.emitEvent({
-              type: 'channel',
-              data: {
-                channel: type,
-                status: enabled,
-                peerconnection: that.connection.pluginHandle.webrtcStuff.pc
-              }
-            });
+          // send 'channel' event with status (enabled or disabled)
+          eventsService.emitEvent({
+            type: 'channel',
+            data: {
+              channel: type,
+              status: enabled,
+              peerconnection: that.connection.pluginHandle.webrtcStuff.pc
+            }
           });
         }
       });
