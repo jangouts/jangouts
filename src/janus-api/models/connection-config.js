@@ -66,21 +66,27 @@ export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, o
    */
   that.confirm = function() {
     return new Promise(function(resolve, reject) {
-      setTimeout(function() {
-        if (requested === null) {
-          console.error("I haven't sent a config. Where does this confirmation come from?");
-          reject();
-        } else {
-          current = requested;
-          requested = null;
-          console.log("Connection configured", current);
-          if (okCallback) { okCallback(); }
-          if (differsFromWanted(current)) {
-            configure();
-          }
-          resolve();
+      if (requested === null) {
+        console.error(
+          
+          "I haven't sent a config. Where does this confirmation come from?"
+        
+        );
+        reject();
+      } else {
+        current = requested;
+        requested = null;
+        console.log('Connection configured', current);
+        if (okCallback) {
+         
+          okCallback();
+       
         }
-      });
+        if (differsFromWanted(current)) {
+          configure();
+        }
+        resolve();
+      }
     });
   };
 

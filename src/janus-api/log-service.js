@@ -9,13 +9,11 @@ export const createLogService = eventsService => {
   let entries = [];
   let that = {};
 
-  that.add = entry => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        entries.push(entry);
-        eventsService.emitEvent({ type: 'log', entry });
-        resolve();
-      });
+  that.add = (entry) => {
+    return new Promise((resolve) => {
+      entries.push(entry);
+      eventsService.emitEvent({ type: 'log', entry });
+      resolve();
     });
   };
 
