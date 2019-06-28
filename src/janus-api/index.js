@@ -1,9 +1,9 @@
 /**
-* Copyright (c) [2019] SUSE Linux
-*
-* This software may be modified and distributed under the terms
-* of the MIT license.  See the LICENSE.txt file for details.
-*/
+ * Copyright (c) [2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
 
 /**
  * This module offers an API to interact with a Janus server.
@@ -20,7 +20,7 @@ import { createActionService } from './action-service';
 // TODO: get this value from the configuration
 const DEFAULT_URL = 'ws://localhost:8188/janus';
 
-export default (function () {
+export default (function() {
   var that = {
     dataChannelService: null,
     eventsService: null,
@@ -36,7 +36,10 @@ export default (function () {
     that.eventsService = createEventsService();
     that.feedsService = createFeedsService();
     that.logService = createLogService();
-    that.dataChannelService = createDataChannelService(that.feedsService, that.logService);
+    that.dataChannelService = createDataChannelService(
+      that.feedsService,
+      that.logService
+    );
 
     that.actionService = createActionService(
       that.feedsService,
@@ -59,6 +62,7 @@ export default (function () {
     that.roomService.setRoom(room);
     return that.roomService.enter(username);
   };
+  that.getEventsSubject = () => that.eventsService.getEventsSubject();
 
   return that;
 })();
