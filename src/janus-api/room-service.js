@@ -192,8 +192,7 @@ export const createRoomService = (config, feedsService, dataChannelService, even
       },
       consentDialog: function(on) {
         console.log("Consent dialog should be " + (on ? "on" : "off") + " now");
-        // TODO: event?
-        // $$rootScope.$broadcast('consentDialog.changed', on);
+        eventsService.emitEvent({ type: 'consentDialog', data: { on: on } });
         if(!on){
           //notify if joined muted
           if (startMuted) {
@@ -260,8 +259,10 @@ export const createRoomService = (config, feedsService, dataChannelService, even
           // The room has been destroyed
         } else if (event === "destroyed") {
           console.log("The room has been destroyed!");
-          // TODO: event?
-          //$$rootScope.$broadcast('room.destroy');
+          eventsService.emitEvent({
+            type: 'room',
+            data: { status: 'destroyed' }
+          });
         } else if (event === "event") {
           // Any new feed to attach to?
           if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
@@ -280,8 +281,10 @@ export const createRoomService = (config, feedsService, dataChannelService, even
             // The server reported an error
           } else if(msg.error !== undefined && msg.error !== null) {
             console.log("Error message from server" + msg.error);
-            //TODO: event?
-            //$$rootScope.$broadcast('room.error', msg.error);
+            eventsService.emitEvent({
+              type: 'room',
+              data: { status: 'error', error: msg.error }
+            });
           }
         }
 
