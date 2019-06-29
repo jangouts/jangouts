@@ -1,10 +1,18 @@
 import reducer, { actionTypes, actionCreators } from './participants';
 
-describe('reducer', () => {
-  const initialState = {
-    user: { username: 'user' }
-  };
+const participant = {
+  id: 1234,
+  display: undefined,
+  isPublisher: undefined,
+  isLocalScreen: undefined,
+  isIgnored: undefined
+};
 
+const initialState = {
+  1234: participant
+};
+
+describe('reducer', () => {
   it('does not handle unknown action', () => {
     const action = {
       type: 'UNKNOWN',
@@ -17,51 +25,80 @@ describe('reducer', () => {
   it('handles PARTICIPANT_JOINED', () => {
     const action = {
       type: actionTypes.PARTICIPANT_JOINED,
-      payload: { id: 'otherUser', username: 'otherUser' }
+      payload: { id: 5678, username: 'otherUser' }
     };
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      otherUser: { id: 'otherUser', username: 'otherUser' }
+      5678: { id: 5678, username: 'otherUser', stream_timestamp: null }
     });
   });
 
   it('handles PARTICIPANT_DETACHED', () => {
     const action = {
       type: actionTypes.PARTICIPANT_DETACHED,
-      payload: { id: 'user', username: 'user' }
+      payload: 1234
     };
 
     expect(reducer(initialState, action)).toEqual({});
+  });
+
+  it('handles PARTICIPANT_STREAM_SET', () => {
+    const timestamp = new Date('2019-06-28T08:00:00.000Z');
+    const action = {
+      type: actionTypes.PARTICIPANT_STREAM_SET,
+      payload: 1234,
+    };
+    jest
+      .spyOn(global.Date, 'now')
+      .mockImplementationOnce(() => timestamp)
+
+    const updatedParticipant = reducer(initialState, action)["1234"];
+
+    expect(updatedParticipant["stream_timestamp"]).toEqual(timestamp)
   });
 });
 
 describe('action creators', () => {
   describe('#addParticipant', () => {
     it('creates an action to add a participant', () => {
-      const participant = { id: 'jangouts', username: 'jangouts' };
-      const expectedAction = {
-        type: actionTypes.PARTICIPANT_JOINED,
-        payload: participant
-      };
+      const newParticipant = { ...participant, notExpectedKey: true }
 
-      expect(actionCreators.addParticipant(participant)).toEqual(
-        expectedAction
-      );
+      const action = actionCreators.addParticipant(newParticipant);
+      expect(action.type).toEqual(actionTypes.PARTICIPANT_JOINED);
+    });
+
+    it('includes the participant in the action payload', () => {
+      const newParticipant = { ...participant, notExpectedKey: true }
+
+      const action = actionCreators.addParticipant(newParticipant);
+      expect(action.payload).toEqual(participant);
     });
   });
 
   describe('#removeParticipant', () => {
-    it('creates an action to detach a participant', () => {
-      const participant = { id: 'jangouts', username: 'jangouts' };
-      const expectedAction = {
-        type: actionTypes.PARTICIPANT_DETACHED,
-        payload: participant
-      };
+    it('creates an action to remove a participant', () => {
+      const newParticipant = { ...participant, notExpectedKey: true }
 
-      expect(actionCreators.removeParticipant(participant)).toEqual(
-        expectedAction
-      );
+      const action = actionCreators.removeParticipant(newParticipant);
+      expect(action.type).toEqual(actionTypes.PARTICIPANT_DETACHED);
+    });
+
+    it('includes the participant id in the action payload', () => {
+      const action = actionCreators.removeParticipant(participant.id);
+      expect(action.payload).toEqual(participant.id);
+    });
+  });
+
+  describe('#setStream', () => {
+    it('creates an action to set/update the participant stream', () => {
+      const action = actionCreators.setStream(participant);
+      expect(action.type).toEqual(actionTypes.PARTICIPANT_STREAM_SET);
+    });
+
+    it('includes the participant id in the action payload', () => {
+      const action = actionCreators.setStream(participant.id);
+      expect(action.payload).toEqual(participant.id);
     });
   });
 });
