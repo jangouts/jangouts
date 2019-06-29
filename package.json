@@ -24,6 +24,12 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "prettier": {
+    "arrowParens": "always",
+    "jsxBracketSameLine": true,
+    "printWidth": 100,
+    "singleQuote": true
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
