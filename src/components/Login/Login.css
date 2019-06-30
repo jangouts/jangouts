@@ -1,8 +1,8 @@
 .Login {
   background-color: #272727;
-  background: url('../../assets/login-bg.jpg');
+  background-image: url('../../assets/login-bg.jpg');
   box-sizing: border-box;
-  color: #FFFFFF;
+  color: #fff;
   display: flex;
   height: 100vh;
   text-align: center;
