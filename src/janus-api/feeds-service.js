@@ -1,11 +1,11 @@
 /**
-* Copyright (c) [2019] SUSE Linux
-*
-* This software may be modified and distributed under the terms
-* of the MIT license.  See the LICENSE.txt file for details.
-*/
+ * Copyright (c) [2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
 
-export const createFeedsService = eventsService => {
+export const createFeedsService = (eventsService) => {
   let mainFeed = null;
   let feeds = {};
   let that = {};
@@ -99,21 +99,21 @@ export const createFeedsService = eventsService => {
    * @returns {Array<Feed>} all registered publisher feeds
    */
   that.publisherFeeds = function() {
-    return that.allFeeds().filter(f => f.isPublisher);
+    return that.allFeeds().filter((f) => f.isPublisher);
   };
 
   /**
    * @returns {Array<Feed>} all registered feeds sharing local screen
    */
   that.localScreenFeeds = function() {
-    return that.allFeeds().filter(f => f.isLocalScreen);
+    return that.allFeeds().filter((f) => f.isLocalScreen);
   };
 
   /**
    * @returns {Feed} registered feed that speaks or null
    */
   that.speakingFeed = function() {
-    return that.allFeeds().find(f => f.getSpeaking());
+    return that.allFeeds().find((f) => f.getSpeaking());
   };
 
   return that;

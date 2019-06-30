@@ -29,7 +29,7 @@ export const createActionService = (
   };
 
   that.leaveRoom = function() {
-    feedsService.allFeeds().forEach(f => that.destroyFeed(f.id));
+    feedsService.allFeeds().forEach((f) => that.destroyFeed(f.id));
   };
 
   that.publishScreen = function(feedId, display, connection) {

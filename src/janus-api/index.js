@@ -36,10 +36,7 @@ export default (function() {
     that.eventsService = createEventsService();
     that.feedsService = createFeedsService(that.eventsService);
     that.logService = createLogService(that.eventsService);
-    that.dataChannelService = createDataChannelService(
-      that.feedsService,
-      that.logService
-    );
+    that.dataChannelService = createDataChannelService(that.feedsService, that.logService);
 
     that.actionService = createActionService(
       that.feedsService,
@@ -63,8 +60,8 @@ export default (function() {
     return that.roomService.enter(username);
   };
   that.getEventsSubject = () => that.eventsService.getEventsSubject();
-  that.sendMessage = text => that.actionService.writeChatMessage(text);
-  that.getFeedStream = feedId => {
+  that.sendMessage = (text) => that.actionService.writeChatMessage(text);
+  that.getFeedStream = (feedId) => {
     let feed = that.feedsService.find(feedId);
     return feed !== null ? feed.getStream() : null;
   };

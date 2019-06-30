@@ -1,9 +1,9 @@
 /**
-* Copyright (c) [2019] SUSE Linux
-*
-* This software may be modified and distributed under the terms
-* of the MIT license.  See the LICENSE.txt file for details.
-*/
+ * Copyright (c) [2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
 
 import { createFeedsService } from './feeds-service';
 
@@ -122,9 +122,7 @@ describe('#allFeeds', () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
-    expect(feedsService.allFeeds()).toEqual(
-      expect.arrayContaining([firstFeed, secondFeed])
-    );
+    expect(feedsService.allFeeds()).toEqual(expect.arrayContaining([firstFeed, secondFeed]));
   });
 
   describe('when there are no feeds', () => {
@@ -140,9 +138,7 @@ describe('#publisherFeeds', () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
-    expect(feedsService.publisherFeeds()).toEqual(
-      expect.arrayContaining([firstFeed])
-    );
+    expect(feedsService.publisherFeeds()).toEqual(expect.arrayContaining([firstFeed]));
   });
 
   describe('when there are no feeds', () => {
@@ -158,9 +154,7 @@ describe('#localScreenFeeds', () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
-    expect(feedsService.localScreenFeeds()).toEqual(
-      expect.arrayContaining([firstFeed])
-    );
+    expect(feedsService.localScreenFeeds()).toEqual(expect.arrayContaining([firstFeed]));
   });
 
   describe('when there are no feeds', () => {

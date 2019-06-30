@@ -1,9 +1,9 @@
 /**
-* Copyright (c) [2019] SUSE Linux
-*
-* This software may be modified and distributed under the terms
-* of the MIT license.  See the LICENSE.txt file for details.
-*/
+ * Copyright (c) [2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
 
 import DOMPurify from 'dompurify';
 
@@ -15,19 +15,19 @@ export const createLogEntry = (type, content) => {
   };
 
   that.text = function() {
-    return that[that.type + "Text"]();
+    return that[that.type + 'Text']();
   };
 
   that.muteRequestText = function() {
     var res;
 
     if (that.content.source.isPublisher) {
-      res = "You have muted ";
+      res = 'You have muted ';
     } else {
-      res = that.content.source.display + " has muted ";
+      res = that.content.source.display + ' has muted ';
     }
     if (that.content.target.isPublisher) {
-      res += "you";
+      res += 'you';
     } else {
       res += that.content.target.display;
     }
@@ -39,31 +39,31 @@ export const createLogEntry = (type, content) => {
   };
 
   that.publishScreenText = function() {
-    return "Screen sharing started";
+    return 'Screen sharing started';
   };
 
   that.destroyFeedText = function() {
     if (that.content.feed.isLocalScreen) {
-      return "Screen sharing stopped";
+      return 'Screen sharing stopped';
     } else {
-      return that.content.feed.display + " has left the room";
+      return that.content.feed.display + ' has left the room';
     }
   };
 
   that.newRemoteFeedText = function() {
-    return that.content.feed.display + " has joined the room";
+    return that.content.feed.display + ' has joined the room';
   };
 
   that.ignoreFeedText = function() {
-    return "You are ignoring " + that.content.feed.display + " now";
+    return 'You are ignoring ' + that.content.feed.display + ' now';
   };
 
   that.stopIgnoringFeedText = function() {
-    return "You are not longer ignoring " + that.content.feed.display;
+    return 'You are not longer ignoring ' + that.content.feed.display;
   };
 
   that.hasText = function() {
-    return that.text() !== "";
+    return that.text() !== '';
   };
 
   return that;

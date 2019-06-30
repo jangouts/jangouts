@@ -1,17 +1,13 @@
 /**
-* Copyright (c) [2015-2019] SUSE Linux
-*
-* This software may be modified and distributed under the terms
-* of the MIT license.  See the LICENSE.txt file for details.
-*/
+ * Copyright (c) [2015-2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
 
 import { createLogEntry } from './models/log-entry';
 
-export const createDataChannelService = (
-  feedsService,
-  logService,
-  eventsService
-) => {
+export const createDataChannelService = (feedsService, logService, eventsService) => {
   let that = {};
 
   that.receiveMessage = (data, remoteId) => {
@@ -57,7 +53,7 @@ export const createDataChannelService = (
     }
   };
 
-  that.sendMuteRequest = feed => {
+  that.sendMuteRequest = (feed) => {
     var content = {
       target: feed.id
     };
@@ -74,7 +70,7 @@ export const createDataChannelService = (
     that.sendMessage('statusUpdate', content);
   };
 
-  that.sendChatMessage = text => {
+  that.sendChatMessage = (text) => {
     that.sendMessage('chatMsg', text);
   };
 

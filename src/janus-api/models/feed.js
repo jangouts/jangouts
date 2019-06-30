@@ -7,10 +7,7 @@
 
 import { createSpeakObserver } from './speak-observer';
 
-export const createFeedFactory = (
-  dataChannelService,
-  eventsService
-) => attrs => {
+export const createFeedFactory = (dataChannelService, eventsService) => (attrs) => {
   attrs = attrs || {};
   let that = {
     /** @var {integer} id of feed */
@@ -382,13 +379,7 @@ export const createFeedFactory = (
       options.exclude = [];
     }
 
-    var attrs = [
-      'audioEnabled',
-      'videoEnabled',
-      'speaking',
-      'picture',
-      'display'
-    ];
+    var attrs = ['audioEnabled', 'videoEnabled', 'speaking', 'picture', 'display'];
     var status = {};
 
     attrs.forEach(function(attr) {

@@ -1,9 +1,9 @@
 /**
-* Copyright (c) [2019] SUSE Linux
-*
-* This software may be modified and distributed under the terms
-* of the MIT license.  See the LICENSE.txt file for details.
-*/
+ * Copyright (c) [2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
 
 /**
  * Creates a connection config object which handles the status of the configuration
@@ -17,11 +17,11 @@
 export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, ok) {
   var current = {};
   var requested = null;
-  var wanted = {audio: true, video: true, data: true};
+  var wanted = { audio: true, video: true, data: true };
   var okCallback = null;
   Object.assign(wanted, wantedInit);
   // Initial configure
-  configure({jsep: jsep, ok: ok});
+  configure({ jsep: jsep, ok: ok });
   let that = {};
 
   /**
@@ -54,7 +54,7 @@ export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, o
     Object.assign(wanted, current, options.values);
 
     if (requested === null && differsFromWanted(oldWanted)) {
-      configure({ok: options.ok});
+      configure({ ok: options.ok });
     }
   };
 
@@ -67,9 +67,7 @@ export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, o
   that.confirm = function() {
     return new Promise(function(resolve, reject) {
       if (requested === null) {
-        console.error(
-          "I haven't sent a config. Where does this confirmation come from?"
-        );
+        console.error("I haven't sent a config. Where does this confirmation come from?");
         reject();
       } else {
         current = requested;
@@ -92,26 +90,26 @@ export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, o
   };
 
   function differsFromWanted(obj) {
-    return (obj.video !== wanted.video || obj.audio !== wanted.audio);
+    return obj.video !== wanted.video || obj.audio !== wanted.audio;
   }
 
   function configure(options) {
     options = options || {};
-    var config = {request: "configure"};
+    var config = { request: 'configure' };
     requested = {};
 
     Object.assign(requested, current, wanted);
     Object.assign(config, requested);
 
     pluginHandle.send({
-      "message": config,
+      message: config,
       jsep: options.jsep,
       success: function() {
         okCallback = options.ok;
       },
       error: function() {
         requested = null;
-        console.error("Config request not sent");
+        console.error('Config request not sent');
       }
     });
   }

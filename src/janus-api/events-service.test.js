@@ -11,14 +11,12 @@ describe('#emitEvent', () => {
   test('emits an event with the configured room and user', () => {
     let eventsService = createEventsService();
     const subscriber = jest.fn();
-    const event = { type: "request", data: "payload" };
-    eventsService.setRoom("room1");
-    eventsService.setUser("user1");
+    const event = { type: 'request', data: 'payload' };
+    eventsService.setRoom('room1');
+    eventsService.setUser('user1');
     eventsService.getEventsSubject().subscribe(subscriber);
 
     eventsService.emitEvent(event);
-    expect(subscriber).toHaveBeenCalledWith(
-      { ...event, user: "user1", room: "room1" }
-    );
+    expect(subscriber).toHaveBeenCalledWith({ ...event, user: 'user1', room: 'room1' });
   });
 });
