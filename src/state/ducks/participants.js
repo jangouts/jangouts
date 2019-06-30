@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) [2015-2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
+
 const PARTICIPANT_JOINED = 'jangouts/participant/JOIN';
 const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
 const PARTICIPANT_STREAM_SET = 'jangouts/participant/SET_STREAM';
