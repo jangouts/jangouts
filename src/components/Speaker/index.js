@@ -1,1 +1,1 @@
-export {default} from './Speaker';
+export { default } from './Speaker';

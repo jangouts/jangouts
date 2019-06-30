@@ -12,10 +12,7 @@ import Room from '../Room';
 import './App.css';
 
 janusApi.setup();
-const eventsHandler = addEventsHandlers(
-  janusApi.getEventsSubject(),
-  store.dispatch
-);
+const eventsHandler = addEventsHandlers(janusApi.getEventsSubject(), store.dispatch);
 
 function App() {
   return (

@@ -15,7 +15,7 @@ describe('LoginForm component', () => {
     const testRenderer = TestRenderer.create(<LoginForm />);
     const inputs = testRenderer.root.findAllByType('input');
 
-    expect(inputs.map(input => input.props.name)).toContain('username');
+    expect(inputs.map((input) => input.props.name)).toContain('username');
   });
 
   it('has a selector to choose the room', () => {

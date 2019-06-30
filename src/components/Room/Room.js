@@ -1,5 +1,5 @@
 import React from 'react';
-import {WidthProvider, Responsive} from 'react-grid-layout';
+import { WidthProvider, Responsive } from 'react-grid-layout';
 
 import Header from '../Header';
 import Sidebar from '../Sidebar';
@@ -20,17 +20,13 @@ function Room() {
       <Sidebar />
       <Header />
       <ResponsiveGridLayout className="layout" layouts={layouts}>
-        <div
-          key="speaker"
-          data-grid={{w: 6, h: 3, x: 0, y: 0, minW: 2, minH: 3}}>
+        <div key="speaker" data-grid={{ w: 6, h: 3, x: 0, y: 0, minW: 2, minH: 3 }}>
           <Speaker />
         </div>
-        <div
-          key="participants"
-          data-grid={{w: 4, h: 3, x: 6, y: 0, minW: 2, minH: 3}}>
+        <div key="participants" data-grid={{ w: 4, h: 3, x: 6, y: 0, minW: 2, minH: 3 }}>
           <Participants />
         </div>
-        <div key="chat" data-grid={{w: 12, h: 3, x: 0, y: 3, minW: 2, minH: 3}}>
+        <div key="chat" data-grid={{ w: 12, h: 3, x: 0, y: 3, minW: 2, minH: 3 }}>
           <Chat />
         </div>
       </ResponsiveGridLayout>

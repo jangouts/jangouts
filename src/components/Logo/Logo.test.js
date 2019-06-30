@@ -11,34 +11,33 @@ describe('Logo component', () => {
     ReactDOM.unmountComponentAtNode(div);
   });
 
-
-  describe('props', () =>{
-    it('uses "100%" as width when not given', ()=> {
+  describe('props', () => {
+    it('uses "100%" as width when not given', () => {
       const testRenderer = TestRenderer.create(<Logo />);
       const props = testRenderer.toJSON().props;
 
-      expect(props.width).toBe("100%");
-    })
-
-    it('uses the given width', () => {
-      const testRenderer = TestRenderer.create(<Logo width={"300"} />);
-      const props = testRenderer.toJSON().props;
-
-      expect(props.width).toBe("300");
+      expect(props.width).toBe('100%');
     });
 
-    it('uses "Jangouts logo" as alt when not given', ()=> {
+    it('uses the given width', () => {
+      const testRenderer = TestRenderer.create(<Logo width={'300'} />);
+      const props = testRenderer.toJSON().props;
+
+      expect(props.width).toBe('300');
+    });
+
+    it('uses "Jangouts logo" as alt when not given', () => {
       const testRenderer = TestRenderer.create(<Logo />);
       const props = testRenderer.toJSON().props;
 
-      expect(props.alt).toBe("Jangouts logo");
-    })
+      expect(props.alt).toBe('Jangouts logo');
+    });
 
     it('uses the given alt', () => {
-      const testRenderer = TestRenderer.create(<Logo alt={"The logo"} />);
+      const testRenderer = TestRenderer.create(<Logo alt={'The logo'} />);
       const props = testRenderer.toJSON().props;
 
-      expect(props.alt).toBe("The logo");
+      expect(props.alt).toBe('The logo');
     });
   });
 });

@@ -11,7 +11,7 @@ import './LoginForm.css';
  * @returns {Array}
  */
 function roomOptions(rooms) {
-  return rooms.map(r => (
+  return rooms.map((r) => (
     <option key={r.id} value={r.id}>
       {r.description}
     </option>
@@ -44,14 +44,13 @@ function LoginForm() {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    janusApi.getRooms().then(r => setRooms(r));
+    janusApi.getRooms().then((r) => setRooms(r));
   }, []);
 
   return (
     <form
       className="LoginForm"
-      onSubmit={event => handleSubmit(event, dispatch, userInput, roomSelector)}
-    >
+      onSubmit={(event) => handleSubmit(event, dispatch, userInput, roomSelector)}>
       <div className="form-row">
         <label htmlFor="username">Username</label>
         <input type="text" id="username" name="username" ref={userInput} />
