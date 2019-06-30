@@ -1,5 +1,6 @@
 const PARTICIPANT_JOINED = 'jangouts/participant/JOIN';
 const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
+const PARTICIPANT_STREAM_SET = 'jangouts/participant/SET_STREAM';
 
 const addParticipant = participant => {
   const { id, display, isPublisher, isLocalScreen, isIgnored } = participant;
@@ -15,14 +16,21 @@ const removeParticipant = participantId => ({
   payload: participantId
 });
 
+const setStream = (participantId) => ({
+  type: PARTICIPANT_STREAM_SET,
+  payload: participantId
+});
+
 const actionCreators = {
   addParticipant,
-  removeParticipant
+  removeParticipant,
+  setStream
 };
 
 const actionTypes = {
   PARTICIPANT_JOINED,
-  PARTICIPANT_DETACHED
+  PARTICIPANT_DETACHED,
+  PARTICIPANT_STREAM_SET
 };
 
 const initialState = {};
@@ -31,8 +39,7 @@ const reducer = function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case PARTICIPANT_JOINED: {
-      const participant = payload;
-
+      const participant = {...payload, stream_timestamp: null };
       return {
         ...state,
         [participant.id]: participant
@@ -48,6 +55,14 @@ const reducer = function(state = initialState, action) {
           return obj;
         }, {});
     }
+
+    case PARTICIPANT_STREAM_SET: {
+      return {
+        ...state,
+        [payload]: { ...state[payload], stream_timestamp: new Date(Date.now()) }
+      };
+    }
+
     default:
       return state;
   }

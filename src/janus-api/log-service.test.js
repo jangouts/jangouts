@@ -17,7 +17,7 @@ describe('#add', () => {
     let logService = createLogService(eventsService);
     return logService.add(entry).then(() => {
       expect(logService.allEntries()).toStrictEqual([entry]);
-      expect(emitEvent).toHaveBeenCalledWith({ type: 'log', entry });
+      expect(emitEvent).toHaveBeenCalledWith({ type: 'log', data: entry });
     });
   });
 });

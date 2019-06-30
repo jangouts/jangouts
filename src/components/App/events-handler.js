@@ -9,17 +9,20 @@ import { actionCreators as actions } from '../../state/ducks';
 
 export const addEventsHandlers = (subject, dispatchFn) => {
   const handlers = {
-    error: ({error}) => {
-      dispatchFn({type: 'error'});
+    error: ({ error }) => {
+      dispatchFn({ type: 'error' });
     },
-    log: (event) => {
-      dispatchFn(actions.messages.receive(event.entry));
+    log: ({ data }) => {
+      dispatchFn(actions.messages.receive(data));
     },
-    addFeed: (event) => {
-      dispatchFn(actions.participants.addParticipant(event.feed));
+    addFeed: ({ data }) => {
+      dispatchFn(actions.participants.addParticipant(data));
     },
-    removeFeed: (event) => {
-      dispatchFn(actions.participants.removeParticipant(event.feedId));
+    removeFeed: ({ data }) => {
+      dispatchFn(actions.participants.removeParticipant(data.feedId));
+    },
+    stream: ({ data }) => {
+      dispatchFn(actions.participants.setStream(data.feedId));
     }
   };
 
