@@ -1,7 +1,4 @@
-import reducer, {
-  actionTypes as types,
-  actionCreators as actions
-} from './room';
+import reducer, { actionTypes as types, actionCreators as actions } from './room';
 
 const username = 'jangouts';
 const room = { id: 'misc', name: 'Misc' };

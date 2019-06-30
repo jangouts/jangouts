@@ -1,9 +1,7 @@
 import { combineReducers } from 'redux';
 
 import roomReducer, { actionCreators as roomActions } from './room';
-import participantsReducer, {
-  actionCreators as participantsActions
-} from './participants';
+import participantsReducer, { actionCreators as participantsActions } from './participants';
 import messagesReducer, { actionCreators as messagesActions } from './messages';
 
 export const actionCreators = {

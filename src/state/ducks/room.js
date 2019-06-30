@@ -14,17 +14,17 @@ const login = (username, roomId) => {
       .then(() => {
         dispatch(loginSuccess({ ...room, username }));
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch(loginFailure());
       });
   };
 };
 
-const loginRequest = room => ({
+const loginRequest = (room) => ({
   type: ROOM_LOGIN,
   payload: { ...room, logingIn: true }
 });
-const loginSuccess = room => ({
+const loginSuccess = (room) => ({
   type: ROOM_LOGIN,
   payload: { ...room, logedIn: true }
 });

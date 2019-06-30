@@ -9,7 +9,7 @@ const send = function(text) {
   };
 };
 
-const receive = message => ({
+const receive = (message) => ({
   type: MESSAGE_RECEIVED,
   payload: message
 });
