@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) [2015-2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
+
 import React, { useState, useEffect } from 'react';
 import janusApi from '../../janus-api';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +18,7 @@ import './LoginForm.css';
  * @returns {Array}
  */
 function roomOptions(rooms) {
-  return rooms.map(r => (
+  return rooms.map((r) => (
     <option key={r.id} value={r.id}>
       {r.description}
     </option>
@@ -44,14 +51,13 @@ function LoginForm() {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    janusApi.getRooms().then(r => setRooms(r));
+    janusApi.getRooms().then((r) => setRooms(r));
   }, []);
 
   return (
     <form
       className="LoginForm"
-      onSubmit={event => handleSubmit(event, dispatch, userInput, roomSelector)}
-    >
+      onSubmit={(event) => handleSubmit(event, dispatch, userInput, roomSelector)}>
       <div className="form-row">
         <label htmlFor="username">Username</label>
         <input type="text" id="username" name="username" ref={userInput} />

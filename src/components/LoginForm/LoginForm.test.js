@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) [2015-2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestRenderer from 'react-test-renderer';
@@ -15,7 +22,7 @@ describe('LoginForm component', () => {
     const testRenderer = TestRenderer.create(<LoginForm />);
     const inputs = testRenderer.root.findAllByType('input');
 
-    expect(inputs.map(input => input.props.name)).toContain('username');
+    expect(inputs.map((input) => input.props.name)).toContain('username');
   });
 
   it('has a selector to choose the room', () => {

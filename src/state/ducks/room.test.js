@@ -1,7 +1,11 @@
-import reducer, {
-  actionTypes as types,
-  actionCreators as actions
-} from './room';
+/**
+ * Copyright (c) [2015-2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
+
+import reducer, { actionTypes as types, actionCreators as actions } from './room';
 
 const username = 'jangouts';
 const room = { id: 'misc', name: 'Misc' };

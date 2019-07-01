@@ -1,9 +1,9 @@
 /**
-* Copyright (c) [2019] SUSE Linux
-*
-* This software may be modified and distributed under the terms
-* of the MIT license.  See the LICENSE.txt file for details.
-*/
+ * Copyright (c) [2015-2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
 
 import { createDataChannelService } from './data-channel-service';
 import { createLogService } from './log-service';
@@ -31,20 +31,16 @@ describe('#sendChatMessage', () => {
 
   test('sends the message through the main connection', () => {
     let logService = createLogService;
-    let dataService = createDataChannelService(
-      feedsService,
-      logService,
-      eventsService
-    );
+    let dataService = createDataChannelService(feedsService, logService, eventsService);
 
-    dataService.sendChatMessage("Hello Dolly!");
+    dataService.sendChatMessage('Hello Dolly!');
     var sentData = mainConnection.sendData.mock.calls;
-    var parsed = JSON.parse(sentData[0][0]["text"]);
+    var parsed = JSON.parse(sentData[0][0]['text']);
 
     expect(sentData.length).toBe(1);
     expect(parsed).toStrictEqual({
-      "type": "chatMsg",
-      "content": "Hello Dolly!"
+      type: 'chatMsg',
+      content: 'Hello Dolly!'
     });
   });
 });
@@ -60,11 +56,7 @@ describe('#receiveMessage', () => {
 
   const feedsService = createFeedsService(eventsService);
 
-  const dataService = createDataChannelService(
-    feedsService,
-    logService,
-    eventsService
-  );
+  const dataService = createDataChannelService(feedsService, logService, eventsService);
 
   const createFeed = createFeedFactory(dataService, eventsService);
 
@@ -72,7 +64,7 @@ describe('#receiveMessage', () => {
     getId: () => 1,
     getPlugin: () => 'videoroom',
     // Execute the callback if a confirmation is received
-    send: options => {
+    send: (options) => {
       options['success']();
     }
   };

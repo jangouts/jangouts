@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2019] SUSE Linux
+ * Copyright (c) [2015-2019] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -29,7 +29,7 @@ export const createActionService = (
   };
 
   that.leaveRoom = function() {
-    feedsService.allFeeds().forEach(f => that.destroyFeed(f.id));
+    feedsService.allFeeds().forEach((f) => that.destroyFeed(f.id));
   };
 
   that.publishScreen = function(feedId, display, connection) {

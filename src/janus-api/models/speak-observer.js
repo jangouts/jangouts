@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2019] SUSE Linux
+ * Copyright (c) [2015-2019] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -42,13 +42,13 @@ export const createSpeakObserver = (stream, options) => {
   var history = new Array(10).fill(0);
 
   that.start = function() {
-    var loop = window.setInterval(function () {
+    var loop = window.setInterval(function() {
       // No clue why, but in some situations (which seems to be different in
       // every browser) audioContext is suspended.
       //
       // For that reason, using a ScriptProcessor is unreliable and we have to
       // use setTimeout, including this code to manually wake up the context
-      if (audioContext.state === "suspended") {
+      if (audioContext.state === 'suspended') {
         audioContext.resume();
       } else {
         poll();
@@ -71,18 +71,22 @@ export const createSpeakObserver = (stream, options) => {
     if (audioDetected && !speaking) {
       // Make sure we have been above the threshold in, at least, 2 of the 3
       // previous iterations
-      history.slice(history.length - 3).reduce((s, i) => (s + i), 0);
+      history.slice(history.length - 3).reduce((s, i) => s + i, 0);
       if (sum >= 2) {
         speaking = true;
-        if (options.start) { options.start(); }
+        if (options.start) {
+          options.start();
+        }
       }
     } else if (!audioDetected && speaking) {
       // Make sure we have been below the threshold for the whole history
       // (i.e. 10 iterations)
-      sum = history.reduce((s, i) => (s + i), 0);
+      sum = history.reduce((s, i) => s + i, 0);
       if (sum === 0) {
         speaking = false;
-        if (options.stop) { options.stop(); }
+        if (options.stop) {
+          options.stop();
+        }
       }
     }
     history.shift();
@@ -93,7 +97,7 @@ export const createSpeakObserver = (stream, options) => {
     analyser.getFloatFrequencyData(fftBins);
     // Skip the first 4... simply because hark does it
     // (too low frequencies to be voice, I guess)
-    for(var i=4, ii=fftBins.length; i < ii; i++) {
+    for (var i = 4, ii = fftBins.length; i < ii; i++) {
       if (fftBins[i] > threshold && fftBins[i] < 0) {
         return true;
       }

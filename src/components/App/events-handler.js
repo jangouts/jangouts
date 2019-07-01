@@ -1,9 +1,9 @@
 /**
-* Copyright (c) [2019] SUSE Linux
-*
-* This software may be modified and distributed under the terms
-* of the MIT license.  See the LICENSE.txt file for details.
-*/
+ * Copyright (c) [2015-2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
 
 import { actionCreators as actions } from '../../state/ducks';
 
@@ -27,7 +27,7 @@ export const addEventsHandlers = (subject, dispatchFn) => {
   };
 
   const defaultHandler = (event) => {
-    console.log("Unhandled event:", event.type, event);
+    console.log('Unhandled event:', event.type, event);
   };
 
   function handleEvent(event) {

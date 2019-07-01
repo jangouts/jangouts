@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) [2015-2019] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
+
 import janusApi from '../../janus-api';
 
 const ROOM_LOGIN = 'jangouts/room/LOGIN';
@@ -14,17 +21,17 @@ const login = (username, roomId) => {
       .then(() => {
         dispatch(loginSuccess({ ...room, username }));
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch(loginFailure());
       });
   };
 };
 
-const loginRequest = room => ({
+const loginRequest = (room) => ({
   type: ROOM_LOGIN,
   payload: { ...room, logingIn: true }
 });
-const loginSuccess = room => ({
+const loginSuccess = (room) => ({
   type: ROOM_LOGIN,
   payload: { ...room, logedIn: true }
 });

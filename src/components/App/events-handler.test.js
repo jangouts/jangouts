@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2019] SUSE Linux
+ * Copyright (c) [2015-2019] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -14,8 +14,8 @@ test('handles error events', () => {
   const dispatchFn = jest.fn();
   const subject = new Subject();
   addEventsHandlers(subject, dispatchFn);
-  subject.next({type: "error"});
-  expect(dispatchFn).toHaveBeenCalledWith({type: "error"});
+  subject.next({ type: 'error' });
+  expect(dispatchFn).toHaveBeenCalledWith({ type: 'error' });
 });
 
 test('handles log events', () => {
@@ -39,9 +39,7 @@ test('handles add feed events', () => {
   };
   addEventsHandlers(subject, dispatchFn);
   subject.next({ type: 'addFeed', data: feed });
-  expect(dispatchFn).toHaveBeenCalledWith(
-    actions.participants.addParticipant(feed)
-  );
+  expect(dispatchFn).toHaveBeenCalledWith(actions.participants.addParticipant(feed));
 });
 
 test('handles remove feed events', () => {
@@ -49,9 +47,7 @@ test('handles remove feed events', () => {
   const subject = new Subject();
   addEventsHandlers(subject, dispatchFn);
   subject.next({ type: 'removeFeed', data: { feedId: 1 } });
-  expect(dispatchFn).toHaveBeenCalledWith(
-    actions.participants.removeParticipant(1)
-  );
+  expect(dispatchFn).toHaveBeenCalledWith(actions.participants.removeParticipant(1));
 });
 
 test('handles "stream" events', () => {

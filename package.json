@@ -22,7 +22,28 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "prettier"
+    ]
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "jsxBracketSameLine": true,
+    "printWidth": 100,
+    "singleQuote": true
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard"
+    ],
+    "plugins": [
+      "stylelint-prettier"
+    ],
+    "rules": {
+      "prettier/prettier": true
+    },
+    "ignoreFiles": "src/assets/**"
   },
   "husky": {
     "hooks": {
@@ -34,6 +55,10 @@
       "*.js": [
         "eslint",
         "precise-commits",
+        "git add"
+      ],
+      "*.css": [
+        "stylelint --fix",
         "git add"
       ]
     }
@@ -51,10 +76,14 @@
     ]
   },
   "devDependencies": {
+    "eslint-config-prettier": "^6.0.0",
     "husky": "^2.4.1",
     "lint-staged": "^8.2.1",
     "precise-commits": "^1.0.2",
     "prettier": "^1.18.2",
-    "react-test-renderer": "^16.8.6"
+    "react-test-renderer": "^16.8.6",
+    "stylelint": "^10.1.0",
+    "stylelint-config-standard": "^18.3.0",
+    "stylelint-prettier": "^1.1.1"
   }
 }
