@@ -44,7 +44,7 @@
     "http-proxy": "~1.8.0",
     "jade": "~1.8.1",
     "jshint-stylish": "~1.0.0",
-    "lodash": "~3.2.0",
+    "lodash": "~4.17.15",
     "main-bower-files": "~2.5.0",
     "merge-stream": "~0.1.7",
     "protractor": "~1.7.0",
