@@ -40,7 +40,7 @@ const actionTypes = {
   PARTICIPANT_STREAM_SET
 };
 
-const initialState = {};
+export const initialState = {};
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;
