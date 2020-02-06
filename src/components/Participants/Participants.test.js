@@ -8,9 +8,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Participants from './Participants';
+import { renderWithRedux } from '../../setupTests';
+import { Janus } from '../../vendor/janus';
+
+jest.mock('../../janus-api');
+Janus.attachMediaStream = jest.fn();
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Participants />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  const participants = [{ id: 1, display: 'Jane' }];
+  const { getByText } = renderWithRedux(<Participants />, { initialState: { participants } });
+  expect(getByText('Jane')).toBeInTheDocument();
 });

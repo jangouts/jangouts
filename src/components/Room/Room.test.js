@@ -8,9 +8,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Room from './Room';
+import { renderWithRedux } from '../../setupTests';
+
+jest.mock('../../janus-api');
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Room />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  renderWithRedux(<Room />);
 });
