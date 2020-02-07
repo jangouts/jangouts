@@ -5,8 +5,13 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import { WidthProvider, Responsive } from 'react-grid-layout';
+
+import { actionCreators as roomActions } from '../../state/ducks/room';
 
 import Header from '../Header';
 import Sidebar from '../Sidebar';
@@ -20,7 +25,25 @@ import '../../assets/react-resizable.css';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-function Room() {
+const randomUsername = () => `user_${Math.floor(Math.random() * 1000)}`;
+
+function Room({ location }) {
+  const room = useSelector((state) => state.room);
+  const dispatch = useDispatch();
+  const { roomId } = useParams();
+
+  useEffect(() => {
+    if (room.logedIn) return;
+    const params = new URLSearchParams(location.search);
+    const username = params.get('user') || randomUsername();
+    // TODO: get username from local storage
+    dispatch(roomActions.login(username, roomId));
+  }, []);
+
+  if (room.error) {
+    return <Redirect to="/" />;
+  }
+
   const layouts = {};
   return (
     <div className="Room">
