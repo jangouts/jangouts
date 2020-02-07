@@ -8,27 +8,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestRenderer from 'react-test-renderer';
-
 import LoginForm from './LoginForm';
+import { renderWithRedux } from '../../setupTests';
+import { act, screen } from '@testing-library/react';
+
+jest.mock('../../janus-api');
 
 describe('LoginForm component', () => {
-  it('renders without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<LoginForm />, div);
-    ReactDOM.unmountComponentAtNode(div);
-  });
-
-  it('has an input to enter the username', () => {
-    const testRenderer = TestRenderer.create(<LoginForm />);
-    const inputs = testRenderer.root.findAllByType('input');
-
-    expect(inputs.map((input) => input.props.name)).toContain('username');
-  });
-
-  it('has a selector to choose the room', () => {
-    const testRenderer = TestRenderer.create(<LoginForm />);
-    const selector = testRenderer.root.findByType('select');
-
-    expect(selector.props.name).toBe('room');
+  it('has an input to enter the username', async () => {
+    act(() => {
+      renderWithRedux(<LoginForm />);
+    });
+    const username_input = await screen.findByLabelText('Username');
+    const room_input = await screen.findByLabelText('Room');
+    expect(username_input).toBeInTheDocument();
+    expect(room_input).toBeInTheDocument();
   });
 });

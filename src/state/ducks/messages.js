@@ -31,7 +31,7 @@ const actionTypes = {
   MESSAGE_RECEIVED
 };
 
-const initialState = [];
+export const initialState = [];
 
 const reducer = function(state = initialState, action) {
   switch (action.type) {

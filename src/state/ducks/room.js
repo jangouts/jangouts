@@ -48,7 +48,7 @@ const actionTypes = {
   ROOM_LOGOUT
 };
 
-const initialState = {};
+export const initialState = {};
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;

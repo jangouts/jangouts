@@ -87,9 +87,9 @@ describe('#receiveMessage', () => {
     return last_call[0];
   }
 
-  function last_event() {
+  function last_event(index = 1) {
     var calls = eventsService.emitEvent.mock.calls;
-    var last_call = calls[calls.length - 1];
+    var last_call = calls[calls.length - index];
     return last_call ? last_call[0] : null;
   }
 
@@ -116,7 +116,9 @@ describe('#receiveMessage', () => {
           type: 'muteRequest',
           content: { target: 1 }
         });
-
+        publish_feed.connection.pluginHandle = {
+          webrtcStuff: { pc: null }
+        };
         dataService.receiveMessage(data, 2);
 
         var entry = last_log();
@@ -128,7 +130,7 @@ describe('#receiveMessage', () => {
 
         publish_feed.connection.confirmConfig();
 
-        ev = last_event();
+        ev = last_event(2);
         expect(ev.type).toStrictEqual('muted');
         expect(ev.data.cause).toStrictEqual('request');
       });

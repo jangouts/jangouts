@@ -8,9 +8,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Chat from './Chat';
+import { renderWithRedux } from '../../setupTests';
+import { createLogEntry } from '../../janus-api/models/log-entry';
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Chat />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  renderWithRedux(<Chat />);
+});
+
+describe('when there are messages', () => {
+  const sender = {
+    display: 'John',
+    isPublisher: false
+  };
+
+  const message = createLogEntry('chatMsg', { source: sender, text: 'Hi all!' });
+
+  const stateWithMessage = {
+    messages: [message]
+  };
+
+  it('lists the messages', () => {
+    const { getByTestId, getByText } = renderWithRedux(<Chat />, {
+      initialState: stateWithMessage
+    });
+    expect(getByText('Hi all!')).not.toBeNull();
+  });
 });

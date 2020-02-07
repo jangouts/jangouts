@@ -5,8 +5,17 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
+import { Subject } from 'rxjs';
+
 export default (function() {
   return {
-    sendMessage: (text) => 'text'
+    setup: () => true,
+    getEventsSubject: () => new Subject(),
+    sendMessage: (text) => 'text',
+    getRooms: () =>
+      Promise.resolve([
+        { id: 1, description: 'Test room', num_participants: 5, max_publishers: 10 }
+      ]),
+    getFeedStream: (feedId) => (feedId == 1 ? { id: 'someid', active: true } : null)
   };
 })();

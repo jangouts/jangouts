@@ -8,9 +8,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Participant from './Participant';
+import { renderWithRedux } from '../../setupTests';
+import { Janus } from '../../vendor/janus';
+
+jest.mock('../../janus-api');
+
+Janus.attachMediaStream = jest.fn();
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Participant />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  renderWithRedux(<Participant id={1} display="User" />);
+  expect(Janus.attachMediaStream).toHaveBeenCalledWith(expect.anything(), {
+    id: 'someid',
+    active: true
+  });
 });
