@@ -6,12 +6,51 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Room from './Room';
 import { renderWithRedux } from '../../setupTests';
+import { createStore } from 'redux';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import janusApi from '../../janus-api';
 
-jest.mock('../../janus-api');
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
-it('renders without crashing', () => {
-  renderWithRedux(<Room />);
+jest.mock('react-router', () => ({
+  useParams: jest.fn().mockReturnValue({ roomId: '5678' })
+}));
+
+// FIXME: for some reason, calling jest.mock does not work
+
+janusApi.enterRoom = jest.fn(() => Promise.resolve());
+
+describe('when the user is not logged in', () => {
+  it('tries to log in taking room and username from the URL', () => {
+    const store = mockStore({ room: { logedIn: false }, participants: [], messages: [] });
+
+    renderWithRedux(
+      <Room location={{ search: 'user=Jane' }} />,
+      { store }
+    );
+
+    expect(store.getActions()).toEqual([
+      {
+        type: 'jangouts/room/LOGIN',
+        payload: { roomId: 5678, username: 'Jane', logingIn: true }
+      }
+    ]);
+  });
+});
+
+describe('when the user is logged in', () => {
+  it('does not try to log in', () => {
+    const store = mockStore({ room: { logedIn: true }, participants: [], messages: [] });
+
+    renderWithRedux(
+      <Room location={{ search: 'user=Jane' }} />,
+      { store }
+    );
+
+    expect(store.getActions()).toEqual([]);
+  });
 });

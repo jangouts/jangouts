@@ -23,6 +23,14 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     },
     stream: ({ data }) => {
       dispatchFn(actions.participants.setStream(data.feedId));
+    },
+    room: (event) => {
+      const { status, error } = event.data;
+      if (status === 'error') {
+        dispatchFn(actions.room.loginFailure(error));
+      } else {
+        defaultHandler(event);
+      }
     }
   };
 

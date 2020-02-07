@@ -26,7 +26,7 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Route exact path="/" component={Login} />
-        <Route path="/room" component={Room} />
+        <Route path="/room/:roomId" component={Room} />
       </BrowserRouter>
     </Provider>
   );
