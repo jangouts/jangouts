@@ -6,10 +6,13 @@
  */
 
 .Participants {
+  box-sizing: border-box;
   padding: 10px;
   display: grid;
-  overflow-y: auto;
-  height: 90%;
-  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
   grid-row-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 128px));
+  grid-template-rows: repeat(auto-fill, minmax(128px, 128px));
+  justify-items: center;
+  align-items: center;
+  overflow-y: auto;
 }

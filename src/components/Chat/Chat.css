@@ -6,5 +6,20 @@
  */
 
 .Chat {
+  box-sizing: border-box;
   padding: 10px;
+  position: relative;
+  height: 100%;
+}
+
+.Chat .MessageForm {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.Chat .MessageForm input {
+  box-sizing: border-box;
+  width: 100%;
 }

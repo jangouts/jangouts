@@ -9,8 +9,4 @@
   background-color: #272727;
   box-sizing: border-box;
   color: #fff;
-  min-height: 100vh;
-  grid-area: sidebar;
-
-  /* width: 50px; */
 }

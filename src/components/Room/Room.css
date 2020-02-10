@@ -6,14 +6,23 @@
  */
 
 .Room {
-  display: grid;
-  grid-template-columns: 50px 1fr;
-  grid-template-rows: 50px 1fr;
-  grid-template-areas:
-    'sidebar header'
-    'sidebar main';
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
-.Room .content {
-  grid-area: main;
+.columns {
+  display: grid;
+  grid-template-columns: 50px 1fr 1fr;
+  height: 100%;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.rows > div {
+  height: 50%;
 }
