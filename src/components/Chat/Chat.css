@@ -13,13 +13,21 @@
 }
 
 .Chat .MessageForm {
+  box-sizing: border-box;
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
+  padding: 5px;
 }
 
-.Chat .MessageForm input {
+.Chat .MessageForm input[type='text'] {
   box-sizing: border-box;
-  width: 100%;
+  width: calc(100% - 100px);
+  margin-right: 10px;
+}
+
+.Chat .MessageForm input[type='submit'] {
+  box-sizing: border-box;
+  width: 90px;
 }

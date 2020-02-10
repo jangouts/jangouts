@@ -23,8 +23,12 @@ function MessageForm() {
   const dispatch = useDispatch();
 
   return (
-    <form className="MessageForm" onSubmit={(event) => handleSubmit(event, dispatch, textInput)}>
-      <input type="text" id="text" ref={textInput} />
+    <form
+      data-testid="chatbox"
+      className="MessageForm"
+      onSubmit={(event) => handleSubmit(event, dispatch, textInput)}>
+      <input type="text" id="text" placeholder="Enter your message here" ref={textInput} />
+      <input type="submit" value="Send" />
     </form>
   );
 }

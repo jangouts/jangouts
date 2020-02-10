@@ -15,6 +15,12 @@ it('renders without crashing', () => {
   renderWithRedux(<Chat />);
 });
 
+it('renders a chatbox', () => {
+  const { getByTestId } = renderWithRedux(<Chat />);
+
+  expect(getByTestId('chatbox')).toBeInTheDocument();
+});
+
 describe('when there are messages', () => {
   const sender = {
     display: 'John',
