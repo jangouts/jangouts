@@ -7,10 +7,8 @@
 
 .Participant {
   background: url('./assets/placeholder.png') no-repeat;
-  border-bottom: 1px solid #ccc;
   height: 128px;
   position: relative;
-  width: 128px;
 }
 
 .Participant .display {
@@ -18,4 +16,11 @@
   position: absolute;
   text-align: center;
   width: 100%;
+  background: #ccc;
+}
+
+.Participant video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }

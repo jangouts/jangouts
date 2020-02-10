@@ -9,7 +9,6 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Redirect } from 'react-router';
-import { WidthProvider, Responsive } from 'react-grid-layout';
 
 import { actionCreators as roomActions } from '../../state/ducks/room';
 
@@ -20,10 +19,7 @@ import Participants from '../Participants';
 import Chat from '../Chat';
 
 import './Room.css';
-import '../../assets/react-grid-layout.css';
 import '../../assets/react-resizable.css';
-
-const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const randomUsername = () => `user_${Math.floor(Math.random() * 1000)}`;
 
@@ -44,22 +40,17 @@ function Room({ location }) {
     return <Redirect to="/" />;
   }
 
-  const layouts = {};
   return (
     <div className="Room">
-      <Sidebar />
       <Header />
-      <ResponsiveGridLayout className="layout" layouts={layouts}>
-        <div key="speaker" data-grid={{ w: 6, h: 3, x: 0, y: 0, minW: 2, minH: 3 }}>
+      <div className="columns">
+        <Sidebar />
+        <Chat />
+        <div className="rows">
           <Speaker />
-        </div>
-        <div key="participants" data-grid={{ w: 4, h: 3, x: 6, y: 0, minW: 2, minH: 3 }}>
           <Participants />
         </div>
-        <div key="chat" data-grid={{ w: 12, h: 3, x: 0, y: 3, minW: 2, minH: 3 }}>
-          <Chat />
-        </div>
-      </ResponsiveGridLayout>
+      </div>
     </div>
   );
 }
