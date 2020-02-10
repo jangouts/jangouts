@@ -35,10 +35,12 @@ export const initialState = [];
 
 const reducer = function(state = initialState, action) {
   switch (action.type) {
+    // TODO: store sent message as "history" too
     case MESSAGE_SENT:
     case MESSAGE_RECEIVED: {
       const message = action.payload;
 
+      // TODO: simplify the message structure
       return [...state, message];
     }
     default:

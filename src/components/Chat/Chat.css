@@ -31,3 +31,37 @@
   box-sizing: border-box;
   width: 90px;
 }
+
+.Chat .MessageList ul {
+  padding: 0;
+  margin: 0;
+}
+
+.Chat .MessageList li {
+  position: relative;
+  list-style-type: none;
+  border-bottom: 1px solid #ccc;
+  padding: 5px 0;
+  margin: 0;
+  overflow-y: auto;
+}
+
+.Chat .MessageList li div.info {
+  margin-bottom: 5px;
+}
+
+.Chat .MessageList li span.username {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.Chat .MessageList li time {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.Chat .MessageList li div.time {
+  display: block;
+  color: gray;
+}
