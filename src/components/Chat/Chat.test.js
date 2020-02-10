@@ -21,7 +21,7 @@ describe('when there are messages', () => {
     isPublisher: false
   };
 
-  const message = createLogEntry('chatMsg', { source: sender, text: 'Hi all!' });
+  const message = createLogEntry('chatMsg', { feed: sender, text: 'Hi all!' });
 
   const stateWithMessage = {
     messages: [message]
