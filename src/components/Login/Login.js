@@ -17,7 +17,7 @@ function Login() {
   const room = useSelector((state) => state.room);
 
   if (room.logedIn) {
-    return <Redirect to={`/room/${room.id}`} />;
+    return <Redirect to={`/room/${room.roomId}?user=${room.username}`} />;
   }
 
   return (
