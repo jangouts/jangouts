@@ -8,19 +8,23 @@
 import React from 'react';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { useDispatch, useSelector } from 'react-redux';
-
-// import './ParticipantButton.css';
+import { GoMute, GoUnmute } from 'react-icons/go';
 
 function MuteButton({ participantId }) {
   const dispatch = useDispatch();
   const { audio, isPublisher } = useSelector((state) => state.participants[participantId]);
   const disabled = !(audio || isPublisher);
 
+  const Icon = audio ? GoUnmute : GoMute;
+  const label = audio ? 'Mute' : 'Unmute';
+
   return (
     <button
+      title={label}
+      aria-label={label}
       disabled={disabled}
       onClick={() => dispatch(participantsActions.toggleAudio(participantId))}>
-      {audio ? 'Mute' : 'Unmute'}
+      <Icon />
     </button>
   );
 }

@@ -21,15 +21,15 @@ const initialState = {
 describe('when given participant is the publisher', () => {
   describe('and audio is true', () => {
     it('renders it enabled', () => {
-      const { getByText } = renderWithRedux(<MuteButton participantId={1} />, { initialState });
-      const button = getByText('Mute');
+      const { getByTitle } = renderWithRedux(<MuteButton participantId={1} />, { initialState });
+      const button = getByTitle('Mute');
 
       expect(button.disabled).not.toBe(true);
     });
 
     it('renders "Mute"', () => {
-      const { getByText } = renderWithRedux(<MuteButton participantId={1} />, { initialState });
-      const button = getByText('Mute');
+      const { getByTitle } = renderWithRedux(<MuteButton participantId={1} />, { initialState });
+      const button = getByTitle('Mute');
 
       expect(button).toBeInTheDocument();
     });
@@ -37,15 +37,15 @@ describe('when given participant is the publisher', () => {
 
   describe('and audio is false', () => {
     it('renders it enabled', () => {
-      const { getByText } = renderWithRedux(<MuteButton participantId={2} />, { initialState });
-      const button = getByText('Unmute');
+      const { getByTitle } = renderWithRedux(<MuteButton participantId={2} />, { initialState });
+      const button = getByTitle('Unmute');
 
       expect(button.disabled).not.toBe(true);
     });
 
     it('renders "Unmute"', () => {
-      const { getByText } = renderWithRedux(<MuteButton participantId={2} />, { initialState });
-      const button = getByText('Unmute');
+      const { getByTitle } = renderWithRedux(<MuteButton participantId={2} />, { initialState });
+      const button = getByTitle('Unmute');
 
       expect(button).toBeInTheDocument();
     });
@@ -55,15 +55,15 @@ describe('when given participant is the publisher', () => {
 describe('when given participant is not the publisher', () => {
   describe('and audio is true', () => {
     it('renders it enabled', () => {
-      const { getByText } = renderWithRedux(<MuteButton participantId={3} />, { initialState });
-      const button = getByText('Mute');
+      const { getByTitle } = renderWithRedux(<MuteButton participantId={3} />, { initialState });
+      const button = getByTitle('Mute');
 
       expect(button.disabled).not.toBe(true);
     });
 
     it('renders "Mute"', () => {
-      const { getByText } = renderWithRedux(<MuteButton participantId={3} />, { initialState });
-      const button = getByText('Mute');
+      const { getByTitle } = renderWithRedux(<MuteButton participantId={3} />, { initialState });
+      const button = getByTitle('Mute');
 
       expect(button).toBeInTheDocument();
     });
@@ -71,15 +71,15 @@ describe('when given participant is not the publisher', () => {
 
   describe('and audio is false', () => {
     it('renders as disabled', () => {
-      const { getByText } = renderWithRedux(<MuteButton participantId={4} />, { initialState });
-      const button = getByText('Unmute');
+      const { getByTitle } = renderWithRedux(<MuteButton participantId={4} />, { initialState });
+      const button = getByTitle('Unmute');
 
       expect(button.disabled).toBe(true);
     });
 
     it('renders "Unmute"', () => {
-      const { getByText } = renderWithRedux(<MuteButton participantId={4} />, { initialState });
-      const button = getByText('Unmute');
+      const { getByTitle } = renderWithRedux(<MuteButton participantId={4} />, { initialState });
+      const button = getByTitle('Unmute');
 
       expect(button).toBeInTheDocument();
     });
