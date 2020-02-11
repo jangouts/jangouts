@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Participants from './Participants';
 import { renderWithRedux } from '../../setupTests';
 import { Janus } from '../../vendor/janus';
@@ -14,8 +13,13 @@ import { Janus } from '../../vendor/janus';
 jest.mock('../../janus-api');
 Janus.attachMediaStream = jest.fn();
 
+const initialState = {
+  participants: {
+    1: { id: 1, display: 'Jane', active: true, isPublisher: true, audio: true }
+  }
+};
+
 it('renders without crashing', () => {
-  const participants = [{ id: 1, display: 'Jane' }];
-  const { getByText } = renderWithRedux(<Participants />, { initialState: { participants } });
+  const { getByText } = renderWithRedux(<Participants />, { initialState });
   expect(getByText('Jane')).toBeInTheDocument();
 });
