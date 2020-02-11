@@ -7,7 +7,15 @@
 
 import React from 'react';
 
-function Message({ username, text, timestamp }) {
+const renderUsername = (feed) => {
+  if (!feed) {
+    return null;
+  }
+
+  return <span className="username">{feed.display}</span>;
+};
+
+function Message({ type, content, text, timestamp }) {
   // TODO: use date-fns, luxon or similar?
   const datetime = new Date(timestamp);
   const time = `${datetime.getHours()}:${String(datetime.getMinutes()).padStart('2', 0)}`;
@@ -15,10 +23,10 @@ function Message({ username, text, timestamp }) {
   return (
     <li data-testid="message" className="chat-message">
       <div className="info">
-        <span className="username">{username}</span>
+        {renderUsername(content.feed)}
         <time dateTime={timestamp}>{time}</time>
       </div>
-      <div>{text}</div>
+      <div>{text()}</div>
     </li>
   );
 }
