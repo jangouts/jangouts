@@ -566,9 +566,9 @@ export const createRoomService = (
     that.subscribeToFeed(feedId);
   }
 
-  function toggleChannel(type, feed) {
+  that.toggleChannel = function(type, feed) {
     actionService.toggleChannel(type, feed);
-  }
+  };
 
   /**
    * Broadcast status information of all our feeds when a data channel is

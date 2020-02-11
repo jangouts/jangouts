@@ -6,13 +6,17 @@
  */
 
 import reducer, { actionTypes, actionCreators } from './participants';
+import janusApi from '../../janus-api';
 
 const participant = {
   id: 1234,
   display: undefined,
   isPublisher: undefined,
   isLocalScreen: undefined,
-  isIgnored: undefined
+  isIgnored: undefined,
+  audio: undefined,
+  video: undefined,
+  speaking: undefined
 };
 
 const initialState = {
@@ -37,7 +41,7 @@ describe('reducer', () => {
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      5678: { id: 5678, username: 'otherUser', stream_timestamp: null }
+      5678: { id: 5678, username: 'otherUser', audio: true, video: true, stream_timestamp: null }
     });
   });
 
@@ -61,6 +65,18 @@ describe('reducer', () => {
     const updatedParticipant = reducer(initialState, action)['1234'];
 
     expect(updatedParticipant['stream_timestamp']).toEqual(timestamp);
+  });
+
+  it('handles PARTICIPANT_UPDATE_STATUS', () => {
+    const action = {
+      type: actionTypes.PARTICIPANT_UPDATE_STATUS,
+      payload: { id: 1234, status: { audio: false, video: false } }
+    };
+
+    const state = reducer(initialState, action);
+    const participant = state['1234'];
+    expect(participant['audio']).toEqual(false);
+    expect(participant['video']).toEqual(false);
   });
 });
 
@@ -104,6 +120,15 @@ describe('action creators', () => {
     it('includes the participant id in the action payload', () => {
       const action = actionCreators.setStream(participant.id);
       expect(action.payload).toEqual(participant.id);
+    });
+  });
+
+  describe('#toggleAudio', () => {
+    it('returns a function that asks janus to toggle the audio', () => {
+      janusApi.toggleAudio = jest.fn();
+      const f = actionCreators.toggleAudio(1234);
+      f();
+      expect(janusApi.toggleAudio).toHaveBeenCalledWith(1234);
     });
   });
 });

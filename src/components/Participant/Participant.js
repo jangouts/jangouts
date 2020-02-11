@@ -6,9 +6,9 @@
  */
 
 import React, { useEffect } from 'react';
-
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
+import MuteButton from '../MuteButton';
 
 import './Participant.css';
 
@@ -20,7 +20,7 @@ function setVideo(id, video) {
   }
 }
 
-function Participant({ id, display }) {
+function Participant({ id, display, isPublisher, audio }) {
   const video = React.createRef();
 
   useEffect(() => {
@@ -29,8 +29,9 @@ function Participant({ id, display }) {
 
   return (
     <div className="Participant">
-      <video ref={video} autoPlay />
+      <video ref={video} muted={isPublisher} autoPlay />
       <div className="display">{display}</div>
+      <MuteButton id={id} audio={audio} isPublisher={isPublisher} />
     </div>
   );
 }

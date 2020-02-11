@@ -57,3 +57,28 @@ test('handles "stream" events', () => {
   subject.next({ type: 'stream', data: { feedId: 1 } });
   expect(dispatchFn).toHaveBeenCalledWith(actions.participants.setStream(1));
 });
+
+test('handles the "statusUpdate" events', () => {
+  const dispatchFn = jest.fn();
+  const subject = new Subject();
+  addEventsHandlers(subject, dispatchFn);
+
+  const source = '1234';
+  const status = {
+    videoEnabled: false,
+    audioEnabled: true,
+    speaking: false,
+    display: 'Jane',
+    picture: null
+  };
+  subject.next({ type: 'statusUpdate', data: { source, status } });
+  expect(dispatchFn).toHaveBeenCalledWith(
+    actions.participants.updateStatus('1234', {
+      audio: true,
+      video: false,
+      speaking: false,
+      display: 'Jane',
+      picture: null
+    })
+  );
+});

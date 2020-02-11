@@ -46,6 +46,10 @@ export const createDataChannelService = (feedsService, logService, eventsService
     } else if (type === 'statusUpdate') {
       feed = feedsService.find(content.source);
       if (feed && !feed.isPublisher) {
+        eventsService.emitEvent({
+          type: 'statusUpdate',
+          data: content
+        });
         feed.setStatus(content.status);
       }
     } else {
