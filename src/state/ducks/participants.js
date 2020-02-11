@@ -64,7 +64,7 @@ const reducer = function(state = initialState, action) {
   switch (type) {
     case PARTICIPANT_JOINED: {
       // TODO: check initial values for audio/video
-      const participant = { ...payload, audio: true, video: true, stream_timestamp: null };
+      const participant = { ...payload, stream_timestamp: null };
       return {
         ...state,
         [participant.id]: participant
