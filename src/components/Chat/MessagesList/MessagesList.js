@@ -16,12 +16,7 @@ function MessagesList() {
     <div className="MessageList">
       <ul>
         {messages.map((m, index) => (
-          <Message
-            key={index}
-            username={m.content.feed.display}
-            text={m.text()}
-            timestamp={m.timestamp}
-          />
+          <Message key={index} {...m} />
         ))}
       </ul>
     </div>

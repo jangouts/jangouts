@@ -26,17 +26,13 @@ describe('when there are messages', () => {
     display: 'John',
     isPublisher: false
   };
-
-  const message = createLogEntry('chatMsg', { source: sender, text: 'Hi all!' });
-
+  const message = createLogEntry('chatMsg', { feed: sender, text: 'Hi all!' });
   const stateWithMessage = {
     messages: [message]
   };
 
   it('lists the messages', () => {
-    const { getByTestId, getByText } = renderWithRedux(<Chat />, {
-      initialState: stateWithMessage
-    });
+    const { getByText } = renderWithRedux(<Chat />, { initialState: stateWithMessage });
     expect(getByText('Hi all!')).not.toBeNull();
   });
 });
