@@ -12,7 +12,7 @@ import MuteButton from '../MuteButton';
 
 import './Participant.css';
 
-function setVideo(id, video) {
+function setVideo(id, video, forceUpdate) {
   const stream = janusApi.getFeedStream(id);
 
   if (stream !== null) {
@@ -20,7 +20,7 @@ function setVideo(id, video) {
   }
 }
 
-function Participant({ id, display, isPublisher, audio }) {
+function Participant({ id, display, isPublisher, streamReady }) {
   const video = React.createRef();
 
   useEffect(() => {
@@ -31,9 +31,9 @@ function Participant({ id, display, isPublisher, audio }) {
     <div className="Participant">
       <video ref={video} muted={isPublisher} autoPlay />
       <div className="display">{display}</div>
-      <MuteButton id={id} audio={audio} isPublisher={isPublisher} />
+      <MuteButton participantId={id} />
     </div>
   );
 }
 
-export default Participant;
+export default React.memo(Participant);

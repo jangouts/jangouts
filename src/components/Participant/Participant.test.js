@@ -15,8 +15,14 @@ jest.mock('../../janus-api');
 
 Janus.attachMediaStream = jest.fn();
 
+const initialState = {
+  participants: {
+    1: { display: 'Jane', isPublisher: true, audio: true, active: true }
+  }
+};
+
 it('renders without crashing', () => {
-  renderWithRedux(<Participant id={1} display="User" />);
+  renderWithRedux(<Participant id={1} display="User" />, { initialState });
   expect(Janus.attachMediaStream).toHaveBeenCalledWith(expect.anything(), {
     id: 'someid',
     active: true

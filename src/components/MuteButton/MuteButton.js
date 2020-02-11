@@ -7,16 +7,19 @@
 
 import React from 'react';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // import './ParticipantButton.css';
 
-function MuteButton({ id, audio, isPublisher }) {
+function MuteButton({ participantId }) {
   const dispatch = useDispatch();
+  const { audio, isPublisher } = useSelector((state) => state.participants[participantId]);
   const disabled = !(audio || isPublisher);
 
   return (
-    <button disabled={disabled} onClick={() => dispatch(participantsActions.toggleAudio(id))}>
+    <button
+      disabled={disabled}
+      onClick={() => dispatch(participantsActions.toggleAudio(participantId))}>
       {audio ? 'Mute' : 'Unmute'}
     </button>
   );
