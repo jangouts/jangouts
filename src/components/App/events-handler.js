@@ -43,6 +43,10 @@ export const addEventsHandlers = (subject, dispatchFn) => {
       const { source, channel, status } = event.data;
 
       dispatchFn(actions.participants.updateStatus(source, { [channel]: status }));
+    },
+    // FIXME: it may replace the 'channel' action
+    configChanged: ({ data }) => {
+      dispatchFn(actions.participants.updateLocalStatus(data));
     }
   };
 
