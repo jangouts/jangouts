@@ -6,9 +6,10 @@
  */
 
 import React, { useEffect } from 'react';
-
+import { useDispatch } from 'react-redux';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
+import { actionCreators as participantsActions } from '../../state/ducks/participants';
 
 import './Participant.css';
 
@@ -20,8 +21,9 @@ function setVideo(id, video) {
   }
 }
 
-function Participant({ id, display }) {
+function Participant({ id, display, isPublisher, audio }) {
   const video = React.createRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setVideo(id, video.current);
@@ -29,8 +31,11 @@ function Participant({ id, display }) {
 
   return (
     <div className="Participant">
-      <video ref={video} autoPlay />
+      <video ref={video} muted={isPublisher} autoPlay />
       <div className="display">{display}</div>
+      <button onClick={() => dispatch(participantsActions.toggleAudio(id))}>
+        {audio ? 'Mute' : 'Unmute'}
+      </button>
     </div>
   );
 }

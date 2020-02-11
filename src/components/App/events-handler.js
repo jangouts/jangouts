@@ -31,6 +31,18 @@ export const addEventsHandlers = (subject, dispatchFn) => {
       } else {
         defaultHandler(event);
       }
+    },
+    statusUpdate: ({ data: { source, status } }) => {
+      const { videoEnabled: video, audioEnabled: audio, speaking, display, picture } = status;
+
+      dispatchFn(
+        actions.participants.updateStatus(source, { audio, video, speaking, display, picture })
+      );
+    },
+    channel: (event) => {
+      const { source, channel, status } = event.data;
+
+      dispatchFn(actions.participants.updateStatus(source, { [channel]: status }));
     }
   };
 

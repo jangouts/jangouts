@@ -69,6 +69,12 @@ export default (function() {
     let feed = that.feedsService.find(feedId);
     return feed !== null ? feed.getStream() : null;
   };
+  that.toggleAudio = (feedId) => {
+    let feed = that.feedsService.find(feedId);
+    if (!feed) return;
+
+    that.roomService.toggleChannel('audio', feed);
+  };
 
   return that;
 })();

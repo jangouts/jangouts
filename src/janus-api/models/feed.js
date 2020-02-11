@@ -289,6 +289,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
           eventsService.emitEvent({
             type: 'channel',
             data: {
+              source: that.id,
               channel: type,
               status: enabled,
               peerconnection: that.connection.pluginHandle.webrtcStuff.pc
