@@ -24,3 +24,36 @@
   width: 100%;
   object-fit: cover;
 }
+
+.Participant button {
+  border: 0;
+  background: #272727;
+  color: white;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1rem;
+  white-space: nowrap;
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.Participant button:hover,
+.Participant button:focus {
+  background: #575757;
+  transform: scale(1.05);
+}
+
+.Participant button:active {
+  transform: scale(0.99);
+}
+
+.Participant button[disabled],
+.Participant button[disabled]:hover,
+.Participant button[disabled]:focus {
+  background: #aaa;
+  cursor: default;
+  transform: none;
+  color: #eee;
+}

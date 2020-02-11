@@ -8,8 +8,6 @@
 import React from 'react';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { useDispatch, useSelector } from 'react-redux';
-
-// import './ParticipantButton.css';
 import { GoMute, GoUnmute } from 'react-icons/go';
 
 function MuteButton({ participantId }) {
