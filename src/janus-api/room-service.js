@@ -417,16 +417,17 @@ export const createRoomService = (
       },
       onremotestream: function(stream) {
         // emit `remotestream` event
-        eventsService.emitEvent({
-          type: 'stream',
-          data: {
-            stream: 'remote',
-            for: 'subscriber',
-            peerconnection: connection.pluginHandle.webrtcStuff.pc
-          }
-        });
         feedsService.waitFor(id).then(
           function(feed) {
+            eventsService.emitEvent({
+              type: 'stream',
+              data: {
+                stream: 'remote',
+                for: 'subscriber',
+                feedId: feed.id,
+                peerconnection: connection.pluginHandle.webrtcStuff.pc
+              }
+            });
             feed.setStream(stream);
           },
           function(reason) {
@@ -493,6 +494,7 @@ export const createRoomService = (
           data: {
             stream: 'local',
             for: 'screen',
+            feedId: feed.id,
             peerconnection: connection.pluginHandle.webrtcStuff.pc
           }
         });
