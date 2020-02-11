@@ -15,13 +15,19 @@ it('renders without crashing', () => {
   renderWithRedux(<Chat />);
 });
 
+it('renders a chatbox', () => {
+  const { getByTestId } = renderWithRedux(<Chat />);
+
+  expect(getByTestId('chatbox')).toBeInTheDocument();
+});
+
 describe('when there are messages', () => {
   const sender = {
     display: 'John',
     isPublisher: false
   };
 
-  const message = createLogEntry('chatMsg', { source: sender, text: 'Hi all!' });
+  const message = createLogEntry('chatMsg', { feed: sender, text: 'Hi all!' });
 
   const stateWithMessage = {
     messages: [message]

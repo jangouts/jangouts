@@ -7,14 +7,21 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import Message from '../Message';
+
 function MessagesList() {
   const messages = useSelector((state) => state.messages);
 
   return (
     <div className="MessageList">
       <ul>
-        {messages.map((m) => (
-          <li key={m.timestamp}>{m.text()}</li>
+        {messages.map((m, index) => (
+          <Message
+            key={index}
+            username={m.content.feed.display}
+            text={m.text()}
+            timestamp={m.timestamp}
+          />
         ))}
       </ul>
     </div>

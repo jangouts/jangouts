@@ -20,13 +20,13 @@ const other = {
 describe('#text', () => {
   describe('mute request entry', () => {
     test('when you mute another participant', () => {
-      const content = { source: me, target: other };
+      const content = { feed: me, target: other };
       const entry = createLogEntry('muteRequest', content);
       expect(entry.text()).toBe('You have muted John');
     });
 
     test('when you are muted by another participant', () => {
-      const content = { source: other, target: me };
+      const content = { feed: other, target: me };
       const entry = createLogEntry('muteRequest', content);
       expect(entry.text()).toBe('John has muted you');
     });

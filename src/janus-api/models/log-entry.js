@@ -21,10 +21,10 @@ export const createLogEntry = (type, content) => {
   that.muteRequestText = function() {
     var res;
 
-    if (that.content.source.isPublisher) {
+    if (that.content.feed.isPublisher) {
       res = 'You have muted ';
     } else {
-      res = that.content.source.display + ' has muted ';
+      res = that.content.feed.display + ' has muted ';
     }
     if (that.content.target.isPublisher) {
       res += 'you';
