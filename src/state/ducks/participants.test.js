@@ -41,7 +41,7 @@ describe('reducer', () => {
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      5678: { id: 5678, username: 'otherUser', audio: true, video: true, stream_timestamp: null }
+      5678: { id: 5678, username: 'otherUser', stream_timestamp: null }
     });
   });
 
