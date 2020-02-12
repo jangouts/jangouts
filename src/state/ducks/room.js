@@ -6,6 +6,7 @@
  */
 
 import janusApi from '../../janus-api';
+import history from '../../utils/history';
 
 const ROOM_LOGIN = 'jangouts/room/LOGIN';
 const ROOM_LOGOUT = 'jangouts/room/LOGOUT';
@@ -27,19 +28,30 @@ const login = (username, room) => {
   };
 };
 
-const loginRequest = ({roomId, username}) => ({
+const loginRequest = ({ roomId, username }) => ({
   type: ROOM_LOGIN,
   payload: { roomId, username, logingIn: true }
 });
-const loginSuccess = ({roomId, username}) => ({
+
+const loginSuccess = ({ roomId, username }) => ({
   type: ROOM_LOGIN,
   payload: { roomId, username, logedIn: true }
 });
+
 const loginFailure = (error) => ({
   type: ROOM_LOGIN,
   payload: { error: error }
 });
-const logout = () => ({ type: ROOM_LOGOUT });
+
+const logout = () => {
+  return function(dispatch) {
+    janusApi.leaveRoom();
+
+    dispatch({ type: ROOM_LOGOUT });
+
+    history.push('/');
+  };
+};
 
 const actionCreators = {
   login,
@@ -72,4 +84,3 @@ const reducer = function(state = initialState, action) {
 export { actionCreators, actionTypes };
 
 export default reducer;
-
