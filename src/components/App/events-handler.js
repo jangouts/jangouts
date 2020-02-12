@@ -17,9 +17,11 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     },
     addFeed: ({ data }) => {
       dispatchFn(actions.participants.addParticipant(data));
+      dispatchFn(actions.participants.autoSetFocus());
     },
     removeFeed: ({ data }) => {
       dispatchFn(actions.participants.removeParticipant(data.feedId));
+      dispatchFn(actions.participants.autoSetFocus());
     },
     stream: ({ data }) => {
       dispatchFn(actions.participants.setStream(data.feedId));
@@ -48,7 +50,8 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     },
     participantSpeaking: ({ data }) => {
       const { feedId, speaking } = data;
-      dispatchFn(actions.participants.speaking(feedId, speaking));
+      dispatchFn(actions.participants.participantSpeaking(feedId, speaking));
+      dispatchFn(actions.participants.autoSetFocus());
     }
   };
 
