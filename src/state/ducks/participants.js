@@ -12,6 +12,7 @@ const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
 const PARTICIPANT_STREAM_SET = 'jangouts/participant/SET_STREAM';
 const PARTICIPANT_UPDATE_STATUS = 'jangouts/participant/UPDATE_STATUS';
 const PARTICIPANT_UPDATE_LOCAL_STATUS = 'jangouts/participant/UPDATE_LOCAL_STATUS';
+const PARTICIPANT_SPEAKING = 'jangouts/participant/PARTICIPANT_SPEAKING';
 
 const addParticipant = (participant) => {
   const { id, display, isPublisher, isLocalScreen, isIgnored } = participant;
@@ -48,6 +49,11 @@ const updateLocalStatus = ({ audio, video }) => ({
   payload: { audio, video }
 });
 
+const speaking = (id, speaking) => ({
+  type: PARTICIPANT_SPEAKING,
+  payload: { id, speaking }
+});
+
 const localParticipant = (state) =>
   Object.values(state).find((p) => p.isPublisher && !p.isLocalScreen);
 
@@ -57,7 +63,8 @@ const actionCreators = {
   setStream,
   toggleAudio,
   updateStatus,
-  updateLocalStatus
+  updateLocalStatus,
+  speaking
 };
 
 const actionTypes = {
@@ -65,7 +72,8 @@ const actionTypes = {
   PARTICIPANT_DETACHED,
   PARTICIPANT_STREAM_SET,
   PARTICIPANT_UPDATE_STATUS,
-  PARTICIPANT_UPDATE_LOCAL_STATUS
+  PARTICIPANT_UPDATE_LOCAL_STATUS,
+  PARTICIPANT_SPEAKING
 };
 
 export const initialState = {};
@@ -109,6 +117,13 @@ const reducer = function(state = initialState, action) {
       const { audio, video } = payload;
 
       return { ...state, [id]: { ...state[id], audio, video } };
+    }
+
+    case PARTICIPANT_SPEAKING: {
+      const { id, speaking } = payload;
+      const speakingSince = speaking ? new Date(Date.now()) : null;
+
+      return { ...state, [id]: { ...state[id], speakingSince: speakingSince } };
     }
 
     default:

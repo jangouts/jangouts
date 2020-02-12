@@ -33,11 +33,9 @@ export const addEventsHandlers = (subject, dispatchFn) => {
       }
     },
     statusUpdate: ({ data: { source, status } }) => {
-      const { videoEnabled: video, audioEnabled: audio, speaking, display, picture } = status;
+      const { videoEnabled: video, audioEnabled: audio, display, picture } = status;
 
-      dispatchFn(
-        actions.participants.updateStatus(source, { audio, video, speaking, display, picture })
-      );
+      dispatchFn(actions.participants.updateStatus(source, { audio, video, display, picture }));
     },
     channel: (event) => {
       const { source, channel, status } = event.data;
@@ -47,6 +45,10 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     // FIXME: it may replace the 'channel' action
     configChanged: ({ data }) => {
       dispatchFn(actions.participants.updateLocalStatus(data));
+    },
+    participantSpeaking: ({ data }) => {
+      const { feedId, speaking } = data;
+      dispatchFn(actions.participants.speaking(feedId, speaking));
     }
   };
 

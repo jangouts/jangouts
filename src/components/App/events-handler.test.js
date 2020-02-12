@@ -67,7 +67,6 @@ test('handles the "statusUpdate" events', () => {
   const status = {
     videoEnabled: false,
     audioEnabled: true,
-    speaking: false,
     display: 'Jane',
     picture: null
   };
@@ -76,7 +75,6 @@ test('handles the "statusUpdate" events', () => {
     actions.participants.updateStatus('1234', {
       audio: true,
       video: false,
-      speaking: false,
       display: 'Jane',
       picture: null
     })

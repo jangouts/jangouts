@@ -71,7 +71,7 @@ export const createSpeakObserver = (stream, options) => {
     if (audioDetected && !speaking) {
       // Make sure we have been above the threshold in, at least, 2 of the 3
       // previous iterations
-      history.slice(history.length - 3).reduce((s, i) => s + i, 0);
+      sum = history.slice(history.length - 3).reduce((s, i) => s + i, 0);
       if (sum >= 2) {
         speaking = true;
         if (options.start) {

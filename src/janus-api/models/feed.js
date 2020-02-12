@@ -324,6 +324,10 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
           silentSince = Date.now();
         }
         dataChannelService.sendStatus(that, { exclude: 'picture' });
+        eventsService.emitEvent({
+          type: 'participantSpeaking',
+          data: { feedId: that.id, speaking: speaking }
+        });
       }
     });
   }

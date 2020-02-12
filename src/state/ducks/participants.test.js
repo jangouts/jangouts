@@ -16,7 +16,7 @@ const participant = {
   isIgnored: undefined,
   audio: undefined,
   video: undefined,
-  speaking: undefined
+  speakingSince: undefined
 };
 
 const initialState = {
@@ -93,6 +93,28 @@ describe('reducer', () => {
     const participant = state['1234'];
     expect(participant['audio']).toEqual(false);
     expect(participant['video']).toEqual(false);
+  });
+
+  describe('handles PARTICIPANT_SPEAKING', () => {
+    it('sets the speakingSince timestamp when the user is speaking', () => {
+      const action = {
+        type: actionTypes.PARTICIPANT_SPEAKING,
+        payload: { id: 1234, speaking: true }
+      };
+      const state = reducer(initialState, action);
+      const participant = state['1234'];
+      expect(participant.speakingSince).toBeInstanceOf(Date);
+    });
+
+    it('removes the speakingSince timestamp when the user is not speaking', () => {
+      const action = {
+        type: actionTypes.PARTICIPANT_SPEAKING,
+        payload: { id: 1234, speaking: false }
+      };
+      const state = reducer(initialState, action);
+      const participant = state['1234'];
+      expect(participant.speakingSince).toBeNull();
+    });
   });
 });
 
