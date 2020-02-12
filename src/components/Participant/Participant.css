@@ -39,6 +39,10 @@
   outline: none;
 }
 
+.Participant button.flashing {
+  background: red;
+}
+
 .Participant button:hover,
 .Participant button:focus {
   background: #575757;
