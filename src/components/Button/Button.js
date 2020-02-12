@@ -6,15 +6,17 @@
  */
 
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import './Button.css';
 
-function Button(props) {
-  const className = `Button ${props.className}`;
+function Button({ action, children, className }) {
+  const dispatch = useDispatch();
+  const cssClassName = `Button ${className}`;
 
   return (
-    <div className={className}>
-      <div>{props.children}</div>
+    <div className={cssClassName}>
+      <div onClick={() => dispatch(action())}>{children}</div>
     </div>
   );
 }

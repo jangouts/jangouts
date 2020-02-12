@@ -22,9 +22,10 @@
   margin: 0;
   height: 100%;
   width: 100%;
-  line-height: 45px;
+  line-height: 60px;
   text-align: center;
-  font-size: 30px;
+  font-size: 40px;
+  cursor: pointer;
 }
 
 .Button p {
