@@ -6,9 +6,15 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Speaker from './Speaker';
 import { renderWithRedux } from '../../setupTests';
+import janusApi from '../../janus-api';
+import { Janus } from '../../vendor/janus';
+
+jest.mock('../../janus-api');
+
+janusApi.getFeedStream = jest.fn();
+Janus.attachMediaStream = jest.fn();
 
 it('renders without crashing', () => {
   renderWithRedux(<Speaker />);

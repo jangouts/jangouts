@@ -105,7 +105,6 @@ describe('reducer', () => {
       const participant = state['1234'];
       expect(typeof participant.speakingChange).toBe('number');
       expect(participant.speaking).toBe(true);
-      expect(participant.focus).toBe(true);
     });
 
     it('sets the speakingChange timestamp when the user is not speaking', () => {
