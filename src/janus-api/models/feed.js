@@ -313,23 +313,20 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * remote peers if needed.
    */
   function updateLocalSpeaking(val) {
-    // TODO: is setTimeout needed?
-    window.setTimeout(function() {
-      if (that.isEnabled('audio') === false) {
-        val = false;
+    if (that.isEnabled('audio') === false) {
+      val = false;
+    }
+    if (speaking !== val) {
+      speaking = val;
+      if (val === false) {
+        silentSince = Date.now();
       }
-      if (speaking !== val) {
-        speaking = val;
-        if (val === false) {
-          silentSince = Date.now();
-        }
-        dataChannelService.sendStatus(that, { exclude: 'picture' });
-        eventsService.emitEvent({
-          type: 'participantSpeaking',
-          data: { feedId: that.id, speaking: speaking }
-        });
-      }
-    });
+      eventsService.emitEvent({
+        type: 'participantSpeaking',
+        data: { feedId: that.id, speaking: speaking }
+      });
+      dataChannelService.sendSpeakingSignal(that);
+    }
   }
 
   /**

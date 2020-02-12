@@ -52,6 +52,12 @@ export const createDataChannelService = (feedsService, logService, eventsService
         });
         feed.setStatus(content.status);
       }
+    } else if (type === 'speakingSignal') {
+      const { source: feedId, speaking } = content;
+      eventsService.emitEvent({
+        type: 'participantSpeaking',
+        data: { feedId, speaking }
+      });
     } else {
       console.log('Unknown data type: ' + type);
     }
@@ -72,6 +78,16 @@ export const createDataChannelService = (feedsService, logService, eventsService
     };
 
     that.sendMessage('statusUpdate', content);
+  };
+
+  that.sendSpeakingSignal = (feed) => {
+    const speaking = feed.getStatus().speaking;
+    const content = {
+      source: feed.id,
+      speaking: speaking
+    };
+
+    that.sendMessage('speakingSignal', content);
   };
 
   that.sendChatMessage = (text) => {
