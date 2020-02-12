@@ -12,6 +12,7 @@ import { createStore } from 'redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import janusApi from '../../janus-api';
+import { Janus } from '../../vendor/janus';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -23,15 +24,14 @@ jest.mock('react-router', () => ({
 // FIXME: for some reason, calling jest.mock does not work
 
 janusApi.enterRoom = jest.fn(() => Promise.resolve());
+janusApi.getFeedStream = jest.fn();
+Janus.attachMediaStream = jest.fn();
 
 describe('when the user is not logged in', () => {
   it('tries to log in taking room and username from the URL', () => {
     const store = mockStore({ room: { logedIn: false }, participants: [], messages: [] });
 
-    renderWithRedux(
-      <Room location={{ search: 'user=Jane' }} />,
-      { store }
-    );
+    renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
     expect(store.getActions()).toEqual([
       {
@@ -46,10 +46,7 @@ describe('when the user is logged in', () => {
   it('does not try to log in', () => {
     const store = mockStore({ room: { logedIn: true }, participants: [], messages: [] });
 
-    renderWithRedux(
-      <Room location={{ search: 'user=Jane' }} />,
-      { store }
-    );
+    renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
     expect(store.getActions()).toEqual([]);
   });

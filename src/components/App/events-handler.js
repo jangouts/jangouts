@@ -17,9 +17,11 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     },
     addFeed: ({ data }) => {
       dispatchFn(actions.participants.addParticipant(data));
+      dispatchFn(actions.participants.autoSetFocus());
     },
     removeFeed: ({ data }) => {
       dispatchFn(actions.participants.removeParticipant(data.feedId));
+      dispatchFn(actions.participants.autoSetFocus());
     },
     stream: ({ data }) => {
       dispatchFn(actions.participants.setStream(data.feedId));
@@ -33,11 +35,9 @@ export const addEventsHandlers = (subject, dispatchFn) => {
       }
     },
     statusUpdate: ({ data: { source, status } }) => {
-      const { videoEnabled: video, audioEnabled: audio, speaking, display, picture } = status;
+      const { videoEnabled: video, audioEnabled: audio, display, picture } = status;
 
-      dispatchFn(
-        actions.participants.updateStatus(source, { audio, video, speaking, display, picture })
-      );
+      dispatchFn(actions.participants.updateStatus(source, { audio, video, display, picture }));
     },
     channel: (event) => {
       const { source, channel, status } = event.data;
@@ -47,6 +47,11 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     // FIXME: it may replace the 'channel' action
     configChanged: ({ data }) => {
       dispatchFn(actions.participants.updateLocalStatus(data));
+    },
+    participantSpeaking: ({ data }) => {
+      const { feedId, speaking } = data;
+      dispatchFn(actions.participants.participantSpeaking(feedId, speaking));
+      dispatchFn(actions.participants.autoSetFocus());
     }
   };
 

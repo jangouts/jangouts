@@ -8,7 +8,7 @@
 import reducer, { actionTypes, actionCreators } from './participants';
 import janusApi from '../../janus-api';
 
-const participant = {
+let participant = {
   id: 1234,
   display: undefined,
   isPublisher: undefined,
@@ -16,10 +16,10 @@ const participant = {
   isIgnored: undefined,
   audio: undefined,
   video: undefined,
-  speaking: undefined
+  speakingSince: undefined
 };
 
-const initialState = {
+let initialState = {
   1234: participant
 };
 
@@ -93,6 +93,46 @@ describe('reducer', () => {
     const participant = state['1234'];
     expect(participant['audio']).toEqual(false);
     expect(participant['video']).toEqual(false);
+  });
+
+  describe('handles PARTICIPANT_SPEAKING', () => {
+    it('sets the speakingChange timestamp when the user is speaking', () => {
+      const action = {
+        type: actionTypes.PARTICIPANT_SPEAKING,
+        payload: { id: 1234, speaking: true }
+      };
+      const state = reducer(initialState, action);
+      const participant = state['1234'];
+      expect(typeof participant.speakingChange).toBe('number');
+      expect(participant.speaking).toBe(true);
+    });
+
+    it('sets the speakingChange timestamp when the user is not speaking', () => {
+      const action = {
+        type: actionTypes.PARTICIPANT_SPEAKING,
+        payload: { id: 1234, speaking: false }
+      };
+      const state = reducer(initialState, action);
+      const participant = state['1234'];
+      expect(typeof participant.speakingChange).toBe('number');
+      expect(participant.speaking).toBe(false);
+    });
+  });
+
+  describe('handles PARTICIPANT_SET_FOCUS', () => {
+    it('sets the focus only for the given user', () => {
+      initialState = {
+        1234: { id: 1234, focus: 'auto' },
+        5678: { id: 5678 }
+      };
+      const action = {
+        type: actionTypes.PARTICIPANT_SET_FOCUS,
+        payload: { id: 5678, cause: 'user' }
+      };
+      const state = reducer(initialState, action);
+      expect(state['1234'].focus).toBeUndefined();
+      expect(state['5678'].focus).toBe('user');
+    });
   });
 });
 

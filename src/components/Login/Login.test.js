@@ -11,12 +11,17 @@ import Room from '../Room';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { act, screen } from '@testing-library/react';
 import { renderWithRedux } from '../../setupTests';
+import janusApi from '../../janus-api';
+import { Janus } from '../../vendor/janus';
 
 jest.mock('../../janus-api');
 
+janusApi.getFeedStream = jest.fn();
+Janus.attachMediaStream = jest.fn();
+
 describe('logged in', () => {
   it('redirects to the room', async () => {
-    const { findByText } = renderWithRedux(
+    const { findByTestId } = renderWithRedux(
       <MemoryRouter>
         <Route exact path="/" component={Login} />
         <Route path="/room" component={Room} />
@@ -24,7 +29,7 @@ describe('logged in', () => {
       { initialState: { room: { logedIn: true } } }
     );
 
-    const speaker = await findByText('Speaker');
+    const speaker = await findByTestId('chatbox');
     expect(speaker).toBeInTheDocument();
   });
 });
