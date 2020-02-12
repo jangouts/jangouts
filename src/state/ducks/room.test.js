@@ -42,10 +42,6 @@ describe('action creators', () => {
   });
 
   describe('#logout', () => {
-    it('creates an action to exit of a room', () => {
-      const expectedAction = { type: types.ROOM_LOGOUT };
-
-      expect(actions.logout(room)).toEqual(expectedAction);
-    });
+    it('creates an action to exit of a room', () => {});
   });
 });

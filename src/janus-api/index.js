@@ -63,6 +63,7 @@ export default (function() {
     that.roomService.setRoom(room);
     return that.roomService.enter(username);
   };
+  that.leaveRoom = () => that.roomService.leave();
   that.getEventsSubject = () => that.eventsService.getEventsSubject();
   that.sendMessage = (text) => that.actionService.writeChatMessage(text);
   that.getFeedStream = (feedId) => {
