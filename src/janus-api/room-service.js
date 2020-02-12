@@ -64,7 +64,7 @@ export const createRoomService = (
   const { janusServer, janusServerSSL, useSSL } = config;
   // TODO: the logic for default values should be encapsulated in a proper object
   const videoThumbnails = config.videoThumbnails === undefined ? true : config.videoThumbnails;
-  const joinUnmutedLimit = config.joinUnmutedLimit === undefined ? true : config.joinUnmutedLimit;
+  const joinUnmutedLimit = config.joinUnmutedLimit || 4;
   const createFeedConnectionFactory = createFeedConnection(eventsService);
   let startMuted = false;
 
@@ -266,8 +266,9 @@ export const createRoomService = (
 
           connection.publish({
             muted: startMuted,
+            configured: feedConfigured,
             error: function() {
-              connection.publish({ noCamera: true, muted: startMuted });
+              connection.publish({ noCamera: true, muted: startMuted, configured: feedConfigured });
             }
           });
 
@@ -586,6 +587,16 @@ export const createRoomService = (
       window.setTimeout(function() {
         dataChannelService.sendStatus(p);
       }, 4000);
+    });
+  };
+
+  /**
+   * Notifies that the connection configuration has changed.
+   */
+  const feedConfigured = function(config) {
+    eventsService.emitEvent({
+      type: 'configChanged',
+      data: config
     });
   };
 

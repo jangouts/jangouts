@@ -11,6 +11,7 @@ const PARTICIPANT_JOINED = 'jangouts/participant/JOIN';
 const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
 const PARTICIPANT_STREAM_SET = 'jangouts/participant/SET_STREAM';
 const PARTICIPANT_UPDATE_STATUS = 'jangouts/participant/UPDATE_STATUS';
+const PARTICIPANT_UPDATE_LOCAL_STATUS = 'jangouts/participant/UPDATE_LOCAL_STATUS';
 
 const addParticipant = (participant) => {
   const { id, display, isPublisher, isLocalScreen, isIgnored } = participant;
@@ -32,7 +33,7 @@ const setStream = (participantId) => ({
 });
 
 const toggleAudio = (id) => {
-  return function(_dispatch) {
+  return function() {
     janusApi.toggleAudio(id);
   };
 };
@@ -42,19 +43,29 @@ const updateStatus = (id, status) => ({
   payload: { id, status }
 });
 
+const updateLocalStatus = ({ audio, video }) => ({
+  type: PARTICIPANT_UPDATE_LOCAL_STATUS,
+  payload: { audio, video }
+});
+
+const localParticipant = (state) =>
+  Object.values(state).find((p) => p.isPublisher && !p.isLocalScreen);
+
 const actionCreators = {
   addParticipant,
   removeParticipant,
   setStream,
   toggleAudio,
-  updateStatus
+  updateStatus,
+  updateLocalStatus
 };
 
 const actionTypes = {
   PARTICIPANT_JOINED,
   PARTICIPANT_DETACHED,
   PARTICIPANT_STREAM_SET,
-  PARTICIPANT_UPDATE_STATUS
+  PARTICIPANT_UPDATE_STATUS,
+  PARTICIPANT_UPDATE_LOCAL_STATUS
 };
 
 export const initialState = {};
@@ -91,6 +102,13 @@ const reducer = function(state = initialState, action) {
     case PARTICIPANT_UPDATE_STATUS: {
       const { id, status } = payload;
       return { ...state, [id]: { ...state[id], ...status } };
+    }
+
+    case PARTICIPANT_UPDATE_LOCAL_STATUS: {
+      const id = localParticipant(state).id;
+      const { audio, video } = payload;
+
+      return { ...state, [id]: { ...state[id], audio, video } };
     }
 
     default:

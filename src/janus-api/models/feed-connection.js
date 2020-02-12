@@ -79,6 +79,7 @@ export const createFeedConnection = (eventsService) => (
    * @property {Boolean} options.noCamera
    * @property {Function} options.success Callback to be executed when the feed is successfully published
    * @property {Function} options.error Callback to be executed when the feed is not published
+   * @property {Function} options.configured Callback to be execute when the feed is configured
    */
   that.publish = function(options) {
     options = options || {};
@@ -111,8 +112,9 @@ export const createFeedConnection = (eventsService) => (
       success: function(jsep) {
         console.log('Got publisher SDP!');
         console.log(jsep);
-        that.config = createConnectionConfig(pluginHandle, cfg, jsep);
+        that.config = createConnectionConfig(pluginHandle, cfg, jsep, options.configured);
         // Call the provided callback for extra actions
+
         if (options.success) {
           options.success();
         }

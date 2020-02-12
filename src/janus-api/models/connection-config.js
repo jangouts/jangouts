@@ -74,7 +74,7 @@ export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, o
         requested = null;
         console.log('Connection configured', current);
         if (okCallback) {
-          okCallback();
+          okCallback(current);
         }
         if (differsFromWanted(current)) {
           configure();

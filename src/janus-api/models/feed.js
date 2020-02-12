@@ -275,7 +275,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       config[type] = enabled;
       that.connection.setConfig({
         values: config,
-        ok: function() {
+        ok: function(_config) {
           if (type === 'audio' && enabled === false) {
             speaking = false;
           }

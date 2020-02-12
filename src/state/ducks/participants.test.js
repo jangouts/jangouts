@@ -78,6 +78,22 @@ describe('reducer', () => {
     expect(participant['audio']).toEqual(false);
     expect(participant['video']).toEqual(false);
   });
+
+  it('handles PARTICIPANT_LOCAL_UPDATE_STATUS', () => {
+    const initialState = {
+      1234: { id: 1234, isPublisher: true, isLocalScreen: false },
+      5678: { id: 5678, isPublisher: false }
+    };
+    const action = {
+      type: actionTypes.PARTICIPANT_UPDATE_LOCAL_STATUS,
+      payload: { audio: false, video: false }
+    };
+
+    const state = reducer(initialState, action);
+    const participant = state['1234'];
+    expect(participant['audio']).toEqual(false);
+    expect(participant['video']).toEqual(false);
+  });
 });
 
 describe('action creators', () => {
