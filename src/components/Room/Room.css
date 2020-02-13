@@ -6,23 +6,23 @@
  */
 
 .Room {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 50px 1fr;
+  grid-template-columns: 50px 1fr 1fr;
+  grid-template-areas:
+    'header header header'
+    'sidebar chat shared-panel';
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
 }
 
-.columns {
+.shared-panel {
   display: grid;
-  grid-template-columns: 50px 1fr 1fr;
-  height: 100%;
-}
-
-.rows {
-  display: flex;
-  flex-direction: column;
-}
-
-.rows > div {
-  height: 50%;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    'speaker'
+    'participants';
+  grid-area: shared-panel;
+  overflow: hidden;
 }
