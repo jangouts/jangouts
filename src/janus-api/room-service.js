@@ -557,6 +557,10 @@ export const createRoomService = (
     });
   };
 
+  that.unPublishFeed = function(feedId) {
+    return unPublishFeed(feedId);
+  }
+
   function unPublishFeed(feedId) {
     actionService.destroyFeed(feedId);
   }

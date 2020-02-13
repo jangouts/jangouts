@@ -11,6 +11,7 @@ import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
 import MuteButton from '../MuteButton';
 import ToggleVideo from '../ToggleVideo';
+import StopScreenSharing from '../StopScreenSharing';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 
 import './Participant.css';
@@ -31,7 +32,7 @@ function toggleFocus(id, focus) {
   return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
-function Participant({ id, display, isPublisher, streamReady, focus, video }) {
+function Participant({ id, display, isPublisher, isLocalScreen, streamReady, focus, video }) {
   const dispatch = useDispatch();
   const videoRef = React.createRef();
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : undefined}`;
@@ -46,10 +47,16 @@ function Participant({ id, display, isPublisher, streamReady, focus, video }) {
 
   return (
     <div className={cssClassName}>
-      <video ref={videoRef} muted={isPublisher} autoPlay onClick={() => dispatch(toggleFocus(id, focus))} />
+      <video
+        ref={videoRef}
+        muted={isPublisher}
+        autoPlay
+        onClick={() => dispatch(toggleFocus(id, focus))}
+      />
       <div className="display">{display}</div>
-      <MuteButton participantId={id} />
-      { isPublisher && <ToggleVideo video={video} />}
+      {!isLocalScreen && <MuteButton participantId={id} />}
+      {isPublisher && !isLocalScreen && <ToggleVideo video={video} />}
+      {isPublisher && isLocalScreen && <StopScreenSharing id={id}/>}
     </div>
   );
 }
