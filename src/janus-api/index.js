@@ -76,6 +76,9 @@ export default (function() {
 
     that.roomService.toggleChannel('audio', feed);
   };
+  that.toggleVideo = () => {
+    that.roomService.toggleChannel('video');
+  };
 
   return that;
 })();
