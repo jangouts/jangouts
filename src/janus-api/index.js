@@ -52,6 +52,7 @@ export default (function() {
     that.roomService = createRoomService(
       { janusServer: defaultUrl },
       that.feedsService,
+      that.logService,
       that.dataChannelService,
       that.eventsService,
       that.actionService
@@ -63,6 +64,8 @@ export default (function() {
     that.roomService.setRoom(room);
     return that.roomService.enter(username);
   };
+  that.publishScreen = () => that.roomService.publishScreen('screen');
+  that.unpublishFeed = (feedId) => that.roomService.unPublishFeed(feedId);
   that.leaveRoom = () => that.roomService.leave();
   that.getEventsSubject = () => that.eventsService.getEventsSubject();
   that.sendMessage = (text) => that.actionService.writeChatMessage(text);

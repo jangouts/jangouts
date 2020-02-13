@@ -81,6 +81,8 @@ const setFocus = (id, cause = 'user') => ({
 });
 
 const unsetFocus = () => autoSetFocus(true);
+const startScreenSharing = () => () => janusApi.publishScreen();
+const stopScreenSharing = (id) => () => janusApi.unpublishFeed(id);
 
 /**
  * Local participant
@@ -124,7 +126,9 @@ const actionCreators = {
   participantSpeaking,
   setFocus,
   unsetFocus,
-  autoSetFocus
+  autoSetFocus,
+  startScreenSharing,
+  stopScreenSharing
 };
 
 const actionTypes = {

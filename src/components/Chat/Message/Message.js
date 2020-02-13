@@ -23,7 +23,7 @@ function Message({ type, content, text, timestamp }) {
   return (
     <li data-testid="message" className="chat-message">
       <div className="info">
-        {renderUsername(content.feed)}
+        {content && renderUsername(content.feed)}
         <time dateTime={timestamp}>{time}</time>
       </div>
       <div>{text()}</div>

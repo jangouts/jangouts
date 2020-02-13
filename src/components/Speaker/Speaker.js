@@ -28,7 +28,7 @@ function Speaker() {
     (a, b) => a.id === b.id && a.stream_timestamp === b.stream_timestamp
   );
 
-  const { id, display, isPublisher } = speaker || {};
+  const { id, isPublisher } = speaker || {};
 
   useEffect(() => {
     setVideo(id, video.current);
@@ -37,7 +37,6 @@ function Speaker() {
   return (
     <div className="Speaker">
       <video ref={video} muted={isPublisher} autoPlay />
-      <div className="display">{display}</div>
     </div>
   );
 }

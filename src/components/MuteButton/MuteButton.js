@@ -12,9 +12,10 @@ import { GoMute, GoUnmute } from 'react-icons/go';
 
 function MuteButton({ participantId }) {
   const dispatch = useDispatch();
-  const { audio, isPublisher, speaking } = useSelector(
-    (state) => state.participants[participantId]
-  );
+  const participant = useSelector((state) => state.participants[participantId]);
+  if (!participant) return null;
+
+  const { audio, isPublisher, speaking } = participant;
   const disabled = !(audio || isPublisher);
 
   const Icon = audio ? GoUnmute : GoMute;
