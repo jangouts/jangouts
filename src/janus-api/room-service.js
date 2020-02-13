@@ -510,7 +510,7 @@ export const createRoomService = (
         });
 
         // Unpublish feed when screen sharing stops
-        stream.onended = function() {
+        stream.oninactive = function() {
           // emit 'screenshareStop' event
           eventsService.emitEvent({
             type: 'screenshare',
