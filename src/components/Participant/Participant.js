@@ -6,9 +6,11 @@
  */
 
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
 import MuteButton from '../MuteButton';
+import { actionCreators as participantsActions } from '../../state/ducks/participants';
 
 import './Participant.css';
 
@@ -20,15 +22,29 @@ function setVideo(id, video, forceUpdate) {
   }
 }
 
-function Participant({ id, display, isPublisher, streamReady }) {
+function unsetVideo(video) {
+  video.srcObject = null;
+}
+
+function toggleFocus(id, focus) {
+  return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
+}
+
+function Participant({ id, display, isPublisher, streamReady, focus }) {
+  const dispatch = useDispatch();
   const video = React.createRef();
+  const cssClassName = `Participant ${focus === 'user' ? 'focus' : undefined}`;
 
   useEffect(() => {
-    setVideo(id, video.current);
+    if (focus) {
+      unsetVideo(video.current);
+    } else {
+      setVideo(id, video.current);
+    }
   });
 
   return (
-    <div className="Participant">
+    <div onClick={() => dispatch(toggleFocus(id, focus))} className={cssClassName}>
       <video ref={video} muted={isPublisher} autoPlay />
       <div className="display">{display}</div>
       <MuteButton participantId={id} />

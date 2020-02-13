@@ -43,6 +43,10 @@
   background: red;
 }
 
+.Participant.focus {
+  border: solid 1px red;
+}
+
 .Participant button:hover,
 .Participant button:focus {
   background: #575757;

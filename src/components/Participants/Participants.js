@@ -18,7 +18,7 @@ const Participants = () => {
   return (
     <div className="Participants">
       {Object.keys(participants).map((key) => {
-        let { id, display, isPublisher, stream_timestamp } = participants[key];
+        let { id, display, isPublisher, stream_timestamp, focus } = participants[key];
 
         return (
           <Participant
@@ -27,6 +27,7 @@ const Participants = () => {
             display={display}
             isPublisher={isPublisher}
             streamReady={stream_timestamp}
+            focus={focus}
           />
         );
       })}
