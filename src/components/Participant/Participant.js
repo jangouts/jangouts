@@ -10,44 +10,46 @@ import { useDispatch } from 'react-redux';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
 import MuteButton from '../MuteButton';
+import ToggleVideo from '../ToggleVideo';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 
 import './Participant.css';
 
-function setVideo(id, video, forceUpdate) {
+function setVideo(id, videoRef, forceUpdate) {
   const stream = janusApi.getFeedStream(id);
 
   if (stream !== null) {
-    Janus.attachMediaStream(video, stream);
+    Janus.attachMediaStream(videoRef, stream);
   }
 }
 
-function unsetVideo(video) {
-  video.srcObject = null;
+function unsetVideo(videoRef) {
+  videoRef.srcObject = null;
 }
 
 function toggleFocus(id, focus) {
   return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
-function Participant({ id, display, isPublisher, streamReady, focus }) {
+function Participant({ id, display, isPublisher, streamReady, focus, video }) {
   const dispatch = useDispatch();
-  const video = React.createRef();
+  const videoRef = React.createRef();
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : undefined}`;
 
   useEffect(() => {
     if (focus) {
-      unsetVideo(video.current);
+      unsetVideo(videoRef.current);
     } else {
-      setVideo(id, video.current);
+      setVideo(id, videoRef.current);
     }
   });
 
   return (
-    <div onClick={() => dispatch(toggleFocus(id, focus))} className={cssClassName}>
-      <video ref={video} muted={isPublisher} autoPlay />
+    <div className={cssClassName}>
+      <video ref={videoRef} muted={isPublisher} autoPlay onClick={() => dispatch(toggleFocus(id, focus))} />
       <div className="display">{display}</div>
       <MuteButton participantId={id} />
+      { isPublisher && <ToggleVideo video={video} />}
     </div>
   );
 }
