@@ -27,7 +27,13 @@ function MessageForm() {
       data-testid="chatbox"
       className="MessageForm"
       onSubmit={(event) => handleSubmit(event, dispatch, textInput)}>
-      <input type="text" id="text" placeholder="Enter your message here" ref={textInput} />
+      <input
+        type="text"
+        autocomplete="off"
+        id="text"
+        placeholder="Enter your message here"
+        ref={textInput}
+      />
       <input type="submit" value="Send" />
     </form>
   );
