@@ -55,11 +55,11 @@ const participantSpeaking = (id, speaking) => ({
   payload: { id, speaking }
 });
 
-const autoSetFocus = () => {
+const autoSetFocus = (force = false) => {
   return function(dispatch, getState) {
     const participants = getState().participants; // TODO: Use a selector
     const { id: oldFocusId, focus } = focusedParticipant(participants) || {};
-    if (focus === 'user') return;
+    if (!force && focus === 'user') return;
 
     const { id: nextFocusId } = nextFocusedParticipant(participants) || {};
 
@@ -68,10 +68,12 @@ const autoSetFocus = () => {
   };
 };
 
-const setFocus = (id, cause) => ({
+const setFocus = (id, cause = 'user') => ({
   type: PARTICIPANT_SET_FOCUS,
   payload: { id, cause }
 });
+
+const unsetFocus = () => autoSetFocus(true);
 
 /**
  * Local participant
@@ -113,6 +115,7 @@ const actionCreators = {
   updateLocalStatus,
   participantSpeaking,
   setFocus,
+  unsetFocus,
   autoSetFocus
 };
 
