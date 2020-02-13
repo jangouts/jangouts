@@ -41,9 +41,6 @@ export const createActionService = (
       isLocalScreen: true
     });
     feedsService.add(feed);
-    // Log the event
-    var entry = createLogEntry('publishScreen');
-    logService.add(entry);
   };
 
   that.remoteJoin = function(feedId, display, connection) {

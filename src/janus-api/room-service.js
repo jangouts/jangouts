@@ -8,6 +8,7 @@
 import { Janus } from '../vendor/janus';
 import { createRoomFromJanus } from './models/room';
 import { createFeedConnection } from './models/feed-connection';
+import { createLogEntry } from './models/log-entry';
 
 /**
  * Returns the Janus server URL from the configuration
@@ -57,6 +58,7 @@ const defaultJanusServer = (useSSL) => {
 export const createRoomService = (
   config,
   feedsService,
+  logService,
   dataChannelService,
   eventsService,
   actionService
@@ -453,7 +455,8 @@ export const createRoomService = (
   };
 
   that.publishScreen = function(videoSource) {
-    var display = feedsService.findMain().display;
+    var feed = feedsService.findMain();
+    var display = feed.display;
     var connection;
     var id;
 
@@ -509,6 +512,9 @@ export const createRoomService = (
           }
         });
 
+        // Log the event
+        logService.add(createLogEntry('publishScreen', { feed }));
+
         // Unpublish feed when screen sharing stops
         stream.oninactive = function() {
           // emit 'screenshareStop' event
@@ -559,7 +565,7 @@ export const createRoomService = (
 
   that.unPublishFeed = function(feedId) {
     return unPublishFeed(feedId);
-  }
+  };
 
   function unPublishFeed(feedId) {
     actionService.destroyFeed(feedId);

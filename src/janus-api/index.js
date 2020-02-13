@@ -52,6 +52,7 @@ export default (function() {
     that.roomService = createRoomService(
       { janusServer: defaultUrl },
       that.feedsService,
+      that.logService,
       that.dataChannelService,
       that.eventsService,
       that.actionService
