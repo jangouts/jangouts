@@ -37,7 +37,6 @@ function Speaker() {
   return (
     <div className="Speaker">
       <video ref={video} muted={isPublisher} autoPlay />
-      <div className="display">{display}</div>
     </div>
   );
 }
