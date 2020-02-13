@@ -29,7 +29,7 @@ function MessageForm() {
       onSubmit={(event) => handleSubmit(event, dispatch, textInput)}>
       <input
         type="text"
-        autocomplete="off"
+        autoComplete="off"
         id="text"
         placeholder="Enter your message here"
         ref={textInput}
