@@ -187,4 +187,13 @@ describe('action creators', () => {
       expect(janusApi.toggleAudio).toHaveBeenCalledWith(1234);
     });
   });
+
+  describe('#toggleVideo', () => {
+    it('returns a function that asks janus to toggle the audio', () => {
+      janusApi.toggleVideo = jest.fn();
+      const f = actionCreators.toggleVideo();
+      f();
+      expect(janusApi.toggleVideo).toHaveBeenCalled();
+    });
+  });
 });

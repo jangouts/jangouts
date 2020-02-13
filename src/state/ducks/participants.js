@@ -40,6 +40,12 @@ const toggleAudio = (id) => {
   };
 };
 
+const toggleVideo = (id) => {
+  return function() {
+    janusApi.toggleVideo();
+  };
+}
+
 const updateStatus = (id, status) => ({
   type: PARTICIPANT_UPDATE_STATUS,
   payload: { id, status }
@@ -111,6 +117,7 @@ const actionCreators = {
   removeParticipant,
   setStream,
   toggleAudio,
+  toggleVideo,
   updateStatus,
   updateLocalStatus,
   participantSpeaking,
