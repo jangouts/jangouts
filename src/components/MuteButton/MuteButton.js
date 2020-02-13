@@ -25,7 +25,7 @@ function MuteButton({ participantId }) {
       title={label}
       aria-label={label}
       disabled={disabled}
-      className={speaking && 'flashing'}
+      className={speaking ? 'flashing' : undefined}
       onClick={() => dispatch(participantsActions.toggleAudio(participantId))}>
       <Icon />
     </button>
