@@ -44,7 +44,7 @@ const toggleVideo = (id) => {
   return function() {
     janusApi.toggleVideo();
   };
-}
+};
 
 const updateStatus = (id, status) => ({
   type: PARTICIPANT_UPDATE_STATUS,
@@ -68,9 +68,10 @@ const autoSetFocus = (force = false) => {
     if (!force && focus === 'user') return;
 
     const { id: nextFocusId } = nextFocusedParticipant(participants) || {};
+    const { id: localId } = localParticipant(participants) || {};
 
-    const focusId = nextFocusId || oldFocusId || localParticipant(participants).id;
-    dispatch(setFocus(focusId, 'auto'));
+    const focusId = nextFocusId || oldFocusId || localId;
+    if (focusId) dispatch(setFocus(focusId, 'auto'));
   };
 };
 
