@@ -43,13 +43,11 @@ function Room({ location }) {
   return (
     <div className="Room">
       <Header />
-      <div className="columns">
-        <Sidebar />
-        <Chat />
-        <div className="rows">
-          <Speaker />
-          <Participants />
-        </div>
+      <Sidebar />
+      <Chat />
+      <div className="shared-panel">
+        <Speaker />
+        <Participants />
       </div>
     </div>
   );

@@ -9,10 +9,12 @@
   box-sizing: border-box;
   padding: 10px;
   display: grid;
-  grid-row-gap: 10px;
   grid-template-columns: repeat(auto-fill, minmax(128px, 128px));
+  grid-column-gap: 10px;
   grid-template-rows: repeat(auto-fill, minmax(128px, 128px));
+  grid-row-gap: 10px;
   justify-items: center;
   align-items: center;
   overflow-y: auto;
+  grid-area: participants;
 }

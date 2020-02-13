@@ -9,4 +9,5 @@
   background-color: #272727;
   box-sizing: border-box;
   color: #fff;
+  grid-area: sidebar;
 }

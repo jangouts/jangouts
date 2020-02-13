@@ -9,10 +9,13 @@
   box-sizing: border-box;
   padding: 10px;
   border-bottom: 1px dashed #c7c7c7;
+  grid-area: speaker;
+  overflow: hidden;
+  resize: vertical;
 }
 
 .Speaker video {
-  height: 100%;
+  object-fit: none;
   width: 100%;
-  object-fit: cover;
+  height: 100%;
 }

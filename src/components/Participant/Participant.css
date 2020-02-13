@@ -47,8 +47,7 @@
   border: solid 1px red;
 }
 
-.Participant button:hover,
-.Participant button:focus {
+.Participant button:hover {
   background: #575757;
   transform: scale(1.05);
 }

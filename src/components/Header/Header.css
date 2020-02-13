@@ -9,4 +9,5 @@
   background-color: #272727;
   color: #fff;
   padding: 3px 15px;
+  grid-area: header;
 }

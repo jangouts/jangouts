@@ -7,34 +7,58 @@
 
 .Chat {
   box-sizing: border-box;
-  padding: 10px;
-  position: relative;
-  height: 100%;
   border-right: 1px dashed #c7c7c7;
+  display: grid;
+  grid-template-rows: 1fr 50px;
+  grid-template-areas:
+    'chat-messages'
+    'chat-box';
+  grid-area: chat;
+  overflow: hidden;
+  resize: horizontal;
 }
 
 .Chat .MessageForm {
   box-sizing: border-box;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  background: #ddd;
+  border-top: 1px solid #aaa;
   width: 100%;
   padding: 5px;
+  grid-area: chat-box;
+  line-height: 40px;
+}
+
+.Chat .MessageForm input[type='text'],
+.Chat .MessageForm input[type='submit'] {
+  display: inline-block;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 0;
+  height: 40px;
+  -webkit-appearance: none;
 }
 
 .Chat .MessageForm input[type='text'] {
-  box-sizing: border-box;
-  width: calc(100% - 100px);
-  margin-right: 10px;
+  border: 1px solid lightgray;
+  width: 75%;
+  padding: 0 5px;
 }
 
 .Chat .MessageForm input[type='submit'] {
-  box-sizing: border-box;
-  width: 90px;
+  width: calc(25% - 25px);
+  margin-left: 5px;
+  border: 1px solid transparent;
+  background: #272727;
+  color: #fff;
+}
+
+.Chat .MessageList {
+  grid-area: chat-messages;
+  overflow-y: auto;
 }
 
 .Chat .MessageList ul {
-  padding: 0;
+  padding: 10px;
   margin: 0;
 }
 
