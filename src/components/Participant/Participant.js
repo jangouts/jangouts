@@ -52,6 +52,7 @@ function Participant({ id, display, isPublisher, isLocalScreen, streamReady, foc
         ref={videoRef}
         muted={isPublisher}
         autoPlay
+        className={isPublisher && !isLocalScreen ? 'mirrored' : ''}
         onClick={() => dispatch(toggleFocus(id, focus))}
       />
       <div className="display">{display}</div>

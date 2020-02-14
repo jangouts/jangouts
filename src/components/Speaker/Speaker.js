@@ -28,7 +28,7 @@ function Speaker() {
     (a, b) => a.id === b.id && a.stream_timestamp === b.stream_timestamp
   );
 
-  const { id, isPublisher } = speaker || {};
+  const { id, isPublisher, isLocalScreen } = speaker || {};
 
   useEffect(() => {
     setVideo(id, video.current);
@@ -36,7 +36,12 @@ function Speaker() {
 
   return (
     <div className="Speaker">
-      <video ref={video} muted={isPublisher} autoPlay />
+      <video
+        ref={video}
+        muted={isPublisher}
+        className={isPublisher && !isLocalScreen ? 'mirrored' : ''}
+        autoPlay
+      />
     </div>
   );
 }
