@@ -236,11 +236,13 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
   };
 
   /**
-   * Stops ignoring the feed
+   * Assigns a new connection to the feed, replacing the current one if there is
+   * one.
    *
    * @param {FeedConnection} connection - new connection to Janus
    */
-  that.stopIgnoring = function(connection) {
+  that.reconnect = function(connection) {
+    that.disconnect();
     that.isIgnored = false;
     that.connection = connection;
   };

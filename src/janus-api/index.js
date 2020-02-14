@@ -82,6 +82,7 @@ export default (function() {
   that.toggleVideo = () => {
     that.roomService.toggleChannel('video');
   };
+  that.reconnectFeed = (feedId) => that.roomService.reconnectFeed(feedId);
 
   return that;
 })();

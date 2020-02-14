@@ -397,7 +397,7 @@ export const createRoomService = (
           // TODO: is the timeout needed?
           window.setTimeout(function() {
             if (feed) {
-              actionService.stopIgnoringFeed(id, connection);
+              actionService.reconnectFeed(id, connection);
             } else {
               actionService.remoteJoin(id, display, connection);
             }
@@ -571,13 +571,13 @@ export const createRoomService = (
     actionService.destroyFeed(feedId);
   }
 
-  function ignoreFeed(feedId) {
+  that.ignoreFeed = function(feedId) {
     actionService.ignoreFeed(feedId);
-  }
+  };
 
-  function stopIgnoringFeed(feedId) {
+  that.reconnectFeed = function(feedId) {
     that.subscribeToFeed(feedId);
-  }
+  };
 
   that.toggleChannel = function(type, feed) {
     actionService.toggleChannel(type, feed);
