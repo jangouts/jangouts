@@ -10,7 +10,7 @@
   grid-template-rows: 50px 1fr;
   grid-template-columns: 50px 1fr 1fr;
   grid-template-areas:
-    'header header header'
+    'sidebar header header'
     'sidebar chat shared-panel';
   height: 100vh;
   width: 100vw;

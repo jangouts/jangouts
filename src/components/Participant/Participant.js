@@ -36,7 +36,7 @@ function toggleFocus(id, focus) {
 function Participant({ id, display, isPublisher, isLocalScreen, streamReady, focus, video }) {
   const dispatch = useDispatch();
   const videoRef = React.createRef();
-  const cssClassName = `Participant ${focus === 'user' ? 'focus' : undefined}`;
+  const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
 
   useEffect(() => {
     if (focus) {
@@ -57,7 +57,7 @@ function Participant({ id, display, isPublisher, isLocalScreen, streamReady, foc
       <div className="display">{display}</div>
       {!isLocalScreen && <MuteButton participantId={id} />}
       {isPublisher && !isLocalScreen && <ToggleVideo video={video} />}
-      {isPublisher && isLocalScreen && <StopScreenSharing id={id}/>}
+      {isPublisher && isLocalScreen && <StopScreenSharing id={id} />}
       {!isPublisher && <Reconnect participantId={id} />}
     </div>
   );

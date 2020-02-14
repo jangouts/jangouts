@@ -10,13 +10,14 @@ import { useDispatch } from 'react-redux';
 
 import './Button.css';
 
+// TODO: Button seems no longer necessary. Use simpler approach
 function Button({ action, children, className }) {
   const dispatch = useDispatch();
   const cssClassName = `Button ${className}`;
 
   return (
     <div className={cssClassName}>
-      <div onClick={() => dispatch(action())}>{children}</div>
+      {action ? <a onClick={() => dispatch(action())}>{children}</a> : children}
     </div>
   );
 }

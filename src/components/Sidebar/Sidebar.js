@@ -14,13 +14,15 @@ import { MdScreenShare } from 'react-icons/md';
 
 import './Sidebar.css';
 
+// TODO: Button seems no longer necessary. Use simpler approach
 function Sidebar() {
   return (
     <div className="Sidebar">
-      <Button className="red" action={participantActions.startScreenSharing}>
+      <Button className="red" />
+      <Button action={participantActions.startScreenSharing}>
         <MdScreenShare />
       </Button>
-      <Button className="red" action={roomActions.logout}>
+      <Button action={roomActions.logout}>
         <GiExitDoor />
       </Button>
     </div>
