@@ -46,6 +46,12 @@ const toggleVideo = (id) => {
   };
 };
 
+const reconnect = (id) => {
+  return function() {
+    janusApi.reconnectFeed(id);
+  };
+};
+
 const updateStatus = (id, status) => ({
   type: PARTICIPANT_UPDATE_STATUS,
   payload: { id, status }
@@ -121,6 +127,7 @@ const actionCreators = {
   setStream,
   toggleAudio,
   toggleVideo,
+  reconnect,
   updateStatus,
   updateLocalStatus,
   participantSpeaking,

@@ -88,14 +88,14 @@ export const createActionService = (
     logService.add(entry);
   };
 
-  that.stopIgnoringFeed = function(feedId, connection) {
+  that.reconnectFeed = function(feedId, connection) {
     var feed = feedsService.find(feedId);
     if (feed === null) {
       return;
     }
-    feed.stopIgnoring(connection);
+    feed.reconnect(connection);
     // Log the event
-    var entry = createLogEntry('stopIgnoringFeed', { feed: feed });
+    var entry = createLogEntry('reconnectFeed', { feed: feed });
     logService.add(entry);
   };
 

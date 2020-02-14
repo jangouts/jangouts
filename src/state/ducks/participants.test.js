@@ -196,4 +196,13 @@ describe('action creators', () => {
       expect(janusApi.toggleVideo).toHaveBeenCalled();
     });
   });
+
+  describe('#reconnect', () => {
+    it('returns a function that asks janus to reconnect to the feed', () => {
+      janusApi.reconnectFeed = jest.fn();
+      const f = actionCreators.reconnect(1234);
+      f();
+      expect(janusApi.reconnectFeed).toHaveBeenCalledWith(1234);
+    });
+  });
 });

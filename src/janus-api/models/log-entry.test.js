@@ -51,7 +51,7 @@ describe('#text', () => {
   xdescribe('destroyFeedText');
   xdescribe('newRemoteFeedText');
   xdescribe('ignoreFeedText');
-  xdescribe('stopIgnoringFeedText');
+  xdescribe('reconnectFeedText');
 });
 
 xdescribe('#hasText');

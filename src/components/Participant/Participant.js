@@ -12,6 +12,7 @@ import { Janus } from '../../vendor/janus';
 import MuteButton from '../MuteButton';
 import ToggleVideo from '../ToggleVideo';
 import StopScreenSharing from '../StopScreenSharing';
+import Reconnect from '../Reconnect';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 
 import './Participant.css';
@@ -57,6 +58,7 @@ function Participant({ id, display, isPublisher, isLocalScreen, streamReady, foc
       {!isLocalScreen && <MuteButton participantId={id} />}
       {isPublisher && !isLocalScreen && <ToggleVideo video={video} />}
       {isPublisher && isLocalScreen && <StopScreenSharing id={id}/>}
+      {!isPublisher && <Reconnect participantId={id} />}
     </div>
   );
 }

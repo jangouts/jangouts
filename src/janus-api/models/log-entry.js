@@ -58,8 +58,8 @@ export const createLogEntry = (type, content) => {
     return 'You are ignoring ' + that.content.feed.display + ' now';
   };
 
-  that.stopIgnoringFeedText = function() {
-    return 'You are not longer ignoring ' + that.content.feed.display;
+  that.reconnectFeedText = function() {
+    return 'Connected again with ' + that.content.feed.display;
   };
 
   that.hasText = function() {
