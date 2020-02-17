@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var estream = require('event-stream')
 
 var $ = require('gulp-load-plugins')({
-  pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
+  pattern: ['gulp-*', 'main-bower-files', 'del']
 });
 
 module.exports = function(options) {
@@ -44,7 +44,7 @@ module.exports = function(options) {
       .pipe($.rev())
       .pipe(jsFilter)
       .pipe($.ngAnnotate())
-      .pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', options.errorHandler('Uglify'))
+      .pipe($.terser())
       .pipe(jsFilter.restore())
       .pipe(cssFilter)
       .pipe($.replace('../../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/', '../fonts/'))
