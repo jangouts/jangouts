@@ -479,7 +479,7 @@
           });
           
           // Unpublish feed when screen sharing stops
-          stream.onended = function () {
+          stream.oninactive = function () {
             // emit 'screenshareStop' event
             EventsService.emitEvent({
               type: "screenshare",
