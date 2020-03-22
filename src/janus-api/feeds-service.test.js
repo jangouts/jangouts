@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -145,6 +145,22 @@ describe('#publisherFeeds', () => {
     test('returns an empty array', () => {
       const feedsService = createFeedsService();
       expect(feedsService.publisherFeeds()).toStrictEqual([]);
+    });
+  });
+});
+
+describe('#remoteFeeds', () => {
+  test('returns an array containing remote feeds', () => {
+    const feedsService = createFeedsService(eventsService);
+    feedsService.add(firstFeed);
+    feedsService.add(secondFeed);
+    expect(feedsService.remoteFeeds()).toEqual(expect.arrayContaining([secondFeed]));
+  });
+
+  describe('when there are no feeds', () => {
+    test('returns an empty array', () => {
+      const feedsService = createFeedsService();
+      expect(feedsService.remoteFeeds()).toStrictEqual([]);
     });
   });
 });

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -85,6 +85,8 @@ export default (function() {
     that.roomService.toggleChannel('video');
   };
   that.reconnectFeed = (feedId) => that.roomService.reconnectFeed(feedId);
+  that.enableThumbnailMode = () => that.actionService.disableVideoSubscriptions();
+  that.disableThumbnailMode = () => that.actionService.enableVideoSubscriptions();
 
   return that;
 })();
