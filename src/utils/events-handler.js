@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { actionCreators as actions } from '../../state/ducks';
+import { actionCreators as actions } from '../state/ducks';
 
 export const createEventsHandler = (dispatchFn) => (event) => {
   const handlers = {

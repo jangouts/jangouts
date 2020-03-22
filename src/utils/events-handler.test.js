@@ -8,7 +8,7 @@
 import { createEventsHandler } from './events-handler';
 import { Subject } from 'rxjs';
 
-import { actionCreators as actions } from '../../state/ducks';
+import { actionCreators as actions } from '../state/ducks';
 
 test('handles error events', () => {
   const dispatchFn = jest.fn();

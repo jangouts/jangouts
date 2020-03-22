@@ -8,7 +8,7 @@
 import janusApi from '../../janus-api';
 import { fetch as fetchConfig } from '../../utils/config';
 // FIXME: move out of the App component
-import { createEventsHandler } from '../../components/App/events-handler';
+import { createEventsHandler } from '../../utils/events-handler';
 
 const LOAD_CONFIG = 'jangouts/config/LOAD';
 
