@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -14,6 +14,7 @@ import './Participants.css';
 
 const Participants = () => {
   const participants = useSelector((state) => state.participants);
+  const thumbnailMode = useSelector((state) => state.room.thumbnailMode);
 
   return (
     <div className="Participants">
@@ -25,8 +26,11 @@ const Participants = () => {
           isLocalScreen,
           stream_timestamp,
           focus,
-          video
+          video,
+          picture
         } = participants[key];
+
+        let showVideo = (isPublisher && video) || (!thumbnailMode && video);
 
         return (
           <Participant
@@ -37,7 +41,8 @@ const Participants = () => {
             isLocalScreen={isLocalScreen}
             streamReady={stream_timestamp}
             focus={focus}
-            video={video}
+            video={showVideo}
+            picture={picture}
           />
         );
       })}

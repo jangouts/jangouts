@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -15,16 +15,41 @@ jest.mock('../../janus-api');
 
 Janus.attachMediaStream = jest.fn();
 
-const initialState = {
-  participants: {
-    1: { display: 'Jane', isPublisher: true, audio: true, active: true }
-  }
-};
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
-it('renders without crashing', () => {
-  renderWithRedux(<Participant id={1} display="User" />, { initialState });
-  expect(Janus.attachMediaStream).toHaveBeenCalledWith(expect.anything(), {
-    id: 'someid',
-    active: true
+describe('when video is available', () => {
+  const fakeParticipant = { id: 1, display: 'Jane', video: true };
+
+  it('renders the participant video', () => {
+    const { getByTestId } = renderWithRedux(<Participant {...fakeParticipant} />);
+
+    expect(getByTestId('participant-video')).toBeInTheDocument();
+  });
+
+  it('attaches media stream', () => {
+    renderWithRedux(<Participant {...fakeParticipant} />);
+
+    expect(Janus.attachMediaStream).toHaveBeenCalledWith(expect.anything(), {
+      id: 'someid',
+      active: true
+    });
+  });
+});
+
+describe('when video is not available', () => {
+  const fakeParticipant = { id: 1, display: 'Jane', video: false };
+
+  it('renders the participant thumbnail', () => {
+    const { getByTestId } = renderWithRedux(<Participant {...fakeParticipant} />);
+
+    expect(getByTestId('participant-thumbnail')).toBeInTheDocument();
+  });
+
+  it('does not attach the media stream', () => {
+    renderWithRedux(<Participant {...fakeParticipant} />);
+
+    expect(Janus.attachMediaStream).not.toHaveBeenCalled();
   });
 });

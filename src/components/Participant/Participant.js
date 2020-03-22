@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -17,6 +17,10 @@ import { actionCreators as participantsActions } from '../../state/ducks/partici
 
 import './Participant.css';
 
+function isFocused(focus) {
+  return focus === 'user';
+}
+
 function setVideo(id, videoRef) {
   const stream = janusApi.getFeedStream(id);
 
@@ -27,25 +31,56 @@ function setVideo(id, videoRef) {
 }
 
 function toggleFocus(id, focus) {
-  return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
+  return isFocused(focus) ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
-function Participant({ id, display, isPublisher, isLocalScreen, streamReady, focus, video }) {
+function renderVideo(id, ref, isPublisher, isLocalScreen, focus, dispatchFn) {
+  return (
+    <video
+      data-testid="participant-video"
+      autoPlay
+      ref={ref}
+      muted={isPublisher}
+      className={isPublisher && !isLocalScreen ? 'mirrored' : ''}
+      onClick={() => dispatchFn(toggleFocus(id, focus))}
+    />
+  );
+}
+
+function renderImage(id, focus, picture, dispatchFn) {
+  const placeholder = '/placeholder.png';
+  const img = isFocused(focus) ? placeholder : picture || placeholder;
+
+  return (
+    <img
+      data-testid="participant-thumbnail"
+      src={img}
+      onClick={() => dispatchFn(toggleFocus(id, focus))}
+    />
+  );
+}
+
+function Participant({
+  id,
+  display,
+  isPublisher,
+  isLocalScreen,
+  streamReady,
+  focus,
+  video,
+  picture
+}) {
   const dispatch = useDispatch();
   const videoRef = React.createRef();
-  const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
+  const cssClassName = `Participant ${isFocused(focus) ? 'focus' : ''}`;
 
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
   return (
     <div className={cssClassName}>
-      <video
-        ref={videoRef}
-        muted={isPublisher}
-        autoPlay
-        className={isPublisher && !isLocalScreen ? 'mirrored' : ''}
-        onClick={() => dispatch(toggleFocus(id, focus))}
-      />
+      {video
+        ? renderVideo(id, videoRef, isPublisher, isLocalScreen, focus, dispatch)
+        : renderImage(id, focus, picture, dispatch)}
       <div className="display">{display}</div>
       {!isLocalScreen && <MuteButton participantId={id} />}
       {isPublisher && !isLocalScreen && <ToggleVideo video={video} />}
