@@ -63,10 +63,9 @@ export const createRoomService = (
   eventsService,
   actionService
 ) => {
-  const { janusServer, janusServerSSL, useSSL } = config;
+  const { janusServer, janusServerSSL, useSSL, joinUnmutedLimit } = config;
   // TODO: the logic for default values should be encapsulated in a proper object
   const videoThumbnails = config.videoThumbnails === undefined ? true : config.videoThumbnails;
-  const joinUnmutedLimit = config.joinUnmutedLimit || 4;
   const createFeedConnectionFactory = createFeedConnection(eventsService);
   let startMuted = false;
 
