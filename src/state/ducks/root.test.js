@@ -5,11 +5,14 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import reducer, { initialState } from './root';
+import reducer from './root';
 import { actionTypes as types } from './room';
 
 describe('reducer', () => {
   const currentState = {
+    config: {
+      url: 'http://jangouts.io/'
+    },
     room: {
       id: 'fakeRoomState'
     },
@@ -22,8 +25,13 @@ describe('reducer', () => {
   describe(`when action is ${types.ROOM_LOGOUT}`, () => {
     const action = { type: types.ROOM_LOGOUT };
 
-    it('resets the full state', () => {
-      expect(reducer(currentState, action)).toEqual(initialState);
+    it('resets the full state except the configuration', () => {
+      expect(reducer(currentState, action)).toEqual({
+        config: currentState.config,
+        messages: [],
+        participants: {},
+        room: {}
+      });
     });
   });
 });

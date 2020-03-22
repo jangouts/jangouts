@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { addEventsHandlers } from './events-handler';
+import { createEventsHandler } from './events-handler';
 import { Subject } from 'rxjs';
 
 import { actionCreators as actions } from '../../state/ducks';
@@ -13,7 +13,9 @@ import { actionCreators as actions } from '../../state/ducks';
 test('handles error events', () => {
   const dispatchFn = jest.fn();
   const subject = new Subject();
-  addEventsHandlers(subject, dispatchFn);
+  const eventsHandler = createEventsHandler(dispatchFn);
+  subject.subscribe(eventsHandler);
+
   subject.next({ type: 'error' });
   expect(dispatchFn).toHaveBeenCalledWith({ type: 'error' });
 });
@@ -22,7 +24,9 @@ test('handles log events', () => {
   const dispatchFn = jest.fn();
   const subject = new Subject();
   const logEntry = { message: 'some message' };
-  addEventsHandlers(subject, dispatchFn);
+  const eventsHandler = createEventsHandler(dispatchFn);
+  subject.subscribe(eventsHandler);
+
   subject.next({ type: 'log', data: logEntry });
   expect(dispatchFn).toHaveBeenCalledWith(actions.messages.receive(logEntry));
 });
@@ -37,7 +41,9 @@ test('handles add feed events', () => {
     isLocalScreen: true,
     isPublisher: true
   };
-  addEventsHandlers(subject, dispatchFn);
+  const eventsHandler = createEventsHandler(dispatchFn);
+  subject.subscribe(eventsHandler);
+
   subject.next({ type: 'addFeed', data: feed });
   expect(dispatchFn).toHaveBeenCalledWith(actions.participants.addParticipant(feed));
 });
@@ -45,7 +51,9 @@ test('handles add feed events', () => {
 test('handles remove feed events', () => {
   const dispatchFn = jest.fn();
   const subject = new Subject();
-  addEventsHandlers(subject, dispatchFn);
+  const eventsHandler = createEventsHandler(dispatchFn);
+  subject.subscribe(eventsHandler);
+
   subject.next({ type: 'removeFeed', data: { feedId: 1 } });
   expect(dispatchFn).toHaveBeenCalledWith(actions.participants.removeParticipant(1));
 });
@@ -53,7 +61,9 @@ test('handles remove feed events', () => {
 test('handles "stream" events', () => {
   const dispatchFn = jest.fn();
   const subject = new Subject();
-  addEventsHandlers(subject, dispatchFn);
+  const eventsHandler = createEventsHandler(dispatchFn);
+  subject.subscribe(eventsHandler);
+
   subject.next({ type: 'stream', data: { feedId: 1 } });
   expect(dispatchFn).toHaveBeenCalledWith(actions.participants.setStream(1));
 });
@@ -61,7 +71,8 @@ test('handles "stream" events', () => {
 test('handles the "statusUpdate" events', () => {
   const dispatchFn = jest.fn();
   const subject = new Subject();
-  addEventsHandlers(subject, dispatchFn);
+  const eventsHandler = createEventsHandler(dispatchFn);
+  subject.subscribe(eventsHandler);
 
   const source = '1234';
   const status = {

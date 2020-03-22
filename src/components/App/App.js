@@ -10,25 +10,23 @@ import { Provider } from 'react-redux';
 import { Router, Route } from 'react-router-dom';
 
 import store from '../../state/store';
-import janusApi from '../../janus-api';
-import { addEventsHandlers } from './events-handler';
 import history from '../../utils/history';
 
 import Login from '../Login';
 import Room from '../Room';
+import AppStarter from '../AppStarter';
 
 import './App.css';
-
-janusApi.setup();
-const eventsHandler = addEventsHandlers(janusApi.getEventsSubject(), store.dispatch);
 
 function App() {
   return (
     <Provider store={store}>
-      <Router history={history}>
-        <Route exact path="/" component={Login} />
-        <Route path="/room/:roomId" component={Room} />
-      </Router>
+      <AppStarter>
+        <Router history={history}>
+          <Route exact path="/" component={Login} />
+          <Route path="/room/:roomId" component={Room} />
+        </Router>
+      </AppStarter>
     </Provider>
   );
 }

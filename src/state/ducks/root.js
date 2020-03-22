@@ -22,13 +22,19 @@ import messagesReducer, {
   initialState as messagesInitial
 } from './messages';
 
+import configReducer, {
+  actionCreators as configActions,
+  initialState as configInitial
+} from './config';
+
 /**
  * The combined reducer in charge of handling dispatched actions
  */
 const appReducer = combineReducers({
   room: roomReducer,
   participants: participantsReducer,
-  messages: messagesReducer
+  messages: messagesReducer,
+  config: configReducer
 });
 
 /**
@@ -42,7 +48,7 @@ const rootReducer = (state, action) => {
   // the reference to the local `state` variable before delegating in
   // the appReducer.
   if (action.type === roomActionTypes.ROOM_LOGOUT) {
-    state = undefined;
+    state = { config: state.config };
   }
 
   return appReducer(state, action);

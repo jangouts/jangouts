@@ -7,7 +7,7 @@
 
 import { actionCreators as actions } from '../../state/ducks';
 
-export const addEventsHandlers = (subject, dispatchFn) => {
+export const createEventsHandler = (dispatchFn) => (event) => {
   const handlers = {
     error: ({ error }) => {
       dispatchFn({ type: 'error' });
@@ -59,14 +59,10 @@ export const addEventsHandlers = (subject, dispatchFn) => {
     console.log('Unhandled event:', event.type, event);
   };
 
-  function handleEvent(event) {
-    const handlerFn = handlers[event.type];
-    if (handlerFn !== undefined) {
-      handlerFn(event);
-    } else {
-      defaultHandler(event);
-    }
+  const handlerFn = handlers[event.type];
+  if (handlerFn !== undefined) {
+    handlerFn(event);
+  } else {
+    defaultHandler(event);
   }
-
-  subject.subscribe(handleEvent);
 };
