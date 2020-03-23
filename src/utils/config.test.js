@@ -7,13 +7,13 @@
 
 import { fetch } from './config';
 
-const createXhrMock = (responseJSON, status = 200) => {
+const createXhrMock = (responseText, status = 200) => {
   return {
     open: jest.fn(),
     send: jest.fn(),
     readyState: 4,
     status,
-    responseText: JSON.stringify(responseJSON)
+    responseText
   };
 };
 
@@ -31,7 +31,7 @@ describe('#fetch', () => {
       janusServer: 'ws://jangouts.io:8188/janus',
       videoThumbnails: true
     };
-    const xhrMock = createXhrMock(config);
+    const xhrMock = createXhrMock(JSON.stringify(config));
     window.XMLHttpRequest = jest.fn(() => xhrMock);
 
     const configPromise = fetch();
@@ -44,7 +44,20 @@ describe('#fetch', () => {
   });
 
   test('returns the default configuration if not found', (done) => {
-    const xhrMock = createXhrMock({}, 404);
+    const xhrMock = createXhrMock('', 404);
+    window.XMLHttpRequest = jest.fn(() => xhrMock);
+
+    const configPromise = fetch();
+    xhrMock.onload();
+    configPromise.then((config) => {
+      expect(config.janusServer).toBe('ws://localhost:8188/janus');
+      expect(config.videoThumbnails).toBe(true);
+      done();
+    });
+  });
+
+  test('returns the default configuration if no valid JSON is found', (done) => {
+    const xhrMock = createXhrMock('this is not JSON', 200);
     window.XMLHttpRequest = jest.fn(() => xhrMock);
 
     const configPromise = fetch();
@@ -59,7 +72,7 @@ describe('#fetch', () => {
   test('includes the ws: janusServer if none is given and current proto is http', (done) => {
     delete window.location;
     window.location = { protocol: 'http:', hostname: 'example.net' };
-    const xhrMock = createXhrMock({ janusServer: null });
+    const xhrMock = createXhrMock(JSON.stringify({ janusServer: null }));
     window.XMLHttpRequest = jest.fn(() => xhrMock);
 
     const configPromise = fetch();
@@ -73,7 +86,7 @@ describe('#fetch', () => {
   test('includes the wss: janusServer if none is given and the current proto is https', (done) => {
     delete window.location;
     window.location = { protocol: 'https:', hostname: 'example.net' };
-    const xhrMock = createXhrMock({});
+    const xhrMock = createXhrMock(JSON.stringify({ janusServer: null }));
     window.XMLHttpRequest = jest.fn(() => xhrMock);
 
     const configPromise = fetch();

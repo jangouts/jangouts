@@ -50,6 +50,21 @@ const defaultJanusServer = () => {
 const replacePlaceholders = (text) => text.replace('%{hostname}', window.location.hostname);
 
 /**
+ * Parses a piece of JSON returning an empty object if it is not valid.
+ *
+ * @param {string} text Configuration (in JSON format).
+ * @returns {Object}
+ */
+const parseJSON = (text) => {
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    console.warn('The configuration is not valid JSON.', e);
+    return {};
+  }
+};
+
+/**
  * Parses and buids the configuration object.
  *
  * @param {string} text Configuration (in JSON format).
@@ -57,7 +72,7 @@ const replacePlaceholders = (text) => text.replace('%{hostname}', window.locatio
  */
 function parseConfig(text) {
   const replacedText = replacePlaceholders(text);
-  const config = JSON.parse(replacedText);
+  const config = parseJSON(replacedText);
   Object.keys(config).forEach((k) => {
     if (config[k] === undefined || config[k] === null) {
       delete config[k];
