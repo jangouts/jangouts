@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Router, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 
 import store from '../../state/store';
 import history from '../../utils/history';
@@ -22,10 +22,10 @@ function App() {
   return (
     <Provider store={store}>
       <AppStarter>
-        <Router history={history}>
+        <HashRouter history={history}>
           <Route exact path="/" component={Login} />
           <Route path="/room/:roomId" component={Room} />
-        </Router>
+        </HashRouter>
       </AppStarter>
     </Provider>
   );

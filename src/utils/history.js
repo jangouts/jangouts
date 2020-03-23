@@ -11,8 +11,8 @@
  *
  * See https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/redux.md
  */
-import { createBrowserHistory } from 'history';
+import { createHashHistory } from 'history';
 
-const history = createBrowserHistory();
+const history = createHashHistory();
 
 export default history;
