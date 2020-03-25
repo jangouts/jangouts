@@ -17,9 +17,6 @@ import { createEventsService } from './events-service';
 import { createDataChannelService } from './data-channel-service';
 import { createActionService } from './action-service';
 
-// TODO: get this value from the configuration
-const DEFAULT_URL = 'ws://localhost:8188/janus';
-
 export default (function() {
   var that = {
     dataChannelService: null,
@@ -30,9 +27,10 @@ export default (function() {
     actionService: null
   };
 
-  that.setup = function(options = {}) {
-    let defaultUrl = options.serverUrl || DEFAULT_URL;
-
+  that.setup = function(
+    { janusServer, janusServerSSL, joinUnmutedLimit, videoThumbnails },
+    handler
+  ) {
     that.eventsService = createEventsService();
     that.feedsService = createFeedsService(that.eventsService);
     that.logService = createLogService(that.eventsService);
@@ -50,13 +48,17 @@ export default (function() {
     );
 
     that.roomService = createRoomService(
-      { janusServer: defaultUrl },
+      { janusServer, janusServerSSL, joinUnmutedLimit, videoThumbnails },
       that.feedsService,
       that.logService,
       that.dataChannelService,
       that.eventsService,
       that.actionService
     );
+
+    if (handler) {
+      that.getEventsSubject().subscribe(handler);
+    }
   };
 
   that.getRooms = () => that.roomService.getRooms();
