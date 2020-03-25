@@ -1,68 +1,52 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Running the React/Redux based branch
 
-## Available Scripts
+This branch contains the [React](https://reactjs.org/) and
+[Redux](https://react-redux.js.org/) based version of Jangouts. It is still a
+work in progress, but the basic features are already in place. We plan to
+replace the stable version with this one shortly. You can check the progress on
+the [project's page](https://github.com/jangouts/jangouts/projects/1).
 
-In the project directory, you can run:
+This document explains how to set up Jangouts for development and testing. As we
+use [Create React App](https://github.com/facebook/create-react-app) to
+bootstrap this branch, you might be interested in checking the [Getting
+Started](https://facebook.github.io/create-react-app/docs/getting-started) guide
+for further information.
 
-### `npm start`
+### Testing and development
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To use Jangouts, you need a [Janus](https://janus.conf.meetecho.com/) server.
+After all, Jangouts is _just_ a user interface on top of Janus. We recommend
+installing a recent version, like 0.8.2.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+If your Linux distribution offers up-to-date packages, you can use them. For
+instance, recent versions of Janus are available [for
+SUSE/openSUSE](https://build.opensuse.org/package/show/network:jangouts/janus-gateway).
 
-### `npm test`
+Alternatively, you can use [Docker](https://www.docker.com/). The repository
+includes the required configuration files to set up the Janus server using
+[Docker Compose](https://docs.docker.com/compose/). After installing
+*docker-compose*, run:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    docker-compose up
+    
+Grab a coffee and wait for the service to be available.
 
-### `npm run build`
+Now, let's start Jangouts. You need [Node.js](https://nodejs.org/) and `npm` to
+be available in your system. From the repository, run:
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    npm start
+    
+Now point your browser to `http://localhost:3000/`, and you should be able to
+see the login screen.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Production
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This version of Jangouts is not ready for prime-time yet. However, you can give
+it a try by following almost the [same
+instructions](https://github.com/jangouts/jangouts#installation) that you would
+use for the stable version.
 
-### `npm run eject`
+The only difference is step 3: instead of serving the `dist` folder, you need to
+run the following command and serve the generated `build` folder:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+    npm run-script build
