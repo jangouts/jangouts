@@ -29,14 +29,14 @@ Janus.attachMediaStream = jest.fn();
 
 describe('when the user is not logged in', () => {
   it('tries to log in taking room and username from the URL', () => {
-    const store = mockStore({ room: { logedIn: false }, participants: [], messages: [] });
+    const store = mockStore({ room: { loggedIn: false }, participants: [], messages: [] });
 
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
     expect(store.getActions()).toEqual([
       {
         type: 'jangouts/room/LOGIN',
-        payload: { roomId: 5678, username: 'Jane', logingIn: true }
+        payload: { roomId: 5678, username: 'Jane', loggingIn: true }
       }
     ]);
   });
@@ -44,7 +44,7 @@ describe('when the user is not logged in', () => {
 
 describe('when the user is logged in', () => {
   it('does not try to log in', () => {
-    const store = mockStore({ room: { logedIn: true }, participants: [], messages: [] });
+    const store = mockStore({ room: { loggedIn: true }, participants: [], messages: [] });
 
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 

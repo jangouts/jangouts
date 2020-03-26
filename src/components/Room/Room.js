@@ -29,7 +29,7 @@ function Room({ location }) {
   const { roomId } = useParams();
 
   useEffect(() => {
-    if (room.logedIn) return;
+    if (room.loggedIn) return;
     const params = new URLSearchParams(location.search);
     const username = params.get('user') || randomUsername();
     // TODO: get username from local storage

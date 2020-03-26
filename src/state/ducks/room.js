@@ -30,12 +30,12 @@ const login = (username, room) => {
 
 const loginRequest = ({ roomId, username }) => ({
   type: ROOM_LOGIN,
-  payload: { roomId, username, logingIn: true }
+  payload: { roomId, username, loggingIn: true }
 });
 
 const loginSuccess = ({ roomId, username }) => ({
   type: ROOM_LOGIN,
-  payload: { roomId, username, logedIn: true }
+  payload: { roomId, username, loggedIn: true }
 });
 
 const loginFailure = (error) => ({
