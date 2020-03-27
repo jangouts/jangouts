@@ -11,9 +11,7 @@ const username = 'jangouts';
 const roomId = 5678;
 
 describe('reducer', () => {
-  const initialState = {
-    thumbnailMode: false
-  };
+  const initialState = {};
 
   it('does not handle unknown action', () => {
     const action = { type: 'UNKNOWN', payload: {} };
@@ -36,7 +34,6 @@ describe('reducer', () => {
       username,
       loggingIn: false,
       loggedIn: true
-      thumbnailMode: false,
     });
   });
 
@@ -54,17 +51,7 @@ describe('reducer', () => {
 
     expect(reducer({ roomId, username }, action)).toEqual({ roomId, username, loggedIn: false });
   });
-
-  it('handles ROOM_TOGGLE_THUMBNAIL_MODE', () => {
-    const action = {
-      type: types.ROOM_TOGGLE_THUMBNAIL_MODE,
-      payload: { thumbnailMode: true }
-    };
-
-    expect(reducer(initialState, action)).toEqual({ thumbnailMode: true });
-  });
 });
-
 
 describe('action creators', () => {
   describe.skip('#login', () => {

@@ -14,7 +14,7 @@ import './Participants.css';
 
 const Participants = () => {
   const participants = useSelector((state) => state.participants);
-  const thumbnailMode = useSelector((state) => state.room.thumbnailMode);
+  const thumbnailMode = useSelector((state) => state.config.thumbnailMode);
 
   return (
     <div className="Participants">

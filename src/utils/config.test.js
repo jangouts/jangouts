@@ -29,7 +29,7 @@ describe('#fetch', () => {
   test('fetches and returns the configuration', (done) => {
     const config = {
       janusServer: 'ws://jangouts.io:8188/janus',
-      videoThumbnails: true
+      thumbnailMode: true
     };
     const xhrMock = createXhrMock(JSON.stringify(config));
     window.XMLHttpRequest = jest.fn(() => xhrMock);
@@ -38,7 +38,7 @@ describe('#fetch', () => {
     xhrMock.onload();
     configPromise.then((config) => {
       expect(config.janusServer).toBe('ws://jangouts.io:8188/janus');
-      expect(config.videoThumbnails).toBe(true);
+      expect(config.thumbnailMode).toBe(true);
       done();
     });
   });
@@ -51,7 +51,7 @@ describe('#fetch', () => {
     xhrMock.onload();
     configPromise.then((config) => {
       expect(config.janusServer).toBe('ws://localhost:8188/janus');
-      expect(config.videoThumbnails).toBe(true);
+      expect(config.thumbnailMode).toBe(false);
       done();
     });
   });
@@ -64,7 +64,7 @@ describe('#fetch', () => {
     xhrMock.onload();
     configPromise.then((config) => {
       expect(config.janusServer).toBe('ws://localhost:8188/janus');
-      expect(config.videoThumbnails).toBe(true);
+      expect(config.thumbnailMode).toBe(false);
       done();
     });
   });

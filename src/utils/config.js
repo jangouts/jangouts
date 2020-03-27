@@ -7,9 +7,8 @@
 
 // Values for the default configuration
 const DEFAULT_CONFIG = {
-  videoThumbnails: true,
-  joinUnmutedLimit: 3,
-  videoThumbnails: true
+  thumbnailMode: false,
+  joinUnmutedLimit: 3
 };
 
 // Map protocols to ports

@@ -10,6 +10,7 @@ import { fetch as fetchConfig } from '../../utils/config';
 import { createEventsHandler } from '../../utils/events-handler';
 
 const LOAD_CONFIG = 'jangouts/config/LOAD';
+const TOGGLE_THUMBNAIL_MODE = 'jangouts/config/TOGGLE_THUMBNAIL_MODE';
 
 export const load = function() {
   return function(dispatch) {
@@ -28,12 +29,24 @@ const configLoaded = function(config) {
   };
 };
 
+const toggleThumbnailMode = () => {
+  return function(dispatch, getState) {
+    let { thumbnailMode } = getState().config;
+
+    thumbnailMode ? janusApi.disableThumbnailMode() : janusApi.enableThumbnailMode();
+
+    dispatch({ type: TOGGLE_THUMBNAIL_MODE, payload: { thumbnailMode: !thumbnailMode } });
+  };
+};
+
 const actionCreators = {
-  load
+  load,
+  toggleThumbnailMode
 };
 
 const actionTypes = {
-  LOAD_CONFIG
+  LOAD_CONFIG,
+  TOGGLE_THUMBNAIL_MODE
 };
 
 const initialState = {};
@@ -42,6 +55,9 @@ const reducer = function(state = initialState, action) {
   switch (action.type) {
     case LOAD_CONFIG: {
       return action.payload;
+    }
+    case TOGGLE_THUMBNAIL_MODE: {
+      return { ...state, ...action.payload };
     }
     default:
       return state;

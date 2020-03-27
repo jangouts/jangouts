@@ -11,7 +11,6 @@ import history from '../../utils/history';
 const ROOM_LOGIN = 'jangouts/room/LOGIN';
 const ROOM_LOGIN_REQUEST = 'jangouts/room/LOGIN_REQUEST';
 const ROOM_LOGOUT = 'jangouts/room/LOGOUT';
-const ROOM_TOGGLE_THUMBNAIL_MODE = 'jangouts/room/TOGGLE_THUMBNAIL_MODE';
 
 const login = (username, room, pin = undefined) => {
   return function(dispatch) {
@@ -54,31 +53,19 @@ const logout = () => {
   };
 };
 
-const toggleThumbnailMode = () => {
-  return function(dispatch, getState) {
-    let { thumbnailMode } = getState().room;
-
-    thumbnailMode ? janusApi.disableThumbnailMode() : janusApi.enableThumbnailMode();
-
-    dispatch({ type: ROOM_TOGGLE_THUMBNAIL_MODE, payload: { thumbnailMode: !thumbnailMode } });
-  };
-};
-
 const actionCreators = {
   login,
   logout,
-  loginFailure,
-  toggleThumbnailMode
+  loginFailure
 };
 
 const actionTypes = {
   ROOM_LOGIN,
   ROOM_LOGIN_REQUEST,
   ROOM_LOGOUT
-  ROOM_TOGGLE_THUMBNAIL_MODE,
 };
 
-export const initialState = { loggedIn: false, loggingIn: false, thumbnailMode: false };
+const initialState = { loggedIn: false, loggingIn: false, thumbnailMode: false };
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;
@@ -97,14 +84,11 @@ const reducer = function(state = initialState, action) {
     case ROOM_LOGOUT: {
       return { ...state, loggedIn: false };
     }
-    case ROOM_TOGGLE_THUMBNAIL_MODE: {
-      return { ...state, ...payload };
-    }
     default:
       return state;
   }
 };
 
-export { actionCreators, actionTypes };
+export { actionCreators, actionTypes, initialState };
 
 export default reducer;
