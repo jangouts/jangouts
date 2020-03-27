@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
 import MuteButton from '../MuteButton';
@@ -73,12 +73,17 @@ function Participant({
   const dispatch = useDispatch();
   const videoRef = React.createRef();
   const canvasRef = React.createRef();
+  const interval = useSelector((state) => state.config.thumbnailModeInterval);
   const cssClassName = `Participant ${isFocused(focus) ? 'focus' : ''}`;
 
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
   useEffect(() => {
-    if (!isPublisher || !video) {
+    // The thumbnail will be taken only for the publisher if the video is
+    // available, as long as a valid interval has been defined. With a not
+    // defined interval, the function will be rescheduled too many times PER
+    // SECOND (every 4ms?), which is a BIG penalty for the performance.
+    if (!(isPublisher && video && interval)) {
       return;
     }
 
@@ -86,7 +91,7 @@ function Participant({
     let thumbnailCanvas = canvasRef.current;
     let thumbnailContext = thumbnailCanvas.getContext('2d');
 
-    const interval = setInterval(() => {
+    const takePicture = setInterval(() => {
       let videoHeight = thumbnailSource.videoHeight;
 
       // Nothing to do if the video has no dimensions yet
@@ -103,9 +108,9 @@ function Participant({
 
       let thumbnailData = thumbnailCanvas.toDataURL('image/jpeg');
       dispatch(participantsActions.updateLocalPicture(thumbnailData));
-    }, 5000);
+    }, interval);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(takePicture);
   });
 
   return (

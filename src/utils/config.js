@@ -8,6 +8,7 @@
 // Values for the default configuration
 const DEFAULT_CONFIG = {
   thumbnailMode: false,
+  thumbnailModeInterval: 10000,
   joinUnmutedLimit: 3
 };
 

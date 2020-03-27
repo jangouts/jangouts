@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -27,9 +27,16 @@ janusApi.enterRoom = jest.fn(() => Promise.resolve());
 janusApi.getFeedStream = jest.fn();
 Janus.attachMediaStream = jest.fn();
 
+const initialState = ({ loggedIn }) => ({
+  room: { loggedIn },
+  participants: [],
+  messages: [],
+  config: {}
+});
+
 describe('when the user is not logged in', () => {
   it('tries to log in taking room and username from the URL', () => {
-    const store = mockStore({ room: { loggedIn: false }, participants: [], messages: [] });
+    const store = mockStore(initialState({ loggedIn: false }));
 
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
@@ -44,7 +51,7 @@ describe('when the user is not logged in', () => {
 
 describe('when the user is logged in', () => {
   it('does not try to log in', () => {
-    const store = mockStore({ room: { loggedIn: true }, participants: [], messages: [] });
+    const store = mockStore(initialState({ loggedIn: true }));
 
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 

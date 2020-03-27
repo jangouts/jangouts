@@ -29,7 +29,8 @@ describe('#fetch', () => {
   test('fetches and returns the configuration', (done) => {
     const config = {
       janusServer: 'ws://jangouts.io:8188/janus',
-      thumbnailMode: true
+      thumbnailMode: true,
+      thumbnailModeInterval: 5000
     };
     const xhrMock = createXhrMock(JSON.stringify(config));
     window.XMLHttpRequest = jest.fn(() => xhrMock);
@@ -39,6 +40,7 @@ describe('#fetch', () => {
     configPromise.then((config) => {
       expect(config.janusServer).toBe('ws://jangouts.io:8188/janus');
       expect(config.thumbnailMode).toBe(true);
+      expect(config.thumbnailModeInterval).toBe(5000);
       done();
     });
   });
@@ -52,6 +54,7 @@ describe('#fetch', () => {
     configPromise.then((config) => {
       expect(config.janusServer).toBe('ws://localhost:8188/janus');
       expect(config.thumbnailMode).toBe(false);
+      expect(config.thumbnailModeInterval).toBe(10000);
       done();
     });
   });
@@ -65,6 +68,7 @@ describe('#fetch', () => {
     configPromise.then((config) => {
       expect(config.janusServer).toBe('ws://localhost:8188/janus');
       expect(config.thumbnailMode).toBe(false);
+      expect(config.thumbnailModeInterval).toBe(10000);
       done();
     });
   });
