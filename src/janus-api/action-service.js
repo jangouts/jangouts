@@ -138,5 +138,20 @@ export const createActionService = (
     feedsService.remoteFeeds().forEach((f) => f.setVideoSubscription(false));
   };
 
+  /**
+   * Set and broadcast the picture for the main feed
+   * @param {String} data
+   */
+  that.updateLocalPicture = function(data) {
+    var feed = feedsService.findMain();
+
+    if (!feed) {
+      return;
+    }
+
+    feed.setPicture(data);
+    dataChannelService.sendStatus(feed);
+  };
+
   return that;
 };

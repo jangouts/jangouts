@@ -79,6 +79,12 @@ const detachParticipant = (participantId) => ({
   payload: participantId
 });
 
+const updateLocalPicture = (data) => {
+  return function() {
+    janusApi.updateLocalPicture(data);
+  };
+};
+
 const updateStatus = (id, status) => ({
   type: PARTICIPANT_UPDATE_STATUS,
   payload: { id, status }
@@ -190,6 +196,7 @@ const actionCreators = {
   updateStatus,
   localSpeak,
   requestMute,
+  updateLocalPicture,
   setFocus,
   unsetFocus,
   autoSetFocus,

@@ -84,6 +84,7 @@ export default (function() {
       that.actionService.disableVideoSubscriptions();
     }
   }
+  that.updateLocalPicture = (data) => that.actionService.updateLocalPicture(data);
 
   return that;
 })();
