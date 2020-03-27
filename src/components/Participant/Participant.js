@@ -17,16 +17,13 @@ import { actionCreators as participantsActions } from '../../state/ducks/partici
 
 import './Participant.css';
 
-function setVideo(id, videoRef, forceUpdate) {
+function setVideo(id, videoRef) {
   const stream = janusApi.getFeedStream(id);
 
   if (stream !== null) {
+    console.log('Attaching media stream', id);
     Janus.attachMediaStream(videoRef, stream);
   }
-}
-
-function unsetVideo(videoRef) {
-  videoRef.srcObject = null;
 }
 
 function toggleFocus(id, focus) {
@@ -38,13 +35,7 @@ function Participant({ id, display, isPublisher, isLocalScreen, streamReady, foc
   const videoRef = React.createRef();
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
 
-  useEffect(() => {
-    if (focus) {
-      unsetVideo(videoRef.current);
-    } else {
-      setVideo(id, videoRef.current);
-    }
-  });
+  useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
   return (
     <div className={cssClassName}>
