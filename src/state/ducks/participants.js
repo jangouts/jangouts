@@ -52,6 +52,12 @@ const reconnect = (id) => {
   };
 };
 
+const updateLocalPicture = (data) => {
+  return function() {
+    janusApi.updateLocalPicture(data);
+  };
+};
+
 const updateStatus = (id, status) => ({
   type: PARTICIPANT_UPDATE_STATUS,
   payload: { id, status }
@@ -130,6 +136,7 @@ const actionCreators = {
   reconnect,
   updateStatus,
   updateLocalStatus,
+  updateLocalPicture,
   participantSpeaking,
   setFocus,
   unsetFocus,

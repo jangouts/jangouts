@@ -87,6 +87,7 @@ export default (function() {
   that.reconnectFeed = (feedId) => that.roomService.reconnectFeed(feedId);
   that.enableThumbnailMode = () => that.actionService.disableVideoSubscriptions();
   that.disableThumbnailMode = () => that.actionService.enableVideoSubscriptions();
+  that.updateLocalPicture = (data) => that.actionService.updateLocalPicture(data);
 
   return that;
 })();
