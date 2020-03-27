@@ -72,12 +72,45 @@ function Participant({
 }) {
   const dispatch = useDispatch();
   const videoRef = React.createRef();
+  const canvasRef = React.createRef();
   const cssClassName = `Participant ${isFocused(focus) ? 'focus' : ''}`;
 
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
+  useEffect(() => {
+    if (!isPublisher || !video) {
+      return;
+    }
+
+    let thumbnailSource = videoRef.current;
+    let thumbnailCanvas = canvasRef.current;
+    let thumbnailContext = thumbnailCanvas.getContext('2d');
+
+    const interval = setInterval(() => {
+      let videoHeight = thumbnailSource.videoHeight;
+
+      // Nothing to do if the video has no dimensions yet
+      if (!videoHeight) {
+        return;
+      }
+
+      let width = thumbnailCanvas.parentNode.offsetWidth;
+      let height = (width * videoHeight) / thumbnailSource.videoWidth;
+
+      thumbnailCanvas.width = width;
+      thumbnailCanvas.height = height;
+      thumbnailContext.drawImage(thumbnailSource, 0, 0, width, height);
+
+      let thumbnailData = thumbnailCanvas.toDataURL('image/jpeg');
+      dispatch(participantsActions.updateLocalPicture(thumbnailData));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  });
+
   return (
     <div className={cssClassName}>
+      {isPublisher && <canvas ref={canvasRef}></canvas>}
       {video
         ? renderVideo(id, videoRef, isPublisher, isLocalScreen, focus, dispatch)
         : renderImage(id, focus, picture, dispatch)}
