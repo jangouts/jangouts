@@ -6,8 +6,6 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TestRenderer from 'react-test-renderer';
 import LoginForm from './LoginForm';
 import { renderWithRedux } from '../../setupTests';
 import { act, screen } from '@testing-library/react';
