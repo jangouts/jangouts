@@ -9,6 +9,7 @@ import janusApi from '../../janus-api';
 import history from '../../utils/history';
 
 const ROOM_LOGIN = 'jangouts/room/LOGIN';
+const ROOM_LOGIN_REQUEST = 'jangouts/room/LOGIN_REQUEST';
 const ROOM_LOGOUT = 'jangouts/room/LOGOUT';
 
 const login = (username, room) => {
@@ -29,13 +30,12 @@ const login = (username, room) => {
 };
 
 const loginRequest = ({ roomId, username }) => ({
-  type: ROOM_LOGIN,
-  payload: { roomId, username, loggingIn: true }
+  type: ROOM_LOGIN_REQUEST,
+  payload: { roomId, username }
 });
 
 const loginSuccess = ({ roomId, username }) => ({
-  type: ROOM_LOGIN,
-  payload: { roomId, username, loggedIn: true }
+  type: ROOM_LOGIN
 });
 
 const loginFailure = (error) => ({
@@ -61,20 +61,28 @@ const actionCreators = {
 
 const actionTypes = {
   ROOM_LOGIN,
+  ROOM_LOGIN_REQUEST,
   ROOM_LOGOUT
 };
 
-export const initialState = {};
+export const initialState = { loggedIn: false, loggingIn: false };
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case ROOM_LOGIN_REQUEST: {
+      return { ...payload, loggingIn: true };
+    }
     case ROOM_LOGIN: {
-      return payload;
+      if (payload !== undefined && payload.error) {
+        return { ...state, loggingIn: false, loggedIn: false, error: payload.error };
+      } else {
+        return { ...state, loggingIn: false, loggedIn: true };
+      }
     }
     case ROOM_LOGOUT: {
-      return initialState;
+      return { ...state, loggedIn: false };
     }
     default:
       return state;

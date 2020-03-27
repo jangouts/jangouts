@@ -35,8 +35,8 @@ describe('when the user is not logged in', () => {
 
     expect(store.getActions()).toEqual([
       {
-        type: 'jangouts/room/LOGIN',
-        payload: { roomId: 5678, username: 'Jane', loggingIn: true }
+        type: 'jangouts/room/LOGIN_REQUEST',
+        payload: { roomId: 5678, username: 'Jane' }
       }
     ]);
   });
