@@ -31,6 +31,7 @@ const Participants = () => {
         } = participants[key];
 
         let showVideo = (isPublisher && video) || (!thumbnailMode && video);
+        let thumbnail = thumbnailMode && picture;
 
         return (
           <Participant
@@ -42,7 +43,7 @@ const Participants = () => {
             streamReady={stream_timestamp}
             focus={focus}
             video={showVideo}
-            picture={picture}
+            thumbnail={thumbnail}
           />
         );
       })}

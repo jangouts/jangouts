@@ -47,9 +47,9 @@ function renderVideo(id, ref, isPublisher, isLocalScreen, focus, dispatchFn) {
   );
 }
 
-function renderImage(id, focus, picture, dispatchFn) {
+function renderImage(id, focus, thumbnail, dispatchFn) {
   const placeholder = '/placeholder.png';
-  const img = isFocused(focus) ? placeholder : picture || placeholder;
+  const img = isFocused(focus) ? placeholder : thumbnail || placeholder;
 
   return (
     <img
@@ -68,7 +68,7 @@ function Participant({
   streamReady,
   focus,
   video,
-  picture
+  thumbnail
 }) {
   const dispatch = useDispatch();
   const videoRef = React.createRef();
@@ -113,7 +113,7 @@ function Participant({
       {isPublisher && <canvas ref={canvasRef}></canvas>}
       {video
         ? renderVideo(id, videoRef, isPublisher, isLocalScreen, focus, dispatch)
-        : renderImage(id, focus, picture, dispatch)}
+        : renderImage(id, focus, thumbnail, dispatch)}
       <div className="display">{display}</div>
       {!isLocalScreen && <MuteButton participantId={id} />}
       {isPublisher && !isLocalScreen && <ToggleVideo video={video} />}
