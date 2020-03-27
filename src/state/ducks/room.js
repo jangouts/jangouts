@@ -12,14 +12,14 @@ const ROOM_LOGIN = 'jangouts/room/LOGIN';
 const ROOM_LOGIN_REQUEST = 'jangouts/room/LOGIN_REQUEST';
 const ROOM_LOGOUT = 'jangouts/room/LOGOUT';
 
-const login = (username, room) => {
+const login = (username, room, pin = undefined) => {
   return function(dispatch) {
     const roomId = parseInt(room);
 
-    dispatch(loginRequest({ roomId, username }));
+    dispatch(loginRequest({ roomId, username, pin }));
 
     janusApi
-      .enterRoom({ id: roomId }, username)
+      .enterRoom({ id: roomId }, username, pin)
       .then(() => {
         dispatch(loginSuccess({ roomId, username }));
       })
