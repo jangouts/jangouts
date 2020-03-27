@@ -62,9 +62,9 @@ export default (function() {
   };
 
   that.getRooms = () => that.roomService.getRooms();
-  that.enterRoom = (room, username) => {
+  that.enterRoom = (room, username, pin) => {
     that.roomService.setRoom(room);
-    return that.roomService.enter(username);
+    return that.roomService.enter(username, pin);
   };
   that.publishScreen = () => that.roomService.publishScreen('screen');
   that.unpublishFeed = (feedId) => that.roomService.unPublishFeed(feedId);

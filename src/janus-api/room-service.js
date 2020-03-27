@@ -160,17 +160,18 @@ export const createRoomService = (
   };
 
   // Enter the room
-  that.enter = (username) => {
+  that.enter = (username, pin) => {
     return new Promise((resolve, reject) => {
       that.connect().then(function() {
-        that.doEnter(username);
+        that.doEnter(username, pin);
         resolve();
       });
     });
   };
 
-  that.doEnter = (username) => {
+  that.doEnter = (username, pin) => {
     var connection = null;
+    that.pin = pin;
 
     // adding room to EventsService
     eventsService.setRoom(that.room);
@@ -200,7 +201,7 @@ export const createRoomService = (
         // Step 1. Right after attaching to the plugin, we send a
         // request to join
         connection = createFeedConnectionFactory(pluginHandle, that.room.id, 'main');
-        connection.register(username); // TODO: get pin
+        connection.register(username, pin);
       },
       error: function(error) {
         console.error('Error attaching plugin... ' + error);
@@ -258,6 +259,7 @@ export const createRoomService = (
           });
           actionService.enterRoom(msg.id, username, connection);
           // Step 3. Establish WebRTC connection with the Janus server
+
           // Step 4a (parallel with 4b). Publish our feed on server
 
           if (joinUnmutedLimit !== undefined && joinUnmutedLimit !== null) {
@@ -318,6 +320,7 @@ export const createRoomService = (
 
   that.leave = function leave() {
     actionService.leaveRoom();
+    that.pin = null;
   };
 
   that.setRoom = function(room) {
@@ -372,7 +375,7 @@ export const createRoomService = (
           }
         });
         connection = createFeedConnectionFactory(pluginHandle, that.room.id, 'subscriber');
-        connection.listen(id, ''); // TODO: pin support
+        connection.listen(id, that.pin);
       },
       error: function(error) {
         console.error('  -- Error attaching plugin... ' + error);
@@ -480,7 +483,7 @@ export const createRoomService = (
           }
         });
         connection = createFeedConnectionFactory(pluginHandle, that.room.id, videoSource);
-        connection.register(display, ''); // TODO: pin
+        connection.register(display, that.pin);
         // TODO: ScreenShareService.setInProgress(true);
       },
       error: function(error) {

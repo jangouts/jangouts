@@ -16,9 +16,10 @@
  * @param {String} description Room description
  * @param {Integer} participants How many participants are in the room
  * @param {Integer} publishers Maximum quantity of publishers
+ * @param {Boolean} pinRequired Whether a PIN is required to access the room
  */
-export function createRoom(id, description, participants, publishers) {
-  return { id, description, participants, publishers };
+export function createRoom(id, description, participants, publishers, pinRequired) {
+  return { id, description, participants, publishers, pinRequired };
 }
 
 /**
@@ -28,7 +29,14 @@ export function createRoom(id, description, participants, publishers) {
  * @property {Integer} options.description Room description
  * @property {Integer} options.num_participants How many participants are in the room
  * @property {Integer} options.max_publishers Maximum quantity of publishers
+ * @property {Integer} options.pin_required Maximum quantity of publishers
  */
-export function createRoomFromJanus({ room, description, num_participants, max_publishers }) {
-  return createRoom(room, description, num_participants, max_publishers);
+export function createRoomFromJanus({
+  room,
+  description,
+  num_participants,
+  max_publishers,
+  pin_required
+}) {
+  return createRoom(room, description, num_participants, max_publishers, pin_required);
 }
