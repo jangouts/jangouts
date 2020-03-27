@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -16,7 +16,8 @@ let participant = {
   isIgnored: undefined,
   audio: undefined,
   video: undefined,
-  speakingSince: undefined
+  speakingSince: undefined,
+  picture: 'fake;base64;picture;data'
 };
 
 let initialState = {
@@ -67,16 +68,33 @@ describe('reducer', () => {
     expect(updatedParticipant['stream_timestamp']).toEqual(timestamp);
   });
 
-  it('handles PARTICIPANT_UPDATE_STATUS', () => {
-    const action = {
-      type: actionTypes.PARTICIPANT_UPDATE_STATUS,
-      payload: { id: 1234, status: { audio: false, video: false } }
-    };
+  describe('handles PARTICIPANT_UPDATE_STATUS', () => {
+    it('updates the participant status', () => {
+      const picture = 'updated;picture;data';
+      const action = {
+        type: actionTypes.PARTICIPANT_UPDATE_STATUS,
+        payload: { id: 1234, status: { audio: false, video: false, picture: picture } }
+      };
 
-    const state = reducer(initialState, action);
-    const participant = state['1234'];
-    expect(participant['audio']).toEqual(false);
-    expect(participant['video']).toEqual(false);
+      const state = reducer(initialState, action);
+      const participant = state['1234'];
+      expect(participant['audio']).toEqual(false);
+      expect(participant['video']).toEqual(false);
+      expect(participant['picture']).toEqual(picture);
+    });
+
+    it('does not override the participant status with undefined or null values', () => {
+      const action = {
+        type: actionTypes.PARTICIPANT_UPDATE_STATUS,
+        payload: { id: 1234, status: { audio: false, video: null, picture: undefined } }
+      };
+
+      const state = reducer(initialState, action);
+      const participant = state['1234'];
+      expect(participant['audio']).toEqual(false);
+      expect(participant['video']).not.toEqual(null);
+      expect(participant['picture']).not.toEqual(undefined);
+    });
   });
 
   it('handles PARTICIPANT_LOCAL_UPDATE_STATUS', () => {
@@ -138,18 +156,31 @@ describe('reducer', () => {
 
 describe('action creators', () => {
   describe('#addParticipant', () => {
-    it('creates an action to add a participant', () => {
-      const newParticipant = { ...participant, notExpectedKey: true };
+    const newParticipant = { ...participant, notExpectedKey: true };
+    const action = actionCreators.addParticipant(newParticipant);
 
-      const action = actionCreators.addParticipant(newParticipant);
+    it('creates an action to add a participant', () => {
       expect(action.type).toEqual(actionTypes.PARTICIPANT_JOINED);
     });
 
-    it('includes the participant in the action payload', () => {
-      const newParticipant = { ...participant, notExpectedKey: true };
+    it('includes the participant "id" in the action payload', () => {
+      expect(action.payload).toHaveProperty('id');
+    });
 
-      const action = actionCreators.addParticipant(newParticipant);
-      expect(action.payload).toEqual(participant);
+    it('includes the participant "display" in the action payload', () => {
+      expect(action.payload).toHaveProperty('id');
+    });
+
+    it('includes the participant "isPublisher" in the action payload', () => {
+      expect(action.payload).toHaveProperty('isPublisher');
+    });
+
+    it('includes the participant "isLocalScreen" in the action payload', () => {
+      expect(action.payload).toHaveProperty('isLocalScreen');
+    });
+
+    it('includes the participant "isIgnored" in the action payload', () => {
+      expect(action.payload).toHaveProperty('isIgnored');
     });
   });
 

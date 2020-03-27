@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -192,8 +192,19 @@ const reducer = function(state = initialState, action) {
 
     case PARTICIPANT_UPDATE_STATUS: {
       const { id, status } = payload;
-      const newState = { ...state, [id]: { ...state[id], ...status } };
+      // TODO: move to an utility method, `cleanObject` or similar
+      const sanitizedStatus = Object.keys(status).reduce((obj, key) => {
+        if (status[key] !== undefined && status[key] !== null) {
+          obj[key] = status[key];
+        }
+
+        return obj;
+      }, {});
+
+      const newState = { ...state, [id]: { ...state[id], ...sanitizedStatus } };
+
       if (!newState[id].audio) newState[id].speaking = false;
+
       return newState;
     }
 
