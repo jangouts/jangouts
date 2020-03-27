@@ -16,7 +16,7 @@ import './Login.css';
 function Login() {
   const room = useSelector((state) => state.room);
 
-  if (room.logedIn) {
+  if (room.loggedIn) {
     return <Redirect to={`/room/${room.roomId}?user=${room.username}`} />;
   }
 

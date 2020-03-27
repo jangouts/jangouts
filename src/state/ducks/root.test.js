@@ -14,7 +14,8 @@ describe('reducer', () => {
       url: 'http://jangouts.io/'
     },
     room: {
-      id: 'fakeRoomState'
+      roomId: 'fakeRoom',
+      username: 'fakeUser'
     },
     participants: {
       1: 'fakeParticipant'
@@ -30,7 +31,7 @@ describe('reducer', () => {
         config: currentState.config,
         messages: [],
         participants: {},
-        room: {}
+        room: { ...currentState.room, loggedIn: false }
       });
     });
   });

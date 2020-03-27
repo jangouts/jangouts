@@ -6,6 +6,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import janusApi from '../../janus-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as roomActions } from '../../state/ducks/room';
@@ -26,48 +27,81 @@ function roomOptions(rooms) {
 }
 
 /**
- * Handles the form submmission.
+ * Determines whether the select room requires a PIN.
  *
- * @param {Object} event
- * @param {function} dispatch
- * @param {Object} userInput
- * @param {Object} roomSelector
- * @returns {undefined}
+ * @param {Array} rooms - available rooms
+ * @param {String,Integer} roomId - roomId
+ * @returns {Boolean}
  */
-function handleSubmit(event, dispatch, userInput, roomSelector) {
-  event.preventDefault();
+function pinRequired(rooms, roomId) {
+  const id = parseInt(roomId);
+  const room = rooms.find((r) => r.id === id);
+  return room && room.pinRequired;
+}
 
-  const username = userInput.current.value;
-  const roomId = roomSelector.current.value;
-
-  // TODO: validate data and give feedback
-  dispatch(roomActions.login(username, roomId));
+function onSubmit(dispatch) {
+  return function(data) {
+    dispatch(roomActions.login(data.username, data.room, data.pin));
+  };
 }
 
 function LoginForm() {
-  const roomSelector = React.createRef();
-  const userInput = React.createRef();
   const dispatch = useDispatch();
   const [rooms, setRooms] = useState([]);
+  const previousRoom = useSelector((state) => state.room);
+  const { register, handleSubmit, reset, watch } = useForm();
+  const selectedRoom = watch('room');
+  const { username: previousUsername, error } = previousRoom;
 
   useEffect(() => {
-    janusApi.getRooms().then((r) => setRooms(r));
+    janusApi.getRooms().then((rooms) => {
+      setRooms(rooms);
+      let roomId;
+      if (previousRoom.roomId) {
+        roomId = previousRoom.roomId;
+      } else if (rooms.length > 0) {
+        roomId = rooms[0].id;
+      }
+      reset({ room: roomId });
+    });
   }, []);
 
   return (
-    <form
-      className="LoginForm"
-      onSubmit={(event) => handleSubmit(event, dispatch, userInput, roomSelector)}>
+    <form className="LoginForm" onSubmit={handleSubmit(onSubmit(dispatch))}>
+      {error && <span className="error">{error}</span>}
       <div className="form-row">
         <label htmlFor="username">Username</label>
-        <input type="text" id="username" name="username" ref={userInput} />
+        <input
+          type="text"
+          id="username"
+          name="username"
+          defaultValue={previousUsername}
+          ref={register}
+          autoComplete="username"
+          required
+        />
       </div>
+
       <div className="form-row">
         <label htmlFor="room">Room</label>
-        <select id="room" name="room" ref={roomSelector}>
+        <select id="room" name="room" ref={register} required>
           {roomOptions(rooms)}
         </select>
       </div>
+
+      {pinRequired(rooms, selectedRoom) && (
+        <div className="form-row">
+          <label htmlFor="pin">Pin</label>
+          <input
+            type="password"
+            id="pin"
+            name="pin"
+            ref={register}
+            autoComplete="current-password"
+            required
+          />
+        </div>
+      )}
       <div className="form-row">
         <input type="submit" value="Sign in" />
       </div>

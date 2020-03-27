@@ -9,7 +9,6 @@ import reducer, { actionTypes as types, actionCreators as actions } from './room
 
 const username = 'jangouts';
 const roomId = 5678;
-const room = { id: roomId, name: 'Misc' };
 
 describe('reducer', () => {
   const initialState = {};
@@ -22,18 +21,31 @@ describe('reducer', () => {
 
   it('handles ROOM_LOGIN', () => {
     const action = {
-      type: types.ROOM_LOGIN,
-      payload: { roomId, username: 'me' }
+      type: types.ROOM_LOGIN
     };
 
-    expect(reducer(initialState, action)).toEqual(action.payload);
+    expect(reducer({ roomId, username }, action)).toEqual({
+      roomId,
+      username,
+      loggingIn: false,
+      loggedIn: true
+    });
   });
 
   it('handles ROOM_LOGOUT', () => {
     const action = { type: types.ROOM_LOGOUT };
 
-    expect(reducer(initialState, action)).toEqual(initialState);
+    expect(reducer({ roomId, username }, action)).toEqual({ roomId, username, loggedIn: false });
   });
+});
+
+it('handles ROOM_LOGIN_REQUEST', () => {
+  const action = {
+    type: types.ROOM_LOGIN_REQUEST,
+    payload: { roomId, username }
+  };
+
+  expect(reducer({ roomId, username }, action)).toEqual({ roomId, username, loggingIn: true });
 });
 
 describe('action creators', () => {

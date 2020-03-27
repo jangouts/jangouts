@@ -26,7 +26,7 @@ describe('logged in', () => {
         <Route exact path="/" component={Login} />
         <Route path="/room" component={Room} />
       </MemoryRouter>,
-      { initialState: { room: { logedIn: true } } }
+      { initialState: { room: { loggedIn: true } } }
     );
 
     const speaker = await findByTestId('chatbox');
@@ -42,7 +42,7 @@ describe('not logged in', () => {
           <Route exact path="/" component={Login} />
           <Route path="/room" component={Room} />
         </MemoryRouter>,
-        { initialState: { room: { logedIn: false } } }
+        { initialState: { room: { loggedIn: false } } }
       );
     });
 
