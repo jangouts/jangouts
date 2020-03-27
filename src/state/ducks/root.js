@@ -48,7 +48,8 @@ const rootReducer = (state, action) => {
   // the reference to the local `state` variable before delegating in
   // the appReducer.
   if (action.type === roomActionTypes.ROOM_LOGOUT) {
-    state = { config: state.config };
+    const { config, room } = state;
+    state = { config, room };
   }
 
   return appReducer(state, action);
