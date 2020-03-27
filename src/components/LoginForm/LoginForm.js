@@ -51,6 +51,7 @@ function LoginForm() {
   const previousRoom = useSelector((state) => state.room);
   const { register, handleSubmit, reset, watch } = useForm();
   const selectedRoom = watch('room');
+  const { username: previousUsername, error } = previousRoom;
 
   useEffect(() => {
     janusApi.getRooms().then((rooms) => {
@@ -67,13 +68,14 @@ function LoginForm() {
 
   return (
     <form className="LoginForm" onSubmit={handleSubmit(onSubmit(dispatch))}>
+      {error && <span className="error">{error}</span>}
       <div className="form-row">
         <label htmlFor="username">Username</label>
         <input
           type="text"
           id="username"
           name="username"
-          defaultValue={previousRoom.username}
+          defaultValue={previousUsername}
           ref={register}
           autoComplete="username"
           required
