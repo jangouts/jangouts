@@ -21,6 +21,12 @@ const secondFeed = {
   getSpeaking: () => true
 };
 
+const remoteSharedScreen = {
+  id: 3,
+  isPublisher: false,
+  isLocalScreen: true
+};
+
 const emitEvent = jest.fn();
 const eventsService = { emitEvent };
 
@@ -154,7 +160,8 @@ describe('#remoteFeeds', () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
-    expect(feedsService.remoteFeeds()).toEqual(expect.arrayContaining([secondFeed]));
+    feedsService.add(remoteSharedScreen);
+    expect(feedsService.remoteFeeds()).toStrictEqual([secondFeed]);
   });
 
   describe('when there are no feeds', () => {

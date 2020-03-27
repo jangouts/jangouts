@@ -113,7 +113,7 @@ export const createFeedsService = (eventsService) => {
    * @returns {Array<Feed>} all registered remote feeds
    */
   that.remoteFeeds = function() {
-    return that.allFeeds().filter((f) => !f.isPublisher);
+    return that.allFeeds().filter((f) => !f.isPublisher && !f.isLocalScreen);
   };
 
   /**
