@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(128px, 128px));
   grid-column-gap: 10px;
-  grid-template-rows: repeat(auto-fill, minmax(128px, 128px));
+  grid-template-rows: repeat(auto-fill, minmax(150px, 150px));
   grid-row-gap: 10px;
   justify-items: center;
   align-items: center;

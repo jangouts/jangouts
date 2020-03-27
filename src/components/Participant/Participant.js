@@ -17,6 +17,10 @@ import { actionCreators as participantsActions } from '../../state/ducks/partici
 
 import './Participant.css';
 
+function classNames(...classes) {
+  return classes.filter((item) => !!item).join(' ');
+}
+
 function isFocused(focus) {
   return focus === 'user';
 }
@@ -34,32 +38,6 @@ function toggleFocus(id, focus) {
   return isFocused(focus) ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
-function renderVideo(id, ref, isPublisher, isLocalScreen, focus, dispatchFn) {
-  return (
-    <video
-      data-testid="participant-video"
-      autoPlay
-      ref={ref}
-      muted={isPublisher}
-      className={isPublisher && !isLocalScreen ? 'mirrored' : ''}
-      onClick={() => dispatchFn(toggleFocus(id, focus))}
-    />
-  );
-}
-
-function renderImage(id, focus, thumbnail, dispatchFn) {
-  const placeholder = '/placeholder.png';
-  const img = isFocused(focus) ? placeholder : thumbnail || placeholder;
-
-  return (
-    <img
-      data-testid="participant-thumbnail"
-      src={img}
-      onClick={() => dispatchFn(toggleFocus(id, focus))}
-    />
-  );
-}
-
 function Participant({
   id,
   display,
@@ -70,14 +48,19 @@ function Participant({
   video,
   thumbnail
 }) {
-  const dispatch = useDispatch();
   const videoRef = React.createRef();
   const canvasRef = React.createRef();
-  const interval = useSelector((state) => state.config.thumbnailModeInterval);
-  const cssClassName = `Participant ${isFocused(focus) ? 'focus' : ''}`;
 
+  const dispatch = useDispatch();
+  const interval = useSelector((state) => state.config.thumbnailModeInterval);
+
+  const placeholder = '/placeholder.png';
+  const picture = isFocused(focus) ? placeholder : thumbnail || placeholder;
+
+  // Initialize the video
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
+  // Take the thumbnail picture
   useEffect(() => {
     // The thumbnail will be taken only for the publisher if the video is
     // available, as long as a valid interval has been defined. With a not
@@ -114,16 +97,29 @@ function Participant({
   });
 
   return (
-    <div className={cssClassName}>
+    <div className={classNames('Participant', isFocused(focus) && 'focus')}>
       {isPublisher && <canvas ref={canvasRef}></canvas>}
-      {video
-        ? renderVideo(id, videoRef, isPublisher, isLocalScreen, focus, dispatch)
-        : renderImage(id, focus, thumbnail, dispatch)}
-      <div className="display">{display}</div>
-      {!isLocalScreen && <MuteButton participantId={id} />}
-      {isPublisher && !isLocalScreen && <ToggleVideo video={video} />}
-      {isPublisher && isLocalScreen && <StopScreenSharing id={id} />}
-      {!isPublisher && <Reconnect participantId={id} />}
+      <div onClick={() => dispatch(toggleFocus(id, focus))}>
+        <video
+          data-testid="participant-video"
+          autoPlay
+          ref={videoRef}
+          muted={isPublisher}
+          className={classNames(isPublisher && !isLocalScreen && 'mirrored', video && 'visible')}
+        />
+        <img
+          src={picture}
+          className={classNames(!video && 'visible')}
+          data-testid="participant-thumbnail"
+        />
+        <div className="display">{display}</div>
+      </div>
+      <div id="actions">
+        {!isLocalScreen && <MuteButton participantId={id} />}
+        {isPublisher && !isLocalScreen && <ToggleVideo video={video} />}
+        {isPublisher && isLocalScreen && <StopScreenSharing id={id} />}
+        {!isPublisher && <Reconnect participantId={id} />}
+      </div>
     </div>
   );
 }
