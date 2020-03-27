@@ -39,8 +39,40 @@ function Participant({
   const dispatch = useDispatch();
   const videoRef = React.createRef();
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
+  const canvasRef = React.createRef();
 
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
+
+  useEffect(() => {
+    if (!isPublisher || !video) {
+      return;
+    }
+
+    let thumbnailSource = videoRef.current;
+    let thumbnailCanvas = canvasRef.current;
+    let thumbnailContext = thumbnailCanvas.getContext('2d');
+
+    const interval = setInterval(() => {
+      let videoHeight = thumbnailSource.videoHeight;
+
+      // Nothing to do if the video has no dimensions yet
+      if (!videoHeight) {
+        return;
+      }
+
+      let width = thumbnailCanvas.parentNode.offsetWidth;
+      let height = (width * videoHeight) / thumbnailSource.videoWidth;
+
+      thumbnailCanvas.width = width;
+      thumbnailCanvas.height = height;
+      thumbnailContext.drawImage(thumbnailSource, 0, 0, width, height);
+
+      let thumbnailData = thumbnailCanvas.toDataURL('image/jpeg');
+      dispatch(participantsActions.updateLocalPicture(thumbnailData));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  });
 
   return (
     <div
@@ -50,6 +82,7 @@ function Participant({
         focus && 'border-secondary shadow-md',
         speaking && 'border-green-300'
       )}>
+      {isPublisher && <canvas ref={canvasRef} className="hidden"></canvas>}
       <div className="relative bg-gray-100">
         <video
           ref={videoRef}
