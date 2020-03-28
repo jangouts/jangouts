@@ -6,6 +6,15 @@
  */
 
 import React from 'react';
+import BaseInterweave, { InterweaveProps } from 'interweave';
+import { useEmojiData, EmojiMatcher } from 'interweave-emoji';
+import { UrlMatcher } from 'interweave-autolink';
+import ImgMatcher from './ImgMatcher';
+
+const Interweave = (props: InterweaveProps) => {
+  const [emojis, source, manager] = useEmojiData({ compact: false });
+  return <BaseInterweave {...props} emojiSource={source} />;
+};
 
 const renderUsername = (feed) => {
   if (!feed) {
@@ -26,7 +35,20 @@ function Message({ type, content, text, timestamp }) {
         {content && renderUsername(content.feed)}
         <time dateTime={timestamp}>{time}</time>
       </div>
-      <div>{text()}</div>
+      <div>
+        <Interweave
+          content={text()}
+          matchers={[
+            new ImgMatcher('img'),
+            new UrlMatcher('url'),
+            new EmojiMatcher('emoji', {
+              convertEmoticon: true,
+              convertShortcode: true,
+              enlargeThreshold: 0
+            })
+          ]}
+        />
+      </div>
     </li>
   );
 }

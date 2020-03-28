@@ -4,6 +4,10 @@
   "private": true,
   "dependencies": {
     "dompurify": "^2.0.8",
+    "emojibase": "^4.0.1",
+    "interweave": "^12.5.0",
+    "interweave-autolink": "^4.2.1",
+    "interweave-emoji": "^5.3.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-hook-form": "^5.1.3",
