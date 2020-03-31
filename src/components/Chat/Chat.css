@@ -90,3 +90,7 @@
   display: block;
   color: gray;
 }
+
+.Chat .MessageList .img-matcher img {
+  max-width: 100%;
+}

@@ -41,7 +41,7 @@ function MessagesList() {
     <div className="MessageList" ref={wrapperRef}>
       <ul ref={messagesRef}>
         {messages.map((m, index) => (
-          <Message key={index} {...m} />
+          <Message key={index} onRender={updateScroll} {...m} />
         ))}
       </ul>
     </div>
