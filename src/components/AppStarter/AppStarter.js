@@ -32,7 +32,7 @@ function AppStarter(props) {
       </div>
     );
   } else {
-    return props.children;
+    return <div className="theme-classic">{props.children}</div>;
   }
 }
 
