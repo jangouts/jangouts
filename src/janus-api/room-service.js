@@ -212,7 +212,10 @@ export const createRoomService = (
         if (!on) {
           //notify if joined muted
           if (startMuted) {
-            eventsService.emitEvent({ type: 'muted', data: { cause: 'join' } });
+            eventsService.emitEvent({
+              type: 'muted',
+              data: { cause: 'join', limit: joinUnmutedLimit }
+            });
           }
         }
       },
