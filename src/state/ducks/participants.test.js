@@ -93,6 +93,7 @@ describe('reducer', () => {
     const participant = state['1234'];
     expect(participant['audio']).toEqual(false);
     expect(participant['video']).toEqual(false);
+    expect(participant['speaking']).toEqual(false);
   });
 
   describe('handles PARTICIPANT_SPEAKING', () => {
