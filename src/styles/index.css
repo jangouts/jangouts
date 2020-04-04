@@ -5,4 +5,5 @@
 /* purgecss end ignore */
 
 @import './themes.css';
+@import './forms.css';
 @import 'tailwindcss/utilities';

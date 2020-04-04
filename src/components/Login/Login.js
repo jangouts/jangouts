@@ -11,8 +11,6 @@ import { useSelector } from 'react-redux';
 import Logo from '../Logo';
 import LoginForm from '../LoginForm';
 
-import './Login.css';
-
 function Login() {
   const room = useSelector((state) => state.room);
 
@@ -21,20 +19,16 @@ function Login() {
   }
 
   return (
-    <div className="Login">
-      <div className="content">
-        <Logo />
+    <div className="flex items-center justify-center h-screen w-screen bg-signal">
+      <div className="w-5/6 sm:w-2/3 p-5 bg-primary-dark shadow-2xl">
+        <Logo className="w-2/3 mx-auto" />
+
         <LoginForm />
 
-        <div className="foot-notes">
+        <div className="mt-4 p-2 text-xs text-center text-gray-100">
           <p>
-            Tested with recent versions of Firefox, Chrome and Chromium. Please review the detailed
+            Tested with recent versions of Firefox and Chromium. Please review the detailed
             information about browsers before proceeding.
-          </p>
-          <hr />
-          <p>
-            If you wish to use the screen sharing functionality, make sure you have understood these
-            instructions.
           </p>
         </div>
       </div>

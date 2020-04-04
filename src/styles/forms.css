@@ -1,0 +1,29 @@
+.form-element {
+  @apply mt-2;
+}
+
+.form-label {
+  @apply block;
+  @apply text-sm text-gray-200 font-bold;
+}
+
+.form-input {
+  @apply w-full mt-1 p-2 opacity-75;
+  @apply transition-all duration-200 ease-in;
+}
+
+.form-input:focus {
+  @apply bg-white opacity-100;
+}
+
+.form-btn {
+  @apply appearance-none box-border cursor-pointer;
+  @apply inline-block w-full h-10 mt-1 p-2 bg-secondary;
+  @apply text-white font-bold uppercase;
+  @apply transition-all duration-200 ease-in;
+}
+
+.form-btn:hover,
+.form-btn:focus {
+  @apply opacity-100 shadow-xl;
+}
