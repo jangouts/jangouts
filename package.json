@@ -37,7 +37,7 @@
     "prebuild": "npm run build:css",
     "build": "react-scripts build",
 
-    "test": "react-scripts test",
+    "test": "TZ=UTC react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
