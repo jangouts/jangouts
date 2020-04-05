@@ -21,7 +21,7 @@ function Login() {
   return (
     <div className="flex items-center justify-center h-screen w-screen bg-signal">
       <div className="w-5/6 sm:w-2/3 p-5 bg-primary-dark shadow-2xl">
-        <Logo className="w-2/3 mx-auto" />
+        <Logo className="w-2/3 mx-auto lg:w-1/3" />
 
         <LoginForm />
 

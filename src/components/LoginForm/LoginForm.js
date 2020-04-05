@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import janusApi from '../../janus-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as roomActions } from '../../state/ducks/room';
+import { classNames } from '../../utils/common';
 
 /**
  * Build options for the selector of rooms.
@@ -38,6 +39,12 @@ function pinRequired(rooms, roomId) {
   return room && room.pinRequired;
 }
 
+/**
+ * Handles the form submit
+ *
+ * @param {Function} dispatch - the dispatch function available in the Redux store
+ * @returns {Function}
+ */
 function onSubmit(dispatch) {
   return function(data) {
     dispatch(roomActions.login(data.username, data.room, data.pin));
@@ -54,17 +61,15 @@ function renderError(error) {
   if (error) {
     return (
       <div
-        className="bg-gray-100 border-b-4 border-secondary text-secondary px-4 py-3 shadow-md shadow-inner"
+        className="bg-gray-200 border-b-4 border-secondary text-secondary px-4 py-3 mx-1 mt-2 shadow-inner"
         role="alert">
         <div className="flex">
-          <div className="">
-            <svg
-              className="fill-current h-6 w-6 text-secondary mr-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20">
-              <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-            </svg>
-          </div>
+          <svg
+            className="fill-current h-6 w-6 text-secondary mr-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20">
+            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+          </svg>
           <div>
             <p className="font-bold">{error}</p>
           </div>
@@ -96,52 +101,66 @@ function LoginForm() {
   }, []);
 
   return (
-    <form className="mt-4" onSubmit={handleSubmit(onSubmit(dispatch))}>
+    <form className="mt-2" onSubmit={handleSubmit(onSubmit(dispatch))}>
       {renderError(error)}
-      <div className="form-element">
-        <label className="form-label" htmlFor="username">
-          Username
-        </label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          className="form-input"
-          defaultValue={previousUsername}
-          ref={register}
-          autoComplete="username"
-          required
-        />
-      </div>
 
-      <div className="form-element">
-        <label className="form-label" htmlFor="room">
-          Room
-        </label>
-        <select className="form-input" id="room" name="room" ref={register} required>
-          {roomOptions(rooms)}
-        </select>
-      </div>
-
-      {pinRequired(rooms, selectedRoom) && (
+      <div className="flex flex-col sm:flex-row">
         <div className="form-element">
-          <label className="form-label" htmlFor="pin">
-            Pin
+          <label className="form-label" htmlFor="username">
+            Username
           </label>
           <input
-            type="password"
-            id="pin"
-            name="pin"
-            className="form-input"
+            id="username"
+            name="username"
+            type="text"
             ref={register}
-            autoComplete="current-password"
+            className="form-input"
+            defaultValue={previousUsername}
+            autoComplete="username"
             required
           />
         </div>
-      )}
 
-      <div className="mt-4 pt-2 border-t">
-        <input className="form-btn hover:text-lg" type="submit" value="Sign in" />
+        <div className="form-element">
+          <label className="form-label" htmlFor="room">
+            Room
+          </label>
+          <select id="room" name="room" ref={register} className="form-input" required>
+            {roomOptions(rooms)}
+          </select>
+        </div>
+      </div>
+
+      <div className="flex">
+        <div
+          className={classNames(
+            'transition-all duration-300 ease-out',
+            pinRequired(rooms, selectedRoom) ? 'form-element w-1/2 self-end' : 'w-0'
+          )}>
+          {pinRequired(rooms, selectedRoom) && (
+            <div className="">
+              <label className="form-label" htmlFor="pin">
+                PIN
+              </label>
+              <input
+                id="pin"
+                name="pin"
+                type="password"
+                ref={register}
+                className="form-input"
+                autoComplete="current-password"
+                required
+              />
+            </div>
+          )}
+        </div>
+        <div
+          className={classNames(
+            'form-element self-end',
+            pinRequired(rooms, selectedRoom) ? 'w-1/2' : 'w-full mt-6'
+          )}>
+          <input className="form-btn" type="submit" value="Enter" />
+        </div>
       </div>
     </form>
   );

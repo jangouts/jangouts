@@ -1,5 +1,5 @@
 .form-element {
-  @apply mt-2;
+  @apply flex-1 mt-2 mx-1;
 }
 
 .form-label {
@@ -18,12 +18,6 @@
 
 .form-btn {
   @apply appearance-none box-border cursor-pointer;
-  @apply inline-block w-full h-10 mt-1 p-2 bg-secondary;
+  @apply w-full p-2 bg-secondary;
   @apply text-white font-bold uppercase;
-  @apply transition-all duration-200 ease-in;
-}
-
-.form-btn:hover,
-.form-btn:focus {
-  @apply opacity-100 shadow-xl;
 }
