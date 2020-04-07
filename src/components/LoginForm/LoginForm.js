@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -27,16 +27,16 @@ function roomOptions(rooms) {
 }
 
 /**
- * Determines whether the select room requires a PIN.
+ * Return the requested room
  *
  * @param {Array} rooms - available rooms
  * @param {String,Integer} roomId - roomId
  * @returns {Boolean}
  */
-function pinRequired(rooms, roomId) {
+function findRoom(rooms, roomId) {
   const id = parseInt(roomId);
   const room = rooms.find((r) => r.id === id);
-  return room && room.pinRequired;
+  return room || {};
 }
 
 /**
@@ -82,9 +82,9 @@ function renderError(error) {
 function LoginForm() {
   const dispatch = useDispatch();
   const [rooms, setRooms] = useState([]);
+  const [selectedRoom, setSelectedRoom] = useState({});
   const previousRoom = useSelector((state) => state.room);
-  const { register, handleSubmit, reset, watch } = useForm();
-  const selectedRoom = watch('room');
+  const { register, handleSubmit, reset } = useForm();
   const { username: previousUsername, error } = previousRoom;
 
   useEffect(() => {
@@ -97,13 +97,13 @@ function LoginForm() {
         roomId = rooms[0].id;
       }
       reset({ room: roomId });
+      setSelectedRoom(findRoom(rooms, roomId));
     });
   }, []);
 
   return (
     <form className="mt-2" onSubmit={handleSubmit(onSubmit(dispatch))}>
       {renderError(error)}
-
       <div className="flex flex-col sm:flex-row">
         <div className="form-element">
           <label className="form-label" htmlFor="username">
@@ -125,19 +125,24 @@ function LoginForm() {
           <label className="form-label" htmlFor="room">
             Room
           </label>
-          <select id="room" name="room" ref={register} className="form-input" required>
+          <select
+            id="room"
+            name="room"
+            ref={register}
+            className="form-input"
+            onChange={(e) => setSelectedRoom(findRoom(rooms, e.target.value))}
+            required>
             {roomOptions(rooms)}
           </select>
         </div>
       </div>
-
       <div className="flex">
         <div
           className={classNames(
             'transition-all duration-300 ease-out',
-            pinRequired(rooms, selectedRoom) ? 'form-element w-1/2 self-end' : 'w-0'
+            selectedRoom.pinRequired ? 'form-element w-1/2 self-end' : 'w-0'
           )}>
-          {pinRequired(rooms, selectedRoom) && (
+          {selectedRoom.pinRequired && (
             <div className="">
               <label className="form-label" htmlFor="pin">
                 PIN
@@ -157,7 +162,7 @@ function LoginForm() {
         <div
           className={classNames(
             'form-element self-end',
-            pinRequired(rooms, selectedRoom) ? 'w-1/2' : 'w-full mt-6'
+            selectedRoom.pinRequired ? 'w-1/2' : 'w-full mt-6'
           )}>
           <input className="form-btn" type="submit" value="Enter" />
         </div>
