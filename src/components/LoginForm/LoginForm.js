@@ -104,7 +104,7 @@ function LoginForm() {
   return (
     <form className="mt-2" onSubmit={handleSubmit(onSubmit(dispatch))}>
       {renderError(error)}
-      <div className="flex flex-col sm:flex-row">
+      <div className="flex flex-col sm:flex-row lg:flex-col">
         <div className="form-element">
           <label className="form-label" htmlFor="username">
             Username
