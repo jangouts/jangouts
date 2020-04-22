@@ -8,11 +8,11 @@
 import React from 'react';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { useDispatch } from 'react-redux';
-import { FaVideo, FaVideoSlash } from 'react-icons/fa';
+import { Video, VideoOff } from 'react-feather';
 
-function ToggleVideo({video}) {
+function ToggleVideo({ video }) {
   const dispatch = useDispatch();
-  const Icon = video ? FaVideoSlash : FaVideo;
+  const Icon = video ? Video : VideoOff;
   const label = video ? 'Switch Video Off' : 'Switch Video On';
 
   return (

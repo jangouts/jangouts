@@ -8,9 +8,9 @@
 import React from 'react';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { useDispatch } from 'react-redux';
-import { MdStopScreenShare } from 'react-icons/md';
+import { Monitor } from 'react-feather';
 
-function StopScreenSharing({id}) {
+function StopScreenSharing({ id }) {
   const dispatch = useDispatch();
   const label = 'Stop Screen Sharing';
 
@@ -19,7 +19,7 @@ function StopScreenSharing({id}) {
       title={label}
       aria-label={label}
       onClick={() => dispatch(participantsActions.stopScreenSharing(id))}>
-      <MdStopScreenShare />
+      <Monitor />
     </button>
   );
 }

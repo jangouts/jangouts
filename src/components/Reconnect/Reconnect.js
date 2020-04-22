@@ -8,11 +8,10 @@
 import React from 'react';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { useDispatch } from 'react-redux';
-import { GoSync } from 'react-icons/go';
+import { RefreshCw } from 'react-feather';
 
 function Reconnect({ participantId }) {
   const dispatch = useDispatch();
-  const Icon = GoSync;
   const label = 'Restart connection';
 
   return (
@@ -20,7 +19,7 @@ function Reconnect({ participantId }) {
       title={label}
       aria-label={label}
       onClick={() => dispatch(participantsActions.reconnect(participantId))}>
-      <Icon />
+      <RefreshCw />
     </button>
   );
 }

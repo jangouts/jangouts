@@ -8,7 +8,7 @@
 import React from 'react';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { useDispatch, useSelector } from 'react-redux';
-import { GoMute, GoUnmute } from 'react-icons/go';
+import { Mic, MicOff } from 'react-feather';
 
 function MuteButton({ participantId }) {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ function MuteButton({ participantId }) {
   const { audio, isPublisher, speaking } = participant;
   const disabled = !(audio || isPublisher);
 
-  const Icon = audio ? GoUnmute : GoMute;
+  const Icon = audio ? Mic : MicOff;
   const label = audio ? 'Mute' : 'Unmute';
 
   return (
