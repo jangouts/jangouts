@@ -19,7 +19,6 @@ import Participants from '../Participants';
 import Chat from '../Chat';
 
 import './Room.css';
-import '../../assets/react-resizable.css';
 
 const randomUsername = () => `user_${Math.floor(Math.random() * 1000)}`;
 
