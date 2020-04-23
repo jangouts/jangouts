@@ -632,7 +632,7 @@ module.exports = {
     boxShadow: ['responsive', 'hover', 'focus'],
     boxSizing: ['responsive'],
     cursor: ['responsive'],
-    display: ['responsive'],
+    display: ['responsive', 'group-hover'],
     fill: ['responsive'],
     flex: ['responsive'],
     flexDirection: ['responsive'],
