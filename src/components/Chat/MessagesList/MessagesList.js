@@ -38,8 +38,8 @@ function MessagesList() {
   useEffect(updateScroll);
 
   return (
-    <div className="MessageList" ref={wrapperRef}>
-      <ul ref={messagesRef}>
+    <div className="h-full overflow-y-auto">
+      <ul>
         {messages.map((m, index) => (
           <Message key={index} onRender={updateScroll} {...m} />
         ))}

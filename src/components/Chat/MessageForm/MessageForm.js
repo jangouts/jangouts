@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -25,16 +25,21 @@ function MessageForm() {
   return (
     <form
       data-testid="chatbox"
-      className="MessageForm"
+      className="flex absolute bottom-0 w-full h-12 p-1 bg-gray-100 border-t"
       onSubmit={(event) => handleSubmit(event, dispatch, textInput)}>
       <input
+        id="text"
         type="text"
         autoComplete="off"
-        id="text"
+        className="appearance-none rounded w-full mr-2 px-2 py-4 focus:border-secondary focus:outline-none focus:shadow"
         placeholder="Enter your message here"
         ref={textInput}
       />
-      <input type="submit" value="Send" />
+      <input
+        type="submit"
+        className="appearance-none rounded px-4 font-bold border-none text-white uppercase bg-secondary"
+        value="Send"
+      />
     </form>
   );
 }
