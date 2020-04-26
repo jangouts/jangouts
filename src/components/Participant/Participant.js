@@ -9,10 +9,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
-import MuteButton from '../MuteButton';
-import ToggleVideo from '../ToggleVideo';
-import StopScreenSharing from '../StopScreenSharing';
-import Reconnect from '../Reconnect';
+import { ToggleAudio, ToggleVideo, Reconnect, StopScreenSharing } from './Actions';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 
 import './Participant.css';

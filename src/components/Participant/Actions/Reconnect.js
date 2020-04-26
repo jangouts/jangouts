@@ -6,21 +6,23 @@
  */
 
 import React from 'react';
-import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { useDispatch } from 'react-redux';
 import { RefreshCw } from 'react-feather';
+import { actionCreators as participantsActions } from '../../../state/ducks/participants';
 
-function Reconnect({ participantId }) {
+import ParticipantActionButton from './ParticipantActionButton'
+
+function Reconnect({ participantId, ...props }) {
   const dispatch = useDispatch();
   const label = 'Restart connection';
 
   return (
-    <button
-      title={label}
-      aria-label={label}
-      onClick={() => dispatch(participantsActions.reconnect(participantId))}>
-      <RefreshCw />
-    </button>
+    <ParticipantActionButton
+      icon={RefreshCw}
+      label={label}
+      onClick={() => dispatch(participantsActions.reconnect(participantId))}
+      {...props}
+    />
   );
 }
 
