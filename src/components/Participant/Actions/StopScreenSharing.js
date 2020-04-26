@@ -13,7 +13,7 @@ import { classNames } from '../../../utils/common';
 
 import ParticipantActionButton from './ParticipantActionButton'
 
-function StopScreenSharing({ id, ...props }) {
+function StopScreenSharing({ participantId, ...props }) {
   const dispatch = useDispatch();
   const label = 'Stop Screen Sharing';
 
@@ -22,7 +22,7 @@ function StopScreenSharing({ id, ...props }) {
       icon={StopCircle}
       label={label}
       iconStyle={classNames("text-red-600", props.iconStyle)}
-      onClick={() => dispatch(participantsActions.stopScreenSharing(id))}
+      onClick={() => dispatch(participantsActions.stopScreenSharing(participantId))}
       {...props}
     />
   );

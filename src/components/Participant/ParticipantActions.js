@@ -39,7 +39,7 @@ function ParticipantActions({participantId, className}) {
   }
 
   const visibleActions = discardFalses([
-    <ToggleAudio {...visibleActionsProps} />,
+    !isLocalScreen && <ToggleAudio {...visibleActionsProps} />,
     isPublisher && isLocalScreen && <StopScreenSharing {...visibleActionsProps} />,
     isPublisher && !isLocalScreen && <ToggleVideo video={video} {...visibleActionsProps} />
   ]);
