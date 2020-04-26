@@ -7,6 +7,7 @@
 
 import React from 'react';
 import Logo from '../Logo';
+import RoomActions from '../Room/RoomActions.js';
 
 function Header() {
   return (
@@ -20,6 +21,7 @@ function Header() {
       </div>
       <div className="flex w-2/5 justify-end">
         {/* General actions */}
+        <RoomActions className="ml-2 p-px" />
       </div>
     </div>
   );
