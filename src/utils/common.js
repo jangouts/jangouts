@@ -8,6 +8,8 @@
 /**
  * Helper to simplify to build the cssClass conditionally
  *
+ * TODO: add unit tests
+ *
  * @param {String} CSS classes to join
  * @returns {String} final cssClass properly joined
  */
@@ -15,4 +17,19 @@ function classNames(...classes) {
   return classes.filter((item) => !!item).join(' ');
 }
 
-export { classNames };
+/**
+ * Helper to discard non truly values in a collection
+ *
+ * TODO: add unit tests
+ *
+ * @param {Array} collection to clean
+ * @returns {Array} a new collection without false values
+ */
+function discardFalses(collection) {
+  return collection.filter((i) => i);
+}
+
+export {
+  classNames,
+  discardFalses
+};

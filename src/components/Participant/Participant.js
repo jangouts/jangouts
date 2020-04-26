@@ -9,10 +9,8 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
-import { ToggleAudio, ToggleVideo, Reconnect, StopScreenSharing } from './Actions';
+import ParticipantActions from './ParticipantActions';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
-
-import './Participant.css';
 
 function setVideo(id, videoRef) {
   const stream = janusApi.getFeedStream(id);
@@ -36,18 +34,17 @@ function Participant({ id, display, isPublisher, isLocalScreen, streamReady, foc
 
   return (
     <div className={cssClassName}>
-      <video
-        ref={videoRef}
-        muted={isPublisher}
-        autoPlay
-        className={isPublisher && !isLocalScreen ? 'mirrored' : ''}
-        onClick={() => dispatch(toggleFocus(id, focus))}
-      />
-      <div className="display">{display}</div>
-      {!isLocalScreen && <MuteButton participantId={id} />}
-      {isPublisher && !isLocalScreen && <ToggleVideo video={video} />}
-      {isPublisher && isLocalScreen && <StopScreenSharing id={id} />}
-      {!isPublisher && <Reconnect participantId={id} />}
+      <div className="relative bg-gray-100">
+        <video
+          ref={videoRef}
+          muted={isPublisher}
+          autoPlay
+          className={isPublisher && !isLocalScreen ? 'mirrored' : ''}
+          onClick={() => dispatch(toggleFocus(id, focus))}
+        />
+        <ParticipantActions participantId={id} />
+      </div>
+      <div className="p-1 text-xs whitespace-no-wrap truncate bg-gray-200">{display}</div>
     </div>
   );
 }
