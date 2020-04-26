@@ -8,9 +8,14 @@
 import React from 'react';
 import MessagesList from './MessagesList';
 import { renderWithRedux } from '../../../setupTests';
+import { act } from '@testing-library/react';
+
+// TODO: we should test the auto-scrolling
 
 it('renders without crashing', () => {
-  renderWithRedux(<MessagesList id={1} display="User" />);
+  act(() => {
+    renderWithRedux(<MessagesList id={1} display="User" />);
+  });
 });
 
 describe('when there are messages', () => {
