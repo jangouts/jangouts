@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -10,13 +10,11 @@ import { useSelector } from 'react-redux';
 
 import Participant from '../Participant';
 
-import './Participants.css';
-
 const Participants = () => {
   const participants = useSelector((state) => state.participants);
 
   return (
-    <div className="Participants">
+    <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 row-gap-3 p-2">
       {Object.keys(participants).map((key) => {
         let {
           id,
@@ -24,6 +22,7 @@ const Participants = () => {
           isPublisher,
           isLocalScreen,
           stream_timestamp,
+          speaking,
           focus,
           video
         } = participants[key];
@@ -32,10 +31,11 @@ const Participants = () => {
           <Participant
             key={key}
             id={id}
-            display={display}
+            username={display}
             isPublisher={isPublisher}
             isLocalScreen={isLocalScreen}
             streamReady={stream_timestamp}
+            speaking={speaking}
             focus={focus}
             video={video}
           />
