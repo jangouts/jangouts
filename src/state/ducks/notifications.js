@@ -13,20 +13,62 @@
 import notifier from '../../utils/notifier';
 import { fromEvent as notificationFromEvent } from '../../utils/notifications';
 
+const NOTIFICATION_SHOW = 'jangouts/notification/SHOW';
+const NOTIFICATION_HIDE = 'jangouts/notification/HIDE';
+
 /**
  * Notify that a given event has happened.
  *
  * @see notifications
  */
-const notifyEvent = (event) => () => {
+const notifyEvent = (event) => (dispatch) => {
   const notification = notificationFromEvent(event);
-  if (notification) {
-    notifier.notify(notification);
+  if (!notification) {
+    return null;
+  }
+  notifier.notify(notification, {}).then(() => {
+    dispatch(notificationHide());
+  });
+  dispatch(notificationShow(notification));
+};
+
+const notificationShow = (notification) => ({
+  type: NOTIFICATION_SHOW,
+  payload: { notification }
+});
+
+const notificationHide = () => ({
+  type: NOTIFICATION_HIDE
+});
+
+const actionCreators = {
+  notifyEvent,
+  notificationShow,
+  notificationHide
+};
+
+const actionTypes = {
+  NOTIFICATION_SHOW,
+  NOTIFICATION_HIDE
+};
+
+const initialState = [];
+
+const reducer = function(state = initialState, action) {
+  switch (action.type) {
+    case NOTIFICATION_SHOW: {
+      const { notification } = action.payload;
+      return [...state, notification];
+    }
+    case NOTIFICATION_HIDE: {
+      return state.slice(1);
+    }
+    default: {
+      return state;
+    }
   }
 };
 
-const actionCreators = {
-  notifyEvent
-};
+export { actionCreators, actionTypes, initialState };
 
-export { actionCreators };
+export default reducer;

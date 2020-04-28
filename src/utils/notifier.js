@@ -30,18 +30,22 @@ const notifyFns = {
  * @param {object} notification - notification to display
  * @param {object} options - notification options
  * @param {number} options.hideAfter - notification time out
+ * @return {Promise} - return a promise that it is solved when the notification
+ *   is hidden
  */
 const notify = (notification, options) => {
   const { severity, text } = notification;
   const notifyFn = notifyFns[severity];
   const notifyOptions = { ...DEFAULT_OPTIONS, ...options };
 
-  const { hide } = notifyFn(text, {
+  const promise = notifyFn(text, {
     ...notifyOptions,
     onClick: () => {
-      hide();
+      // FIXME: although the hide method is call, the promise is not resolved yet.
+      promise.hide();
     }
   });
+  return promise;
 };
 
 export default {
