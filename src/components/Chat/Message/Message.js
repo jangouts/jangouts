@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import Interweave from './Interweave';
 
 const renderUsername = (feed) => {
   if (!feed) {
@@ -15,7 +16,7 @@ const renderUsername = (feed) => {
   return <span className="username">{feed.display}</span>;
 };
 
-function Message({ type, content, text, timestamp }) {
+function Message({ type, content, text, timestamp, onRender }) {
   // TODO: use date-fns, luxon or similar?
   const datetime = new Date(timestamp);
   const time = `${datetime.getHours()}:${String(datetime.getMinutes()).padStart('2', 0)}`;
@@ -26,7 +27,9 @@ function Message({ type, content, text, timestamp }) {
         {content && renderUsername(content.feed)}
         <time dateTime={timestamp}>{time}</time>
       </div>
-      <div>{text()}</div>
+      <div>
+        <Interweave content={text()} onRender={onRender} />
+      </div>
     </li>
   );
 }
