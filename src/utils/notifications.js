@@ -47,8 +47,23 @@ const mutedText = (data) => {
   }
 };
 
+const SCREENSHARE_STARTED = 'started';
+const SCREENSHARE_STOPPED = 'stopped';
+
+const screenshareText = (data) => {
+  switch (data.status) {
+    case SCREENSHARE_STARTED: {
+      return 'You started sharing your screen.';
+    }
+    case SCREENSHARE_STOPPED: {
+      return 'You stopped sharing your screen.';
+    }
+  }
+};
+
 const textHandlers = {
-  muted: mutedText
+  muted: mutedText,
+  screenshare: screenshareText
 };
 
 const eventText = (event) => {
@@ -56,8 +71,15 @@ const eventText = (event) => {
   return handlerFn ? handlerFn(event.data) : null;
 };
 
+/**
+ * Turns an event into a user notification.
+ *
+ * @param {object} event - Event to turn into a notification
+ * @return {UserNotification,null} - User notification or null if it is not handled
+ */
 export const fromEvent = (event) => {
-  return new UserNotification(eventText(event), SEVERITY_INFO);
+  const text = eventText(event);
+  return text ? new UserNotification(text, SEVERITY_INFO) : null;
 };
 
 export function UserNotification(text, severity = SEVERITY_INFO) {

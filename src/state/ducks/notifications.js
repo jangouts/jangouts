@@ -20,7 +20,9 @@ import { fromEvent as notificationFromEvent } from '../../utils/notifications';
  */
 const notifyEvent = (event) => () => {
   const notification = notificationFromEvent(event);
-  notifier.notify(notification);
+  if (notification) {
+    notifier.notify(notification);
+  }
 };
 
 const actionCreators = {

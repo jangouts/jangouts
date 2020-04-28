@@ -55,6 +55,9 @@ export const createEventsHandler = (dispatchFn) => (event) => {
     },
     muted: (event) => {
       dispatchFn(actions.notifications.notifyEvent(event));
+    },
+    screenshare: (event) => {
+      dispatchFn(actions.notifications.notifyEvent(event));
     }
   };
 
