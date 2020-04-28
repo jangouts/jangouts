@@ -13,9 +13,14 @@ import Participant from '../Participant';
 const Participants = () => {
   const participants = useSelector((state) => state.participants);
 
+  // TODO: allow to choose the order via prop.
+  const orderedParticipants = Object.values(participants).sort((a, b) => {
+    return a.display.localeCompare(b.display);
+  });
+
   return (
     <div className="grid items-center grid-cols-3 lg:grid-cols-5 gap-2 row-gap-3 p-2">
-      {Object.keys(participants).map((key) => {
+      {orderedParticipants.map((participant) => {
         let {
           id,
           display,
@@ -25,11 +30,11 @@ const Participants = () => {
           speaking,
           focus,
           video
-        } = participants[key];
+        } = participant;
 
         return (
           <Participant
-            key={key}
+            key={id}
             id={id}
             username={display}
             isPublisher={isPublisher}
