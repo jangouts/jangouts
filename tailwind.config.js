@@ -15,6 +15,19 @@ module.exports = {
       black: '#000',
       white: '#fff',
 
+      primary: {
+        dark: 'var(--colors-primary-dark)',
+        default: 'var(--colors-primary)',
+        lighter: 'var(--colors-primary-lighter)'
+      },
+
+      secondary: {
+        default: 'var(--colors-secondary)',
+        lighter: 'var(--colors-secondary-lighter)'
+      },
+
+      inverse: 'var(--colors-inverse)',
+
       gray: {
         100: '#f7fafc',
         200: '#edf2f7',
@@ -124,20 +137,7 @@ module.exports = {
         700: '#b83280',
         800: '#97266d',
         900: '#702459'
-      },
-
-      primary: {
-        dark: 'var(--colors-primary-dark)',
-        default: 'var(--colors-primary)',
-        lighter: 'var(--colors-primary-lighter)'
-      },
-
-      secondary: {
-        default: 'var(--colors-secondary)',
-        lighter: 'var(--colors-secondary-lighter)'
-      },
-
-      inverse: 'var(--colors-inverse)',
+      }
     },
     spacing: {
       px: '1px',
