@@ -22,7 +22,7 @@ function Message({ type, content, text, timestamp, onRender }) {
   const time = `${datetime.getHours()}:${String(datetime.getMinutes()).padStart('2', 0)}`;
 
   return (
-    <li className="rounded m-2 p-2 bg-white shadow" data-testid="message">
+    <li className="rounded m-2 p-2 bg-white overflow-x-auto shadow" data-testid="message">
       <div className="flex justify-between">
         <div className="mr-1 font-bold text-xs md:text-sm">
           {content && renderUsername(content.feed)}
