@@ -27,12 +27,13 @@ export const createDataChannelService = (feedsService, logService, eventsService
       }
     } else if (type === 'muteRequest') {
       feed = feedsService.find(content.target);
+      const source = feedsService.find(remoteId);
       if (feed.isPublisher) {
         feed.setEnabledChannel('audio', false, {
           after: function() {
             eventsService.emitEvent({
               type: 'muted',
-              data: { cause: 'request' }
+              data: { cause: 'request', source: { id: source.id, display: source.display } }
             });
           }
         });

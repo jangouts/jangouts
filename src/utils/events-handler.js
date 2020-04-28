@@ -52,6 +52,12 @@ export const createEventsHandler = (dispatchFn) => (event) => {
       const { feedId, speaking } = data;
       dispatchFn(actions.participants.participantSpeaking(feedId, speaking));
       dispatchFn(actions.participants.autoSetFocus());
+    },
+    muted: (event) => {
+      dispatchFn(actions.notifications.notifyEvent(event));
+    },
+    screenshare: (event) => {
+      dispatchFn(actions.notifications.notifyEvent(event));
     }
   };
 

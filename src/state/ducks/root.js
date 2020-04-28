@@ -27,6 +27,8 @@ import configReducer, {
   initialState as configInitial
 } from './config';
 
+import { actionCreators as notificationActions } from './notifications';
+
 /**
  * The combined reducer in charge of handling dispatched actions
  */
@@ -66,7 +68,8 @@ export const initialState = {
 export const actionCreators = {
   room: roomActions,
   participants: participantsActions,
-  messages: messagesActions
+  messages: messagesActions,
+  notifications: notificationActions
 };
 
 export default rootReducer;

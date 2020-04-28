@@ -194,7 +194,7 @@ const reducer = function(state = initialState, action) {
       const id = localParticipant(state).id;
       const { audio, video } = payload;
       const newState = { ...state, [id]: { ...state[id], audio, video } };
-      if (!audio) newState.speaking = false;
+      if (!audio) newState[id].speaking = false;
       return newState;
     }
 
