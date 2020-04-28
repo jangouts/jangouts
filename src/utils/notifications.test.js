@@ -8,16 +8,6 @@
 import { fromEvent, SEVERITY_INFO } from './notifications';
 
 describe('fromEvent', () => {
-  it('when the user is muted by himself/herself', () => {
-    const notification = fromEvent({
-      type: 'muted',
-      data: { cause: 'user' }
-    });
-
-    expect(notification.text).toEqual('You have been muted.');
-    expect(notification.severity).toEqual(SEVERITY_INFO);
-  });
-
   it('when the user is muted by another user', () => {
     const notification = fromEvent({
       type: 'muted',

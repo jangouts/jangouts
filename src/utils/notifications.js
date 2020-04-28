@@ -17,7 +17,6 @@ export const SEVERITY_WARN = 'warn';
 export const SEVERITY_ERROR = 'error';
 
 const MUTED_JOIN = 'join';
-const MUTED_USER = 'user';
 const MUTED_REQUEST = 'request';
 
 const mutedText = (data) => {
@@ -35,14 +34,6 @@ const mutedText = (data) => {
     case MUTED_REQUEST: {
       const { display } = data.source;
       return `You have been muted by ${display}.`;
-    }
-
-    case MUTED_USER: {
-      return 'You have been muted.';
-    }
-
-    default: {
-      return null;
     }
   }
 };
