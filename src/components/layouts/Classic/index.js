@@ -45,13 +45,13 @@ function Classic() {
           </div>
           <div
             className={classNames(
-              'overflow-y-auto row-span-1 col-span-2 border-t sm:row-span-3 sm:col-span-1 sm:border-t-0',
+              'overflow-y-auto row-span-2 col-span-2 border-t sm:row-span-3 sm:col-span-1 sm:border-t-0',
               !showChat && 'row-span-4 sm:row-span-6'
             )}>
             <Participants />
           </div>
           {showChat && (
-            <div className="overflow-y-auto row-span-3 col-span-2 border-t sm:row-span-6 sm:border-t-0 sm:border-l-2">
+            <div className="overflow-y-auto row-span-2 col-span-2 border-t sm:row-span-6 sm:border-t-0 sm:border-l-2">
               <Chat />
             </div>
           )}
