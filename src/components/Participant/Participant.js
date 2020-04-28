@@ -27,7 +27,16 @@ function toggleFocus(id, focus) {
   return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
-function Participant({ id, username, isPublisher, isLocalScreen, streamReady, focus, speaking, video }) {
+function Participant({
+  id,
+  username,
+  isPublisher,
+  isLocalScreen,
+  streamReady,
+  focus,
+  speaking,
+  video
+}) {
   const dispatch = useDispatch();
   const videoRef = React.createRef();
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
@@ -35,27 +44,22 @@ function Participant({ id, username, isPublisher, isLocalScreen, streamReady, fo
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
   return (
-    <div className={classNames(
-      "relative group p-1 border-2 border-white bg-white",
-      "transition duration-150 ease-in-out",
-      focus === 'user' && "border-secondary shadow-md",
-      speaking && "border-green-300"
-    )}>
+    <div
+      className={classNames(
+        'relative group p-1 border-2 border-white bg-white',
+        'transition duration-150 ease-in-out',
+        focus && 'border-secondary shadow-md',
+        speaking && 'border-green-300'
+      )}>
       <div className="relative bg-gray-100">
         <video
           ref={videoRef}
           muted={isPublisher}
           autoPlay
-          className={classNames(
-            video || "hidden",
-            isPublisher && !isLocalScreen && 'mirrored'
-          )}
+          className={classNames(video || 'hidden', isPublisher && !isLocalScreen && 'mirrored')}
           onClick={() => dispatch(toggleFocus(id, focus))}
         />
-        <UserIcon className={classNames(
-          "w-4/6 h-auto m-auto text-secondary",
-          video && "hidden"
-        )} />
+        <UserIcon className={classNames('w-4/6 h-auto m-auto text-secondary', video && 'hidden')} />
       </div>
       <div className="flex items-center p-1 bg-gray-200">
         <ParticipantActions participantId={id} />
