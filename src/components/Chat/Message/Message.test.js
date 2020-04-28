@@ -46,14 +46,8 @@ it('renders the time in HH:MM format', () => {
 });
 
 const htmlMessage = {
-  type: 'chatMsg',
-  text: () => 'This is <b>bold</b> and this an <script>window.alert();</script> injection!',
-  content: {
-    feed: {
-      display: 'John'
-    }
-  },
-  timestamp: '2020-02-10T18:02:58.439Z'
+  ...plainMessage,
+  text: () => 'This is <b>bold</b> and this an <script>window.alert();</script> injection!'
 };
 
 it('filters out the dangerous HTML markup', () => {
@@ -70,18 +64,42 @@ it('keeps the acceptable HTML markup', () => {
 });
 
 const imgMessage = {
-  type: 'chatMsg',
-  text: () => 'Link to a logo http://www.google.com/logo.png',
-  content: {
-    feed: {
-      display: 'John'
-    }
-  },
-  timestamp: '2020-02-10T18:02:58.439Z'
+  ...plainMessage,
+  text: () => 'Link to a logo http://www.google.com/logo.png'
 };
 
 it('renders images inline', () => {
   const { getByTestId } = render(<Message {...imgMessage} />);
 
   expect(getByTestId('message')).toContainHTML('<img src="http://www.google.com/logo.png"');
+});
+
+const formattedMessage = {
+  ...plainMessage,
+  text: () => 'Some *bold*, _italic_ and *_combined_*.'
+};
+
+const redundantFormatMessage = {
+  ...plainMessage,
+  text: () => 'Very **bold** and **unbalanced*.'
+};
+
+it('formats bold and italic text', () => {
+  const { getByTestId } = render(<Message {...formattedMessage} />);
+
+  expect(getByTestId('message')).toContainHTML('Some <b>bold</b>,');
+  expect(getByTestId('message')).toContainHTML(' <i>italic</i> ');
+  expect(getByTestId('message')).toContainHTML(' <b><i>combined</i></b>.');
+});
+
+it('formats correctly text with redundant markup', () => {
+  const { getByTestId } = render(<Message {...redundantFormatMessage} />);
+
+  expect(getByTestId('message')).toContainHTML('Very <b>bold</b> and');
+});
+
+it('formats correctly text with asymmetric markup', () => {
+  const { getByTestId } = render(<Message {...redundantFormatMessage} />);
+
+  expect(getByTestId('message')).toContainHTML('<b>*unbalanced</b>.');
 });

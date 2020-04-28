@@ -10,6 +10,12 @@ import BaseInterweave from 'interweave';
 import { useEmojiData, EmojiMatcher } from 'interweave-emoji';
 import { UrlMatcher } from 'interweave-autolink';
 import ImgMatcher from './ImgMatcher';
+import {
+  SimpleBoldMatcher,
+  SimpleItalicMatcher,
+  SimpleStrikeMatcher,
+  SimpleCodeMatcher
+} from './SimpleFormatMatchers';
 
 // Interweave documentation recommends to compound around Interweave
 // itself using a custom component.
@@ -25,7 +31,11 @@ export default function Interweave({ filters = [], matchers = [], ...props }) {
       convertEmoticon: true,
       convertShortcode: true,
       enlargeThreshold: 0
-    })
+    }),
+    new SimpleBoldMatcher('bold'),
+    new SimpleItalicMatcher('italic'),
+    new SimpleStrikeMatcher('strike'),
+    new SimpleCodeMatcher('code')
   ];
 
   return (
