@@ -14,7 +14,7 @@ const Participants = () => {
   const participants = useSelector((state) => state.participants);
 
   return (
-    <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 row-gap-3 p-2">
+    <div className="grid items-center grid-cols-3 lg:grid-cols-5 gap-2 row-gap-3 p-2">
       {Object.keys(participants).map((key) => {
         let {
           id,
