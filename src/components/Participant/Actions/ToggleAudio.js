@@ -18,19 +18,21 @@ function ToggleAudio({ participantId, iconStyle, ...props }) {
   const participant = useSelector((state) => state.participants[participantId]);
   if (!participant) return null;
 
-  const { audio, isPublisher } = participant;
+  const { display: username, audio, isPublisher } = participant;
   const disabled = !(audio || isPublisher);
 
   const icon = audio ? Mic : MicOff;
   const label = audio ? 'Mute' : 'Unmute';
+  const enableClassNames = audio ? "text-green-600" : "text-red-600";
+  const disableClassNames = "text-gray-800";
 
   return (
     <ParticipantActionButton
       icon={icon}
-      label={label}
+      label={disabled ? `${username} is muted` : label}
       disabled={disabled}
       iconStyle={classNames(
-        audio ? "text-green-600" : "text-red-600",
+        disabled ? disableClassNames : enableClassNames,
         iconStyle
       )}
       onClick={() => dispatch(participantsActions.toggleAudio(participantId))}

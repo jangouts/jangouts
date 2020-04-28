@@ -56,9 +56,11 @@ function Participant({ id, username, isPublisher, isLocalScreen, streamReady, fo
           "w-5/6 h-auto m-auto text-secondary",
           video && "hidden"
         )} />
-        <ParticipantActions participantId={id} />
       </div>
-      <div className="p-1 text-xs whitespace-no-wrap truncate bg-gray-200">{username}</div>
+      <div className="flex items-center p-1 bg-gray-200">
+        <ParticipantActions participantId={id} />
+        <div className="text-sx md:text-sm whitespace-no-wrap truncate">{username}</div>
+      </div>
     </div>
   );
 }

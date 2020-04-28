@@ -29,13 +29,13 @@ function ParticipantActions({participantId, className}) {
   const visibleActionsProps = {
     ...commonProps,
     showLabel: false,
-    className: "rounded-full w-6 p-1 mx-px bg-gray-100 hover:bg-gray-300 opacity-75 cursor-pointer"
+    className: "w-6 md:w-4 mr-1"
   }
 
   const moreActionsProps = {
     ...commonProps,
     showLabel: true,
-    className: "p-1 hover:bg-primary"
+    className: "w-full p-1 hover:bg-primary"
   }
 
   const visibleActions = discardFalses([
@@ -50,13 +50,13 @@ function ParticipantActions({participantId, className}) {
 
   if (moreActions.length) {
     return [
-        <div className="absolute top-0 right-0 z-50 mt-1 mr-1 cursor-pointer opacity-75 bg-white rounded-full"
+        <div className="absolute top-0 right-0 z-50 w-6 h-6 mt-2 mr-2 cursor-pointer opacity-75 bg-white rounded-full"
           onClick={() => setShowMore(!showMore)}>
           { showMore ? <Close className="w-2/3 m-auto text-secondary" /> : <MoreVertical /> }
         </div>,
-        <div className="absolute bottom-0 w-full text-center">
+        <React.Fragment>
           { visibleActions }
-        </div>,
+        </React.Fragment>,
         <div
           className={classNames(
             "absolute top-0 inset-x-0 min-h-full bg-primary-dark opacity-75 overflow-hidden",
@@ -67,11 +67,7 @@ function ParticipantActions({participantId, className}) {
       ];
   }
 
-  return (
-    <div className="absolute bottom-0 w-full text-center">
-      { visibleActions }
-    </div>
-  );
+  return visibleActions;
 }
 
 export default ParticipantActions;

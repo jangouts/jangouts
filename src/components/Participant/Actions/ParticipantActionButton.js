@@ -16,17 +16,16 @@ function ParticipantActionButton({ icon, label, className, iconStyle, labelStyle
       title={label}
       aria-label={label}
       className={classNames(
-        "inline-flex items-center",
+        "inline-flex items-center focus:outline-none",
+        props.disabled && "cursor-default" || "cursor-pointer",
         className
       )}
       {...props}
     >
-      <span className="w-7 md:w-5 p-px text-center">
-        <Icon className={classNames("w-full h-auto text-white", iconStyle)} />
-      </span>
+      <Icon className={classNames("h-auto text-white", iconStyle)} />
       {
         showLabel &&
-        <span className={classNames("ml-1 text-xs text-white", labelStyle)}>
+        <span className={classNames("ml-2 text-left text-xs text-white", labelStyle)}>
           {label}
         </span>
       }
