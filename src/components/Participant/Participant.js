@@ -53,7 +53,7 @@ function Participant({ id, username, isPublisher, isLocalScreen, streamReady, fo
           onClick={() => dispatch(toggleFocus(id, focus))}
         />
         <UserIcon className={classNames(
-          "w-5/6 h-auto m-auto text-secondary",
+          "w-4/6 h-auto m-auto text-secondary",
           video && "hidden"
         )} />
       </div>
