@@ -11,10 +11,10 @@ import { renderWithRedux } from '../../../setupTests';
 
 const initialState = {
   participants: {
-    1: { isPublisher: true, audio: true },
-    2: { isPublisher: true, audio: false },
-    3: { isPublisher: false, audio: true },
-    4: { isPublisher: false, audio: false }
+    1: { display: 'Jane', isPublisher: true, audio: true },
+    2: { display: 'John', isPublisher: true, audio: false },
+    3: { display: 'Jane', isPublisher: false, audio: true },
+    4: { display: 'John', isPublisher: false, audio: false }
   }
 };
 
@@ -72,14 +72,14 @@ describe('when given participant is not the publisher', () => {
   describe('and audio is false', () => {
     it('renders as disabled', () => {
       const { getByTitle } = renderWithRedux(<ToggleAudio participantId={4} />, { initialState });
-      const button = getByTitle('Unmute');
+      const button = getByTitle('John is muted');
 
       expect(button.disabled).toBe(true);
     });
 
-    it('renders "Unmute"', () => {
+    it('renders "${username} is muted"', () => {
       const { getByTitle } = renderWithRedux(<ToggleAudio participantId={4} />, { initialState });
-      const button = getByTitle('Unmute');
+      const button = getByTitle('John is muted');
 
       expect(button).toBeInTheDocument();
     });

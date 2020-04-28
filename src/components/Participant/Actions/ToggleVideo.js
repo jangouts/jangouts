@@ -11,9 +11,9 @@ import { Video, VideoOff } from 'react-feather';
 import { actionCreators as participantsActions } from '../../../state/ducks/participants';
 import { classNames } from '../../../utils/common';
 
-import ParticipantActionButton from './ParticipantActionButton'
+import ParticipantActionButton from './ParticipantActionButton';
 
-function ToggleVideo({ video, disabled, ...props }) {
+function ToggleVideo({ video, participantId, disabled, ...props }) {
   const dispatch = useDispatch();
   const icon = video ? Video : VideoOff;
   const label = video ? 'Switch Video Off' : 'Switch Video On';
@@ -24,7 +24,7 @@ function ToggleVideo({ video, disabled, ...props }) {
       label={label}
       disabled={disabled}
       iconStyle={classNames(
-        video ? "text-green-600" : "text-red-600",
+        video ? 'text-green-600' : 'text-red-600',
         props.iconStyle
       )}
       onClick={() => dispatch(participantsActions.toggleVideo())}
