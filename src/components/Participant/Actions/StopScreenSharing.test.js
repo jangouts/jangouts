@@ -6,9 +6,9 @@
  */
 
 import React from 'react';
-import ToggleVideo from './ToggleVideo';
-import { renderWithRedux } from '../../setupTests';
+import StopScreenSharing from './StopScreenSharing';
+import { renderWithRedux } from '../../../setupTests';
 
 it('renders without crashing', () => {
-  renderWithRedux(<ToggleVideo video={true} />);
+  renderWithRedux(<StopScreenSharing participantId={1} />);
 });

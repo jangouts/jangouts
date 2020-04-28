@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -10,8 +10,7 @@ import { useSelector } from 'react-redux';
 import { selectors } from '../../state/ducks/participants';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
-
-import './Speaker.css';
+import { classNames } from '../../utils/common';
 
 function setVideo(id, video, forceUpdate) {
   const stream = janusApi.getFeedStream(id);
@@ -35,14 +34,15 @@ function Speaker() {
   });
 
   return (
-    <div className="Speaker">
-      <video
-        ref={video}
-        muted={isPublisher}
-        className={isPublisher && !isLocalScreen ? 'mirrored' : ''}
-        autoPlay
-      />
-    </div>
+    <video
+      ref={video}
+      muted={isPublisher}
+      className={classNames(
+        'max-h-full w-full focus:outline-none',
+        isPublisher && !isLocalScreen && 'mirrored'
+      )}
+      autoPlay
+    />
   );
 }
 

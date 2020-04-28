@@ -6,9 +6,9 @@
  */
 
 import React from 'react';
-import StopScreenSharing from './StopScreenSharing';
+import ParticipantActions from './ParticipantActions';
 import { renderWithRedux } from '../../setupTests';
 
 it('renders without crashing', () => {
-  renderWithRedux(<StopScreenSharing video={true} />);
+  renderWithRedux(<ParticipantActions participantId={1} />);
 });

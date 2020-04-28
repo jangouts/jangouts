@@ -1,5 +1,5 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
@@ -10,32 +10,37 @@ import { useSelector } from 'react-redux';
 
 import Participant from '../Participant';
 
-import './Participants.css';
-
 const Participants = () => {
   const participants = useSelector((state) => state.participants);
 
+  // TODO: allow to choose the order via prop.
+  const orderedParticipants = Object.values(participants).sort((a, b) => {
+    return a.display.localeCompare(b.display);
+  });
+
   return (
-    <div className="Participants">
-      {Object.keys(participants).map((key) => {
+    <div className="grid items-center grid-cols-3 lg:grid-cols-5 gap-2 row-gap-3 p-2">
+      {orderedParticipants.map((participant) => {
         let {
           id,
           display,
           isPublisher,
           isLocalScreen,
           stream_timestamp,
+          speaking,
           focus,
           video
-        } = participants[key];
+        } = participant;
 
         return (
           <Participant
-            key={key}
+            key={id}
             id={id}
-            display={display}
+            username={display}
             isPublisher={isPublisher}
             isLocalScreen={isLocalScreen}
             streamReady={stream_timestamp}
+            speaking={speaking}
             focus={focus}
             video={video}
           />

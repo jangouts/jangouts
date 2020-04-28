@@ -5,4 +5,6 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-export { default } from './StopScreenSharing';
+import Classic from './Classic/';
+
+export { Classic };

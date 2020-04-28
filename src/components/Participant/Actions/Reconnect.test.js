@@ -7,7 +7,7 @@
 
 import React from 'react';
 import Reconnect from './Reconnect';
-import { renderWithRedux } from '../../setupTests';
+import { renderWithRedux } from '../../../setupTests';
 
 const initialState = {
   participants: {
@@ -15,6 +15,7 @@ const initialState = {
     2: { isPublisher: false }
   }
 };
+
 it('renders without crashing', () => {
-  renderWithRedux(<Reconnect participantId={2} />);
+  renderWithRedux(<Reconnect participantId={2} />, initialState);
 });
