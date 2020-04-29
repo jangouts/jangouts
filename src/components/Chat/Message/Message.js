@@ -21,19 +21,30 @@ function Message({ type, content, text, timestamp, onRender }) {
   const datetime = new Date(timestamp);
   const time = `${datetime.getHours()}:${String(datetime.getMinutes()).padStart('2', 0)}`;
 
-  return (
-    <li className="rounded m-2 p-2 bg-white overflow-hidden overflow-x-auto shadow" data-testid="message">
-      <div className="flex justify-between">
-        <div className="mr-1 font-bold text-xs md:text-sm">
-          {content && renderUsername(content.feed)}
+  if (type === 'chatMsg')
+    return (
+      <li
+        className="rounded m-2 p-2 bg-white overflow-hidden overflow-x-auto shadow"
+        data-testid="message">
+        <div className="flex justify-between">
+          <div className="mr-1 font-bold text-xs md:text-sm">
+            {content && renderUsername(content.feed)}
+          </div>
+          <time className="font-mono text-xs text-primary" dateTime={timestamp}>
+            {time}
+          </time>
         </div>
-        <time className="font-mono text-xs text-primary" dateTime={timestamp}>
-          {time}
-        </time>
-      </div>
-      <div className="px-2">
-        <Interweave content={text()} onRender={onRender} />
-      </div>
+        <div className="px-2">
+          <Interweave content={text()} onRender={onRender} />
+        </div>
+      </li>
+    );
+
+  return (
+    <li
+      className="rounded m-2 p-1 bg-white overflow-hidden overflow-x-auto shadow"
+      data-testid="message">
+      <div className="px-2 italic text-xs md:text-sm">{text()}</div>
     </li>
   );
 }
