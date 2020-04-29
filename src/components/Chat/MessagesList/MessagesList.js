@@ -10,9 +10,16 @@ import { useSelector } from 'react-redux';
 import Message from '../Message';
 
 function MessagesList() {
-  const messages = useSelector((state) => state.messages);
   const wrapperRef = useRef(null);
   const messagesRef = useRef(null);
+
+  const filterMessages = (messages) => {
+    // Avoid the pointless initial stream of messages like "x has joined the room"
+    // when entering a room in which there are partitipants already. Even if that
+    // means filtering a bit too much in some cases.
+    const first = messages.findIndex((msg) => msg.type !== 'newRemoteFeed');
+    return first < 0 ? [] : messages.slice(first);
+  };
 
   const mustScroll = (message) => {
     // FIXME: instead of using this threshold, we could verify whether the
@@ -36,6 +43,8 @@ function MessagesList() {
   };
 
   useEffect(updateScroll);
+
+  const messages = filterMessages(useSelector((state) => state.messages));
 
   return (
     <div ref={wrapperRef} className="h-full overflow-y-auto">
