@@ -43,6 +43,7 @@ export default function Interweave({ filters = [], matchers = [], ...props }) {
       filters={[...globalFilters, ...filters]}
       matchers={[...globalMatchers, ...matchers]}
       emojiSource={source}
+      newWindow={true}
       {...props}
     />
   );
