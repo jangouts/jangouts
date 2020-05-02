@@ -10,11 +10,10 @@
  *
  * @todo Remember which notifications should be 'silenced'.
  */
-import notifier from '../../utils/notifier';
 import { fromEvent as notificationFromEvent } from '../../utils/notifications';
 
 const NOTIFICATION_SHOW = 'jangouts/notification/SHOW';
-const NOTIFICATION_HIDE = 'jangouts/notification/HIDE';
+const NOTIFICATION_CLOSE = 'jangouts/notification/CLOSE';
 
 /**
  * Notify that a given event has happened.
@@ -26,30 +25,28 @@ const notifyEvent = (event) => (dispatch) => {
   if (!notification) {
     return null;
   }
-  notifier.notify(notification, {}).then(() => {
-    dispatch(notificationHide());
-  });
-  dispatch(notificationShow(notification));
+  dispatch(show(notification));
 };
 
-const notificationShow = (notification) => ({
+const show = (notification) => ({
   type: NOTIFICATION_SHOW,
   payload: { notification }
 });
 
-const notificationHide = () => ({
-  type: NOTIFICATION_HIDE
+const close = (id) => ({
+  type: NOTIFICATION_CLOSE,
+  payload: { id }
 });
 
 const actionCreators = {
   notifyEvent,
-  notificationShow,
-  notificationHide
+  show,
+  close
 };
 
 const actionTypes = {
   NOTIFICATION_SHOW,
-  NOTIFICATION_HIDE
+  NOTIFICATION_CLOSE
 };
 
 const initialState = [];
@@ -60,8 +57,9 @@ const reducer = function(state = initialState, action) {
       const { notification } = action.payload;
       return [...state, notification];
     }
-    case NOTIFICATION_HIDE: {
-      return state.slice(1);
+    case NOTIFICATION_CLOSE: {
+      const { id } = action.payload;
+      return state.filter((n) => n.id !== id);
     }
     default: {
       return state;

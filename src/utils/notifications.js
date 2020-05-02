@@ -18,6 +18,7 @@ export const SEVERITY_ERROR = 'error';
 
 const MUTED_JOIN = 'join';
 const MUTED_REQUEST = 'request';
+let lastId = 0;
 
 const mutedText = (data) => {
   switch (data.cause) {
@@ -74,6 +75,7 @@ export const fromEvent = (event) => {
 };
 
 export function UserNotification(text, severity = SEVERITY_INFO) {
+  this.id = lastId++;
   this.severity = severity;
   this.text = text;
 }

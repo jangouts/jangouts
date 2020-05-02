@@ -20,7 +20,8 @@ describe('reducer', () => {
     participants: {
       1: 'fakeParticipant'
     },
-    messages: ['fake', 'messages']
+    messages: ['fake', 'messages'],
+    notifications: []
   };
 
   describe(`when action is ${types.ROOM_LOGOUT}`, () => {
@@ -30,6 +31,7 @@ describe('reducer', () => {
       expect(reducer(currentState, action)).toEqual({
         config: currentState.config,
         messages: [],
+        notifications: [],
         participants: {},
         room: { ...currentState.room, loggedIn: false }
       });
