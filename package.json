@@ -38,49 +38,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "prettier"
-    ]
-  },
-  "prettier": {
-    "arrowParens": "always",
-    "jsxBracketSameLine": true,
-    "printWidth": 100,
-    "singleQuote": true
-  },
-  "stylelint": {
-    "extends": [
-      "stylelint-config-standard"
-    ],
-    "plugins": [
-      "stylelint-prettier"
-    ],
-    "rules": {
-      "prettier/prettier": true,
-      "at-rule-no-unknown": [
-        true,
-        {
-          "ignoreAtRules": [
-            "extends",
-            "tailwind"
-          ]
-        }
-      ]
-    },
-    "ignoreFiles": "src/assets/**"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint",
-      "prettier --write"
-    ],
-    "*.css": "stylelint --fix"
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -97,15 +55,8 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^9.4.0",
-    "eslint-config-prettier": "^6.10.0",
-    "husky": "^2.7.0",
-    "lint-staged": "^10.0.7",
     "mutationobserver-shim": "^0.3.3",
-    "prettier": "^1.19.1",
     "react-test-renderer": "^16.12.0",
-    "redux-mock-store": "^1.5.4",
-    "stylelint": "^10.1.0",
-    "stylelint-config-standard": "^18.3.0",
-    "stylelint-prettier": "^1.1.2"
+    "redux-mock-store": "^1.5.4"
   }
 }
