@@ -213,19 +213,23 @@
             // Any new feed to attach to?
             if (isArray(msg.publishers)) {
               that.subscribeToFeeds(msg.publishers);
+            }
             // One of the publishers has gone away?
-            } else if (isPresent(msg.leaving)) {
+            if (isPresent(msg.leaving)) {
               var leaving = msg.leaving;
               ActionService.destroyFeed(leaving);
+            }
             // One of the publishers has unpublished?
-            } else if (isPresent(msg.unpublished)) {
+            if (isPresent(msg.unpublished)) {
               var unpublished = msg.unpublished;
               ActionService.unpublishFeed(unpublished);
+            }
             // Reply to a configure request
-            } else if (msg.configured) {
+            if (msg.configured) {
               connection.confirmConfig();
+            }
             // The server reported an error
-            } else if (isPresent(msg.error)) {
+            if (isPresent(msg.error)) {
               console.log("Error message from server" + msg.error);
               $$rootScope.$broadcast('room.error', msg.error);
             }
