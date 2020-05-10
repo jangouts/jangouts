@@ -192,7 +192,7 @@
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
 
-            if (jhConfig.joinUnmutedLimit !== undefined && jhConfig.joinUnmutedLimit !== null) {
+            if (isPresent(jhConfig.joinUnmutedLimit)) {
               startMuted = (msg.publishers instanceof Array) && msg.publishers.length >= jhConfig.joinUnmutedLimit;
             }
 
@@ -214,24 +214,24 @@
             if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
               that.subscribeToFeeds(msg.publishers, that.room.id);
             // One of the publishers has gone away?
-            } else if(msg.leaving !== undefined && msg.leaving !== null) {
+            } else if (isPresent(msg.leaving)) {
               var leaving = msg.leaving;
               ActionService.destroyFeed(leaving);
             // One of the publishers has unpublished?
-            } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
+            } else if (isPresent(msg.unpublished)) {
               var unpublished = msg.unpublished;
               ActionService.unpublishFeed(unpublished);
             // Reply to a configure request
             } else if (msg.configured) {
               connection.confirmConfig();
             // The server reported an error
-            } else if(msg.error !== undefined && msg.error !== null) {
+            } else if (isPresent(msg.error)) {
               console.log("Error message from server" + msg.error);
               $$rootScope.$broadcast('room.error', msg.error);
             }
           }
 
-          if (jsep !== undefined && jsep !== null) {
+          if (isPresent(jsep)) {
             connection.handleRemoteJsep(jsep);
           }
         }
@@ -386,7 +386,7 @@
             console.log("What has just happened?!");
           }
 
-          if(jsep !== undefined && jsep !== null) {
+          if (isPresent(jsep)) {
             connection.subscribe(jsep);
           }
         },
@@ -519,7 +519,7 @@
           } else {
             console.log("Unexpected event for screen");
           }
-          if (jsep !== undefined && jsep !== null) {
+          if (isPresent(jsep)) {
             connection.handleRemoteJsep(jsep);
           }
         }
@@ -582,6 +582,13 @@
         DataChannelService.sendStatus(p, {exclude: "picture"});
         $timeout(function() { DataChannelService.sendStatus(p); }, 4000);
       });
+    }
+
+    /**
+     * Check whether the given argument has a value.
+     */
+    function isPresent(value) {
+      return (value !== undefined && value !== null);
     }
   }
 }());
