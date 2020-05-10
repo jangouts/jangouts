@@ -193,7 +193,7 @@
             // Step 4a (parallel with 4b). Publish our feed on server
 
             if (isPresent(jhConfig.joinUnmutedLimit)) {
-              startMuted = (msg.publishers instanceof Array) && msg.publishers.length >= jhConfig.joinUnmutedLimit;
+              startMuted = isArray(msg.publishers) && msg.publishers.length >= jhConfig.joinUnmutedLimit;
             }
 
             connection.publish({
@@ -202,7 +202,7 @@
             });
 
             // Step 5. Attach to existing feeds, if any
-            if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
+            if (isArray(msg.publishers)) {
               that.subscribeToFeeds(msg.publishers);
             }
             // The room has been destroyed
@@ -211,7 +211,7 @@
             $$rootScope.$broadcast('room.destroy');
           } else if (event === "event") {
             // Any new feed to attach to?
-            if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
+            if (isArray(msg.publishers)) {
               that.subscribeToFeeds(msg.publishers);
             // One of the publishers has gone away?
             } else if (isPresent(msg.leaving)) {
@@ -306,8 +306,11 @@
     }
 
     function subscribeToFeeds(list) {
+      if (list.length === 0) { return; }
+
       console.log("Got a list of available publishers/feeds:");
       console.log(list);
+
       for (var f = 0; f < list.length; f++) {
         var id = list[f].id;
         var display = list[f].display;
@@ -589,6 +592,13 @@
      */
     function isPresent(value) {
       return (value !== undefined && value !== null);
+    }
+
+    /**
+     * Check whether the given argument is an array.
+     */
+    function isArray(value) {
+      return (value instanceof Array);
     }
   }
 }());
