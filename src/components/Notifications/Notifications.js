@@ -9,8 +9,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Notification from './Notification';
 
-import './Notifications.css';
-
 function Notifications({ className }) {
   const notifications = useSelector((state) => state.notifications);
   return (
