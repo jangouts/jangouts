@@ -36,6 +36,10 @@ const mutedText = (data) => {
       const { display } = data.source;
       return `You have been muted by ${display}.`;
     }
+
+    default: {
+      return null;
+    }
   }
 };
 
@@ -47,8 +51,13 @@ const screenshareText = (data) => {
     case SCREENSHARE_STARTED: {
       return 'You started sharing your screen.';
     }
+
     case SCREENSHARE_STOPPED: {
       return 'You stopped sharing your screen.';
+    }
+
+    default: {
+      return null;
     }
   }
 };
