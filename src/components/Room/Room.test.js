@@ -27,9 +27,15 @@ janusApi.enterRoom = jest.fn(() => Promise.resolve());
 janusApi.getFeedStream = jest.fn();
 Janus.attachMediaStream = jest.fn();
 
+const initialState = {
+  participants: [],
+  messages: [],
+  notifications: []
+}
+
 describe('when the user is not logged in', () => {
   it('tries to log in taking room and username from the URL', () => {
-    const store = mockStore({ room: { loggedIn: false }, participants: [], messages: [] });
+    const store = mockStore({ ...initialState, room: { loggedIn: false } });
 
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
@@ -44,7 +50,7 @@ describe('when the user is not logged in', () => {
 
 describe('when the user is logged in', () => {
   it('does not try to log in', () => {
-    const store = mockStore({ room: { loggedIn: true }, participants: [], messages: [] });
+    const store = mockStore({ ...initialState, room: { loggedIn: true } });
 
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
