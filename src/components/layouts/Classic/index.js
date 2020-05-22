@@ -37,7 +37,9 @@ function Classic() {
           </Header>
         </div>
         <div className="flex-1 pt-2 overflow-hidden grid gap-2 grid-rows-6 grid-cols-2 sm:grid-flow-col">
-          <Notifications />
+          <Notifications
+            className="w-full absolute z-50 flex flex-col items-center"
+          />
           <div
             className={classNames(
               'flex p-1 justify-center overflow-hidden row-span-2 col-span-2 sm:row-span-3 sm:col-span-1',

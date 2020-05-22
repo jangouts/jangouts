@@ -16,8 +16,17 @@ function Notification({ notification }) {
   const { id, text } = notification;
 
   return (
-    <div className="notification" onClick={() => dispatch(actions.close(id))}>
+    <div
+      role="alertdialog"
+      className="w-1/3 mb-2 p-3 text-sm text-gray-700 border-b-2 border-secondary bg-white shadow-lg"
+    >
       {text}
+
+      <div className="mt-2">
+        <button className="text-blue-600 font-bold mr-2" onClick={() => dispatch(actions.close(id))}>
+          Dismiss
+        </button>
+      </div>
     </div>
   );
 }
