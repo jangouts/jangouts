@@ -12,6 +12,7 @@ import Header from '../../Header';
 import Speaker from '../../Speaker';
 import Participants from '../../Participants';
 import Chat from '../../Chat';
+import Notifications from '../../Notifications';
 
 import { classNames } from '../../../utils/common';
 
@@ -36,6 +37,7 @@ function Classic() {
           </Header>
         </div>
         <div className="flex-1 pt-2 overflow-hidden grid gap-2 grid-rows-6 grid-cols-2 sm:grid-flow-col">
+          <Notifications />
           <div
             className={classNames(
               'flex p-1 justify-center overflow-hidden row-span-2 col-span-2 sm:row-span-3 sm:col-span-1',

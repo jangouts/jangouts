@@ -15,7 +15,6 @@ import history from '../../utils/history';
 import Login from '../Login';
 import Room from '../Room';
 import AppStarter from '../AppStarter';
-import Notifications from '../Notifications';
 
 import './App.css';
 
@@ -23,7 +22,6 @@ function App() {
   return (
     <Provider store={store}>
       <AppStarter>
-        <Notifications />
         <HashRouter history={history}>
           <Route exact path="/" component={Login} />
           <Route path="/room/:roomId" component={Room} />
