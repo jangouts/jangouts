@@ -11,10 +11,10 @@ import Notification from './Notification';
 
 import './Notifications.css';
 
-function Notifications() {
+function Notifications({ className }) {
   const notifications = useSelector((state) => state.notifications);
   return (
-    <div className="notifications">
+    <div className={className}>
       {notifications.map((n, i) => (
         <Notification key={i} notification={n} />
       ))}
