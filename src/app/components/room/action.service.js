@@ -89,7 +89,6 @@
       if (feed === null) { return; }
       $timeout(function () {
         feed.disconnect();
-        FeedsService.destroy(feedId);
       });
     }
 
