@@ -78,7 +78,7 @@
       } else {
         feed.setVideoSubscription(jhConfig.videoThumbnails || vm.highlighted);
         scope.$watch(
-          function() { return jhConfig.videoThumbnails || vm.highlighted || !vm.feed.isSilent(); },
+          function() { return vm.feed.isConnected() && (jhConfig.videoThumbnails || vm.highlighted || !vm.feed.isSilent());  },
           function(video) { feed.setVideoSubscription(video); }
         );
       }

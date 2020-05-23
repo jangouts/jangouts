@@ -38,7 +38,7 @@
       }
 
       function showsEnable() {
-        return (!vm.sticky && !vm.feed.isIgnored);
+        return (!vm.sticky && !vm.feed.isIgnored && vm.feed.isConnected());
       }
 
       function showsDisable() {

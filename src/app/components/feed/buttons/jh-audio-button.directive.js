@@ -47,17 +47,20 @@
 
       function showsEnable() {
         var feed = vm.feed;
-        return (feed && feed.isPublisher && !feed.isLocalScreen && !feed.getAudioEnabled());
+        if (!feed || !feed.isConnected()) { return false; }
+        return (feed.isPublisher && !feed.isLocalScreen && !feed.getAudioEnabled());
       }
 
       function showsDisable() {
         var feed = vm.feed;
-        return (feed && !feed.isIgnored && feed.getAudioEnabled());
+        if (!feed || !feed.isConnected()) { return false; }
+        return (!feed.isIgnored && feed.getAudioEnabled());
       }
 
       function showsAudioOff() {
         var feed = vm.feed;
-        return (feed && !feed.isPublisher && !feed.isIgnored && !feed.getAudioEnabled());
+        if (!feed || !feed.isConnected()) { return false; }
+        return (!feed.isPublisher && !feed.isIgnored && !feed.getAudioEnabled());
       }
 
       function isSpeaking() {
