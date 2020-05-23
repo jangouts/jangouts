@@ -45,10 +45,12 @@
       var picture = null;
       var speaking = false;
       var silentSince = Date.now();
-      var videoRemoteEnabled = true;
-      var audioRemoteEnabled = true;
       var stream = null;
       var speakObserver = null;
+      // Note: these two attributes are only updated via setStatus with the information
+      // received from the remote peer
+      var videoRemoteEnabled = true;
+      var audioRemoteEnabled = true;
 
       /**
        * Checks if a given channel is enabled
@@ -166,6 +168,8 @@
 
       /**
        * Sets if audio is enabled for this feed. Works only for remote ones.
+       *
+       * See setStatus
        */
       this.setAudioEnabled = function(val) {
         audioRemoteEnabled = val;
@@ -180,6 +184,8 @@
 
       /**
        * Sets if video is enabled for this feed. Works only for remote ones.
+       *
+       * See setStatus
        */
       this.setVideoEnabled = function(val) {
         videoRemoteEnabled = val;
