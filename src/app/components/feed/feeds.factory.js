@@ -239,6 +239,7 @@
           speakObserver.destroy();
         }
         this.connection = null;
+        stream = null;
       };
 
       /**
@@ -250,13 +251,21 @@
       };
 
       /**
-       * Stops ignoring the feed
+       * Associates a connection to the feed
        *
        * @param {FeedConnection} connection - new connection to Janus
        */
-      this.stopIgnoring = function(connection) {
+      this.setConnection = function(connection) {
         this.isIgnored = false;
         this.connection = connection;
+      };
+
+      /**
+       * Sets the ignoring flag
+       * @param {boolean} val - true if the user wants to ignore the feed data
+       */
+      this.setIsIgnored = function(val) {
+        this.isIgnored = val;
       };
 
       /**
@@ -435,6 +444,7 @@
        * Enables or disables the video of the connection to Janus
        */
       this.setVideoSubscription = function(value) {
+        if (this.connection === null) { return; }
         this.connection.setConfig({values: {video: value}});
       };
 

@@ -32,7 +32,8 @@
     this.unPublishFeed = unPublishFeed;
     this.ignoreFeed = ignoreFeed;
     this.stopIgnoringFeed = stopIgnoringFeed;
-    this.subscribeToFeeds = subscribeToFeeds;
+    this.addFeeds = addFeeds;
+    this.addFeed = addFeed;
     this.subscribeToFeed = subscribeToFeed;
     this.toggleChannel = toggleChannel;
     this.pushToTalk = pushToTalk;
@@ -202,8 +203,11 @@
             });
 
             // Step 5. Attach to existing feeds, if any
+            if (isArray(msg.attendees)) {
+              that.addFeeds(msg.attendees, false);
+            }
             if (isArray(msg.publishers)) {
-              that.subscribeToFeeds(msg.publishers);
+              that.addFeeds(msg.publishers, true);
             }
             // The room has been destroyed
           } else if (event === "destroyed") {
@@ -212,7 +216,11 @@
           } else if (event === "event") {
             // Any new feed to attach to?
             if (isArray(msg.publishers)) {
-              that.subscribeToFeeds(msg.publishers);
+              that.addFeeds(msg.publishers, true);
+            }
+            // Any new non-publishing attendee?
+            if (isPresent(msg.joining)) {
+              that.addFeed(msg.joining.id, msg.joining.display, false);
             }
             // One of the publishers has gone away?
             if (isPresent(msg.leaving)) {
@@ -309,19 +317,30 @@
       return deferred.promise;
     }
 
-    function subscribeToFeeds(list) {
+    function addFeeds(list, subscribe) {
       if (list.length === 0) { return; }
 
-      console.log("Got a list of available publishers/feeds:");
+      console.log("Got a list of available feeds (" + subscribe + "):");
       console.log(list);
 
       for (var f = 0; f < list.length; f++) {
         var id = list[f].id;
         var display = list[f].display;
         console.log("  >> [" + id + "] " + display);
-        var feed = FeedsService.find(id);
+        this.addFeed(id, display, subscribe);
+      }
+    }
+
+    function addFeed(id, display, subscribe) {
+      var feed = FeedsService.find(id);
+
+      if (subscribe) {
         if (feed === null || feed.waitingForConnection()) {
           this.subscribeToFeed(id, display);
+        }
+      } else {
+        if (feed === null) {
+          ActionService.remoteJoin(id, display, null);
         }
       }
     }
@@ -378,7 +397,7 @@
             });
             $timeout(function() {
               if (feed) {
-                ActionService.stopIgnoringFeed(id, connection);
+                ActionService.connectToFeed(id, connection);
               } else {
                 ActionService.remoteJoin(id, display, connection);
               }
@@ -389,6 +408,9 @@
           } else if (msg.started) {
             // Initial setConfig, needed to complete all the initializations
             connection.setConfig({values: {audio: true, data: true, video: jhConfig.videoThumbnails}});
+          } else if (msg.error_code === 428) {
+            console.log("We tried to subscribe to a feed that is not publishing (an attendee)");
+            ActionService.stopIgnoringFeed(id);
           } else {
             console.log("What has just happened?!");
           }
