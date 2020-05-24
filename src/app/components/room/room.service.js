@@ -381,7 +381,7 @@
           console.error("  -- Error attaching plugin... " + error);
         },
         onmessage: function(msg, jsep) {
-          console.log(" ::: Got a message (listener) :::");
+          console.log(" ::: Got a message (subscriber) :::");
           console.log(JSON.stringify(msg));
           var event = msg.videoroom;
           console.log("Event: " + event);
