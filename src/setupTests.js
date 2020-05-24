@@ -16,6 +16,10 @@ import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
 import reducers, { initialState } from './state/ducks';
 
+// Mock `scrollTo` function, used in the Chat component, since it isn't defined
+// in jsdom yet. Related to https://github.com/jsdom/jsdom/issues/1695
+Element.prototype.scrollTo = jest.fn();
+
 export function renderWithRedux(
   ui,
   { initialState, store = createStore(reducers, initialState) } = {}
