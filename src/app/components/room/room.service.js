@@ -32,7 +32,8 @@
     this.unPublishFeed = unPublishFeed;
     this.ignoreFeed = ignoreFeed;
     this.stopIgnoringFeed = stopIgnoringFeed;
-    this.subscribeToFeeds = subscribeToFeeds;
+    this.addFeeds = addFeeds;
+    this.addFeed = addFeed;
     this.subscribeToFeed = subscribeToFeed;
     this.toggleChannel = toggleChannel;
     this.pushToTalk = pushToTalk;
@@ -192,8 +193,8 @@
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
 
-            if (jhConfig.joinUnmutedLimit !== undefined && jhConfig.joinUnmutedLimit !== null) {
-              startMuted = (msg.publishers instanceof Array) && msg.publishers.length >= jhConfig.joinUnmutedLimit;
+            if (isPresent(jhConfig.joinUnmutedLimit)) {
+              startMuted = isArray(msg.publishers) && msg.publishers.length >= jhConfig.joinUnmutedLimit;
             }
 
             connection.publish({
@@ -202,8 +203,11 @@
             });
 
             // Step 5. Attach to existing feeds, if any
-            if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
-              that.subscribeToFeeds(msg.publishers, that.room.id);
+            if (isArray(msg.attendees)) {
+              that.addFeeds(msg.attendees, false);
+            }
+            if (isArray(msg.publishers)) {
+              that.addFeeds(msg.publishers, true);
             }
             // The room has been destroyed
           } else if (event === "destroyed") {
@@ -211,27 +215,35 @@
             $$rootScope.$broadcast('room.destroy');
           } else if (event === "event") {
             // Any new feed to attach to?
-            if ((msg.publishers instanceof Array) && msg.publishers.length > 0) {
-              that.subscribeToFeeds(msg.publishers, that.room.id);
+            if (isArray(msg.publishers)) {
+              that.addFeeds(msg.publishers, true);
+            }
+            // Any new non-publishing attendee?
+            if (isPresent(msg.joining)) {
+              that.addFeed(msg.joining.id, msg.joining.display, false);
+            }
             // One of the publishers has gone away?
-            } else if(msg.leaving !== undefined && msg.leaving !== null) {
+            if (isPresent(msg.leaving)) {
               var leaving = msg.leaving;
               ActionService.destroyFeed(leaving);
+            }
             // One of the publishers has unpublished?
-            } else if(msg.unpublished !== undefined && msg.unpublished !== null) {
+            if (isPresent(msg.unpublished)) {
               var unpublished = msg.unpublished;
               ActionService.unpublishFeed(unpublished);
+            }
             // Reply to a configure request
-            } else if (msg.configured) {
+            if (msg.configured) {
               connection.confirmConfig();
+            }
             // The server reported an error
-            } else if(msg.error !== undefined && msg.error !== null) {
+            if (isPresent(msg.error)) {
               console.log("Error message from server" + msg.error);
               $$rootScope.$broadcast('room.error', msg.error);
             }
           }
 
-          if (jsep !== undefined && jsep !== null) {
+          if (isPresent(jsep)) {
             connection.handleRemoteJsep(jsep);
           }
         }
@@ -305,16 +317,30 @@
       return deferred.promise;
     }
 
-    function subscribeToFeeds(list) {
-      console.log("Got a list of available publishers/feeds:");
+    function addFeeds(list, subscribe) {
+      if (list.length === 0) { return; }
+
+      console.log("Got a list of available feeds (" + subscribe + "):");
       console.log(list);
+
       for (var f = 0; f < list.length; f++) {
         var id = list[f].id;
         var display = list[f].display;
         console.log("  >> [" + id + "] " + display);
-        var feed = FeedsService.find(id);
+        this.addFeed(id, display, subscribe);
+      }
+    }
+
+    function addFeed(id, display, subscribe) {
+      var feed = FeedsService.find(id);
+
+      if (subscribe) {
         if (feed === null || feed.waitingForConnection()) {
           this.subscribeToFeed(id, display);
+        }
+      } else {
+        if (feed === null) {
+          ActionService.remoteJoin(id, display, null);
         }
       }
     }
@@ -355,7 +381,7 @@
           console.error("  -- Error attaching plugin... " + error);
         },
         onmessage: function(msg, jsep) {
-          console.log(" ::: Got a message (listener) :::");
+          console.log(" ::: Got a message (subscriber) :::");
           console.log(JSON.stringify(msg));
           var event = msg.videoroom;
           console.log("Event: " + event);
@@ -371,7 +397,7 @@
             });
             $timeout(function() {
               if (feed) {
-                ActionService.stopIgnoringFeed(id, connection);
+                ActionService.connectToFeed(id, connection);
               } else {
                 ActionService.remoteJoin(id, display, connection);
               }
@@ -382,11 +408,14 @@
           } else if (msg.started) {
             // Initial setConfig, needed to complete all the initializations
             connection.setConfig({values: {audio: true, data: true, video: jhConfig.videoThumbnails}});
+          } else if (msg.error_code === 428) {
+            console.log("We tried to subscribe to a feed that is not publishing (an attendee)");
+            ActionService.stopIgnoringFeed(id);
           } else {
             console.log("What has just happened?!");
           }
 
-          if(jsep !== undefined && jsep !== null) {
+          if (isPresent(jsep)) {
             connection.subscribe(jsep);
           }
         },
@@ -519,7 +548,7 @@
           } else {
             console.log("Unexpected event for screen");
           }
-          if (jsep !== undefined && jsep !== null) {
+          if (isPresent(jsep)) {
             connection.handleRemoteJsep(jsep);
           }
         }
@@ -582,6 +611,20 @@
         DataChannelService.sendStatus(p, {exclude: "picture"});
         $timeout(function() { DataChannelService.sendStatus(p); }, 4000);
       });
+    }
+
+    /**
+     * Check whether the given argument has a value.
+     */
+    function isPresent(value) {
+      return (value !== undefined && value !== null);
+    }
+
+    /**
+     * Check whether the given argument is an array.
+     */
+    function isArray(value) {
+      return (value instanceof Array);
     }
   }
 }());

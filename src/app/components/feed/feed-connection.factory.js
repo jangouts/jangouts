@@ -57,7 +57,7 @@
       };
 
       this.listen = function(feedId, pin) {
-        var listen = { "request": "join", "room": roomId, "ptype": "listener", "feed": feedId, "pin": pin || "" };
+        var listen = { "request": "join", "room": roomId, "ptype": "subscriber", "feed": feedId, "pin": pin || "" };
         pluginHandle.send({"message": listen});
       };
 
