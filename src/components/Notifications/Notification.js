@@ -21,8 +21,11 @@ function Notification({ notification }) {
       {text}
 
       <div className="mt-2">
-        <button className="text-blue-600 font-bold mr-2" onClick={() => dispatch(actions.close(id))}>
+        <button className="text-blue-600 font-bold mr-2" onClick={() => dispatch(actions.close(notification.id))}>
           Dismiss
+        </button>
+        <button className="text-blue-600 font-bold mr-2" onClick={() => dispatch(actions.blacklistAndClose(notification))}>
+          Do not show again
         </button>
       </div>
     </div>

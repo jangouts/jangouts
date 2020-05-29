@@ -10,7 +10,8 @@ import { useSelector } from 'react-redux';
 import Notification from './Notification';
 
 function Notifications({ className }) {
-  const notifications = useSelector((state) => state.notifications);
+  const notifications = useSelector((state) => state.notifications.notifications);
+
   return (
     <div className={className}>
       {notifications.map((n, i) => (

@@ -13,7 +13,7 @@ import Notifications from './Notifications';
 const notification1 = new UserNotification('You have been muted.');
 const notification2 = new UserNotification('Nobody is listening!');
 const initialState = {
-  notifications: [notification1, notification2]
+  notifications: { notifications: [notification1, notification2], blacklist: [] }
 };
 
 it('renders without crashing', () => {

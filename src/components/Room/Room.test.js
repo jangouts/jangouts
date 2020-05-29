@@ -8,11 +8,11 @@
 import React from 'react';
 import Room from './Room';
 import { renderWithRedux } from '../../setupTests';
-import { createStore } from 'redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
+import { initialState } from '../../state/ducks';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -26,12 +26,6 @@ jest.mock('react-router', () => ({
 janusApi.enterRoom = jest.fn(() => Promise.resolve());
 janusApi.getFeedStream = jest.fn();
 Janus.attachMediaStream = jest.fn();
-
-const initialState = {
-  participants: [],
-  messages: [],
-  notifications: []
-}
 
 describe('when the user is not logged in', () => {
   it('tries to log in taking room and username from the URL', () => {

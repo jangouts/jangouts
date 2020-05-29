@@ -80,11 +80,17 @@ const eventText = (event) => {
  */
 export const fromEvent = (event) => {
   const text = eventText(event);
-  return text ? new UserNotification(text, SEVERITY_INFO) : null;
+  return text ? new UserNotification(text, SEVERITY_INFO, event.type) : null;
 };
 
-export function UserNotification(text, severity = SEVERITY_INFO) {
+/**
+ * @param {string} text - Notification text
+ * @param {string} severity - Notification severity (SEVERITY_INFO, SEVERITY_WARN, SEVERITY_ERROR)
+ * @param {string} type - Notification type. Used to classify notifications and blacklisting them.
+ */
+export function UserNotification(text, severity = SEVERITY_INFO, type = null) {
   this.id = lastId++;
   this.severity = severity;
   this.text = text;
+  this.type = type;
 }

@@ -6,25 +6,33 @@
  */
 
 import { UserNotification } from '../../utils/notifications';
-import reducer, { actionCreators } from './notifications';
+import reducer, { actionCreators, initialState } from './notifications';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-const notification = new UserNotification('You have been muted.');
+const notification = new UserNotification('You have been muted.', 'info', 'muted');
 const other_notification = new UserNotification('Nobody is listening!');
 
 describe('reducer', () => {
   it('handles NOTIFICATION_SHOW', () => {
     const action = actionCreators.show(notification);
-    expect(reducer([], action)).toEqual([notification]);
+    expect(reducer(initialState, action)).toEqual({...initialState, notifications: [notification]});
   });
+
+  it('handles NOTIFICATION_SHOW when the notification is blacklisted', () => {
+    const action = actionCreators.show(notification);
+    const state = {...initialState, blacklist: [notification.type]};
+    expect(reducer(state, action)).toEqual(state);
+  })
 
   it('handles NOTIFICATION_CLOSE', () => {
     const action = actionCreators.close(notification.id);
-    expect(reducer([other_notification, notification], action)).toEqual([other_notification]);
+    const state = {...initialState, notifications: [other_notification, notification]};
+    const reducedState = reducer(state, action);
+    expect(reducedState.notifications).toEqual([other_notification]);
   });
 });
 
@@ -38,7 +46,7 @@ describe('action creators', () => {
 
   describe('notifyEvent', () => {
     it('adds a message about an event and removes it after a timeout', () => {
-      const store = mockStore({ notifications: [] });
+      const store = mockStore({ notifications: initialState });
       store.dispatch(actionCreators.notifyEvent(event));
 
       expect(store.getActions()).toEqual([
@@ -62,7 +70,7 @@ describe('action creators', () => {
 
   describe('notifyMessage', () => {
     it('adds a message and removes it after a timeout', () => {
-      const store = mockStore({ notifications: [] });
+      const store = mockStore({ notifications: initialState });
       store.dispatch(actionCreators.notifyMessage('You have been muted.'));
 
       expect(store.getActions()).toEqual([
