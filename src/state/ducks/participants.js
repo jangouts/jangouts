@@ -20,7 +20,7 @@ const addParticipant = (participant) => {
 
   return {
     type: PARTICIPANT_JOINED,
-    payload: { id, display, isPublisher, isLocalScreen, isIgnored }
+    payload: { id, display, isPublisher, isLocalScreen, isIgnored, video: participant.getVideoEnabled() }
   };
 };
 
