@@ -77,7 +77,6 @@ describe('action creators', () => {
   describe('blacklist', () => {
     it('adds the message type to the black list', () => {
       const store = mockStore({ notifications: initialState });
-      console.log("ACTIOH", actionCreators.blacklist('muted'));
       store.dispatch(actionCreators.blacklist('muted'));
 
       expect(store.getActions()).toEqual([
