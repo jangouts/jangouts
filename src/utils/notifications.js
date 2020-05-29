@@ -107,9 +107,10 @@ const screenshareText = (data) => {
  * Factory function to create notifications about users being 'muted'.
  *
  * @param {object} data - Event data
- * @return {UserNotification} - User notification
+ * @return {UserNotification,null} - User notification
  */
 const createMutedNotification= (data) => {
+  if (data.cause == MUTED_USER) return null;
   const notification = createNotification(mutedText(data), MUTED_TYPE);
   notification.actions = [
     new Action("Do not show again", messageActions.blacklist(MUTED_TYPE))
@@ -119,6 +120,7 @@ const createMutedNotification= (data) => {
 
 const MUTED_JOIN = 'join';
 const MUTED_REQUEST = 'request';
+const MUTED_USER = 'user';
 
 const mutedText = (data) => {
   switch (data.cause) {

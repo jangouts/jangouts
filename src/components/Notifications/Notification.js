@@ -24,7 +24,7 @@ function Notification({ notification }) {
   return (
     <div
       role="alertdialog"
-      className="w-1/3 mb-2 p-3 text-sm text-gray-700 border-b-2 border-secondary bg-white shadow-lg"
+      className="w-1/3 xl:w-1/4 mb-2 p-3 text-sm text-gray-700 border-b-2 border-secondary bg-white shadow-lg"
     >
       {text}
 
