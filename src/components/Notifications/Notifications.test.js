@@ -7,11 +7,11 @@
 
 import React from 'react';
 import { renderWithRedux } from '../../setupTests';
-import { UserNotification } from '../../utils/notifications';
+import { createNotification } from '../../utils/notifications';
 import Notifications from './Notifications';
 
-const notification1 = new UserNotification('You have been muted.');
-const notification2 = new UserNotification('Nobody is listening!');
+const notification1 = createNotification('You have been muted.');
+const notification2 = createNotification('Nobody is listening!');
 const initialState = {
   notifications: { notifications: [notification1, notification2], blacklist: [] }
 };

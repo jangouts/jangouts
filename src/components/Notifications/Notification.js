@@ -9,6 +9,14 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { actionCreators as actions } from '../../state/ducks/notifications';
 
+function showAction(dispatch, notificationId, {label, toDispatch}) {
+  return (
+    <button key={label} className="text-blue-600 font-bold mr-2" onClick={() => dispatch(actions.dispatchAction(notificationId, toDispatch))}>
+      {label}
+    </button>
+  );
+}
+
 function Notification({ notification }) {
   const dispatch = useDispatch();
   const { id, text } = notification;
@@ -21,14 +29,11 @@ function Notification({ notification }) {
       {text}
 
       <div className="mt-2">
-        <button className="text-blue-600 font-bold mr-2" onClick={() => dispatch(actions.close(notification.id))}>
+        <button key="dismiss" className="text-blue-600 font-bold mr-2" onClick={() => dispatch(actions.close(notification.id))}>
           Dismiss
         </button>
 
-        {notification.type &&
-         <button className="text-blue-300 font-bold mr-2" onClick={() => dispatch(actions.blacklistAndClose(notification))}>
-           Do not show again
-         </button>}
+        { notification.actions.map(action => showAction(dispatch, id, action)) }
       </div>
     </div>
   );

@@ -7,10 +7,8 @@
 
 /**
  * This duck provides the Redux pieces to handle notifications.
- *
- * @todo Remember which notifications should be 'silenced'.
  */
-import { fromEvent as notificationFromEvent, UserNotification } from '../../utils/notifications';
+import { fromEvent as notificationFromEvent } from '../../utils/notifications';
 
 const NOTIFICATION_SHOW = 'jangouts/notification/SHOW';
 const NOTIFICATION_CLOSE = 'jangouts/notification/CLOSE';
@@ -29,18 +27,6 @@ const notifyEvent = (event, timeout) => (dispatch) => {
   if (notification) {
     dispatch(notify(notification, timeout));
   }
-};
-
-/**
- * Notify a message.
- *
- * @param [String] message - Message text
- * @param [String] severity - Message's severity
- * @param [Number] timeout - Timeout (in miliseconds)
- */
-const notifyMessage = (text, severity, timeout) => (dispatch) => {
-  const notification = new UserNotification(text, severity);
-  dispatch(notify(notification, timeout));
 };
 
 /**
@@ -69,18 +55,17 @@ const blacklist = (type) => ({
   payload: { type }
 });
 
-const blacklistAndClose = ({id, type}) => (dispatch) => {
-  dispatch(blacklist(type));
-  dispatch(close(id));
-};
+const dispatchAction = (id, action) => (dispatch) => {
+  dispatch(action);
+  dispatch(close(id))
+}
 
 const actionCreators = {
   notifyEvent,
-  notifyMessage,
   show,
   close,
   blacklist,
-  blacklistAndClose
+  dispatchAction
 };
 
 const actionTypes = {

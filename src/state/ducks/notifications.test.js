@@ -34,6 +34,12 @@ describe('reducer', () => {
     const reducedState = reducer(state, action);
     expect(reducedState.notifications).toEqual([other_notification]);
   });
+
+  it('handles NOTIFICATION_BLACKLIST', () => {
+    const action = actionCreators.blacklist(notification.type);
+    const reducedState = reducer(initialState, action);
+    expect(reducedState.blacklist).toEqual([notification.type]);
+  });
 });
 
 describe('action creators', () => {
@@ -68,26 +74,14 @@ describe('action creators', () => {
     });
   });
 
-  describe('notifyMessage', () => {
-    it('adds a message and removes it after a timeout', () => {
+  describe('blacklist', () => {
+    it('adds the message type to the black list', () => {
       const store = mockStore({ notifications: initialState });
-      store.dispatch(actionCreators.notifyMessage('You have been muted.'));
+      console.log("ACTIOH", actionCreators.blacklist('muted'));
+      store.dispatch(actionCreators.blacklist('muted'));
 
       expect(store.getActions()).toEqual([
-        expect.objectContaining({
-          payload: expect.objectContaining({
-            notification: expect.objectContaining({
-              text: 'You have been muted.'
-            })
-          }),
-          type: 'jangouts/notification/SHOW'
-        })
-      ]);
-
-      jest.runAllTimers();
-      expect(store.getActions()).toEqual([
-        expect.objectContaining({ type: 'jangouts/notification/SHOW' }),
-        expect.objectContaining({ type: 'jangouts/notification/CLOSE' })
+        expect.objectContaining({ type: 'jangouts/notification/BLACKLIST' })
       ]);
     });
   });
