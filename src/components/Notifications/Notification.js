@@ -29,7 +29,7 @@ function Notification({ notification }) {
       {text}
 
       <div className="mt-2">
-        { notificationAction("Dismiss", () => dispatch(actions.close)) }
+        { notificationAction("Dismiss", () => dispatch(actions.close(id))) }
         { notification.actions.map(({label, toDispatch}) => (
           notificationAction(label, () => dispatch(actions.dispatchAction(id, toDispatch)))
         ))}
