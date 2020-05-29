@@ -4,7 +4,7 @@
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import Message from '../Message';
@@ -42,12 +42,22 @@ function MessagesList() {
     lastMsg.scrollIntoView({ behavior: 'smooth', block: 'end' });
   };
 
+  // Update the scroll after each render
   useEffect(updateScroll);
+
+  // Set the scroll at bottom just after mounting the component
+  useLayoutEffect(() => {
+    const wrapper = wrapperRef.current;
+
+    if (wrapper) {
+      wrapper.scrollTo({ top: wrapper.scrollHeight })
+    }
+  }, [])
 
   const messages = filterMessages(useSelector((state) => state.messages));
 
   return (
-    <div ref={wrapperRef} className="h-full overflow-y-auto">
+    <div ref={wrapperRef} className="h-full overflow-y-auto" role="log">
       <ul ref={messagesRef}>
         {messages.map((m, index) => (
           <Message key={index} onRender={updateScroll} {...m} />

@@ -47,4 +47,14 @@ describe('when there are messages', () => {
 
     expect(getAllByTestId('message')).toHaveLength(2);
   });
+
+  it('sets the initial scroll position', () => {
+    const { getByRole } = renderWithRedux(<MessagesList id={1} display="User" />, {
+      initialState
+    });
+
+    const chatArea = getByRole('log');
+
+    expect(chatArea.scrollTo).toHaveBeenCalled()
+  });
 });
