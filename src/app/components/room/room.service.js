@@ -81,6 +81,7 @@
         Janus.init({debug: jhConfig.janusDebug});
         that.janus = new Janus({
           server: that.server,
+          withCredentials: jhConfig.janusWithCredentials,
           success: function() {
             deferred.resolve();
           },
