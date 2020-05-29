@@ -189,6 +189,7 @@
                 status: "joined"
               }
             });
+            UserService.setPrivateId(msg.private_id);
             ActionService.enterRoom(msg.id, username, connection);
             // Step 3. Establish WebRTC connection with the Janus server
             // Step 4a (parallel with 4b). Publish our feed on server
@@ -375,7 +376,7 @@
             }
           });
           connection = new FeedConnection(pluginHandle, that.room.id, "subscriber");
-          connection.listen(id, UserService.getPin());
+          connection.listen(id, UserService.getPin(), UserService.getPrivateId());
         },
         error: function(error) {
           console.error("  -- Error attaching plugin... " + error);
