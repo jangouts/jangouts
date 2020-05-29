@@ -8,11 +8,11 @@
 import React from 'react';
 import Room from './Room';
 import { renderWithRedux } from '../../setupTests';
-import { createStore } from 'redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
+import { initialState } from '../../state/ducks';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -29,7 +29,7 @@ Janus.attachMediaStream = jest.fn();
 
 describe('when the user is not logged in', () => {
   it('tries to log in taking room and username from the URL', () => {
-    const store = mockStore({ room: { loggedIn: false }, participants: [], messages: [] });
+    const store = mockStore({ ...initialState, room: { loggedIn: false } });
 
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
@@ -44,7 +44,7 @@ describe('when the user is not logged in', () => {
 
 describe('when the user is logged in', () => {
   it('does not try to log in', () => {
-    const store = mockStore({ room: { loggedIn: true }, participants: [], messages: [] });
+    const store = mockStore({ ...initialState, room: { loggedIn: true } });
 
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 

@@ -27,7 +27,10 @@ import configReducer, {
   initialState as configInitial
 } from './config';
 
-import { actionCreators as notificationActions } from './notifications';
+import notificationsReducer, {
+  actionCreators as notificationActions,
+  initialState as notificationsInitial
+} from './notifications';
 
 /**
  * The combined reducer in charge of handling dispatched actions
@@ -36,7 +39,8 @@ const appReducer = combineReducers({
   room: roomReducer,
   participants: participantsReducer,
   messages: messagesReducer,
-  config: configReducer
+  config: configReducer,
+  notifications: notificationsReducer
 });
 
 /**
@@ -61,7 +65,8 @@ const rootReducer = (state, action) => {
 export const initialState = {
   room: roomInitial,
   participants: participantsInitial,
-  messages: messagesInitial
+  messages: messagesInitial,
+  notifications: notificationsInitial
 };
 
 /** @see src/components/App/events-handler.test.js **/

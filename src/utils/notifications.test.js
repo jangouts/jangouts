@@ -38,6 +38,15 @@ describe('fromEvent', () => {
     expect(notification.severity).toEqual(SEVERITY_INFO);
   });
 
+  it('when the user muted him/herself', () => {
+    const notification = fromEvent({
+      type: 'muted',
+      data: { cause: 'user', limit: 0 }
+    });
+
+    expect(notification).toBeNull();
+  })
+
   it('when the user started sharing the screen', () => {
     const notification = fromEvent({
       type: 'screenshare',
