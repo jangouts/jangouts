@@ -15,8 +15,8 @@ let participant = {
   isLocalScreen: undefined,
   isIgnored: undefined,
   audio: undefined,
-  video: undefined,
-  speakingSince: undefined
+  speakingSince: undefined,
+  getVideoEnabled: () => true
 };
 
 let initialState = {
@@ -150,7 +150,10 @@ describe('action creators', () => {
       const newParticipant = { ...participant, notExpectedKey: true };
 
       const action = actionCreators.addParticipant(newParticipant);
-      expect(action.payload).toEqual(participant);
+      const { id, display, isPublisher, isLocalScreen, isIgnored } = participant;
+      expect(action.payload).toEqual({
+        id, display, isPublisher, isLocalScreen, isIgnored, video: true
+      });
     });
   });
 

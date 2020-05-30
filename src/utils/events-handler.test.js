@@ -39,7 +39,8 @@ test('handles add feed events', () => {
     display: 'Jane',
     isIgnored: false,
     isLocalScreen: true,
-    isPublisher: true
+    isPublisher: true,
+    getVideoEnabled: () => true
   };
   const eventsHandler = createEventsHandler(dispatchFn);
   subject.subscribe(eventsHandler);
