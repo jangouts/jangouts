@@ -67,6 +67,7 @@ export const SEVERITY_ERROR = 'error';
   */
 const MUTED_TYPE = "muted";
 const SCREENSHARE_TYPE = "screenshare";
+const SPEAKING_TYPE = "speaking";
 
 /**
  * Each notification has a unique ID (local to each client).
@@ -104,16 +105,29 @@ const screenshareText = (data) => {
 };
 
 /**
+ * Factory function to creat speaking but muted notification
+ *
+ * @return {UserNotification} - User notification
+ */
+const createSpeakingNotification = (_data) => {
+  const notification = createNotification("Trying to say something? You are muted.", SPEAKING_TYPE);
+  notification.actions = [
+    new Action(DO_NOT_SHOW_AGAIN, messageActions.blacklist(SPEAKING_TYPE))
+  ];
+  return notification;
+}
+
+/**
  * Factory function to create notifications about users being 'muted'.
  *
  * @param {object} data - Event data
  * @return {UserNotification,null} - User notification
  */
-const createMutedNotification= (data) => {
+const createMutedNotification = (data) => {
   if (data.cause == MUTED_USER) return null;
   const notification = createNotification(mutedText(data), MUTED_TYPE);
   notification.actions = [
-    new Action("Do not show again", messageActions.blacklist(MUTED_TYPE))
+    new Action(DO_NOT_SHOW_AGAIN, messageActions.blacklist(MUTED_TYPE))
   ];
   return notification;
 }
@@ -145,7 +159,10 @@ const mutedText = (data) => {
   }
 };
 
+const DO_NOT_SHOW_AGAIN = 'Do not show again';
+
 const eventFactories = {
   muted: createMutedNotification,
-  screenshare: createScreenShareNotification
+  screenshare: createScreenShareNotification,
+  speaking: createSpeakingNotification,
 };

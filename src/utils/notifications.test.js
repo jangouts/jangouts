@@ -67,6 +67,15 @@ describe('fromEvent', () => {
     expect(notification.severity).toEqual(SEVERITY_INFO);
   });
 
+  it('when the user speaks but is muted', () => {
+    const notification = fromEvent({
+      type: 'speaking'
+    });
+
+    expect(notification.text).toContain('You are muted');
+    expect(notification.severity).toEqual(SEVERITY_INFO);
+  });
+
   it('when the event is unknown', () => {
     const notification = fromEvent({
       type: 'unknown'

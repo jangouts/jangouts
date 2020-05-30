@@ -6,6 +6,7 @@
  */
 
 import janusApi from '../../janus-api';
+import { actionCreators as notificationActions } from './notifications';
 
 const PARTICIPANT_JOINED = 'jangouts/participant/JOIN';
 const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
@@ -62,10 +63,20 @@ const updateLocalStatus = ({ audio, video }) => ({
   payload: { audio, video }
 });
 
-const participantSpeaking = (id, speaking) => ({
+const updateSpeakingStatus = (id, speaking) => ({
   type: PARTICIPANT_SPEAKING,
   payload: { id, speaking }
 });
+
+const participantSpeaking = (id, speaking) => (dispatch, getState) => {
+  const state = getState();
+  const { id: localId, audio } = localParticipant(state.participants);
+  if (id === localId && !audio && speaking) {
+    dispatch(notificationActions.notifyEvent({type: 'speaking'}));
+  } else {
+    dispatch(updateSpeakingStatus(id, speaking));
+  }
+}
 
 const autoSetFocus = (force = false) => {
   return function(dispatch, getState) {
