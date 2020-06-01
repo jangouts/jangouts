@@ -31,6 +31,7 @@
       vm.toggle = toggle;
       vm.reset = reset;
       vm.showsReset = showsReset;
+      vm.title = title;
 
       function toggle() {
         vm.toggleFn();
@@ -42,6 +43,10 @@
 
       function showsReset() {
         return vm.resizeModeOn;
+      }
+
+      function title() {
+        return vm.resizeModeOn ? "Save layout" : "Change screen layout";
       }
     }
   }
