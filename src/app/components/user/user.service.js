@@ -113,5 +113,25 @@
     this.setPin = function(value) {
       this.enteredPin = value;
     };
+
+    // Private id used for the communication with Janus
+    this.privateId = null;
+    /*
+     * Private identifier used by Janus Gateway to identify the participant and
+     * to correlate subscriber feeds to the main publisher feed.
+     *
+     * @returns string The id as a string, null if it's not set yet
+     */
+    this.getPrivateId = function() {
+      return this.privateId;
+    };
+
+    /*
+     * Set the private identifier used to identify the participant.
+     * @param   {string} val The id to use from now on
+     */
+    this.setPrivateId = function(value) {
+      this.privateId = value;
+    };
   }
 })();

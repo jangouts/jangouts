@@ -56,8 +56,11 @@
         pluginHandle.send({"message": register});
       };
 
-      this.listen = function(feedId, pin) {
-        var listen = { "request": "join", "room": roomId, "ptype": "subscriber", "feed": feedId, "pin": pin || "" };
+      this.listen = function(feedId, pin, privateId) {
+        var listen = {
+          "request": "join", "room": roomId, "ptype": "subscriber", "feed": feedId,
+          "pin": pin || "", "private_id": privateId
+        };
         pluginHandle.send({"message": listen});
       };
 
