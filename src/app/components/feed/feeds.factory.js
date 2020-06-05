@@ -45,10 +45,12 @@
       var picture = null;
       var speaking = false;
       var silentSince = Date.now();
-      var videoRemoteEnabled = true;
-      var audioRemoteEnabled = true;
       var stream = null;
       var speakObserver = null;
+      // Note: these two attributes are only updated via setStatus with the information
+      // received from the remote peer
+      var videoRemoteEnabled = true;
+      var audioRemoteEnabled = true;
 
       /**
        * Checks if a given channel is enabled
@@ -166,6 +168,8 @@
 
       /**
        * Sets if audio is enabled for this feed. Works only for remote ones.
+       *
+       * See setStatus
        */
       this.setAudioEnabled = function(val) {
         audioRemoteEnabled = val;
@@ -180,6 +184,8 @@
 
       /**
        * Sets if video is enabled for this feed. Works only for remote ones.
+       *
+       * See setStatus
        */
       this.setVideoEnabled = function(val) {
         videoRemoteEnabled = val;
@@ -233,6 +239,7 @@
           speakObserver.destroy();
         }
         this.connection = null;
+        stream = null;
       };
 
       /**
@@ -244,13 +251,21 @@
       };
 
       /**
-       * Stops ignoring the feed
+       * Associates a connection to the feed
        *
        * @param {FeedConnection} connection - new connection to Janus
        */
-      this.stopIgnoring = function(connection) {
+      this.setConnection = function(connection) {
         this.isIgnored = false;
         this.connection = connection;
+      };
+
+      /**
+       * Sets the ignoring flag
+       * @param {boolean} val - true if the user wants to ignore the feed data
+       */
+      this.setIsIgnored = function(val) {
+        this.isIgnored = val;
       };
 
       /**
@@ -429,6 +444,7 @@
        * Enables or disables the video of the connection to Janus
        */
       this.setVideoSubscription = function(value) {
+        if (this.connection === null) { return; }
         this.connection.setConfig({values: {video: value}});
       };
 

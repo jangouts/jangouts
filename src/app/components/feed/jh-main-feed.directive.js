@@ -27,10 +27,12 @@
 
     function jhMainFeedLink(scope, element) {
       scope.$watch('vm.feed.getStream()', function(newVal) {
+        var video = $('video', element)[0];
         if (newVal !== undefined && newVal !== null) {
-          var video = $('video', element)[0];
           video.muted = true;
           Janus.attachMediaStream(video, newVal);
+        } else {
+          video.src = null;
         }
       });
     }

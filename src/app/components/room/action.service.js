@@ -18,6 +18,7 @@
     this.enterRoom = enterRoom;
     this.leaveRoom = leaveRoom;
     this.remoteJoin = remoteJoin;
+    this.connectToFeed = connectToFeed;
     this.destroyFeed = destroyFeed;
     this.unpublishFeed = unpublishFeed;
     this.ignoreFeed = ignoreFeed;
@@ -72,6 +73,17 @@
       LogService.add(entry);
     }
 
+    function connectToFeed(feedId, connection) {
+      var feed = FeedsService.find(feedId);
+      if (feed === null) { return; }
+
+      if (feed.isIgnored) {
+        this.stopIgnoringFeed(feedId);
+      }
+
+      feed.setConnection(connection);
+    }
+
     function destroyFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
@@ -89,7 +101,6 @@
       if (feed === null) { return; }
       $timeout(function () {
         feed.disconnect();
-        FeedsService.destroy(feedId);
       });
     }
 
@@ -102,10 +113,11 @@
       LogService.add(entry);
     }
 
-    function stopIgnoringFeed(feedId, connection) {
+    function stopIgnoringFeed(feedId) {
       var feed = FeedsService.find(feedId);
       if (feed === null) { return; }
-      feed.stopIgnoring(connection);
+
+      feed.setIsIgnored(false);
       // Log the event
       var entry = new LogEntry("stopIgnoringFeed", {feed: feed});
       LogService.add(entry);

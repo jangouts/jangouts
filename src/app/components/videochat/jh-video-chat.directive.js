@@ -233,7 +233,14 @@
         vm.gridsterOpts.resizable.enabled = vm.windowResizeModeOn;
         vm.gridsterOpts.draggable.enabled = vm.windowResizeModeOn;
 
-        if (!vm.windowResizeModeOn) { storeGridster(); }
+        if (vm.windowResizeModeOn) {
+          Notifier.info(
+            "Drag to rearrange and resize the screen areas. " +
+            "Then click 'Save layout' to return to normal mode."
+          );
+        } else {
+          storeGridster();
+        }
       }
 
       function setDefaultLayout() {
