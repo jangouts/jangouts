@@ -11,8 +11,6 @@ const PARTICIPANT_JOINED = 'jangouts/participant/JOIN';
 const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
 const PARTICIPANT_STREAM_SET = 'jangouts/participant/SET_STREAM';
 const PARTICIPANT_UPDATE_STATUS = 'jangouts/participant/UPDATE_STATUS';
-const PARTICIPANT_UPDATE_LOCAL_STATUS = 'jangouts/participant/UPDATE_LOCAL_STATUS';
-const PARTICIPANT_SPEAKING = 'jangouts/participant/PARTICIPANT_SPEAKING';
 const PARTICIPANT_SET_FOCUS = 'jangouts/participant/PARTICIPANT_SET_FOCUS';
 
 const addParticipant = (participant) => {
@@ -57,15 +55,14 @@ const updateStatus = (id, status) => ({
   payload: { id, status }
 });
 
-const updateLocalStatus = ({ audio, video }) => ({
-  type: PARTICIPANT_UPDATE_LOCAL_STATUS,
-  payload: { audio, video }
-});
+const updateLocalStatus = ({ audio, video }) => (dispatch, getState) => {
+  const { id } = localParticipant(getState().participants);
+  dispatch(updateStatus(id, { audio, video }));
+}
 
-const participantSpeaking = (id, speaking) => ({
-  type: PARTICIPANT_SPEAKING,
-  payload: { id, speaking }
-});
+const participantSpeaking = (id, speaking) => (dispatch) => {
+  dispatch(updateStatus(id, {speaking, speakingSince: Date.now()}));
+}
 
 const autoSetFocus = (force = false) => {
   return function(dispatch, getState) {
@@ -115,8 +112,8 @@ const focusedParticipant = (state) => {
 const nextFocusedParticipant = (state) => {
   const participants = Object.values(state);
   const [speaker] = Object.values(participants)
-    .filter((p) => p.speaking)
-    .sort((a, b) => a.speakingChange - b.speakingChange);
+    .filter((p) => p.speakingSince)
+    .sort((a, b) => a.speakingSince - b.speakingSince);
 
   return speaker;
 };
@@ -143,8 +140,6 @@ const actionTypes = {
   PARTICIPANT_DETACHED,
   PARTICIPANT_STREAM_SET,
   PARTICIPANT_UPDATE_STATUS,
-  PARTICIPANT_UPDATE_LOCAL_STATUS,
-  PARTICIPANT_SPEAKING,
   PARTICIPANT_SET_FOCUS
 };
 
@@ -187,20 +182,8 @@ const reducer = function(state = initialState, action) {
       const { id, status } = payload;
       const newState = { ...state, [id]: { ...state[id], ...status } };
       if (!newState[id].audio) newState[id].speaking = false;
+      if (!newState[id].speaking) newState[id].speakingSince = null;
       return newState;
-    }
-
-    case PARTICIPANT_UPDATE_LOCAL_STATUS: {
-      const id = localParticipant(state).id;
-      const { audio, video } = payload;
-      const newState = { ...state, [id]: { ...state[id], audio, video } };
-      if (!audio) newState[id].speaking = false;
-      return newState;
-    }
-
-    case PARTICIPANT_SPEAKING: {
-      const { id, speaking } = payload;
-      return { ...state, [id]: { ...state[id], speaking, speakingChange: Date.now() } };
     }
 
     case PARTICIPANT_SET_FOCUS: {
