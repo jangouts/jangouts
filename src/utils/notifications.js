@@ -66,42 +66,12 @@ export const SEVERITY_ERROR = 'error';
  * Notifications types
   */
 const MUTED_TYPE = "muted";
-const SCREENSHARE_TYPE = "screenshare";
 
 /**
  * Each notification has a unique ID (local to each client).
  */
 let lastId = 0;
 const nextId = () => lastId++;
-
-/**
- * Factory function to create screen sharing notifications.
- *
- * @param {object} data - Event data
- * @return {UserNotification} - User notification
- */
-const createScreenShareNotification = (data) => {
-  return createNotification(screenshareText(data), SCREENSHARE_TYPE);
-}
-
-const SCREENSHARE_STARTED = 'started';
-const SCREENSHARE_STOPPED = 'stopped';
-
-const screenshareText = (data) => {
-  switch (data.status) {
-    case SCREENSHARE_STARTED: {
-      return 'You started sharing your screen.';
-    }
-
-    case SCREENSHARE_STOPPED: {
-      return 'You stopped sharing your screen.';
-    }
-
-    default: {
-      return null;
-    }
-  }
-};
 
 /**
  * Factory function to create notifications about users being 'muted'.
@@ -146,6 +116,5 @@ const mutedText = (data) => {
 };
 
 const eventFactories = {
-  muted: createMutedNotification,
-  screenshare: createScreenShareNotification
+  muted: createMutedNotification
 };
