@@ -22,9 +22,9 @@ describe('reducer', () => {
     expect(reducer(initialState, action)).toEqual({...initialState, notifications: [notification]});
   });
 
-  it('handles NOTIFICATION_SHOW when the notification is blacklisted', () => {
+  it('handles NOTIFICATION_SHOW when the notification is blocked', () => {
     const action = actionCreators.show(notification);
-    const state = {...initialState, blacklist: [notification.type]};
+    const state = {...initialState, blocklist: [notification.type]};
     expect(reducer(state, action)).toEqual(state);
   })
 
@@ -35,10 +35,10 @@ describe('reducer', () => {
     expect(reducedState.notifications).toEqual([other_notification]);
   });
 
-  it('handles NOTIFICATION_BLACKLIST', () => {
-    const action = actionCreators.blacklist(notification.type);
+  it('handles NOTIFICATION_BLOCK', () => {
+    const action = actionCreators.block(notification.type);
     const reducedState = reducer(initialState, action);
-    expect(reducedState.blacklist).toEqual([notification.type]);
+    expect(reducedState.blocklist).toEqual([notification.type]);
   });
 });
 
@@ -74,13 +74,13 @@ describe('action creators', () => {
     });
   });
 
-  describe('blacklist', () => {
+  describe('blocklist', () => {
     it('adds the message type to the black list', () => {
       const store = mockStore({ notifications: initialState });
-      store.dispatch(actionCreators.blacklist('muted'));
+      store.dispatch(actionCreators.block('muted'));
 
       expect(store.getActions()).toEqual([
-        expect.objectContaining({ type: 'jangouts/notification/BLACKLIST' })
+        expect.objectContaining({ type: 'jangouts/notification/BLOCK' })
       ]);
     });
   });

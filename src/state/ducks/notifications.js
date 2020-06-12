@@ -12,7 +12,7 @@ import { fromEvent as notificationFromEvent } from '../../utils/notifications';
 
 const NOTIFICATION_SHOW = 'jangouts/notification/SHOW';
 const NOTIFICATION_CLOSE = 'jangouts/notification/CLOSE';
-const NOTIFICATION_BLACKLIST = 'jangouts/notification/BLACKLIST';
+const NOTIFICATION_BLOCK = 'jangouts/notification/BLOCK';
 const DEFAULT_TIMEOUT = 5000;
 
 /**
@@ -50,8 +50,8 @@ const close = (id) => ({
   payload: { id }
 });
 
-const blacklist = (type) => ({
-  type: NOTIFICATION_BLACKLIST,
+const block = (type) => ({
+  type: NOTIFICATION_BLOCK,
   payload: { type }
 });
 
@@ -64,23 +64,23 @@ const actionCreators = {
   notifyEvent,
   show,
   close,
-  blacklist,
+  block,
   dispatchAction
 };
 
 const actionTypes = {
   NOTIFICATION_SHOW,
   NOTIFICATION_CLOSE,
-  NOTIFICATION_BLACKLIST
+  NOTIFICATION_BLOCK
 };
 
-const initialState = { notifications: [], blacklist: [] }
+const initialState = { notifications: [], blocklist: [] }
 
 const reducer = function(state = initialState, action) {
   switch (action.type) {
     case NOTIFICATION_SHOW: {
       const { notification } = action.payload;
-      if (state.blacklist.includes(notification.type)) {
+      if (state.blocklist.includes(notification.type)) {
         return state;
       }
       return {...state, notifications: [...state.notifications, notification] };
@@ -90,9 +90,9 @@ const reducer = function(state = initialState, action) {
       const notifications = state.notifications.filter((n) => n.id !== id);
       return {...state, notifications };
     }
-    case NOTIFICATION_BLACKLIST: {
+    case NOTIFICATION_BLOCK: {
       const { type } = action.payload;
-      return {...state, blacklist: [...state.blacklist, type]}
+      return {...state, blocklist: [...state.blocklist, type]}
     }
 
     default: {

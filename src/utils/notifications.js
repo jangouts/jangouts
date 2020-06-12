@@ -11,7 +11,7 @@ import { actionCreators as messageActions } from '../state/ducks/notifications';
  * @param {number} id - Notification ID (unique)
  * @param {string} text - Notification text
  * @param {string} severity - Notification severity (SEVERITY_INFO, SEVERITY_WARN, SEVERITY_ERROR)
- * @param {string} type - Notification type. Used to classify notifications and blacklisting them.
+ * @param {string} type - Notification type. Used to classify notifications and block them.
  * @param {array}  actions - Possible actions related to the notification
  */
 export function UserNotification(id, text, type, severity, actions) {
@@ -49,7 +49,7 @@ export const fromEvent = ({type, data}) => {
  *
  * @param {string} text - Notification text
  * @param {string} severity - Notification severity (SEVERITY_INFO, SEVERITY_WARN, SEVERITY_ERROR)
- * @param {string} type - Notification type. Used to classify notifications and blacklisting them.
+ * @param {string} type - Notification type. Used to classify notifications and block them.
  */
 export const createNotification = (text, type, severity = SEVERITY_INFO, actions = []) => {
   return new UserNotification(nextId(), text, type, severity, actions);
@@ -83,7 +83,7 @@ const createMutedNotification= (data) => {
   if (data.cause == MUTED_USER) return null;
   const notification = createNotification(mutedText(data), MUTED_TYPE);
   notification.actions = [
-    new Action("Do not show again", messageActions.blacklist(MUTED_TYPE))
+    new Action("Do not show again", messageActions.block(MUTED_TYPE))
   ];
   return notification;
 }
