@@ -6,6 +6,7 @@
  */
 
 import { actionCreators as messageActions } from '../state/ducks/notifications';
+import { actionCreators as participantActions } from '../state/ducks/participants';
 
 /**
  * @param {number} id - Notification ID (unique)
@@ -35,6 +36,10 @@ export function Action(label, toDispatch) {
 
 const createDoNotShowAgainAction = (type) => {
   return new Action("Do not show again", messageActions.block(type))
+}
+
+const createUnmuteAction = () => {
+  return new Action("Unmute", participantActions.unmute())
 }
 
 /**
@@ -87,6 +92,7 @@ const nextId = () => lastId++;
 const createMutedNotification= (data) => {
   if (data.cause === MUTED_USER) return null;
   const notification = createNotification(mutedText(data), MUTED_TYPE);
+  notification.actions.push(createUnmuteAction());
   if (data.cause !== MUTED_JOIN) {
     notification.actions.push(createDoNotShowAgainAction(MUTED_TYPE));
   }
@@ -129,6 +135,7 @@ const mutedText = (data) => {
 const createSpeakingNotification = (_data) => {
   const notification = createNotification("Trying to say something? You are muted.", SPEAKING_TYPE);
   notification.actions = [
+    createUnmuteAction(),
     createDoNotShowAgainAction(SPEAKING_TYPE)
   ];
   return notification;

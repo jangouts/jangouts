@@ -39,6 +39,14 @@ const toggleAudio = (id) => {
   };
 };
 
+const unmute = () => (dispatch, getState) => {
+  const { id, audio } = localParticipant(getState().participants);
+  console.log("PARTICIPANT", id, audio);
+  if (!audio) {
+    dispatch(toggleAudio(id));
+  }
+}
+
 const toggleVideo = (id) => {
   return function() {
     janusApi.toggleVideo();
@@ -132,6 +140,7 @@ const actionCreators = {
   addParticipant,
   removeParticipant,
   setStream,
+  unmute,
   toggleAudio,
   toggleVideo,
   reconnect,
@@ -142,7 +151,7 @@ const actionCreators = {
   unsetFocus,
   autoSetFocus,
   startScreenSharing,
-  stopScreenSharing
+  stopScreenSharing,
 };
 
 const actionTypes = {
