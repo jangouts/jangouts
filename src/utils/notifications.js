@@ -33,6 +33,10 @@ export function Action(label, toDispatch) {
   this.toDispatch = toDispatch
 }
 
+const createDoNotShowAgainAction = (type) => {
+  return new Action("Do not show again", messageActions.block(type))
+}
+
 /**
  * Turns an event into a user notification.
  *
@@ -66,6 +70,7 @@ export const SEVERITY_ERROR = 'error';
  * Notifications types
   */
 const MUTED_TYPE = "muted";
+const SPEAKING_TYPE = "speaking";
 
 /**
  * Each notification has a unique ID (local to each client).
@@ -80,11 +85,11 @@ const nextId = () => lastId++;
  * @return {UserNotification,null} - User notification
  */
 const createMutedNotification= (data) => {
-  if (data.cause == MUTED_USER) return null;
+  if (data.cause === MUTED_USER) return null;
   const notification = createNotification(mutedText(data), MUTED_TYPE);
-  notification.actions = [
-    new Action("Do not show again", messageActions.block(MUTED_TYPE))
-  ];
+  if (data.cause !== MUTED_JOIN) {
+    notification.actions.push(createDoNotShowAgainAction(MUTED_TYPE));
+  }
   return notification;
 }
 
@@ -115,6 +120,21 @@ const mutedText = (data) => {
   }
 };
 
+/**
+ * Factory function to create notifications about the local user speaking while muted.
+ *
+ * @param {object} _data - Event data
+ * @return {UserNotification,null} - User notification
+ */
+const createSpeakingNotification = (_data) => {
+  const notification = createNotification("Trying to say something? You are muted.", SPEAKING_TYPE);
+  notification.actions = [
+    createDoNotShowAgainAction(SPEAKING_TYPE)
+  ];
+  return notification;
+}
+
 const eventFactories = {
-  muted: createMutedNotification
+  [MUTED_TYPE]: createMutedNotification,
+  [SPEAKING_TYPE]: createSpeakingNotification
 };

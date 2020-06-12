@@ -6,6 +6,7 @@
  */
 
 import janusApi from '../../janus-api';
+import { actionCreators as notificationActions } from './notifications';
 
 const PARTICIPANT_JOINED = 'jangouts/participant/JOIN';
 const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
@@ -60,7 +61,16 @@ const updateLocalStatus = ({ audio, video }) => (dispatch, getState) => {
   dispatch(updateStatus(id, { audio, video }));
 }
 
-const participantSpeaking = (id, speaking) => (dispatch) => {
+const SPEAKING_NOTIF_INTERVAL = 60000;
+
+const participantSpeaking = (id, speaking) => (dispatch, getState) => {
+  const state = getState();
+  const { id: localId, audio } = localParticipant(state.participants);
+  if (id === localId && !audio && speaking) {
+    dispatch(
+      notificationActions.notifyEvent({ type: 'speaking' }, { block: SPEAKING_NOTIF_INTERVAL })
+    );
+  }
   dispatch(updateStatus(id, {speaking, speakingSince: Date.now()}));
 }
 
