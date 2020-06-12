@@ -41,7 +41,6 @@ const toggleAudio = (id) => {
 
 const unmute = () => (dispatch, getState) => {
   const { id, audio } = localParticipant(getState().participants);
-  console.log("PARTICIPANT", id, audio);
   if (!audio) {
     dispatch(toggleAudio(id));
   }
