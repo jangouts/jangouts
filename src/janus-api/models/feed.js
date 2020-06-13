@@ -315,6 +315,10 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * remote peers if needed.
    */
   function updateLocalSpeaking(val) {
+    eventsService.emitEvent({
+      type: 'participantSpeaking',
+      data: { feedId: that.id, speaking: val }
+    });
     if (that.isEnabled('audio') === false) {
       val = false;
     }

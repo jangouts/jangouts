@@ -31,7 +31,7 @@ describe('reducer', () => {
       expect(reducer(currentState, action)).toEqual({
         config: currentState.config,
         messages: [],
-        notifications: { notifications: [], blacklist: [] },
+        notifications: { notifications: [], blocklist: {} },
         participants: {},
         room: { ...currentState.room, loggedIn: false }
       });

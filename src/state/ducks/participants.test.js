@@ -70,54 +70,37 @@ describe('reducer', () => {
   it('handles PARTICIPANT_UPDATE_STATUS', () => {
     const action = {
       type: actionTypes.PARTICIPANT_UPDATE_STATUS,
-      payload: { id: 1234, status: { audio: false, video: false } }
+      payload: { id: 1234, status: { audio: true, video: false } }
     };
 
     const state = reducer(initialState, action);
     const participant = state['1234'];
-    expect(participant['audio']).toEqual(false);
+    expect(participant['audio']).toEqual(true);
     expect(participant['video']).toEqual(false);
   });
 
-  it('handles PARTICIPANT_LOCAL_UPDATE_STATUS', () => {
-    const initialState = {
-      1234: { id: 1234, isPublisher: true, isLocalScreen: false },
-      5678: { id: 5678, isPublisher: false }
-    };
+  it('handles PARTICIPANT_UPDATE_STATUS: audio is false', () => {
     const action = {
-      type: actionTypes.PARTICIPANT_UPDATE_LOCAL_STATUS,
-      payload: { audio: false, video: false }
+      type: actionTypes.PARTICIPANT_UPDATE_STATUS,
+      payload: { id: 1234, status: { audio: false, speaking: true } }
     };
 
-    const state = reducer(initialState, action);
-    const participant = state['1234'];
-    expect(participant['audio']).toEqual(false);
-    expect(participant['video']).toEqual(false);
-    expect(participant['speaking']).toEqual(false);
+    const speakingState = {...initialState, 1234: {...participant, speaking: true }};
+    const state = reducer(speakingState, action);
+    const updatedParticipant = state['1234'];
+    expect(updatedParticipant).toMatchObject({audio: false, speaking: false, speakingSince: null});
   });
 
-  describe('handles PARTICIPANT_SPEAKING', () => {
-    it('sets the speakingChange timestamp when the user is speaking', () => {
-      const action = {
-        type: actionTypes.PARTICIPANT_SPEAKING,
-        payload: { id: 1234, speaking: true }
-      };
-      const state = reducer(initialState, action);
-      const participant = state['1234'];
-      expect(typeof participant.speakingChange).toBe('number');
-      expect(participant.speaking).toBe(true);
-    });
+  it('handles PARTICIPANT_UPDATE_STATUS: speaking is false', () => {
+    const action = {
+      type: actionTypes.PARTICIPANT_UPDATE_STATUS,
+      payload: { id: 1234, status: { audio: true, speaking: false } }
+    };
 
-    it('sets the speakingChange timestamp when the user is not speaking', () => {
-      const action = {
-        type: actionTypes.PARTICIPANT_SPEAKING,
-        payload: { id: 1234, speaking: false }
-      };
-      const state = reducer(initialState, action);
-      const participant = state['1234'];
-      expect(typeof participant.speakingChange).toBe('number');
-      expect(participant.speaking).toBe(false);
-    });
+    const speakingState = {...initialState, 1234: {...participant, audio: true, speaking: false }};
+    const state = reducer(speakingState, action);
+    const updatedParticipant = state['1234'];
+    expect(updatedParticipant).toMatchObject({audio: true, speaking: false, speakingSince: null});
   });
 
   describe('handles PARTICIPANT_SET_FOCUS', () => {
@@ -170,6 +153,15 @@ describe('action creators', () => {
       expect(action.payload).toEqual(participant.id);
     });
   });
+
+  describe('#updateStatus', () => {
+    it('creates an action to update the status', () => {
+      const action = actionCreators.updateStatus(1234, { video: true });
+      expect(action.type).toEqual(actionTypes.PARTICIPANT_UPDATE_STATUS);
+    });
+  });
+
+  describe.skip('#updateLocalStatus');
 
   describe('#setStream', () => {
     it('creates an action to set/update the participant stream', () => {

@@ -6,12 +6,13 @@
  */
 
 import { actionCreators as messageActions } from '../state/ducks/notifications';
+import { actionCreators as participantActions } from '../state/ducks/participants';
 
 /**
  * @param {number} id - Notification ID (unique)
  * @param {string} text - Notification text
  * @param {string} severity - Notification severity (SEVERITY_INFO, SEVERITY_WARN, SEVERITY_ERROR)
- * @param {string} type - Notification type. Used to classify notifications and blacklisting them.
+ * @param {string} type - Notification type. Used to classify notifications and block them.
  * @param {array}  actions - Possible actions related to the notification
  */
 export function UserNotification(id, text, type, severity, actions) {
@@ -33,6 +34,14 @@ export function Action(label, toDispatch) {
   this.toDispatch = toDispatch
 }
 
+const createDoNotShowAgainAction = (type) => {
+  return new Action("Do not show again", messageActions.block(type))
+}
+
+const createUnmuteAction = () => {
+  return new Action("Unmute", participantActions.unmute())
+}
+
 /**
  * Turns an event into a user notification.
  *
@@ -49,7 +58,7 @@ export const fromEvent = ({type, data}) => {
  *
  * @param {string} text - Notification text
  * @param {string} severity - Notification severity (SEVERITY_INFO, SEVERITY_WARN, SEVERITY_ERROR)
- * @param {string} type - Notification type. Used to classify notifications and blacklisting them.
+ * @param {string} type - Notification type. Used to classify notifications and block them.
  */
 export const createNotification = (text, type, severity = SEVERITY_INFO, actions = []) => {
   return new UserNotification(nextId(), text, type, severity, actions);
@@ -66,7 +75,7 @@ export const SEVERITY_ERROR = 'error';
  * Notifications types
   */
 const MUTED_TYPE = "muted";
-const SCREENSHARE_TYPE = "screenshare";
+const SPEAKING_TYPE = "speaking";
 
 /**
  * Each notification has a unique ID (local to each client).
@@ -75,46 +84,18 @@ let lastId = 0;
 const nextId = () => lastId++;
 
 /**
- * Factory function to create screen sharing notifications.
- *
- * @param {object} data - Event data
- * @return {UserNotification} - User notification
- */
-const createScreenShareNotification = (data) => {
-  return createNotification(screenshareText(data), SCREENSHARE_TYPE);
-}
-
-const SCREENSHARE_STARTED = 'started';
-const SCREENSHARE_STOPPED = 'stopped';
-
-const screenshareText = (data) => {
-  switch (data.status) {
-    case SCREENSHARE_STARTED: {
-      return 'You started sharing your screen.';
-    }
-
-    case SCREENSHARE_STOPPED: {
-      return 'You stopped sharing your screen.';
-    }
-
-    default: {
-      return null;
-    }
-  }
-};
-
-/**
  * Factory function to create notifications about users being 'muted'.
  *
  * @param {object} data - Event data
  * @return {UserNotification,null} - User notification
  */
 const createMutedNotification= (data) => {
-  if (data.cause == MUTED_USER) return null;
+  if (data.cause === MUTED_USER) return null;
   const notification = createNotification(mutedText(data), MUTED_TYPE);
-  notification.actions = [
-    new Action("Do not show again", messageActions.blacklist(MUTED_TYPE))
-  ];
+  notification.actions.push(createUnmuteAction());
+  if (data.cause !== MUTED_JOIN) {
+    notification.actions.push(createDoNotShowAgainAction(MUTED_TYPE));
+  }
   return notification;
 }
 
@@ -145,7 +126,22 @@ const mutedText = (data) => {
   }
 };
 
+/**
+ * Factory function to create notifications about the local user speaking while muted.
+ *
+ * @param {object} _data - Event data
+ * @return {UserNotification,null} - User notification
+ */
+const createSpeakingNotification = (_data) => {
+  const notification = createNotification("Trying to say something? You are muted.", SPEAKING_TYPE);
+  notification.actions = [
+    createUnmuteAction(),
+    createDoNotShowAgainAction(SPEAKING_TYPE)
+  ];
+  return notification;
+}
+
 const eventFactories = {
-  muted: createMutedNotification,
-  screenshare: createScreenShareNotification
+  [MUTED_TYPE]: createMutedNotification,
+  [SPEAKING_TYPE]: createSpeakingNotification
 };

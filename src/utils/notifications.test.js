@@ -47,23 +47,12 @@ describe('fromEvent', () => {
     expect(notification).toBeNull();
   })
 
-  it('when the user started sharing the screen', () => {
+  it('when the user speaks but is muted', () => {
     const notification = fromEvent({
-      type: 'screenshare',
-      data: { status: 'started' }
+      type: 'speaking'
     });
 
-    expect(notification.text).toContain('You started sharing');
-    expect(notification.severity).toEqual(SEVERITY_INFO);
-  });
-
-  it('when the user stopped sharing the screen', () => {
-    const notification = fromEvent({
-      type: 'screenshare',
-      data: { status: 'stopped' }
-    });
-
-    expect(notification.text).toContain('You stopped sharing');
+    expect(notification.text).toContain('You are muted');
     expect(notification.severity).toEqual(SEVERITY_INFO);
   });
 
