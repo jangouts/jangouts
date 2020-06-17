@@ -7,16 +7,13 @@
 
 import { createEventsService } from './events-service';
 
-describe('#emitEvent', () => {
-  test('emits an event with the configured room and user', () => {
+describe('#roomEvent', () => {
+  test('emits an event using the room subject', () => {
     let eventsService = createEventsService();
     const subscriber = jest.fn();
-    const event = { type: 'request', data: 'payload' };
-    eventsService.setRoom('room1');
-    eventsService.setUser('user1');
-    eventsService.getEventsSubject().subscribe(subscriber);
+    eventsService.getRoomSubject().subscribe(subscriber);
 
-    eventsService.emitEvent(event);
-    expect(subscriber).toHaveBeenCalledWith({ ...event, user: 'user1', room: 'room1' });
+    eventsService.roomEvent('event', 'payload');
+    expect(subscriber).toHaveBeenCalledWith({event: 'event', payload: 'payload'});
   });
 });

@@ -1,11 +1,11 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { createEventsHandler } from './events-handler';
+import { createEventsHandler } from './room-events-handler';
 import { Subject } from 'rxjs';
 
 import { actionCreators as actions } from '../state/ducks';

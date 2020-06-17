@@ -5,9 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { createLogEntry } from './models/log-entry';
-
-export const createDataChannelService = (feedsService, logService, eventsService) => {
+export const createDataChannelService = (feedsService, eventsService) => {
   let that = {};
 
   that.receiveMessage = (data, remoteId) => {
@@ -15,50 +13,28 @@ export const createDataChannelService = (feedsService, logService, eventsService
     var type = msg.type;
     var content = msg.content;
     var feed;
-    var logEntry;
 
     if (type === 'chatMsg') {
-      logEntry = createLogEntry('chatMsg', {
-        feed: feedsService.find(remoteId),
+      eventsService.roomEvent('createChatMsg', {
+        feedId: remoteId,
         text: content
       });
-      if (logEntry.hasText()) {
-        logService.add(logEntry);
-      }
     } else if (type === 'muteRequest') {
       feed = feedsService.find(content.target);
-      const source = feedsService.find(remoteId);
-      if (feed.isPublisher) {
-        feed.setEnabledChannel('audio', false, {
-          after: function() {
-            eventsService.emitEvent({
-              type: 'muted',
-              data: { cause: 'request', source: { id: source.id, display: source.display } }
-            });
-          }
-        });
+
+      eventsService.roomEvent('muteFeed', { id: feed.id, requesterId: remoteId });
+
+      if (feed.getPublisher()) {
+        feed.setEnabledChannel('audio', false);
       }
-      // Log the event
-      logEntry = createLogEntry('muteRequest', {
-        source: feedsService.find(remoteId),
-        target: feed
-      });
-      logService.add(logEntry);
     } else if (type === 'statusUpdate') {
       feed = feedsService.find(content.source);
-      if (feed && !feed.isPublisher) {
-        eventsService.emitEvent({
-          type: 'statusUpdate',
-          data: content
-        });
+      if (feed && !feed.getPublisher()) {
         feed.setStatus(content.status);
+        eventsService.roomEvent('updateFeed', { id: feed.id, ...feed.getStatus() });
       }
     } else if (type === 'speakingSignal') {
-      const { source: feedId, speaking } = content;
-      eventsService.emitEvent({
-        type: 'participantSpeaking',
-        data: { feedId, speaking }
-      });
+      eventsService.roomEvent('updateFeed', { id: content.source, speaking: content.speaking });
     } else {
       console.log('Unknown data type: ' + type);
     }
@@ -92,6 +68,10 @@ export const createDataChannelService = (feedsService, logService, eventsService
   };
 
   that.sendChatMessage = (text) => {
+    eventsService.roomEvent('createChatMsg', {
+        feedId: feedsService.findMain().id,
+        text: text
+    });
     that.sendMessage('chatMsg', text);
   };
 

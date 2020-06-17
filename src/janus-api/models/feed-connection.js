@@ -31,14 +31,7 @@ export const createFeedConnection = (eventsService) => (
 
   that.destroy = function() {
     // emit 'handle detached' event
-    eventsService.emitEvent({
-      type: 'pluginHandle',
-      data: {
-        status: 'detached',
-        for: role,
-        pluginHandle: pluginHandle
-      }
-    });
+    eventsService.auditEvent('pluginHandle');
     that.config = null;
     pluginHandle.detach();
   };
@@ -121,14 +114,8 @@ export const createFeedConnection = (eventsService) => (
       error: function(error) {
         console.error('WebRTC error publishing', error);
         // emit 'error Create Offer' event
-        eventsService.emitEvent({
-          type: 'error',
-          data: {
-            status: 'createOffer',
-            error: error,
-            peerconnection: that.pluginHandle.webrtcStuff.pc
-          }
-        });
+        eventsService.auditEvent('error');
+
         // Call the provided callback for extra actions
         if (options.error) {
           options.error();
@@ -158,14 +145,7 @@ export const createFeedConnection = (eventsService) => (
         console.error('WebRTC error subscribing');
         console.error(error);
         // emit 'error CreateAnswer' event
-        eventsService.emitEvent({
-          type: 'error',
-          data: {
-            status: 'createAnswer',
-            error: error,
-            peerconnection: that.pluginHandle.webrtcStuff.pc
-          }
-        });
+        eventsService.auditEvent('error');
       }
     });
   };

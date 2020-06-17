@@ -8,11 +8,11 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectors } from '../../state/ducks/participants';
-import janusApi from '../../janus-api';
 import { classNames, attachStream } from '../../utils/common';
+import StreamsService from '../../utils/streams-service';
 
 function setVideo(id, video, forceUpdate) {
-  const stream = janusApi.getFeedStream(id);
+  const stream = StreamsService.get(id);
 
   if (stream !== null) {
     attachStream(video, stream);

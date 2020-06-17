@@ -15,11 +15,11 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
     /** @var {string} name of user streaming feed */
     display: attrs.display || null,
     /** @var {boolean} flag if feed is publishing one, so one that is send from that pc to others */
-    isPublisher: attrs.isPublisher || false,
+    publisher: attrs.isPublisher || false,
     /** @var {boolean} flag if feed is local screen sharing feed */
-    isLocalScreen: attrs.isLocalScreen || false,
+    localScreen: attrs.isLocalScreen || false,
     /** @var {boolean} flag if feed is ignored */
-    isIgnored: attrs.ignored || false,
+    ignored: attrs.ignored || false,
     connection: attrs.connection || null
   };
 
@@ -35,6 +35,14 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  const apiAttrs = {
+    // TODO: local is temporary. It actually belongs to Participant, not to Feed.
+    id: 'id', screen: 'localScreen', local: 'publisher', name: 'display', ignored: 'ignored',
+    speaking: 'speaking', audio: 'audioEnabled', video: 'videoEnabled', picture: 'picture'
+  };
+
+  const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture'];
+
   /**
    * Checks if a given channel is enabled
    *
@@ -42,7 +50,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * @returns {boolean,null}
    */
   that.isEnabled = function(channel) {
-    if (that.isPublisher) {
+    if (that.publisher) {
       if (that.connection && that.connection.getConfig()) {
         return that.connection.getConfig()[channel];
       } else {
@@ -117,7 +125,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * @param {object} val - janus stream
    */
   that.setStream = function(val) {
-    if (that.isPublisher && !that.isLocalScreen) {
+    if (that.publisher && !that.localScreen) {
       speakObserver = createSpeakObserver(val, {
         start: function() {
           updateLocalSpeaking(true);
@@ -231,7 +239,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * Starts ignoring the feed
    */
   that.ignore = function() {
-    that.isIgnored = true;
+    that.ignored = true;
     that.disconnect();
   };
 
@@ -243,7 +251,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    */
   that.reconnect = function(connection) {
     that.disconnect();
-    that.isIgnored = false;
+    that.ignored = false;
     that.connection = connection;
   };
 
@@ -253,7 +261,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * @returns {boolean}
    */
   that.waitingForConnection = function() {
-    return that.isIgnored === false && !that.connection;
+    return that.ignored === false && !that.connection;
   };
 
   /*
@@ -272,7 +280,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
   that.setEnabledChannel = function(type, enabled, options) {
     options = options || {};
 
-    if (that.isPublisher) {
+    if (that.publisher) {
       var config = {};
       config[type] = enabled;
       that.connection.setConfig({
@@ -284,19 +292,12 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
           if (options.after) {
             options.after();
           }
+
+          eventsService.roomEvent('updateFeed', { id: that.id, ...config });
           // Send the new status to remote peers
           dataChannelService.sendStatus(that, { exclude: 'picture' });
-
           // send 'channel' event with status (enabled or disabled)
-          eventsService.emitEvent({
-            type: 'channel',
-            data: {
-              source: that.id,
-              channel: type,
-              status: enabled,
-              peerconnection: that.connection.pluginHandle.webrtcStuff.pc
-            }
-          });
+          eventsService.auditEvent('channel');
         }
       });
       if (type === 'video') {
@@ -315,10 +316,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * remote peers if needed.
    */
   function updateLocalSpeaking(val) {
-    eventsService.emitEvent({
-      type: 'participantSpeaking',
-      data: { feedId: that.id, speaking: val }
-    });
+    eventsService.roomEvent('speakDetection', { speaking: val });
     if (that.isEnabled('audio') === false) {
       val = false;
     }
@@ -327,10 +325,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       if (val === false) {
         silentSince = Date.now();
       }
-      eventsService.emitEvent({
-        type: 'participantSpeaking',
-        data: { feedId: that.id, speaking: speaking }
-      });
+      eventsService.roomEvent('updateFeed', { id: that.id, speaking });
       dataChannelService.sendSpeakingSignal(that);
     }
   }
@@ -351,11 +346,9 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * notifying changes to the remote peers.
    */
   that.updateDisplay = function(newDisplay) {
-    // TODO: is setTimeout needed?
-    window.setTimeout(function() {
-      that.setDisplay(newDisplay);
-      dataChannelService.sendStatus(that);
-    });
+    that.setDisplay(newDisplay);
+    eventsService.roomEvent('updateFeed', { id: that.id, name: newDisplay });
+    dataChannelService.sendStatus(that);
   };
 
   /**
@@ -373,6 +366,41 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
   that.setDisplay = function(val) {
     that.display = val;
   };
+
+  that.getId = function() {
+    return that.id;
+  };
+
+  that.getLocalScreen = function() {
+    return that.localScreen;
+  };
+
+  that.getIgnored = function() {
+    return that.ignored;
+  };
+
+  that.getPublisher = function() {
+    return that.publisher;
+  };
+
+  that.apiObject = function(options = {}) {
+    var attrs = options.include ? options.include : Object.keys(apiAttrs);
+
+    if (options.exclude) {
+      attrs = attrs.filter(attr => { return !options.exclude.includes(attr) });
+    }
+
+    var obj = {};
+    attrs.forEach(attr => {
+      const fn = 'get' + capitalize(apiAttrs[attr]);
+      const val = that[fn]();
+      if (val !== undefined && val !== null) {
+        obj[attr] = val;
+      }
+    });
+    return obj;
+  };
+
   /**
    * Reads the representation of the local feed in order to send it to the
    * remote peers.
@@ -382,36 +410,22 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * @returns {object} attribute values
    */
   that.getStatus = function(options) {
-    options = options || {};
-    if (!options.exclude) {
-      options.exclude = [];
-    }
+    const opt = {...options, include: statusAttrs };
+    return that.apiObject(opt);
+  }
 
-    var attrs = ['audioEnabled', 'videoEnabled', 'speaking', 'picture', 'display'];
-    var status = {};
-
-    attrs.forEach(function(attr) {
-      if (!options.exclude.includes(attr)) {
-        status[attr] = that['get' + capitalize(attr)]();
-      }
-    });
-    return status;
-  };
 
   /**
    * Update local representation of the feed (used to process information
    * sent by the remote peer)
    */
   that.setStatus = function(attrs) {
-    console.log('setStatus', attrs);
-    // TODO: is setTimeout needed?
-    window.setTimeout(function() {
-      if (speaking === true && attrs.speaking === false) {
-        silentSince = Date.now();
-      }
-      Object.keys(attrs).forEach(function(key) {
-        that['set' + capitalize(key)](attrs[key]);
-      });
+    if (speaking === true && attrs.speaking === false) {
+      silentSince = Date.now();
+    }
+    Object.keys(attrs).forEach(function(key) {
+      const fn = 'set' + capitalize(apiAttrs[key]);
+      that[fn](attrs[key]);
     });
   };
 

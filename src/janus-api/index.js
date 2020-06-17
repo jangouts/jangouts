@@ -10,9 +10,9 @@
  *
  * @todo Read configuration.
  */
+import { Janus } from '../vendor/janus';
 import { createRoomService } from './room-service';
 import { createFeedsService } from './feeds-service';
-import { createLogService } from './log-service';
 import { createEventsService } from './events-service';
 import { createDataChannelService } from './data-channel-service';
 import { createActionService } from './action-service';
@@ -22,7 +22,6 @@ export default (function() {
     dataChannelService: null,
     eventsService: null,
     feedsService: null,
-    logService: null,
     roomService: null,
     actionService: null
   };
@@ -33,16 +32,13 @@ export default (function() {
   ) {
     that.eventsService = createEventsService();
     that.feedsService = createFeedsService(that.eventsService);
-    that.logService = createLogService(that.eventsService);
     that.dataChannelService = createDataChannelService(
       that.feedsService,
-      that.logService,
       that.eventsService
     );
 
     that.actionService = createActionService(
       that.feedsService,
-      that.logService,
       that.dataChannelService,
       that.eventsService
     );
@@ -50,14 +46,13 @@ export default (function() {
     that.roomService = createRoomService(
       { janusServer, janusServerSSL, joinUnmutedLimit, videoThumbnails },
       that.feedsService,
-      that.logService,
       that.dataChannelService,
       that.eventsService,
       that.actionService
     );
 
     if (handler) {
-      that.getEventsSubject().subscribe(handler);
+      that.getRoomSubject().subscribe(handler);
     }
   };
 
@@ -69,12 +64,9 @@ export default (function() {
   that.publishScreen = () => that.roomService.publishScreen('screen');
   that.unpublishFeed = (feedId) => that.roomService.unPublishFeed(feedId);
   that.leaveRoom = () => that.roomService.leave();
-  that.getEventsSubject = () => that.eventsService.getEventsSubject();
+  that.getRoomSubject = () => that.eventsService.getRoomSubject();
   that.sendMessage = (text) => that.actionService.writeChatMessage(text);
-  that.getFeedStream = (feedId) => {
-    let feed = that.feedsService.find(feedId);
-    return feed !== null ? feed.getStream() : null;
-  };
+
   that.toggleAudio = (feedId) => {
     let feed = that.feedsService.find(feedId);
     if (!feed) return;

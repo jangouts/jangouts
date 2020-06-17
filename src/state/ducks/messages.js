@@ -6,9 +6,9 @@
  */
 
 import janusApi from '../../janus-api';
+import { createLogEntry } from '../../utils/log-entry'
 
-const MESSAGE_SENT = 'jangouts/message/SEND';
-const MESSAGE_RECEIVED = 'jangouts/message/RECEIVE';
+const MESSAGE_REGISTER = 'jangouts/message/REGISTER';
 
 const send = function(text) {
   return function() {
@@ -16,32 +16,44 @@ const send = function(text) {
   };
 };
 
-const receive = (message) => ({
-  type: MESSAGE_RECEIVED,
-  payload: message
+const add = (type, data) => {
+  return function(dispatch) {
+    const entry = createLogEntry(type, data);
+    dispatch(register(entry));
+  };
+};
+
+const addChatMsg = (feedId, text) => {
+  return function(dispatch, getState) {
+    const feed = getState().participants[feedId];
+    dispatch(add('chatMsg', { feed, text }));
+  };
+};
+
+const register = (entry) => ({
+  type: MESSAGE_REGISTER,
+  payload: entry
 });
 
 const actionCreators = {
   send,
-  receive
+  add,
+  addChatMsg
 };
 
 const actionTypes = {
-  MESSAGE_SENT,
-  MESSAGE_RECEIVED
+  MESSAGE_REGISTER
 };
 
 const initialState = [];
 
 const reducer = function(state = initialState, action) {
   switch (action.type) {
-    // TODO: store sent message as "history" too
-    case MESSAGE_SENT:
-    case MESSAGE_RECEIVED: {
-      const message = action.payload;
+    case MESSAGE_REGISTER: {
+      const entry = action.payload;
+      const { type, timestamp, content } = entry;
 
-      // TODO: simplify the message structure
-      return [...state, message];
+      return [...state, { type, timestamp, content, text: entry.text() }];
     }
     default:
       return state;

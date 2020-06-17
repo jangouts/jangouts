@@ -7,14 +7,14 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import janusApi from '../../janus-api';
 import ParticipantActions from './ParticipantActions';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { classNames, attachStream } from '../../utils/common';
+import StreamsService from '../../utils/streams-service';
 import { User as UserIcon } from 'react-feather';
 
 function setVideo(id, videoRef) {
-  const stream = janusApi.getFeedStream(id);
+  const stream = StreamsService.get(id);
 
   if (stream !== null) {
     console.log('Attaching media stream', id);

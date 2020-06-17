@@ -6,14 +6,12 @@
  */
 
 import { createDataChannelService } from './data-channel-service';
-import { createLogService } from './log-service';
 import { createFeedsService } from './feeds-service';
 import { createFeedFactory } from './models/feed';
-import { createFeedConnection } from './models/feed-connection';
 
 describe('#sendChatMessage', () => {
   const eventsService = {
-    emitEvent: jest.fn()
+    roomEvent: jest.fn()
   };
 
   const mainConnection = {
@@ -21,6 +19,7 @@ describe('#sendChatMessage', () => {
   };
 
   const mainFeed = {
+    id: 666,
     connection: mainConnection,
     isDataOpen: () => true
   };
@@ -29,11 +28,15 @@ describe('#sendChatMessage', () => {
     findMain: () => mainFeed
   };
 
-  test('sends the message through the main connection', () => {
-    let logService = createLogService;
-    let dataService = createDataChannelService(feedsService, logService, eventsService);
+  test('emits a room event and sends the message through the main connection', () => {
+    let dataService = createDataChannelService(feedsService, eventsService);
 
     dataService.sendChatMessage('Hello Dolly!');
+
+    expect(eventsService.roomEvent).toHaveBeenCalledWith(
+      'createChatMsg', { feedId: 666, text: 'Hello Dolly!'}
+    );
+
     var sentData = mainConnection.sendData.mock.calls;
     var parsed = JSON.parse(sentData[0][0]['text']);
 
@@ -46,98 +49,58 @@ describe('#sendChatMessage', () => {
 });
 
 describe('#receiveMessage', () => {
-  const logService = {
-    add: jest.fn()
-  };
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
 
-  const eventsService = {
-    emitEvent: jest.fn()
-  };
-
+  const eventsService = { roomEvent: jest.fn() };
   const feedsService = createFeedsService(eventsService);
-
-  const dataService = createDataChannelService(feedsService, logService, eventsService);
-
+  const dataService = createDataChannelService(feedsService, eventsService);
   const createFeed = createFeedFactory(dataService, eventsService);
 
-  const pluginHandle = {
-    getId: () => 1,
-    getPlugin: () => 'videoroom',
-    // Execute the callback if a confirmation is received
-    send: (options) => {
-      options['success']();
-    }
-  };
-  const createConnection = createFeedConnection(eventsService);
+  const publishConnection = { setConfig: jest.fn(), getConfig: () => {} };
+  const publishFeed = createFeed({ id: 1, isPublisher: true, connection: publishConnection });
+  const subscribeConnection = { setConfig: jest.fn() };
+  const subscribeFeed = createFeed({ id: 2, connection: subscribeConnection });
 
-  const publish_conn = createConnection(pluginHandle, 222, 'publisher');
-  const publish_feed = createFeed({
-    id: 1,
-    isPublisher: true,
-    connection: publish_conn
-  });
-  const subscribe_feed = createFeed({ id: 2 });
-
-  feedsService.add(publish_feed);
-  feedsService.add(subscribe_feed);
-
-  function last_log() {
-    var calls = logService.add.mock.calls;
-    var last_call = calls[calls.length - 1];
-    return last_call[0];
-  }
-
-  function last_event(index = 1) {
-    var calls = eventsService.emitEvent.mock.calls;
-    var last_call = calls[calls.length - index];
-    return last_call ? last_call[0] : null;
-  }
+  feedsService.add(publishFeed);
+  feedsService.add(subscribeFeed);
 
   describe('receiving a chatMsg', () => {
-    test('register the corresponding log entry', () => {
+    test('emits the corresponding event', () => {
       let data = JSON.stringify({
         type: 'chatMsg',
         content: 'Goodbye Molly!'
       });
 
       dataService.receiveMessage(data, 1);
-      var entry = last_log();
 
-      expect(entry.type).toStrictEqual('chatMsg');
-      expect(entry.chatMsgText()).toStrictEqual('Goodbye Molly!');
-      expect(entry.content.feed).toBe(publish_feed);
+      expect(eventsService.roomEvent).toHaveBeenLastCalledWith(
+        'createChatMsg', { feedId: 1, text: 'Goodbye Molly!'}
+      );
     });
   });
 
   describe('receiving a muteRequest', () => {
     describe('for the publisher feed', () => {
-      test('register the log entry and emits the event after receiving confirmation', () => {
+      test('emits the event and disables the audio channel', () => {
         let data = JSON.stringify({
           type: 'muteRequest',
           content: { target: 1 }
         });
-        publish_feed.connection.pluginHandle = {
-          webrtcStuff: { pc: null }
-        };
         dataService.receiveMessage(data, 2);
 
-        var entry = last_log();
-        expect(entry.type).toStrictEqual('muteRequest');
-        expect(entry.content.target).toBe(publish_feed);
-
-        var ev = last_event();
-        expect(ev.type).not.toStrictEqual('muted');
-
-        publish_feed.connection.confirmConfig();
-
-        ev = last_event(2);
-        expect(ev.type).toStrictEqual('muted');
-        expect(ev.data.cause).toStrictEqual('request');
+        expect(eventsService.roomEvent).toHaveBeenLastCalledWith(
+          'muteFeed', { id: publishFeed.id, requesterId: subscribeFeed.id  }
+        );
+        expect(publishConnection.setConfig).toHaveBeenCalledWith(
+          expect.objectContaining({ values: { audio: false }})
+        );
       });
     });
 
     describe('for a subscriber feed', () => {
-      test('register the log entry', () => {
+      test('emits the corresponding event and does not modify the channels', () => {
         let data = JSON.stringify({
           type: 'muteRequest',
           content: { target: 2 }
@@ -145,9 +108,11 @@ describe('#receiveMessage', () => {
 
         dataService.receiveMessage(data, 1);
 
-        var entry = last_log();
-        expect(entry.type).toStrictEqual('muteRequest');
-        expect(entry.content.target).toBe(subscribe_feed);
+        expect(eventsService.roomEvent).toHaveBeenLastCalledWith(
+          'muteFeed', { id: subscribeFeed.id, requesterId: publishFeed.id  }
+        );
+        expect(publishConnection.setConfig).not.toHaveBeenCalled();
+        expect(subscribeConnection.setConfig).not.toHaveBeenCalled();
       });
     });
   });

@@ -1,11 +1,9 @@
 /**
- * Copyright (c) [2015-2019] SUSE Linux
+ * Copyright (c) [2015-2020] SUSE Linux
  *
  * This software may be modified and distributed under the terms
  * of the MIT license.  See the LICENSE.txt file for details.
  */
-
-import DOMPurify from 'dompurify';
 
 export const createLogEntry = (type, content) => {
   let that = {
@@ -35,7 +33,7 @@ export const createLogEntry = (type, content) => {
   };
 
   that.chatMsgText = function() {
-    return DOMPurify.sanitize(that.content.text);
+    return that.content.text;
   };
 
   that.publishScreenText = function() {
@@ -51,19 +49,11 @@ export const createLogEntry = (type, content) => {
   };
 
   that.newRemoteFeedText = function() {
-    return that.content.feed.display + ' has joined the room';
-  };
-
-  that.ignoreFeedText = function() {
-    return 'You are ignoring ' + that.content.feed.display + ' now';
+    return that.content.name + ' has joined the room';
   };
 
   that.reconnectFeedText = function() {
-    return 'Connected again with ' + that.content.feed.display;
-  };
-
-  that.hasText = function() {
-    return that.text() !== '';
+    return 'Connected again with ' + that.content.feed.name;
   };
 
   return that;

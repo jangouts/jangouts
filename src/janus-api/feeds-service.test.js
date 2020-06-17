@@ -7,41 +7,69 @@
 
 import { createFeedsService } from './feeds-service';
 
+const firstObj = { id: 1, name: "first" };
 const firstFeed = {
   id: 1,
-  isPublisher: true,
-  isLocalScreen: true,
-  getSpeaking: () => false
+  getDisplay: () => "first",
+  getPublisher: () => true,
+  getLocalScreen: () => true,
+  getSpeaking: () => false,
+  apiObject: () => { return firstObj }
 };
 
+const secondObj = { id: 2, name: "second" };
 const secondFeed = {
   id: 2,
-  isPublisher: false,
-  isLocalScreen: false,
-  getSpeaking: () => true
+  getDisplay: () => "second",
+  getPublisher: () => false,
+  getLocalScreen: () => false,
+  getSpeaking: () => true,
+  apiObject: () => { return secondObj }
 };
 
-const emitEvent = jest.fn();
-const eventsService = { emitEvent };
+const eventsService = { roomEvent: jest.fn(), auditEvent: jest.fn() };
 
 describe('#add', () => {
+  beforeEach(() => { jest.resetAllMocks(); });
+
   test('adds the feed', () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     expect(feedsService.allFeeds()).toStrictEqual([firstFeed]);
   });
 
-  test('emits a new feed event', () => {
+  describe('when adding the main feed', () => {
     const feedsService = createFeedsService(eventsService);
-    feedsService.add(firstFeed);
-    expect(eventsService.emitEvent).toHaveBeenCalledWith({
-      type: 'addFeed',
-      data: firstFeed
+
+    test('emits events for a new participant (with local=true) and for a new feed', () => {
+      feedsService.add(firstFeed, { main: true });
+      expect(eventsService.roomEvent).toHaveBeenCalledWith(
+        "createParticipant", {...firstObj, local: true}
+      );
+      expect(eventsService.roomEvent).toHaveBeenCalledWith(
+        "createFeed", {...firstObj, participantId: 1}
+      );
+    });
+  });
+
+  describe('when adding a remote feed', () => {
+    const feedsService = createFeedsService(eventsService);
+
+    test('emits events for a new participant (with local=false) and for a new feed', () => {
+      feedsService.add(firstFeed);
+      expect(eventsService.roomEvent).toHaveBeenCalledWith(
+        "createParticipant", {...firstObj, local: false }
+      );
+      expect(eventsService.roomEvent).toHaveBeenCalledWith(
+        "createFeed", {...firstObj, participantId: 1}
+      );
     });
   });
 });
 
 describe('#destroy', () => {
+  beforeEach(() => { jest.resetAllMocks(); });
+
   test('removes the feed', () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
@@ -50,32 +78,17 @@ describe('#destroy', () => {
     expect(feedsService.allFeeds()).toStrictEqual([secondFeed]);
   });
 
-  test('emits a new feed event', () => {
+  test('emits destroyFeed and destroyParticipant events', () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.destroy(firstFeed.id);
-    expect(eventsService.emitEvent).toHaveBeenCalledWith({
-      type: 'removeFeed',
-      data: { feedId: firstFeed.id }
-    });
-  });
-});
 
-describe('#find', () => {
-  describe('when the feed does not exist', () => {
-    test('returns null', () => {
-      const feedsService = createFeedsService(eventsService);
-      expect(feedsService.find(1)).toBe(null);
-    });
-  });
-
-  describe('when the feed exists', () => {
-    test('returns the feed with the given id', () => {
-      const feedsService = createFeedsService(eventsService);
-      feedsService.add(firstFeed);
-      feedsService.add(secondFeed);
-      expect(feedsService.find(secondFeed.id)).toBe(secondFeed);
-    });
+    expect(eventsService.roomEvent).toHaveBeenCalledWith(
+      "destroyFeed", { id: firstFeed.id }
+    );
+    expect(eventsService.roomEvent).toHaveBeenCalledWith(
+      "destroyParticipant", { id: firstFeed.id }
+    );
   });
 });
 

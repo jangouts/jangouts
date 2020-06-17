@@ -16,7 +16,7 @@ names of its arguments.
   * `createFeed { participantId, id, name, screen, ignored, speaking, audio, video, picture }`
   * `updateFeed { id, name, ignored, speaking, audio, video, picture }`
   * `createStream { feedId, stream }`
-  * `createChatMessage { feed, text }`
+  * `createChatMessage { feedId, text }`
   * `speakDetection { speaking }`
   * `muteFeed { id, requesterId, participantsLimit }`
   * `destroyFeed { id }`
