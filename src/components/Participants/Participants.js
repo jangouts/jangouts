@@ -26,7 +26,7 @@ const Participants = () => {
           display,
           isPublisher,
           isLocalScreen,
-          stream_timestamp,
+          streamTimestamp,
           speaking,
           focus,
           video
@@ -39,7 +39,7 @@ const Participants = () => {
             username={display}
             isPublisher={isPublisher}
             isLocalScreen={isLocalScreen}
-            streamReady={stream_timestamp}
+            streamReady={streamTimestamp}
             speaking={speaking}
             focus={focus}
             video={video}

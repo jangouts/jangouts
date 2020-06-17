@@ -41,7 +41,7 @@ describe('reducer', () => {
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      5678: { id: 5678, username: 'otherUser', stream_timestamp: null }
+      5678: { id: 5678, username: 'otherUser', streamTimestamp: null }
     });
   });
 
@@ -64,7 +64,7 @@ describe('reducer', () => {
 
     const updatedParticipant = reducer(initialState, action)['1234'];
 
-    expect(updatedParticipant['stream_timestamp']).toEqual(timestamp);
+    expect(updatedParticipant['streamTimestamp']).toEqual(timestamp);
   });
 
   it('handles PARTICIPANT_UPDATE_STATUS', () => {

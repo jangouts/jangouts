@@ -172,7 +172,7 @@ const reducer = function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case PARTICIPANT_JOINED: {
-      const participant = { ...payload, stream_timestamp: null };
+      const participant = { ...payload, streamTimestamp: null };
       return {
         ...state,
         [participant.id]: participant
@@ -192,7 +192,7 @@ const reducer = function(state = initialState, action) {
     case PARTICIPANT_STREAM_SET: {
       return {
         ...state,
-        [payload]: { ...state[payload], stream_timestamp: new Date(Date.now()) }
+        [payload]: { ...state[payload], streamTimestamp: new Date(Date.now()) }
       };
     }
 

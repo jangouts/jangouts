@@ -23,7 +23,7 @@ function Speaker() {
   const video = React.createRef();
   const speaker = useSelector(
     (state) => selectors.focusedParticipant(state.participants),
-    (a, b) => a.id === b.id && a.stream_timestamp === b.stream_timestamp
+    (a, b) => a.id === b.id && a.streamTimestamp === b.streamTimestamp
   );
 
   const { id, isPublisher, isLocalScreen } = speaker || {};
