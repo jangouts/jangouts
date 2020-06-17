@@ -29,7 +29,28 @@ function discardFalses(collection) {
   return collection.filter((i) => i);
 }
 
+/**
+ * Helper to attach a stream to a video element
+ *
+ * @param {HTMLVideoElement} element of the DOM to attach the stream to
+ * @param {MediaStream} WebRTC stream
+ */
+function attachStream(element, stream) {
+  try {
+    // In fact, this should work in all relatively new browsers. So maybe the
+    // whole function could be dropped in favor of this line.
+    element.srcObject = stream;
+  } catch (e) {
+    try {
+      element.src = URL.createObjectURL(stream);
+    } catch (e) {
+      console.error("Error attaching stream to element");
+    }
+  }
+}
+
 export {
+  attachStream,
   classNames,
   discardFalses
 };

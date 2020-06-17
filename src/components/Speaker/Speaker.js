@@ -9,14 +9,13 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectors } from '../../state/ducks/participants';
 import janusApi from '../../janus-api';
-import { Janus } from '../../vendor/janus';
-import { classNames } from '../../utils/common';
+import { classNames, attachStream } from '../../utils/common';
 
 function setVideo(id, video, forceUpdate) {
   const stream = janusApi.getFeedStream(id);
 
   if (stream !== null) {
-    Janus.attachMediaStream(video, stream);
+    attachStream(video, stream);
   }
 }
 
