@@ -110,8 +110,7 @@ export const createFeedConnection = (eventsService) => (
     pluginHandle.createOffer({
       media: media,
       success: function(jsep) {
-        console.log('Got publisher SDP!');
-        console.log(jsep);
+        console.debug('Got publisher SDP!');
         that.config = createConnectionConfig(pluginHandle, cfg, jsep, options.configured);
         // Call the provided callback for extra actions
 
@@ -120,8 +119,7 @@ export const createFeedConnection = (eventsService) => (
         }
       },
       error: function(error) {
-        console.error('WebRTC error publishing');
-        console.error(error);
+        console.error('WebRTC error publishing', error);
         // emit 'error Create Offer' event
         eventsService.emitEvent({
           type: 'error',
@@ -152,8 +150,7 @@ export const createFeedConnection = (eventsService) => (
         data: true
       },
       success: function(jsep) {
-        console.log('Got SDP!');
-        console.log(jsep);
+        console.debug('Got SDP!');
         var start = { request: 'start', room: roomId };
         pluginHandle.send({ message: start, jsep: jsep });
       },

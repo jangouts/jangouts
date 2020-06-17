@@ -228,8 +228,7 @@ export const createRoomService = (
         // Step 4b (parallel with 4a).
         // Send the created stream to the UI, so it can be attached to
         // some element of the local DOM
-        console.log(' ::: Got a local stream :::');
-        // local stream attached event
+
         let feed = feedsService.findMain();
         feed.setStream(stream);
 
@@ -248,7 +247,7 @@ export const createRoomService = (
       },
       onmessage: function(msg, jsep) {
         var event = msg.videoroom;
-        console.log('Event: ' + event);
+        console.debug('Event: ' + event);
 
         // Step 2. Response from janus confirming we joined
         if (event === 'joined') {
@@ -335,12 +334,10 @@ export const createRoomService = (
   };
 
   that.subscribeToFeeds = function(list) {
-    console.log('Got a list of available publishers/feeds:');
-    console.log(list);
+    console.debug('Got a list of available publishers/feeds:', list);
     for (var f = 0; f < list.length; f++) {
       var id = list[f].id;
       var display = list[f].display;
-      console.log('  >> [' + id + '] ' + display);
       var feed = feedsService.find(id);
       if (feed === null || feed.waitingForConnection()) {
         this.subscribeToFeed(id, display);
@@ -384,10 +381,7 @@ export const createRoomService = (
         console.error('  -- Error attaching plugin... ' + error);
       },
       onmessage: function(msg, jsep) {
-        console.log(' ::: Got a message (listener) :::');
-        console.log(JSON.stringify(msg));
         var event = msg.videoroom;
-        console.log('Event: ' + event);
         if (event === 'attached') {
           // Subscriber created and attached
           // emit 'subscriber attached' event
@@ -450,7 +444,6 @@ export const createRoomService = (
         that.sendStatus();
       },
       ondata: function(data) {
-        console.log(' ::: Got info in the data channel (subscriber) :::');
         dataChannelService.receiveMessage(data, id);
       },
       oncleanup: function() {
@@ -535,8 +528,7 @@ export const createRoomService = (
         };
       },
       onmessage: function(msg, jsep) {
-        console.log(' ::: Got a message (screen) :::');
-        console.log(msg);
+        console.debug(' ::: Got a message (screen) :::', msg);
         var event = msg.videoroom;
 
         if (event === 'joined') {
@@ -559,7 +551,7 @@ export const createRoomService = (
         } else if (msg.configured) {
           connection.confirmConfig();
         } else {
-          console.log('Unexpected event for screen');
+          console.log('Unexpected event for screen', msg);
         }
         if (jsep !== undefined && jsep !== null) {
           connection.handleRemoteJsep(jsep);
