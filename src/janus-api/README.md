@@ -22,4 +22,4 @@ names of its arguments.
   * `destroyFeed { id }`
   * `destroyParticipant { id }`
   * `destroyRoom { }`
-  * `reportError` { error }`
+  * `reportError { error }`
