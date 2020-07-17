@@ -26,7 +26,7 @@ describe('when there are messages', () => {
         content: {
           feed: { display: 'John Doe' }
         },
-        text: () => 'Hi Jane!',
+        text: 'Hi Jane!',
         timestamp: '2020-02-10T18:28:58.439Z'
       },
       {
@@ -34,7 +34,7 @@ describe('when there are messages', () => {
         content: {
           feed: { display: 'Jane Doe' }
         },
-        text: () => "What's up John!",
+        text: "What's up John!",
         timestamp: '2020-02-10T18:29:58.439Z'
       }
     ]
