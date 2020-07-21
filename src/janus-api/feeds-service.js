@@ -70,11 +70,15 @@ export const createFeedsService = (eventsService) => {
    * @param {Boolean} options.main - if feed is main one
    */
   that.add = function(feed, options) {
+    let local = false;
+
     feeds[feed.id] = feed;
-    eventsService.emitEvent({ type: 'addFeed', data: feed });
     if (options && options.main) {
       mainFeed = feed;
+      local = true;
     }
+    eventsService.roomEvent('createParticipant', { id: feed.id, name: feed.getDisplay(), local });
+    eventsService.roomEvent('createFeed', { participantId: feed.id, ...feed.apiObject() });
   };
 
   /**
@@ -82,7 +86,8 @@ export const createFeedsService = (eventsService) => {
    */
   that.destroy = function(id) {
     delete feeds[id];
-    eventsService.emitEvent({ type: 'removeFeed', data: { feedId: id } });
+    eventsService.roomEvent('destroyFeed', { id });
+    eventsService.roomEvent('destroyParticipant', { id });
     if (mainFeed && id === mainFeed.id) {
       mainFeed = null;
     }
@@ -99,14 +104,14 @@ export const createFeedsService = (eventsService) => {
    * @returns {Array<Feed>} all registered publisher feeds
    */
   that.publisherFeeds = function() {
-    return that.allFeeds().filter((f) => f.isPublisher);
+    return that.allFeeds().filter((f) => f.getPublisher());
   };
 
   /**
    * @returns {Array<Feed>} all registered feeds sharing local screen
    */
   that.localScreenFeeds = function() {
-    return that.allFeeds().filter((f) => f.isLocalScreen);
+    return that.allFeeds().filter((f) => f.getLocalScreen());
   };
 
   /**

@@ -35,7 +35,7 @@ function Message({ type, content, text, timestamp, onRender }) {
           </time>
         </div>
         <div className="px-2">
-          <Interweave content={text()} onRender={onRender} />
+          <Interweave content={text} onRender={onRender} />
         </div>
       </li>
     );
@@ -44,7 +44,7 @@ function Message({ type, content, text, timestamp, onRender }) {
     <li
       className="rounded m-2 p-1 bg-white overflow-hidden overflow-x-auto shadow"
       data-testid="message">
-      <div className="px-2 italic text-xs md:text-sm">{text()}</div>
+      <div className="px-2 italic text-xs md:text-sm">{text}</div>
     </li>
   );
 }

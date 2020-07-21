@@ -9,7 +9,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Chat from './Chat';
 import { renderWithRedux } from '../../setupTests';
-import { createLogEntry } from '../../janus-api/models/log-entry';
+import { createLogEntry } from '../../utils/log-entry';
 
 it('renders without crashing', () => {
   renderWithRedux(<Chat />);
@@ -28,7 +28,7 @@ describe('when there are messages', () => {
   };
   const message = createLogEntry('chatMsg', { feed: sender, text: 'Hi all!' });
   const stateWithMessage = {
-    messages: [message]
+    messages: [{...message, text: message.text()}]
   };
 
   it('lists the messages', () => {

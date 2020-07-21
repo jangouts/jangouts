@@ -7,31 +7,43 @@
 
 import janusApi from '../../janus-api';
 import { actionCreators as notificationActions } from './notifications';
+import { actionCreators as messagesActions } from './messages';
+import StreamsService from '../../utils/streams-service';
 
 const PARTICIPANT_JOINED = 'jangouts/participant/JOIN';
 const PARTICIPANT_DETACHED = 'jangouts/participant/DETACH';
-const PARTICIPANT_STREAM_SET = 'jangouts/participant/SET_STREAM';
 const PARTICIPANT_UPDATE_STATUS = 'jangouts/participant/UPDATE_STATUS';
 const PARTICIPANT_SET_FOCUS = 'jangouts/participant/PARTICIPANT_SET_FOCUS';
 
 const addParticipant = (participant) => {
-  const { id, display, isPublisher, isLocalScreen, isIgnored } = participant;
+  const { id, name, local, screen, ignored, video } = participant;
 
   return {
     type: PARTICIPANT_JOINED,
-    payload: { id, display, isPublisher, isLocalScreen, isIgnored, video: participant.getVideoEnabled() }
+    payload: { id, display: name, isPublisher: local, isLocalScreen: screen, isIgnored: ignored, video }
   };
 };
 
-const removeParticipant = (participantId) => ({
-  type: PARTICIPANT_DETACHED,
-  payload: participantId
-});
+const removeParticipant = (id) => {
+  return function(dispatch, getState) {
+    const participant = getState().participants[id];
 
-const setStream = (participantId) => ({
-  type: PARTICIPANT_STREAM_SET,
-  payload: participantId
-});
+    StreamsService.delete(id);
+    dispatch(messagesActions.add('destroyFeed', { feed: participant }));
+    dispatch(detachParticipant(id));
+  };
+};
+
+const setStream = (feedId, stream) => {
+  return function(dispatch, getState) {
+    const feed = getState().participants[feedId];
+    const streamTimestamp = new Date(Date.now());
+
+    StreamsService.add(feedId, stream);
+    if (feed.isLocalScreen) dispatch(messagesActions.add('publishScreen', {}));
+    dispatch(updateStatus(feedId, { streamTimestamp }));
+  };
+};
 
 const toggleAudio = (id) => {
   return function() {
@@ -53,33 +65,64 @@ const toggleVideo = (id) => {
 };
 
 const reconnect = (id) => {
-  return function() {
+  return function(dispatch, getState) {
+    const participant = getState().participants[id];
+
+    dispatch(messagesActions.add('reconnectFeed', { feed: participant }));
     janusApi.reconnectFeed(id);
   };
 };
+
+const detachParticipant = (participantId) => ({
+  type: PARTICIPANT_DETACHED,
+  payload: participantId
+});
 
 const updateStatus = (id, status) => ({
   type: PARTICIPANT_UPDATE_STATUS,
   payload: { id, status }
 });
 
-const updateLocalStatus = ({ audio, video }) => (dispatch, getState) => {
-  const { id } = localParticipant(getState().participants);
-  dispatch(updateStatus(id, { audio, video }));
-}
-
 const SPEAKING_NOTIF_INTERVAL = 60000;
 
-const participantSpeaking = (id, speaking) => (dispatch, getState) => {
+const localSpeak = (speaking) => (dispatch, getState) => {
   const state = getState();
-  const { id: localId, audio } = localParticipant(state.participants);
-  if (id === localId && !audio && speaking) {
+  const { audio } = localParticipant(state.participants);
+  if (!audio && speaking) {
     dispatch(
       notificationActions.notifyEvent({ type: 'speaking' }, { block: SPEAKING_NOTIF_INTERVAL })
     );
   }
-  dispatch(updateStatus(id, {speaking, speakingSince: Date.now()}));
-}
+};
+
+const requestMute = (data) => (dispatch, getState) => {
+  const { id, requesterId, participantsLimit } = data;
+
+  if (participantsLimit !== undefined) {
+    dispatch(
+      notificationActions.notifyEvent(
+        { type: 'muted', data: { cause: 'join', limit: participantsLimit }}
+      )
+    );
+  } else {
+    if (requesterId !== id) {
+      const state = getState();
+      const { id: localId } = localParticipant(state.participants);
+      const requester = state.participants[requesterId];
+      const target = state.participants[id];
+
+      dispatch(messagesActions.add('muteRequest', { source: requester, target }));
+
+      if (id === localId) {
+        dispatch(
+          notificationActions.notifyEvent(
+            { type: 'muted', data: { cause: 'request', source: requester }}
+          )
+        );
+      }
+    }
+  }
+};
 
 const autoSetFocus = (force = false) => {
   return function(dispatch, getState) {
@@ -144,8 +187,8 @@ const actionCreators = {
   toggleVideo,
   reconnect,
   updateStatus,
-  updateLocalStatus,
-  participantSpeaking,
+  localSpeak,
+  requestMute,
   setFocus,
   unsetFocus,
   autoSetFocus,
@@ -156,7 +199,6 @@ const actionCreators = {
 const actionTypes = {
   PARTICIPANT_JOINED,
   PARTICIPANT_DETACHED,
-  PARTICIPANT_STREAM_SET,
   PARTICIPANT_UPDATE_STATUS,
   PARTICIPANT_SET_FOCUS
 };
@@ -172,7 +214,7 @@ const reducer = function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case PARTICIPANT_JOINED: {
-      const participant = { ...payload, stream_timestamp: null };
+      const participant = { ...payload, streamTimestamp: null };
       return {
         ...state,
         [participant.id]: participant
@@ -180,7 +222,6 @@ const reducer = function(state = initialState, action) {
     }
 
     case PARTICIPANT_DETACHED: {
-      // TODO: use a Map instead of an object to avoid the parseInt call
       return Object.keys(state)
         .filter((key) => parseInt(key) !== payload)
         .reduce((obj, key) => {
@@ -189,18 +230,15 @@ const reducer = function(state = initialState, action) {
         }, {});
     }
 
-    case PARTICIPANT_STREAM_SET: {
-      return {
-        ...state,
-        [payload]: { ...state[payload], stream_timestamp: new Date(Date.now()) }
-      };
-    }
-
     case PARTICIPANT_UPDATE_STATUS: {
       const { id, status } = payload;
+      const wasSpeaking = state[id].speaking;
       const newState = { ...state, [id]: { ...state[id], ...status } };
+
       if (!newState[id].audio) newState[id].speaking = false;
       if (!newState[id].speaking) newState[id].speakingSince = null;
+      if (newState[id].speaking && !wasSpeaking) newState[id].speakingSince = Date.now();
+
       return newState;
     }
 

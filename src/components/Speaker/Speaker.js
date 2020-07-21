@@ -8,15 +8,14 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectors } from '../../state/ducks/participants';
-import janusApi from '../../janus-api';
-import { Janus } from '../../vendor/janus';
-import { classNames } from '../../utils/common';
+import { classNames, attachStream } from '../../utils/common';
+import StreamsService from '../../utils/streams-service';
 
 function setVideo(id, video, forceUpdate) {
-  const stream = janusApi.getFeedStream(id);
+  const stream = StreamsService.get(id);
 
   if (stream !== null) {
-    Janus.attachMediaStream(video, stream);
+    attachStream(video, stream);
   }
 }
 
@@ -24,7 +23,7 @@ function Speaker() {
   const video = React.createRef();
   const speaker = useSelector(
     (state) => selectors.focusedParticipant(state.participants),
-    (a, b) => a.id === b.id && a.stream_timestamp === b.stream_timestamp
+    (a, b) => a.id === b.id && a.streamTimestamp === b.streamTimestamp
   );
 
   const { id, isPublisher, isLocalScreen } = speaker || {};

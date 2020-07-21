@@ -38,13 +38,6 @@ describe('#text', () => {
       const entry = createLogEntry('chatMsg', content);
       expect(entry.text()).toBe('some text');
     });
-
-    // TODO: we should consider whether we want to remove any HTML
-    test('sanitizes the text to avoid XSS attacks', () => {
-      const content = { text: '<p><script>alert(1)</script></p>' };
-      const entry = createLogEntry('chatMsg', content);
-      expect(entry.text()).toBe('<p></p>');
-    });
   });
 
   xdescribe('publishScreenText');

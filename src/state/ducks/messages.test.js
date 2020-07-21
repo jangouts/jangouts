@@ -7,8 +7,12 @@
 
 import janusApi from '../../janus-api';
 import reducer, { actionTypes, actionCreators } from './messages';
+import { createLogEntry } from '../../utils/log-entry'
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
-const newMessage = { id: '5678', content: 'See you!', type: 'message' };
+const newMessage = { feed: '5678', text: 'See you!' };
+const newEntry = createLogEntry('chatMsg', newMessage);
 
 describe('reducer', () => {
   const initialState = [{ id: '1234', content: 'Hello!', type: 'message' }];
@@ -19,26 +23,20 @@ describe('reducer', () => {
     expect(reducer(initialState, action)).toEqual(initialState);
   });
 
-  it('handles MESSAGE_SENT', () => {
-    const action = { type: actionTypes.MESSAGE_SENT, payload: newMessage };
+  it('handles MESSAGE_REGISTER', () => {
+    const action = { type: actionTypes.MESSAGE_REGISTER, payload: newEntry };
 
     expect(reducer(initialState, action)).toEqual([
       ...initialState,
-      { id: '5678', content: 'See you!', type: 'message' }
-    ]);
-  });
-
-  it('handles MESSAGE_RECEIVED', () => {
-    const action = { type: actionTypes.MESSAGE_RECEIVED, payload: newMessage };
-
-    expect(reducer(initialState, action)).toEqual([
-      ...initialState,
-      { id: '5678', content: 'See you!', type: 'message' }
+      expect.objectContaining({text: newEntry.text(), content: newMessage})
     ]);
   });
 });
 
 describe('action creators', () => {
+  const middlewares = [thunk];
+  const mockStore = configureMockStore(middlewares);
+
   describe('#send', () => {
     it('sends the message through janusApi', () => {
       janusApi.sendMessage = jest.fn();
@@ -47,14 +45,15 @@ describe('action creators', () => {
     });
   });
 
-  describe('#receive', () => {
-    it('creates an action to received a message', () => {
-      const expectedAction = {
-        type: actionTypes.MESSAGE_RECEIVED,
-        payload: newMessage
-      };
+  describe('#add', () => {
+    const store = mockStore({});
 
-      expect(actionCreators.receive(newMessage)).toEqual(expectedAction);
+    it('creates an action to store the new message', () => {
+      store.dispatch(actionCreators.add('chatMsg', newMessage));
+
+      const actions = store.getActions();
+      expect(actions[0].type).toEqual(actionTypes.MESSAGE_REGISTER);
+      expect(actions[0].payload).toMatchObject({type: newEntry.type, content: newEntry.content });
     });
   });
 });

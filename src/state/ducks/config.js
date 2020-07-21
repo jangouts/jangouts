@@ -7,14 +7,14 @@
 
 import janusApi from '../../janus-api';
 import { fetch as fetchConfig } from '../../utils/config';
-import { createEventsHandler } from '../../utils/events-handler';
+import { createRoomEventsHandler } from '../../utils/room-events-handler';
 
 const LOAD_CONFIG = 'jangouts/config/LOAD';
 
 export const load = function() {
   return function(dispatch) {
     fetchConfig().then(function(config) {
-      janusApi.setup(config, createEventsHandler(dispatch));
+      janusApi.setup(config, createRoomEventsHandler(dispatch));
       dispatch(configLoaded(config));
     });
   };

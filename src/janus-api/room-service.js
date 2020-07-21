@@ -8,7 +8,6 @@
 import { Janus } from '../vendor/janus';
 import { createRoomFromJanus } from './models/room';
 import { createFeedConnection } from './models/feed-connection';
-import { createLogEntry } from './models/log-entry';
 
 /**
  * Returns the Janus server URL from the configuration
@@ -58,7 +57,6 @@ const defaultJanusServer = (useSSL) => {
 export const createRoomService = (
   config,
   feedsService,
-  logService,
   dataChannelService,
   eventsService,
   actionService
@@ -173,16 +171,8 @@ export const createRoomService = (
     var connection = null;
     that.pin = pin;
 
-    // adding room to EventsService
-    eventsService.setRoom(that.room);
-
     // sending user joining event
-    eventsService.emitEvent({
-      type: 'user',
-      data: {
-        status: 'joining'
-      }
-    });
+    eventsService.auditEvent('user');
 
     // send user joining event
     // Create new session
@@ -190,16 +180,9 @@ export const createRoomService = (
       plugin: 'janus.plugin.videoroom',
       success: function(pluginHandle) {
         // sending 'pluginHandle attached' event
-        eventsService.emitEvent({
-          type: 'pluginHandle',
-          data: {
-            status: 'attached',
-            for: 'main',
-            pluginHandle: pluginHandle
-          }
-        });
-        // Step 1. Right after attaching to the plugin, we send a
-        // request to join
+        eventsService.auditEvent('pluginHandle');
+
+        // Step 1. Right after attaching to the plugin, we send a request to join
         connection = createFeedConnectionFactory(pluginHandle, that.room.id, 'main');
         connection.register(username, pin);
       },
@@ -208,14 +191,14 @@ export const createRoomService = (
       },
       consentDialog: function(on) {
         console.log('Consent dialog should be ' + (on ? 'on' : 'off') + ' now');
-        eventsService.emitEvent({ type: 'consentDialog', data: { on: on } });
+        eventsService.roomEvent('consentDialog', { on });
         if (!on) {
           //notify if joined muted
           if (startMuted) {
-            eventsService.emitEvent({
-              type: 'muted',
-              data: { cause: 'join', limit: joinUnmutedLimit }
-            });
+            eventsService.roomEvent(
+              'muteFeed',
+              { id: feedsService.findMain().id, participantsLimit: joinUnmutedLimit }
+            );
           }
         }
       },
@@ -228,38 +211,26 @@ export const createRoomService = (
         // Step 4b (parallel with 4a).
         // Send the created stream to the UI, so it can be attached to
         // some element of the local DOM
-        console.log(' ::: Got a local stream :::');
-        // local stream attached event
+
         let feed = feedsService.findMain();
         feed.setStream(stream);
 
-        eventsService.emitEvent({
-          type: 'stream',
-          data: {
-            stream: 'local',
-            for: 'main',
-            feedId: feed.id,
-            peerconnection: connection.pluginHandle.webrtcStuff.pc // TODO: is peerconnection needed?
-          }
-        });
+        eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
+        eventsService.auditEvent('stream');
       },
       oncleanup: function() {
         console.log(' ::: Got a cleanup notification: we are unpublished now :::');
       },
       onmessage: function(msg, jsep) {
         var event = msg.videoroom;
-        console.log('Event: ' + event);
+        console.debug('Event: ' + event);
 
         // Step 2. Response from janus confirming we joined
         if (event === 'joined') {
           console.log('Successfully joined room ' + msg.room);
           // sending user joined event
-          eventsService.emitEvent({
-            type: 'user',
-            data: {
-              status: 'joined'
-            }
-          });
+          eventsService.auditEvent('user');
+
           actionService.enterRoom(msg.id, username, connection);
           // Step 3. Establish WebRTC connection with the Janus server
 
@@ -272,9 +243,8 @@ export const createRoomService = (
 
           connection.publish({
             muted: startMuted,
-            configured: feedConfigured,
             error: function() {
-              connection.publish({ noCamera: true, muted: startMuted, configured: feedConfigured });
+              connection.publish({ noCamera: true, muted: startMuted });
             }
           });
 
@@ -285,10 +255,7 @@ export const createRoomService = (
           // The room has been destroyed
         } else if (event === 'destroyed') {
           console.log('The room has been destroyed!');
-          eventsService.emitEvent({
-            type: 'room',
-            data: { status: 'destroyed' }
-          });
+          eventsService.roomEvent('destroyRoom', {});
         } else if (event === 'event') {
           // Any new feed to attach to?
           if (msg.publishers instanceof Array && msg.publishers.length > 0) {
@@ -304,13 +271,12 @@ export const createRoomService = (
             // Reply to a configure request
           } else if (msg.configured) {
             connection.confirmConfig();
+            let feed = feedsService.findMain();
+            eventsService.roomEvent('updateFeed', { id: feed.id, ...feed.getStatus() });
             // The server reported an error
           } else if (msg.error !== undefined && msg.error !== null) {
             console.log('Error message from server' + msg.error);
-            eventsService.emitEvent({
-              type: 'room',
-              data: { status: 'error', error: msg.error }
-            });
+            eventsService.roomEvent('reportError', { error: msg.error });
           }
         }
 
@@ -335,12 +301,10 @@ export const createRoomService = (
   };
 
   that.subscribeToFeeds = function(list) {
-    console.log('Got a list of available publishers/feeds:');
-    console.log(list);
+    console.debug('Got a list of available publishers/feeds:', list);
     for (var f = 0; f < list.length; f++) {
       var id = list[f].id;
       var display = list[f].display;
-      console.log('  >> [' + id + '] ' + display);
       var feed = feedsService.find(id);
       if (feed === null || feed.waitingForConnection()) {
         this.subscribeToFeed(id, display);
@@ -357,26 +321,13 @@ export const createRoomService = (
     }
 
     // emit 'subscribe' event
-    eventsService.emitEvent({
-      type: 'subscriber',
-      data: {
-        status: 'subscribing',
-        to: display
-      }
-    });
+    eventsService.auditEvent('subscriber');
 
     that.janus.attach({
       plugin: 'janus.plugin.videoroom',
       success: function(pluginHandle) {
         // emit subscriber plugin attached event
-        eventsService.emitEvent({
-          type: 'pluginHandle',
-          data: {
-            status: 'attached',
-            for: 'subscriber',
-            pluginHandle: pluginHandle
-          }
-        });
+        eventsService.auditEvent('pluginHandle');
         connection = createFeedConnectionFactory(pluginHandle, that.room.id, 'subscriber');
         connection.listen(id, that.pin);
       },
@@ -384,20 +335,11 @@ export const createRoomService = (
         console.error('  -- Error attaching plugin... ' + error);
       },
       onmessage: function(msg, jsep) {
-        console.log(' ::: Got a message (listener) :::');
-        console.log(JSON.stringify(msg));
         var event = msg.videoroom;
-        console.log('Event: ' + event);
         if (event === 'attached') {
           // Subscriber created and attached
           // emit 'subscriber attached' event
-          eventsService.emitEvent({
-            type: 'subscriber',
-            data: {
-              status: 'susbscribed',
-              to: display
-            }
-          });
+          eventsService.auditEvent('subscriber');
 
           // TODO: is the timeout needed?
           window.setTimeout(function() {
@@ -427,15 +369,8 @@ export const createRoomService = (
         // emit `remotestream` event
         feedsService.waitFor(id).then(
           function(feed) {
-            eventsService.emitEvent({
-              type: 'stream',
-              data: {
-                stream: 'remote',
-                for: 'subscriber',
-                feedId: feed.id,
-                peerconnection: connection.pluginHandle.webrtcStuff.pc
-              }
-            });
+            eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
+            eventsService.auditEvent('stream');
             feed.setStream(stream);
           },
           function(reason) {
@@ -450,7 +385,6 @@ export const createRoomService = (
         that.sendStatus();
       },
       ondata: function(data) {
-        console.log(' ::: Got info in the data channel (subscriber) :::');
         dataChannelService.receiveMessage(data, id);
       },
       oncleanup: function() {
@@ -466,25 +400,13 @@ export const createRoomService = (
     var id;
 
     // emit `screenshare` event
-    eventsService.emitEvent({
-      type: 'screenshare',
-      data: {
-        status: 'starting'
-      }
-    });
+    eventsService.auditEvent('screenshare');
 
     that.janus.attach({
       plugin: 'janus.plugin.videoroom',
       success: function(pluginHandle) {
         // emit screenshare plugin attached event
-        eventsService.emitEvent({
-          type: 'pluginHandle',
-          data: {
-            status: 'attached',
-            for: 'screen',
-            pluginHandle: pluginHandle
-          }
-        });
+        eventsService.auditEvent('pluginHandle');
         connection = createFeedConnectionFactory(pluginHandle, that.room.id, videoSource);
         connection.register(display, that.pin);
         // TODO: ScreenShareService.setInProgress(true);
@@ -493,50 +415,23 @@ export const createRoomService = (
         console.error('  -- Error attaching screen plugin... ' + error);
       },
       onlocalstream: function(stream) {
-        console.log(' ::: Got the screen stream :::');
         var feed = feedsService.find(id);
         feed.setStream(stream);
 
-        // emit 'localstream' event
-        eventsService.emitEvent({
-          type: 'stream',
-          data: {
-            stream: 'local',
-            for: 'screen',
-            feedId: feed.id,
-            peerconnection: connection.pluginHandle.webrtcStuff.pc
-          }
-        });
-
-        // emit 'screenshare started' event
-        eventsService.emitEvent({
-          type: 'screenshare',
-          data: {
-            status: 'started',
-            peerconnection: connection.pluginHandle.webrtcStuff.pc
-          }
-        });
-
-        // Log the event
-        logService.add(createLogEntry('publishScreen', { feed }));
+        eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
+        eventsService.auditEvent('stream');
+        eventsService.auditEvent('screenshare');
 
         // Unpublish feed when screen sharing stops
         stream.oninactive = function() {
           // emit 'screenshareStop' event
-          eventsService.emitEvent({
-            type: 'screenshare',
-            data: {
-              status: 'stopped',
-              peerconnection: connection.pluginHandle.webrtcStuff.pc
-            }
-          });
+          eventsService.auditEvent('screenshare');
           unPublishFeed(id);
           // TODO: ScreenShareService.setInProgress(false);
         };
       },
       onmessage: function(msg, jsep) {
-        console.log(' ::: Got a message (screen) :::');
-        console.log(msg);
+        console.debug(' ::: Got a message (screen) :::', msg);
         var event = msg.videoroom;
 
         if (event === 'joined') {
@@ -558,8 +453,9 @@ export const createRoomService = (
           // Reply to a configure request
         } else if (msg.configured) {
           connection.confirmConfig();
+          eventsService.roomEvent('updateFeed', { id: feed.id, ...feed.getStatus() });
         } else {
-          console.log('Unexpected event for screen');
+          console.log('Unexpected event for screen', msg);
         }
         if (jsep !== undefined && jsep !== null) {
           connection.handleRemoteJsep(jsep);
@@ -602,16 +498,6 @@ export const createRoomService = (
       window.setTimeout(function() {
         dataChannelService.sendStatus(p);
       }, 4000);
-    });
-  };
-
-  /**
-   * Notifies that the connection configuration has changed.
-   */
-  const feedConfigured = function(config) {
-    eventsService.emitEvent({
-      type: 'configChanged',
-      data: config
     });
   };
 

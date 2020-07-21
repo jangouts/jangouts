@@ -31,14 +31,7 @@ export const createFeedConnection = (eventsService) => (
 
   that.destroy = function() {
     // emit 'handle detached' event
-    eventsService.emitEvent({
-      type: 'pluginHandle',
-      data: {
-        status: 'detached',
-        for: role,
-        pluginHandle: pluginHandle
-      }
-    });
+    eventsService.auditEvent('pluginHandle');
     that.config = null;
     pluginHandle.detach();
   };
@@ -110,8 +103,7 @@ export const createFeedConnection = (eventsService) => (
     pluginHandle.createOffer({
       media: media,
       success: function(jsep) {
-        console.log('Got publisher SDP!');
-        console.log(jsep);
+        console.debug('Got publisher SDP!');
         that.config = createConnectionConfig(pluginHandle, cfg, jsep, options.configured);
         // Call the provided callback for extra actions
 
@@ -120,17 +112,10 @@ export const createFeedConnection = (eventsService) => (
         }
       },
       error: function(error) {
-        console.error('WebRTC error publishing');
-        console.error(error);
+        console.error('WebRTC error publishing', error);
         // emit 'error Create Offer' event
-        eventsService.emitEvent({
-          type: 'error',
-          data: {
-            status: 'createOffer',
-            error: error,
-            peerconnection: that.pluginHandle.webrtcStuff.pc
-          }
-        });
+        eventsService.auditEvent('error');
+
         // Call the provided callback for extra actions
         if (options.error) {
           options.error();
@@ -152,8 +137,7 @@ export const createFeedConnection = (eventsService) => (
         data: true
       },
       success: function(jsep) {
-        console.log('Got SDP!');
-        console.log(jsep);
+        console.debug('Got SDP!');
         var start = { request: 'start', room: roomId };
         pluginHandle.send({ message: start, jsep: jsep });
       },
@@ -161,14 +145,7 @@ export const createFeedConnection = (eventsService) => (
         console.error('WebRTC error subscribing');
         console.error(error);
         // emit 'error CreateAnswer' event
-        eventsService.emitEvent({
-          type: 'error',
-          data: {
-            status: 'createAnswer',
-            error: error,
-            peerconnection: that.pluginHandle.webrtcStuff.pc
-          }
-        });
+        eventsService.auditEvent('error');
       }
     });
   };

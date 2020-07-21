@@ -5,12 +5,10 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { createLogEntry } from './models/log-entry';
 import { createFeedFactory } from './models/feed';
 
 export const createActionService = (
   feedsService,
-  logService,
   dataChannelService,
   eventsService
 ) => {
@@ -51,9 +49,6 @@ export const createActionService = (
       isPublisher: false
     });
     feedsService.add(feed);
-    // Log the event
-    var entry = createLogEntry('newRemoteFeed', { feed: feed });
-    logService.add(entry);
   };
 
   that.destroyFeed = function(feedId) {
@@ -63,9 +58,6 @@ export const createActionService = (
     }
     feed.disconnect();
     feedsService.destroy(feedId);
-    // Log the event
-    var entry = createLogEntry('destroyFeed', { feed: feed });
-    logService.add(entry);
   };
 
   that.unpublishFeed = function(feedId) {
@@ -83,9 +75,6 @@ export const createActionService = (
       return;
     }
     feed.ignore();
-    // Log the event
-    var entry = createLogEntry('ignoreFeed', { feed: feed });
-    logService.add(entry);
   };
 
   that.reconnectFeed = function(feedId, connection) {
@@ -94,20 +83,10 @@ export const createActionService = (
       return;
     }
     feed.reconnect(connection);
-    // Log the event
-    var entry = createLogEntry('reconnectFeed', { feed: feed });
-    logService.add(entry);
   };
 
   that.writeChatMessage = function(text) {
-    var entry = createLogEntry('chatMsg', {
-      feed: feedsService.findMain(),
-      text: text
-    });
-    if (entry.hasText()) {
-      logService.add(entry);
-      dataChannelService.sendChatMessage(text);
-    }
+    dataChannelService.sendChatMessage(text);
   };
 
   that.toggleChannel = function(type, feed) {
@@ -118,21 +97,17 @@ export const createActionService = (
         return;
       }
     }
-    if (!feed.isPublisher) {
-      // Log the event
-      var entry = createLogEntry('muteRequest', {
-        source: feedsService.findMain(),
-        target: feed
-      });
-      logService.add(entry);
+    if (!feed.getPublisher()) {
+      const source = feedsService.findMain();
+      eventsService.roomEvent('muteFeed', { id: feed.id, requesterId: source.id });
     }
     if (feed.isEnabled(type)) {
       var callback = null;
       // If we are muting the main feed (the only publisher that can be
       // actually muted) raise a signal
-      if (type === 'audio' && feed.isPublisher) {
+      if (type === 'audio' && feed.getPublisher()) {
         callback = function() {
-          eventsService.emitEvent({ type: 'muted', data: { cause: 'user' } });
+          eventsService.roomEvent('muteFeed', { id: feed.id, requesterId: feed.id });
         };
       }
       feed.setEnabledChannel(type, false, { after: callback });

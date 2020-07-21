@@ -9,11 +9,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Participant from './Participant';
 import { renderWithRedux } from '../../setupTests';
-import { Janus } from '../../vendor/janus';
 
-jest.mock('../../janus-api');
-
-Janus.attachMediaStream = jest.fn();
+jest.mock('../../utils/common', () => ({
+  ...jest.requireActual('../../utils/common'),
+  attachStream: jest.fn()
+}));
 
 const initialState = {
   participants: {
@@ -23,8 +23,4 @@ const initialState = {
 
 it('renders without crashing', () => {
   renderWithRedux(<Participant id={1} display="User" />, { initialState });
-  expect(Janus.attachMediaStream).toHaveBeenCalledWith(expect.anything(), {
-    id: 'someid',
-    active: true
-  });
 });

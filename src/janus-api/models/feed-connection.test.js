@@ -7,8 +7,8 @@
 
 import { createFeedConnection } from './feed-connection';
 
-const emitEvent = jest.fn();
-const eventsService = () => ({ emitEvent: emitEvent });
+const auditEvent = jest.fn();
+const eventsService = () => ({ auditEvent: auditEvent });
 const pluginHandle = {
   getId: () => 1,
   getPlugin: () => 'videoroom',
@@ -24,18 +24,11 @@ const role = 'subscriber';
 const createFeedConnectionFactory = createFeedConnection(eventsService());
 
 describe('#destroy', () => {
-  test('detaches the handle and emits an event', () => {
+  test('detaches the handle and emits an audit event', () => {
     const feedConnection = createFeedConnectionFactory(pluginHandle, roomId, role);
 
     feedConnection.destroy();
-    expect(emitEvent).toHaveBeenCalledWith({
-      type: 'pluginHandle',
-      data: {
-        for: role,
-        pluginHandle: pluginHandle,
-        status: 'detached'
-      }
-    });
+    expect(auditEvent).toHaveBeenCalledWith('pluginHandle');
     expect(pluginHandle.detach.mock.calls.length).toBe(1);
   });
 });

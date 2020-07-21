@@ -6,7 +6,13 @@
  */
 
 import reducer, { actionTypes, actionCreators } from './participants';
+import { actionTypes as msgActionTypes } from './messages';
 import janusApi from '../../janus-api';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 let participant = {
   id: 1234,
@@ -16,7 +22,7 @@ let participant = {
   isIgnored: undefined,
   audio: undefined,
   speakingSince: undefined,
-  getVideoEnabled: () => true
+  video: true
 };
 
 let initialState = {
@@ -41,7 +47,7 @@ describe('reducer', () => {
 
     expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      5678: { id: 5678, username: 'otherUser', stream_timestamp: null }
+      5678: { id: 5678, username: 'otherUser', streamTimestamp: null }
     });
   });
 
@@ -52,19 +58,6 @@ describe('reducer', () => {
     };
 
     expect(reducer(initialState, action)).toEqual({});
-  });
-
-  it('handles PARTICIPANT_STREAM_SET', () => {
-    const timestamp = new Date('2019-06-28T08:00:00.000Z');
-    const action = {
-      type: actionTypes.PARTICIPANT_STREAM_SET,
-      payload: 1234
-    };
-    jest.spyOn(global.Date, 'now').mockImplementationOnce(() => timestamp);
-
-    const updatedParticipant = reducer(initialState, action)['1234'];
-
-    expect(updatedParticipant['stream_timestamp']).toEqual(timestamp);
   });
 
   it('handles PARTICIPANT_UPDATE_STATUS', () => {
@@ -141,15 +134,24 @@ describe('action creators', () => {
   });
 
   describe('#removeParticipant', () => {
-    it('creates an action to remove a participant', () => {
+    const store = mockStore({ participants: [] });
+    beforeEach(() => { store.clearActions(); });
+
+
+    it('creates an action to detach a participant and another to notify that', () => {
       const newParticipant = { ...participant, notExpectedKey: true };
 
-      const action = actionCreators.removeParticipant(newParticipant);
-      expect(action.type).toEqual(actionTypes.PARTICIPANT_DETACHED);
+      store.dispatch(actionCreators.removeParticipant(newParticipant));
+
+      const types = store.getActions().map(a => a.type);
+      expect(types).toContain(actionTypes.PARTICIPANT_DETACHED);
+      expect(types).toContain(msgActionTypes.MESSAGE_REGISTER);
     });
 
-    it('includes the participant id in the action payload', () => {
-      const action = actionCreators.removeParticipant(participant.id);
+    it('includes the participant id in the payload of the detach action', () => {
+      store.dispatch(actionCreators.removeParticipant(participant.id));
+
+      const action = store.getActions().find(a => a.type === actionTypes.PARTICIPANT_DETACHED);
       expect(action.payload).toEqual(participant.id);
     });
   });
@@ -161,17 +163,34 @@ describe('action creators', () => {
     });
   });
 
-  describe.skip('#updateLocalStatus');
-
   describe('#setStream', () => {
-    it('creates an action to set/update the participant stream', () => {
-      const action = actionCreators.setStream(participant);
-      expect(action.type).toEqual(actionTypes.PARTICIPANT_STREAM_SET);
+    let participants = {};
+    participants[participant.id] = participant;
+    const store = mockStore({ participants });
+    beforeEach(() => { store.clearActions(); });
+
+    it('creates an action to update the participant status', () => {
+      store.dispatch(actionCreators.setStream(participant.id, {}));
+
+      const actions = store.getActions();
+      expect(actions[0].type).toEqual(actionTypes.PARTICIPANT_UPDATE_STATUS);
     });
 
     it('includes the participant id in the action payload', () => {
-      const action = actionCreators.setStream(participant.id);
-      expect(action.payload).toEqual(participant.id);
+      store.dispatch(actionCreators.setStream(participant.id, {}));
+
+      const actions = store.getActions();
+      expect(actions[0].payload.id).toEqual(participant.id);
+    });
+
+    it('includes a new streamTimestamp in the action payload', () => {
+      const timestamp = new Date('2019-06-28T08:00:00.000Z');
+      jest.spyOn(global.Date, 'now').mockImplementationOnce(() => timestamp);
+
+      store.dispatch(actionCreators.setStream(participant.id, {}));
+
+      const actions = store.getActions();
+      expect(actions[0].payload.status.streamTimestamp).toEqual(timestamp);
     });
   });
 
@@ -194,10 +213,13 @@ describe('action creators', () => {
   });
 
   describe('#reconnect', () => {
-    it('returns a function that asks janus to reconnect to the feed', () => {
+    let participants = {};
+    participants[participant.id] = participant;
+    const store = mockStore({ participants });
+
+    it('asks janus to reconnect to the feed', () => {
       janusApi.reconnectFeed = jest.fn();
-      const f = actionCreators.reconnect(1234);
-      f();
+      store.dispatch(actionCreators.reconnect(1234));
       expect(janusApi.reconnectFeed).toHaveBeenCalledWith(1234);
     });
   });
