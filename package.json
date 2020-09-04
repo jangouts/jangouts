@@ -41,7 +41,7 @@
     "gulp-useref": "~1.1.0",
     "gulp-util": "~3.0.2",
     "gulp-webserver": "^0.9.1",
-    "http-proxy": "~1.8.0",
+    "http-proxy": "~1.18.1",
     "jade": "~1.8.1",
     "jshint-stylish": "~1.0.0",
     "lodash": "~4.17.15",
