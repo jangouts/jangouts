@@ -6,6 +6,7 @@
  */
 
 import reducer, { actionTypes, actionCreators } from './participants';
+import { actionCreators as notificationActions } from './notifications';
 import { actionTypes as msgActionTypes } from './messages';
 import janusApi from '../../janus-api';
 import configureMockStore from 'redux-mock-store';
@@ -195,11 +196,23 @@ describe('action creators', () => {
   });
 
   describe('#toggleAudio', () => {
+    const store = mockStore({});
+    beforeEach(() => { store.clearActions(); });
+
     it('returns a function that asks janus to toggle the audio', () => {
       janusApi.toggleAudio = jest.fn();
       const f = actionCreators.toggleAudio(1234);
-      f();
+      f(store.dispatch);
       expect(janusApi.toggleAudio).toHaveBeenCalledWith(1234);
+    });
+
+    it('unblocks "speaking while muted" notifications', () => {
+      janusApi.toggleAudio = jest.fn();
+      const f = actionCreators.toggleAudio(1234);
+      f(store.dispatch);
+
+      const actions = store.getActions();
+      expect(actions[0]).toEqual(notificationActions.unblock('speaking'));
     });
   });
 
