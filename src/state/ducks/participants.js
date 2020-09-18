@@ -46,7 +46,8 @@ const setStream = (feedId, stream) => {
 };
 
 const toggleAudio = (id) => {
-  return function() {
+  return function(dispatch) {
+    dispatch(notificationActions.unblock('speaking'));
     janusApi.toggleAudio(id);
   };
 };
