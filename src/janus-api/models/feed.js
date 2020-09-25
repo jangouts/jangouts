@@ -35,6 +35,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  // Maps janusApi attributes to instance methods
   const apiAttrs = {
     // TODO: local is temporary. It actually belongs to Participant, not to Feed.
     id: 'id', screen: 'localScreen', local: 'publisher', name: 'display', ignored: 'ignored',
@@ -391,11 +392,14 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
     }
 
     var obj = {};
-    attrs.forEach(attr => {
-      const fn = 'get' + capitalize(apiAttrs[attr]);
+    attrs.forEach(name => {
+      const local_attr = getLocalAttr(name);
+      if (!local_attr) return;
+
+      const fn = 'get' + capitalize(local_attr);
       const val = that[fn]();
       if (val !== undefined && val !== null) {
-        obj[attr] = val;
+        obj[name] = val;
       }
     });
     return obj;
@@ -424,7 +428,10 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       silentSince = Date.now();
     }
     Object.keys(attrs).forEach(function(key) {
-      const fn = 'set' + capitalize(apiAttrs[key]);
+      const local_attr = getLocalAttr(key);
+      if (!local_attr) return;
+
+      const fn = 'set' + capitalize(local_attr);
       that[fn](attrs[key]);
     });
   };
@@ -475,6 +482,20 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       return null;
     }
     return track;
+  }
+
+  /**
+   * Returns the local attribute name that corresponds to the janusApi attribute
+   *
+   * @param {string} name janusApi attribute name
+   * @return {string} method name
+   */
+  function getLocalAttr(name) {
+    const attr = apiAttrs[name];
+    if (attr === undefined) {
+      console.warn("Attribute", name, "is not defined in apiAttrs", apiAttrs);
+    }
+    return attr;
   }
 
   return that;
