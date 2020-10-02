@@ -25,17 +25,12 @@ describe('reducer', () => {
     const action = {
       type: types.ROOM_LOGIN
     };
-    const nextState = {
-      ...initialState,
-      roomId,
-      username: 'me'
-    };
 
     expect(reducer({ roomId, username }, action)).toEqual({
       roomId,
       username,
       loggingIn: false,
-      loggedIn: true
+      loggedIn: true,
       thumbnailMode: false,
     });
   });

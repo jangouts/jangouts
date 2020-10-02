@@ -91,7 +91,7 @@ const reducer = function(state = initialState, action) {
       if (payload !== undefined && payload.error) {
         return { ...state, loggingIn: false, loggedIn: false, error: payload.error };
       } else {
-        return { ...state, loggingIn: false, loggedIn: true };
+        return { ...state, loggingIn: false, loggedIn: true, thumbnailMode: false };
       }
     }
     case ROOM_LOGOUT: {
