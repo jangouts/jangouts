@@ -6,11 +6,12 @@
  */
 
 import React from 'react';
-import { LogOut, ShareScreen } from './Actions';
+import { LogOut, ShareScreen, ToggleThumbnailMode } from './Actions';
 
 function RoomActions(props) {
   return (
     <>
+      <ToggleThumbnailMode {...props} />
       <ShareScreen {...props} />
       <LogOut {...props} />
     </>

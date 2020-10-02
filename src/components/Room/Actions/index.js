@@ -7,3 +7,4 @@
 
 export { default as LogOut } from './LogOut';
 export { default as ShareScreen } from './ShareScreen';
+export { default as ToggleThumbnailMode } from './ToggleThumbnailMode';
