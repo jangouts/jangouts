@@ -77,8 +77,13 @@ export default (function() {
     that.roomService.toggleChannel('video');
   };
   that.reconnectFeed = (feedId) => that.roomService.reconnectFeed(feedId);
-  that.enableThumbnailMode = () => that.actionService.disableVideoSubscriptions();
-  that.disableThumbnailMode = () => that.actionService.enableVideoSubscriptions();
+  that.setVideoSubscriptions = (enabled) => {
+    if (enabled) {
+      that.actionService.enableVideoSubscriptions();
+    } else {
+      that.actionService.disableVideoSubscriptions();
+    }
+  }
 
   return that;
 })();

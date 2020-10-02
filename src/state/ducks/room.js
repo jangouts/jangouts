@@ -58,7 +58,7 @@ const toggleThumbnailMode = () => {
   return function(dispatch, getState) {
     let { thumbnailMode } = getState().room;
 
-    thumbnailMode ? janusApi.disableThumbnailMode() : janusApi.enableThumbnailMode();
+    janusApi.setVideoSubscriptions(thumbnailMode);
 
     dispatch({ type: ROOM_TOGGLE_THUMBNAIL_MODE, payload: { thumbnailMode: !thumbnailMode } });
   };
@@ -74,8 +74,8 @@ const actionCreators = {
 const actionTypes = {
   ROOM_LOGIN,
   ROOM_LOGIN_REQUEST,
-  ROOM_LOGOUT
-  ROOM_TOGGLE_THUMBNAIL_MODE,
+  ROOM_LOGOUT,
+  ROOM_TOGGLE_THUMBNAIL_MODE
 };
 
 export const initialState = { loggedIn: false, loggingIn: false, thumbnailMode: false };
