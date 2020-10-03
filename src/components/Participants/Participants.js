@@ -29,7 +29,8 @@ const Participants = () => {
           streamTimestamp,
           speaking,
           focus,
-          video
+          video,
+          picture
         } = participant;
 
         return (
@@ -43,6 +44,7 @@ const Participants = () => {
             speaking={speaking}
             focus={focus}
             video={video}
+            picture={picture}
           />
         );
       })}

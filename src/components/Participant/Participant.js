@@ -26,6 +26,14 @@ function toggleFocus(id, focus) {
   return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
+function renderImage(id, picture) {
+  if (picture) {
+    return <img alt={id} src={picture} className="mirrored" />
+  } else {
+    return <UserIcon className={classNames('w-4/6 h-auto m-auto text-secondary')} />
+  }
+}
+
 function Participant({
   id,
   username,
@@ -34,7 +42,8 @@ function Participant({
   streamReady,
   focus,
   speaking,
-  video
+  video,
+  picture
 }) {
   const dispatch = useDispatch();
   const videoRef = React.createRef();
@@ -91,7 +100,7 @@ function Participant({
           className={classNames(video || 'hidden', isPublisher && !isLocalScreen && 'mirrored')}
           onClick={() => dispatch(toggleFocus(id, focus))}
         />
-        <UserIcon className={classNames('w-4/6 h-auto m-auto text-secondary', video && 'hidden')} />
+        { !video && renderImage(id, picture) }
       </div>
       <div className="flex items-center p-1 bg-gray-200">
         <ParticipantActions participantId={id} />
