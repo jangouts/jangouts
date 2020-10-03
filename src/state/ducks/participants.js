@@ -80,8 +80,10 @@ const detachParticipant = (participantId) => ({
 });
 
 const updateLocalPicture = (data) => {
-  return function() {
+  return function(dispatch, getState) {
     janusApi.updateLocalPicture(data);
+    const { id } = localParticipant(getState().participants);
+    dispatch(updateStatus(id, { picture: data }));
   };
 };
 

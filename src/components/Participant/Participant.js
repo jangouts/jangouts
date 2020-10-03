@@ -53,7 +53,7 @@ function Participant({
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
   useEffect(() => {
-    if (!isPublisher || !video) {
+    if (!isPublisher) {
       return;
     }
 
@@ -97,7 +97,7 @@ function Participant({
           ref={videoRef}
           muted={isPublisher}
           autoPlay
-          className={classNames(video || 'hidden', isPublisher && !isLocalScreen && 'mirrored')}
+          className={classNames(video || 'invisible', isPublisher && !isLocalScreen && 'mirrored')}
           onClick={() => dispatch(toggleFocus(id, focus))}
         />
         { !video && renderImage(id, picture) }

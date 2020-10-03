@@ -10,3 +10,13 @@
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
   -moz-transform: rotateY(180deg); /* Firefox */
 }
+
+/**
+ * Hide the video (although it is still there). Otherwise, we could*/
+/* not take the pictures.
+ */
+video.invisible {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
