@@ -34,6 +34,26 @@ function renderImage(id, picture) {
   }
 }
 
+function takePicture(source, canvas, dispatchFn) {
+  let videoHeight = source.videoHeight;
+  let context = canvas.getContext('2d');
+
+  // Nothing to do if the video has no dimensions yet
+  if (!videoHeight) {
+    return;
+  }
+
+  let width = canvas.parentNode.offsetWidth;
+  let height = (width * videoHeight) / source.videoWidth;
+
+  canvas.width = width;
+  canvas.height = height;
+  context.drawImage(source, 0, 0, width, height);
+
+  let thumbnail = canvas.toDataURL('image/jpeg');
+  dispatchFn(participantsActions.updateLocalPicture(thumbnail));
+}
+
 function Participant({
   id,
   username,
@@ -59,27 +79,9 @@ function Participant({
       return;
     }
 
-    let thumbnailSource = videoRef.current;
-    let thumbnailCanvas = canvasRef.current;
-    let thumbnailContext = thumbnailCanvas.getContext('2d');
-
+    takePicture(videoRef.current, canvasRef.current, dispatch);
     const interval = setInterval(() => {
-      let videoHeight = thumbnailSource.videoHeight;
-
-      // Nothing to do if the video has no dimensions yet
-      if (!videoHeight) {
-        return;
-      }
-
-      let width = thumbnailCanvas.parentNode.offsetWidth;
-      let height = (width * videoHeight) / thumbnailSource.videoWidth;
-
-      thumbnailCanvas.width = width;
-      thumbnailCanvas.height = height;
-      thumbnailContext.drawImage(thumbnailSource, 0, 0, width, height);
-
-      let thumbnailData = thumbnailCanvas.toDataURL('image/jpeg');
-      dispatch(participantsActions.updateLocalPicture(thumbnailData));
+      takePicture(videoRef.current, canvasRef.current, dispatch);
     }, 5000);
 
     return () => clearInterval(interval);
