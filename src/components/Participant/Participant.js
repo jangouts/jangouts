@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ParticipantActions from './ParticipantActions';
 import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { classNames, attachStream } from '../../utils/common';
@@ -49,6 +49,8 @@ function Participant({
   const videoRef = React.createRef();
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
   const canvasRef = React.createRef();
+  const thumbnailMode = useSelector(s => !!s.room.thumbnailMode);
+  const showVideo = video && !thumbnailMode;
 
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
@@ -97,10 +99,10 @@ function Participant({
           ref={videoRef}
           muted={isPublisher}
           autoPlay
-          className={classNames(video || 'invisible', isPublisher && !isLocalScreen && 'mirrored')}
+          className={classNames(showVideo || 'invisible', isPublisher && !isLocalScreen && 'mirrored')}
           onClick={() => dispatch(toggleFocus(id, focus))}
         />
-        { !video && renderImage(id, picture) }
+        { !showVideo && renderImage(id, picture) }
       </div>
       <div className="flex items-center p-1 bg-gray-200">
         <ParticipantActions participantId={id} />
