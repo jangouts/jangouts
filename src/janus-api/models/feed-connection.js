@@ -47,8 +47,11 @@ export const createFeedConnection = (eventsService) => (
     pluginHandle.send({ message: register });
   };
 
-  that.listen = function(feedId, pin) {
-    var listen = { request: 'join', room: roomId, ptype: 'listener', feed: feedId, pin: pin || '' };
+  that.listen = function(feedId, pin, privateId) {
+    var listen = {
+      request: 'join', room: roomId, ptype: 'listener', feed: feedId,
+      pin: pin || '', private_id: privateId
+    };
     pluginHandle.send({ message: listen });
   };
 

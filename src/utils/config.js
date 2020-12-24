@@ -7,7 +7,7 @@
 
 // Values for the default configuration
 const DEFAULT_CONFIG = {
-  videoThumbnails: true,
+  janusWithCredentials: true,
   joinUnmutedLimit: 3,
   videoThumbnails: true
 };
