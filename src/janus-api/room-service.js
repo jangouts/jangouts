@@ -68,7 +68,9 @@ export const createRoomService = (
   let startMuted = false;
 
   let that = {
-    room: null
+    room: null,
+    pin: null,
+    privateId: null
   };
   that.server =
     configuredJanusServer(janusServer, janusServerSSL, useSSL) || defaultJanusServer(useSSL);
@@ -231,6 +233,7 @@ export const createRoomService = (
           // sending user joined event
           eventsService.auditEvent('user');
 
+          that.privateId = msg.private_id;
           actionService.enterRoom(msg.id, username, connection);
           // Step 3. Establish WebRTC connection with the Janus server
 
@@ -329,7 +332,7 @@ export const createRoomService = (
         // emit subscriber plugin attached event
         eventsService.auditEvent('pluginHandle');
         connection = createFeedConnectionFactory(pluginHandle, that.room.id, 'subscriber');
-        connection.listen(id, that.pin);
+        connection.listen(id, that.pin, that.privateId);
       },
       error: function(error) {
         console.error('  -- Error attaching plugin... ' + error);
