@@ -27,7 +27,7 @@ export default (function() {
   };
 
   that.setup = function(
-    { janusServer, janusServerSSL, joinUnmutedLimit, videoThumbnails },
+    { janusServer, janusServerSSL, janusWithCredentials, joinUnmutedLimit, videoThumbnails },
     handler
   ) {
     that.eventsService = createEventsService();
@@ -44,7 +44,7 @@ export default (function() {
     );
 
     that.roomService = createRoomService(
-      { janusServer, janusServerSSL, joinUnmutedLimit, videoThumbnails },
+      { janusServer, janusServerSSL, janusWithCredentials, joinUnmutedLimit, videoThumbnails },
       that.feedsService,
       that.dataChannelService,
       that.eventsService,

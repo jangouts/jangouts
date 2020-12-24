@@ -49,6 +49,7 @@ const defaultJanusServer = (useSSL) => {
  * @property {String} config.janusServer Janus server URL
  * @property {String} config.janusServerSSL Janus SSL server URL
  * @property {Boolean} config.janusDebug NOT IMPLEMENTED
+ * @property {Boolean} config.janusWithCredentials Set credentials in XHR requests
  * @property {Integer} config.joinUnmutedLimit Feeds limit to connect as unmuted
  * @property {Boolean} config.videThumbnails Use only thumbnails
  * @property {Boolean} config.useSSL Whether to use SSL or not (TODO: autodetect?)
@@ -61,7 +62,7 @@ export const createRoomService = (
   eventsService,
   actionService
 ) => {
-  const { janusServer, janusServerSSL, useSSL, joinUnmutedLimit } = config;
+  const { janusServer, janusServerSSL, janusWithCredentials, useSSL, joinUnmutedLimit } = config;
   // TODO: the logic for default values should be encapsulated in a proper object
   const videoThumbnails = config.videoThumbnails === undefined ? true : config.videoThumbnails;
   const createFeedConnectionFactory = createFeedConnection(eventsService);
@@ -70,7 +71,8 @@ export const createRoomService = (
   let that = {
     room: null,
     pin: null,
-    privateId: null
+    privateId: null,
+    withCredentials: !!janusWithCredentials
   };
   that.server =
     configuredJanusServer(janusServer, janusServerSSL, useSSL) || defaultJanusServer(useSSL);
@@ -89,6 +91,7 @@ export const createRoomService = (
         console.log(that.server);
         that.janus = new Janus({
           server: that.server,
+          withCredentials: that.withCredentials,
           success: () => resolve(true),
           error: (e) => {
             // TODO: move this to a better place

@@ -1,5 +1,6 @@
 {
   "janusServer": null,
+  "janusWithCredentials": true,
   "joinUnmutedLimit": 3,
   "videoThumbnails": true
 }
