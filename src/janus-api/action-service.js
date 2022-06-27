@@ -66,7 +66,6 @@ export const createActionService = (
       return;
     }
     feed.disconnect();
-    feedsService.destroy(feedId);
   };
 
   that.ignoreFeed = function(feedId) {
