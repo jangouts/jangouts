@@ -39,6 +39,7 @@ function Participant({
   const dispatch = useDispatch();
   const videoRef = React.createRef();
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
+  const showVideo = video || isLocalScreen;
 
   useEffect(() => setVideo(id, videoRef.current), [streamReady]);
 
@@ -55,10 +56,13 @@ function Participant({
           ref={videoRef}
           muted={isPublisher}
           autoPlay
-          className={classNames(video || 'hidden', isPublisher && !isLocalScreen && 'mirrored')}
+          className={classNames(
+            showVideo || 'hidden',
+            isPublisher && !isLocalScreen && 'mirrored'
+          )}
           onClick={() => dispatch(toggleFocus(id, focus))}
         />
-        <UserIcon className={classNames('w-4/6 h-auto m-auto text-secondary', video && 'hidden')} />
+        <UserIcon className={classNames('w-4/6 h-auto m-auto text-secondary', showVideo && 'hidden')} />
       </div>
       <div className="flex items-center p-1 bg-gray-200">
         <ParticipantActions participantId={id} />
