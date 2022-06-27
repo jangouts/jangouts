@@ -41,7 +41,7 @@ function Participant({
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
   const showVideo = video || isLocalScreen;
 
-  useEffect(() => setVideo(id, videoRef.current), [streamReady]);
+  useEffect(() => setVideo(id, videoRef.current), [id, videoRef, streamReady]);
 
   return (
     <div
