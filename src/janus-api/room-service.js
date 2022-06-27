@@ -266,21 +266,25 @@ export const createRoomService = (
           // Any new feed to attach to?
           if (that.isArray(msg.publishers)) {
             that.subscribeToFeeds(msg.publishers);
-            // One of the publishers has gone away?
-          } else if (that.isPresent(msg.leaving)) {
+          }
+          // One of the publishers has gone away?
+          if (that.isPresent(msg.leaving)) {
             var leaving = msg.leaving;
             actionService.destroyFeed(leaving);
-            // One of the publishers has unpublished?
-          } else if (that.isPresent(msg.unpublished)) {
+          }
+          // One of the publishers has unpublished?
+          if (that.isPresent(msg.unpublished)) {
             var unpublished = msg.unpublished;
             actionService.unpublishFeed(unpublished);
-            // Reply to a configure request
-          } else if (msg.configured) {
+          }
+          // Reply to a configure request
+          if (msg.configured) {
             connection.confirmConfig();
             let feed = feedsService.findMain();
             eventsService.roomEvent('updateFeed', { id: feed.id, ...feed.getStatus() });
-            // The server reported an error
-          } else if (that.isPresent(msg.error)) {
+          }
+          // The server reported an error
+          if (that.isPresent(msg.error)) {
             console.log('Error message from server' + msg.error);
             eventsService.roomEvent('reportError', { error: msg.error });
           }
