@@ -242,7 +242,7 @@ export const createRoomService = (
 
           // Step 4a (parallel with 4b). Publish our feed on server
 
-          if (joinUnmutedLimit !== undefined && joinUnmutedLimit !== null) {
+          if (that.isPresent(joinUnmutedLimit)) {
             startMuted =
               msg.publishers instanceof Array && msg.publishers.length >= joinUnmutedLimit;
           }
@@ -267,11 +267,11 @@ export const createRoomService = (
           if (msg.publishers instanceof Array && msg.publishers.length > 0) {
             that.subscribeToFeeds(msg.publishers, that.room.id);
             // One of the publishers has gone away?
-          } else if (msg.leaving !== undefined && msg.leaving !== null) {
+          } else if (that.isPresent(msg.leaving)) {
             var leaving = msg.leaving;
             actionService.destroyFeed(leaving);
             // One of the publishers has unpublished?
-          } else if (msg.unpublished !== undefined && msg.unpublished !== null) {
+          } else if (that.isPresent(msg.unpublished)) {
             var unpublished = msg.unpublished;
             actionService.unpublishFeed(unpublished);
             // Reply to a configure request
@@ -280,13 +280,13 @@ export const createRoomService = (
             let feed = feedsService.findMain();
             eventsService.roomEvent('updateFeed', { id: feed.id, ...feed.getStatus() });
             // The server reported an error
-          } else if (msg.error !== undefined && msg.error !== null) {
+          } else if (that.isPresent(msg.error)) {
             console.log('Error message from server' + msg.error);
             eventsService.roomEvent('reportError', { error: msg.error });
           }
         }
 
-        if (jsep !== undefined && jsep !== null) {
+        if (that.isPresent(jsep)) {
           connection.handleRemoteJsep(jsep);
         }
       }
@@ -367,7 +367,7 @@ export const createRoomService = (
           console.log('What has just happened?!');
         }
 
-        if (jsep !== undefined && jsep !== null) {
+        if (that.isPresent(jsep)) {
           connection.subscribe(jsep);
         }
       },
@@ -463,7 +463,7 @@ export const createRoomService = (
         } else {
           console.log('Unexpected event for screen', msg);
         }
-        if (jsep !== undefined && jsep !== null) {
+        if (that.isPresent(jsep)) {
           connection.handleRemoteJsep(jsep);
         }
       }
@@ -505,6 +505,13 @@ export const createRoomService = (
         dataChannelService.sendStatus(p);
       }, 4000);
     });
+  };
+
+  /**
+   * Check whether the given argument has a value.
+   */
+  that.isPresent = function(value) {
+    return (value !== undefined && value !== null);
   };
 
   return that;
