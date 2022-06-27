@@ -244,7 +244,7 @@ export const createRoomService = (
 
           if (that.isPresent(joinUnmutedLimit)) {
             startMuted =
-              msg.publishers instanceof Array && msg.publishers.length >= joinUnmutedLimit;
+              that.isArray(msg.publishers) && msg.publishers.length >= joinUnmutedLimit;
           }
 
           connection.publish({
@@ -255,7 +255,7 @@ export const createRoomService = (
           });
 
           // Step 5. Attach to existing feeds, if any
-          if (msg.publishers instanceof Array && msg.publishers.length > 0) {
+          if (that.isArray(msg.publishers)) {
             that.subscribeToFeeds(msg.publishers);
           }
           // The room has been destroyed
@@ -264,7 +264,7 @@ export const createRoomService = (
           eventsService.roomEvent('destroyRoom', {});
         } else if (event === 'event') {
           // Any new feed to attach to?
-          if (msg.publishers instanceof Array && msg.publishers.length > 0) {
+          if (that.isArray(msg.publishers)) {
             that.subscribeToFeeds(msg.publishers);
             // One of the publishers has gone away?
           } else if (that.isPresent(msg.leaving)) {
@@ -307,6 +307,8 @@ export const createRoomService = (
   };
 
   that.subscribeToFeeds = function(list) {
+    if (list.length === 0) { return; }
+
     console.debug('Got a list of available publishers/feeds:', list);
     for (var f = 0; f < list.length; f++) {
       var id = list[f].id;
@@ -512,6 +514,13 @@ export const createRoomService = (
    */
   that.isPresent = function(value) {
     return (value !== undefined && value !== null);
+  };
+
+  /**
+   * Check whether the given argument is an Array.
+   */
+  that.isArray = function(value) {
+    return (value instanceof Array);
   };
 
   return that;
