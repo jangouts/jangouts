@@ -26,10 +26,12 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
   var picture = null;
   var speaking = false;
   var silentSince = Date.now();
-  var videoRemoteEnabled = true;
-  var audioRemoteEnabled = true;
   var stream = null;
   var speakObserver = null; // TODO
+  // Note: these two attributes are only updated via setStatus with the information
+  // received from the remote peer
+  var videoRemoteEnabled = true;
+  var audioRemoteEnabled = true;
 
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -167,6 +169,8 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
 
   /**
    * Sets if audio is enabled for that feed. Works only for remote ones.
+   *
+   * See setStatus
    */
   that.setAudioEnabled = function(val) {
     audioRemoteEnabled = val;
@@ -181,6 +185,8 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
 
   /**
    * Sets if video is enabled for that feed. Works only for remote ones.
+   *
+   * See setStatus
    */
   that.setVideoEnabled = function(val) {
     videoRemoteEnabled = val;
