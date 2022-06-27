@@ -24,7 +24,7 @@
 	OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import adapter from 'webrtc-adapter';
+/* eslint-disable */
 
 // List of sessions
 Janus.sessions = {};
