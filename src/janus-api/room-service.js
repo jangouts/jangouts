@@ -256,7 +256,7 @@ export const createRoomService = (
 
           // Step 5. Attach to existing feeds, if any
           if (msg.publishers instanceof Array && msg.publishers.length > 0) {
-            that.subscribeToFeeds(msg.publishers, that.room.id);
+            that.subscribeToFeeds(msg.publishers);
           }
           // The room has been destroyed
         } else if (event === 'destroyed') {
@@ -265,7 +265,7 @@ export const createRoomService = (
         } else if (event === 'event') {
           // Any new feed to attach to?
           if (msg.publishers instanceof Array && msg.publishers.length > 0) {
-            that.subscribeToFeeds(msg.publishers, that.room.id);
+            that.subscribeToFeeds(msg.publishers);
             // One of the publishers has gone away?
           } else if (that.isPresent(msg.leaving)) {
             var leaving = msg.leaving;
