@@ -87,7 +87,7 @@ const nextId = () => lastId++;
  * Factory function to create notifications about users being 'muted'.
  *
  * @param {object} data - Event data
- * @return {UserNotification,null} - User notification
+ * @return {UserNotification} - User notification
  */
 const createMutedNotification= (data) => {
   if (data.cause === MUTED_USER) return null;
@@ -130,7 +130,7 @@ const mutedText = (data) => {
  * Factory function to create notifications about the local user speaking while muted.
  *
  * @param {object} _data - Event data
- * @return {UserNotification,null} - User notification
+ * @return {UserNotification} - User notification
  */
 const createSpeakingNotification = (_data) => {
   const notification = createNotification("Trying to say something? You are muted.", SPEAKING_TYPE);
