@@ -27,7 +27,7 @@ export function UserNotification(id, text, type, severity, actions) {
  * Action associated to a notification
  *
  * @param {string} label - Label to display to the user
- * @param {function,object} toDispatch - action creator (function) or action to dispatch (object)
+ * @param {(function|object)} toDispatch - action creator (function) or action to dispatch (object)
  */
 export function Action(label, toDispatch) {
   this.label = label;
@@ -46,7 +46,7 @@ const createUnmuteAction = () => {
  * Turns an event into a user notification.
  *
  * @param {object} event - Event to turn into a notification
- * @return {UserNotification,null} - User notification or null if it is not handled
+ * @return {?UserNotification} - User notification or null if it is not handled
  */
 export const fromEvent = ({type, data}) => {
   const factory = eventFactories[type];
@@ -87,7 +87,7 @@ const nextId = () => lastId++;
  * Factory function to create notifications about users being 'muted'.
  *
  * @param {object} data - Event data
- * @return {UserNotification,null} - User notification
+ * @return {UserNotification} - User notification
  */
 const createMutedNotification= (data) => {
   if (data.cause === MUTED_USER) return null;
@@ -130,7 +130,7 @@ const mutedText = (data) => {
  * Factory function to create notifications about the local user speaking while muted.
  *
  * @param {object} _data - Event data
- * @return {UserNotification,null} - User notification
+ * @return {UserNotification} - User notification
  */
 const createSpeakingNotification = (_data) => {
   const notification = createNotification("Trying to say something? You are muted.", SPEAKING_TYPE);

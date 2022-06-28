@@ -51,7 +51,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * Checks if a given channel is enabled
    *
    * @param {string} channel - "audio" or "video"
-   * @returns {boolean,null}
+   * @returns {?boolean}
    */
   that.isEnabled = function(channel) {
     if (that.publisher) {

@@ -27,3 +27,6 @@ src/styles.css
 
 # configuration file
 /public/config.json
+
+# JSDoc
+/jsdoc.out/
