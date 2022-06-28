@@ -222,16 +222,12 @@ export const createRoomService = (
 
         let feed = feedsService.findMain();
         feed.setStream(stream);
-
-        eventsService.roomEvent('updateStream', { feedId: feed.id, stream: stream });
-        eventsService.auditEvent('stream');
+        emitStreamEvents(feed);
       },
       onlocaltrack: function(track, _on) {
         let feed = feedsService.findMain();
         feed.addTrack(track);
-
-        eventsService.roomEvent('updateStream', { feedId: feed.id, stream: feed.getStream() });
-        eventsService.auditEvent('stream');
+        emitStreamEvents(feed);
       },
       oncleanup: function() {
         console.log(' ::: Got a cleanup notification: we are unpublished now :::');
@@ -412,22 +408,15 @@ export const createRoomService = (
         // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onremotetrack
         // callback)
 
-        feedsService.waitFor(id).then(
-          function(feed) {
-            eventsService.roomEvent('updateStream', { feedId: feed.id, stream: stream });
-            eventsService.auditEvent('stream');
+        feedsService.waitFor(id).then(feed => {
             feed.setStream(stream);
-          },
-          function(reason) {
-            console.error(reason);
-          }
-        );
+            emitStreamEvents(feed);
+        }).catch(console.error);
       },
-      onremotetrack: function(track, on) {
+      onremotetrack: function(track, _on) {
         feedsService.waitFor(id).then(feed => {
           feed.addTrack(track);
-          eventsService.roomEvent('updateStream', { feedId: feed.id, stream: feed.getStream() });
-          eventsService.auditEvent('stream');
+          emitStreamEvents(feed);
         }).catch(console.error);
       },
       ondataopen: function() {
@@ -472,9 +461,7 @@ export const createRoomService = (
 
         var feed = feedsService.find(id);
         feed.setStream(stream);
-
-        eventsService.roomEvent('updateStream', { feedId: feed.id, stream: stream });
-        eventsService.auditEvent('stream');
+        emitStreamEvents(feed);
         eventsService.auditEvent('screenshare');
 
         // Unpublish feed when screen sharing stops
@@ -488,8 +475,7 @@ export const createRoomService = (
       onlocaltrack: function(track, _on) {
         let feed = feedsService.find(id);
         feed.addTrack(track);
-
-        eventsService.roomEvent('updateStream', { feedId: feed.id, stream: feed.getStream() })
+        emitStreamEvents(feed);
       },
       onmessage: function(msg, jsep) {
         console.debug(' ::: Got a message (screen) :::', msg);
@@ -575,6 +561,16 @@ export const createRoomService = (
   that.isArray = function(value) {
     return (value instanceof Array);
   };
+
+  /**
+   * Registers the stream related events
+   *
+   * @param {object} feed - Feed to inform about
+   */
+  function emitStreamEvents(feed) {
+    eventsService.roomEvent('updateStream', { feedId: feed.id, stream: feed.getStream() });
+    eventsService.auditEvent('stream');
+  }
 
   return that;
 };
