@@ -476,6 +476,7 @@ export const createRoomService = (
         let feed = feedsService.find(id);
         feed.addTrack(track);
         emitStreamEvents(feed);
+        eventsService.auditEvent('screenshare');
       },
       onmessage: function(msg, jsep) {
         console.debug(' ::: Got a message (screen) :::', msg);
