@@ -24,8 +24,13 @@
 	OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import adapter from 'webrtc-adapter';
+
 // List of sessions
 Janus.sessions = {};
+
+// Make RTCRtpTransceiver available
+const RTCRtpTransceiver = window.RTCRtpTransceiver;
 
 Janus.isExtensionEnabled = function() {
 	if(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
@@ -161,43 +166,6 @@ Janus.useDefaultDependencies = function (deps) {
 			return fetching;
 		}
 	}
-};
-
-Janus.useOldDependencies = function (deps) {
-	var jq = (deps && deps.jQuery) || jQuery;
-	var socketCls = (deps && deps.WebSocket) || WebSocket;
-	return {
-		newWebSocket: function(server, proto) { return new socketCls(server, proto); },
-		isArray: function(arr) { return jq.isArray(arr); },
-		extension: (deps && deps.extension) || defaultExtension,
-		webRTCAdapter: (deps && deps.adapter) || adapter,
-		httpAPICall: function(url, options) {
-			var payload = options.body !== undefined ? {
-				contentType: 'application/json',
-				data: JSON.stringify(options.body)
-			} : {};
-			var credentials = options.withCredentials !== undefined ? {xhrFields: {withCredentials: options.withCredentials}} : {};
-
-			return jq.ajax(jq.extend(payload, credentials, {
-				url: url,
-				type: options.verb,
-				cache: false,
-				dataType: 'json',
-				async: options.async,
-				timeout: options.timeout,
-				success: function(result) {
-					if(typeof(options.success) === typeof(Janus.noop)) {
-						options.success(result);
-					}
-				},
-				error: function(xhr, status, err) {
-					if(typeof(options.error) === typeof(Janus.noop)) {
-						options.error(status, err);
-					}
-				}
-			}));
-		}
-	};
 };
 
 Janus.noop = function() {};
@@ -436,7 +404,7 @@ Janus.randomString = function(len) {
 	return randomString;
 };
 
-function Janus(gatewayCallbacks) {
+export function Janus(gatewayCallbacks) {
 	gatewayCallbacks = gatewayCallbacks || {};
 	gatewayCallbacks.success = (typeof gatewayCallbacks.success == "function") ? gatewayCallbacks.success : Janus.noop;
 	gatewayCallbacks.error = (typeof gatewayCallbacks.error == "function") ? gatewayCallbacks.error : Janus.noop;
