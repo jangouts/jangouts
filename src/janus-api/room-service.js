@@ -374,7 +374,7 @@ export const createRoomService = (
           // Initial setConfig, needed to complete all the initializations
           connection.setConfig({ values: { audio: true, data: true, video: videoThumbnails } });
         } else {
-          console.log('What has just happened?!');
+          console.log('What has just happened?!', msg);
         }
 
         if (jsep !== undefined && jsep !== null) {
