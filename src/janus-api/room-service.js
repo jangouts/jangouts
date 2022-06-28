@@ -248,9 +248,9 @@ export const createRoomService = (
 
           // Step 4a (parallel with 4b). Publish our feed on server
 
-          if (that.isPresent(joinUnmutedLimit)) {
+          if (isPresent(joinUnmutedLimit)) {
             startMuted =
-              that.isArray(msg.publishers) && msg.publishers.length >= joinUnmutedLimit;
+              isArray(msg.publishers) && msg.publishers.length >= joinUnmutedLimit;
           }
 
           connection.publish({
@@ -261,10 +261,10 @@ export const createRoomService = (
           });
 
           // Step 5. Attach to existing feeds, if any
-          if (that.isArray(msg.attendees)) {
+          if (isArray(msg.attendees)) {
             that.addFeeds(msg.attendees, false);
           }
-          if (that.isArray(msg.publishers)) {
+          if (isArray(msg.publishers)) {
             that.addFeeds(msg.publishers, true);
           }
           // The room has been destroyed
@@ -273,20 +273,20 @@ export const createRoomService = (
           eventsService.roomEvent('destroyRoom', {});
         } else if (event === 'event') {
           // Any new feed to attach to?
-          if (that.isArray(msg.publishers)) {
+          if (isArray(msg.publishers)) {
             that.addFeeds(msg.publishers, true);
           }
           // Any new non-publishing attendee?
-          if (that.isPresent(msg.joining)) {
+          if (isPresent(msg.joining)) {
             that.addFeed(msg.joining.id, msg.joining.display, false);
           }
           // One of the publishers has gone away?
-          if (that.isPresent(msg.leaving)) {
+          if (isPresent(msg.leaving)) {
             var leaving = msg.leaving;
             actionService.destroyFeed(leaving);
           }
           // One of the publishers has unpublished?
-          if (that.isPresent(msg.unpublished)) {
+          if (isPresent(msg.unpublished)) {
             var unpublished = msg.unpublished;
             actionService.unpublishFeed(unpublished);
           }
@@ -297,13 +297,13 @@ export const createRoomService = (
             eventsService.roomEvent('updateFeed', { id: feed.id, ...feed.getStatus() });
           }
           // The server reported an error
-          if (that.isPresent(msg.error)) {
+          if (isPresent(msg.error)) {
             console.log('Error message from server' + msg.error);
             eventsService.roomEvent('reportError', { error: msg.error });
           }
         }
 
-        if (that.isPresent(jsep)) {
+        if (isPresent(jsep)) {
           connection.handleRemoteJsep(jsep);
         }
       }
@@ -400,7 +400,7 @@ export const createRoomService = (
           console.log('What has just happened?!', msg);
         }
 
-        if (that.isPresent(jsep)) {
+        if (isPresent(jsep)) {
           connection.subscribe(jsep);
         }
       },
@@ -504,7 +504,7 @@ export const createRoomService = (
         } else {
           console.log('Unexpected event for screen', msg);
         }
-        if (that.isPresent(jsep)) {
+        if (isPresent(jsep)) {
           connection.handleRemoteJsep(jsep);
         }
       }
@@ -551,14 +551,14 @@ export const createRoomService = (
   /**
    * Check whether the given argument has a value.
    */
-  that.isPresent = function(value) {
+  function isPresent(value) {
     return (value !== undefined && value !== null);
   };
 
   /**
    * Check whether the given argument is an Array.
    */
-  that.isArray = function(value) {
+  function isArray(value) {
     return (value instanceof Array);
   };
 
