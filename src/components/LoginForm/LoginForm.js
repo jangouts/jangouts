@@ -21,7 +21,7 @@ import { classNames } from '../../utils/common';
 function roomOptions(rooms) {
   return rooms.map((r) => (
     <option key={r.id} value={r.id}>
-      {r.description}
+      {r.description} ({r.participants}/{r.publishers} users)
     </option>
   ));
 }
