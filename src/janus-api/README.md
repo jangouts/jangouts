@@ -13,8 +13,8 @@ names of its arguments.
 
   * `consentDialog { on }`
   * `createParticipant { id, name, local }`
-  * `createFeed { participantId, id, name, screen, ignored, speaking, audio, video, picture }`
-  * `updateFeed { id, name, ignored, speaking, audio, video, picture }`
+  * `createFeed { participantId, id, name, screen, ignored, speaking, audio, video, picture, connected }`
+  * `updateFeed { id, name, ignored, speaking, audio, video, picture, connected }`
   * `createStream { feedId, stream }`
   * `createChatMessage { feedId, text }`
   * `speakDetection { speaking }`

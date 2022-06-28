@@ -41,10 +41,11 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
   const apiAttrs = {
     // TODO: local is temporary. It actually belongs to Participant, not to Feed.
     id: 'id', screen: 'localScreen', local: 'publisher', name: 'display', ignored: 'ignored',
-    speaking: 'speaking', audio: 'audioEnabled', video: 'videoEnabled', picture: 'picture'
+    speaking: 'speaking', audio: 'audioEnabled', video: 'videoEnabled', picture: 'picture',
+    connected: 'connected'
   };
 
-  const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture'];
+  const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture', 'connected'];
 
   /**
    * Checks if a given channel is enabled
@@ -225,7 +226,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    *
    * @returns {boolean}
    */
-  that.isConnected = function() {
+  that.getConnected = function() {
     return that.connection !== null;
   };
 
