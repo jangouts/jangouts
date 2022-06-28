@@ -26,10 +26,12 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
   var picture = null;
   var speaking = false;
   var silentSince = Date.now();
-  var videoRemoteEnabled = true;
-  var audioRemoteEnabled = true;
   var stream = null;
   var speakObserver = null; // TODO
+  // Note: these two attributes are only updated via setStatus with the information
+  // received from the remote peer
+  var videoRemoteEnabled = true;
+  var audioRemoteEnabled = true;
 
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -39,10 +41,11 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
   const apiAttrs = {
     // TODO: local is temporary. It actually belongs to Participant, not to Feed.
     id: 'id', screen: 'localScreen', local: 'publisher', name: 'display', ignored: 'ignored',
-    speaking: 'speaking', audio: 'audioEnabled', video: 'videoEnabled', picture: 'picture'
+    speaking: 'speaking', audio: 'audioEnabled', video: 'videoEnabled', picture: 'picture',
+    connected: 'connected'
   };
 
-  const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture'];
+  const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture', 'connected'];
 
   /**
    * Checks if a given channel is enabled
@@ -181,6 +184,8 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
 
   /**
    * Sets if audio is enabled for that feed. Works only for remote ones.
+   *
+   * See setStatus
    */
   that.setAudioEnabled = function(val) {
     audioRemoteEnabled = val;
@@ -195,6 +200,8 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
 
   /**
    * Sets if video is enabled for that feed. Works only for remote ones.
+   *
+   * See setStatus
    */
   that.setVideoEnabled = function(val) {
     videoRemoteEnabled = val;
@@ -233,7 +240,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    *
    * @returns {boolean}
    */
-  that.isConnected = function() {
+  that.getConnected = function() {
     return that.connection !== null;
   };
 
@@ -248,6 +255,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       speakObserver.destroy();
     }
     that.connection = null;
+    stream = null;
   };
 
   /**
@@ -264,10 +272,19 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    *
    * @param {FeedConnection} connection - new connection to Janus
    */
-  that.reconnect = function(connection) {
+  that.setConnection = function(connection) {
     that.disconnect();
     that.ignored = false;
     that.connection = connection;
+  };
+
+  /**
+   * Sets the ignoring flag
+   *
+   * @param {boolean} val - true if the user wants to ignore the feed data
+   */
+  that.setIgnored = function(val) {
+    that.ignored = val;
   };
 
   /**
@@ -467,6 +484,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * Enables or disables the video of the connection to Janus
    */
   that.setVideoSubscription = function(value) {
+    if (that.connection === null) { return; }
     that.connection.setConfig({ values: { video: value } });
   };
 

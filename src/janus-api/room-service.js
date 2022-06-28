@@ -252,9 +252,9 @@ export const createRoomService = (
 
           // Step 4a (parallel with 4b). Publish our feed on server
 
-          if (joinUnmutedLimit !== undefined && joinUnmutedLimit !== null) {
+          if (that.isPresent(joinUnmutedLimit)) {
             startMuted =
-              msg.publishers instanceof Array && msg.publishers.length >= joinUnmutedLimit;
+              that.isArray(msg.publishers) && msg.publishers.length >= joinUnmutedLimit;
           }
 
           connection.publish({
@@ -265,8 +265,11 @@ export const createRoomService = (
           });
 
           // Step 5. Attach to existing feeds, if any
-          if (msg.publishers instanceof Array && msg.publishers.length > 0) {
-            that.subscribeToFeeds(msg.publishers, that.room.id);
+          if (that.isArray(msg.attendees)) {
+            that.addFeeds(msg.attendees, false);
+          }
+          if (that.isArray(msg.publishers)) {
+            that.addFeeds(msg.publishers, true);
           }
           // The room has been destroyed
         } else if (event === 'destroyed') {
@@ -274,29 +277,37 @@ export const createRoomService = (
           eventsService.roomEvent('destroyRoom', {});
         } else if (event === 'event') {
           // Any new feed to attach to?
-          if (msg.publishers instanceof Array && msg.publishers.length > 0) {
-            that.subscribeToFeeds(msg.publishers, that.room.id);
-            // One of the publishers has gone away?
-          } else if (msg.leaving !== undefined && msg.leaving !== null) {
+          if (that.isArray(msg.publishers)) {
+            that.addFeeds(msg.publishers, true);
+          }
+          // Any new non-publishing attendee?
+          if (that.isPresent(msg.joining)) {
+            that.addFeed(msg.joining.id, msg.joining.display, false);
+          }
+          // One of the publishers has gone away?
+          if (that.isPresent(msg.leaving)) {
             var leaving = msg.leaving;
             actionService.destroyFeed(leaving);
-            // One of the publishers has unpublished?
-          } else if (msg.unpublished !== undefined && msg.unpublished !== null) {
+          }
+          // One of the publishers has unpublished?
+          if (that.isPresent(msg.unpublished)) {
             var unpublished = msg.unpublished;
             actionService.unpublishFeed(unpublished);
-            // Reply to a configure request
-          } else if (msg.configured) {
+          }
+          // Reply to a configure request
+          if (msg.configured) {
             connection.confirmConfig();
             let feed = feedsService.findMain();
             eventsService.roomEvent('updateFeed', { id: feed.id, ...feed.getStatus() });
-            // The server reported an error
-          } else if (msg.error !== undefined && msg.error !== null) {
+          }
+          // The server reported an error
+          if (that.isPresent(msg.error)) {
             console.log('Error message from server' + msg.error);
             eventsService.roomEvent('reportError', { error: msg.error });
           }
         }
 
-        if (jsep !== undefined && jsep !== null) {
+        if (that.isPresent(jsep)) {
           connection.handleRemoteJsep(jsep);
         }
       }
@@ -316,14 +327,27 @@ export const createRoomService = (
     return that.room;
   };
 
-  that.subscribeToFeeds = function(list) {
-    console.debug('Got a list of available publishers/feeds:', list);
+  that.addFeeds = function(list, subscribe) {
+    if (list.length === 0) { return; }
+
+    console.debug('Got a list of available feeds (' + subscribe + '):', list);
     for (var f = 0; f < list.length; f++) {
       var id = list[f].id;
       var display = list[f].display;
-      var feed = feedsService.find(id);
+      that.addFeed(id, display, subscribe);
+    }
+  };
+
+  that.addFeed = function(id, display, subscribe) {
+    var feed = feedsService.find(id);
+
+    if (subscribe) {
       if (feed === null || feed.waitingForConnection()) {
         this.subscribeToFeed(id, display);
+      }
+    } else {
+      if (feed === null) {
+        actionService.remoteJoin(id, display, null);
       }
     }
   };
@@ -360,7 +384,7 @@ export const createRoomService = (
           // TODO: is the timeout needed?
           window.setTimeout(function() {
             if (feed) {
-              actionService.reconnectFeed(id, connection);
+              actionService.connectToFeed(id, connection);
             } else {
               actionService.remoteJoin(id, display, connection);
             }
@@ -373,11 +397,14 @@ export const createRoomService = (
         } else if (msg.started) {
           // Initial setConfig, needed to complete all the initializations
           connection.setConfig({ values: { audio: true, data: true, video: videoThumbnails } });
+        } else if (msg.error_code === 428) {
+          console.log("We tried to subscribe to a feed that is not publishing (an attendee)");
+          actionService.stopIgnoringFeed(id);
         } else {
           console.log('What has just happened?!', msg);
         }
 
-        if (jsep !== undefined && jsep !== null) {
+        if (that.isPresent(jsep)) {
           connection.subscribe(jsep);
         }
       },
@@ -491,7 +518,7 @@ export const createRoomService = (
         } else {
           console.log('Unexpected event for screen', msg);
         }
-        if (jsep !== undefined && jsep !== null) {
+        if (that.isPresent(jsep)) {
           connection.handleRemoteJsep(jsep);
         }
       }
@@ -533,6 +560,20 @@ export const createRoomService = (
         dataChannelService.sendStatus(p);
       }, 4000);
     });
+  };
+
+  /**
+   * Check whether the given argument has a value.
+   */
+  that.isPresent = function(value) {
+    return (value !== undefined && value !== null);
+  };
+
+  /**
+   * Check whether the given argument is an Array.
+   */
+  that.isArray = function(value) {
+    return (value instanceof Array);
   };
 
   return that;
