@@ -8,7 +8,7 @@
 import React from 'react';
 import LoginForm from './LoginForm';
 import { renderWithRedux } from '../../setupTests';
-import { act, screen } from '@testing-library/react';
+import { act, screen, within } from '@testing-library/react';
 
 jest.mock('../../janus-api');
 
@@ -18,8 +18,16 @@ describe('LoginForm component', () => {
       renderWithRedux(<LoginForm />);
     });
     const username_input = await screen.findByLabelText('Username');
-    const room_input = await screen.findByLabelText('Room');
     expect(username_input).toBeInTheDocument();
-    expect(room_input).toBeInTheDocument();
   });
+
+  it('has a selector with the available rooms', async () => {
+    act(() => {
+      renderWithRedux(<LoginForm />);
+    });
+
+    const room_input = await screen.findByLabelText('Room');
+    const test_room = within(room_input).getByText('Test room (5/10 users)');
+    expect(test_room).toBeInTheDocument();
+   });
 });

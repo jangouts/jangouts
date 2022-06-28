@@ -14,7 +14,7 @@ export default (function() {
     sendMessage: (text) => 'text',
     getRooms: () =>
       Promise.resolve([
-        { id: 1, description: 'Test room', num_participants: 5, max_publishers: 10 }
+        { id: 1, description: 'Test room', participants: 5, publishers: 10 }
       ]),
     getFeedStream: (feedId) => (feedId == 1 ? { id: 'someid', active: true } : null),
     enterRoom: (room, username) => Promise.resolve()
