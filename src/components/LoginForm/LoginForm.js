@@ -19,7 +19,9 @@ import { classNames } from '../../utils/common';
  * @returns {Array}
  */
 function roomOptions(rooms) {
-  return rooms.map((r) => (
+  const availableRooms = rooms.sort((a, b) => a.description > b.description ? 1 : -1);
+    
+  return availableRooms.map((r) => (
     <option key={r.id} value={r.id}>
       {r.description} ({r.participants}/{r.publishers} users)
     </option>
