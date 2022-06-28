@@ -32,7 +32,7 @@ function roomOptions(rooms) {
  * Return the requested room
  *
  * @param {Array} rooms - available rooms
- * @param {String,Integer} roomId - roomId
+ * @param {(String|Integer)} roomId - roomId
  * @returns {Boolean}
  */
 function findRoom(rooms, roomId) {
@@ -57,7 +57,7 @@ function onSubmit(dispatch) {
  * Generates the markup to render an alert
  *
  * @param {String} error - the error message
- * @returns {String,undefined} - the HTML markup if error message is defined; undefined otherwise
+ * @returns {?String} - the HTML markup if error message is defined; undefined otherwise
  */
 function renderError(error) {
   if (error) {
