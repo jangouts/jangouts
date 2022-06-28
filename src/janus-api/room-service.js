@@ -255,8 +255,11 @@ export const createRoomService = (
           });
 
           // Step 5. Attach to existing feeds, if any
+          if (that.isArray(msg.attendees)) {
+            that.addFeeds(msg.attendees, false);
+          }
           if (that.isArray(msg.publishers)) {
-            that.subscribeToFeeds(msg.publishers);
+            that.addFeeds(msg.publishers, true);
           }
           // The room has been destroyed
         } else if (event === 'destroyed') {
@@ -265,7 +268,11 @@ export const createRoomService = (
         } else if (event === 'event') {
           // Any new feed to attach to?
           if (that.isArray(msg.publishers)) {
-            that.subscribeToFeeds(msg.publishers);
+            that.addFeeds(msg.publishers, true);
+          }
+          // Any new non-publishing attendee?
+          if (that.isPresent(msg.joining)) {
+            that.addFeed(msg.joining.id, msg.joining.display, false);
           }
           // One of the publishers has gone away?
           if (that.isPresent(msg.leaving)) {
@@ -310,16 +317,27 @@ export const createRoomService = (
     return that.room;
   };
 
-  that.subscribeToFeeds = function(list) {
+  that.addFeeds = function(list, subscribe) {
     if (list.length === 0) { return; }
 
-    console.debug('Got a list of available publishers/feeds:', list);
+    console.debug('Got a list of available feeds (' + subscribe + '):', list);
     for (var f = 0; f < list.length; f++) {
       var id = list[f].id;
       var display = list[f].display;
-      var feed = feedsService.find(id);
+      that.addFeed(id, display, subscribe);
+    }
+  };
+
+  that.addFeed = function(id, display, subscribe) {
+    var feed = feedsService.find(id);
+
+    if (subscribe) {
       if (feed === null || feed.waitingForConnection()) {
         this.subscribeToFeed(id, display);
+      }
+    } else {
+      if (feed === null) {
+        actionService.remoteJoin(id, display, null);
       }
     }
   };
@@ -356,7 +374,7 @@ export const createRoomService = (
           // TODO: is the timeout needed?
           window.setTimeout(function() {
             if (feed) {
-              actionService.reconnectFeed(id, connection);
+              actionService.connectToFeed(id, connection);
             } else {
               actionService.remoteJoin(id, display, connection);
             }
@@ -369,6 +387,9 @@ export const createRoomService = (
         } else if (msg.started) {
           // Initial setConfig, needed to complete all the initializations
           connection.setConfig({ values: { audio: true, data: true, video: videoThumbnails } });
+        } else if (msg.error_code === 428) {
+          console.log("We tried to subscribe to a feed that is not publishing (an attendee)");
+          actionService.stopIgnoringFeed(id);
         } else {
           console.log('What has just happened?!');
         }

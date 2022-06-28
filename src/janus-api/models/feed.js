@@ -240,6 +240,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       speakObserver.destroy();
     }
     that.connection = null;
+    stream = null;
   };
 
   /**
@@ -256,10 +257,19 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    *
    * @param {FeedConnection} connection - new connection to Janus
    */
-  that.reconnect = function(connection) {
+  that.setConnection = function(connection) {
     that.disconnect();
     that.ignored = false;
     that.connection = connection;
+  };
+
+  /**
+   * Sets the ignoring flag
+   *
+   * @param {boolean} val - true if the user wants to ignore the feed data
+   */
+  that.setIgnored = function(val) {
+    that.ignored = val;
   };
 
   /**
@@ -459,6 +469,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * Enables or disables the video of the connection to Janus
    */
   that.setVideoSubscription = function(value) {
+    if (that.connection === null) { return; }
     that.connection.setConfig({ values: { video: value } });
   };
 
