@@ -57,7 +57,7 @@ describe('#listen', () => {
       message: {
         feed: 1,
         pin: '1234',
-        ptype: 'listener',
+        ptype: 'subscriber',
         request: 'join',
         room: roomId
       }

@@ -51,6 +51,18 @@ export const createActionService = (
     feedsService.add(feed);
   };
 
+  that.connectToFeed = function(feedId, connection) {
+    var feed = feedsService.find(feedId);
+    if (feed === null) {
+      return;
+    }
+    if (feed.ignored) {
+      that.stopIgnoringFeed(feedId);
+    }
+
+    feed.setConnection(connection);
+  };
+
   that.destroyFeed = function(feedId) {
     var feed = feedsService.find(feedId);
     if (feed === null) {
@@ -66,7 +78,6 @@ export const createActionService = (
       return;
     }
     feed.disconnect();
-    feedsService.destroy(feedId);
   };
 
   that.ignoreFeed = function(feedId) {
@@ -77,12 +88,12 @@ export const createActionService = (
     feed.ignore();
   };
 
-  that.reconnectFeed = function(feedId, connection) {
+  that.stopIgnoringFeed = function(feedId) {
     var feed = feedsService.find(feedId);
     if (feed === null) {
       return;
     }
-    feed.reconnect(connection);
+    feed.setIgnored(false);
   };
 
   that.writeChatMessage = function(text) {

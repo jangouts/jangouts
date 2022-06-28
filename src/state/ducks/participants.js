@@ -16,11 +16,11 @@ const PARTICIPANT_UPDATE_STATUS = 'jangouts/participant/UPDATE_STATUS';
 const PARTICIPANT_SET_FOCUS = 'jangouts/participant/PARTICIPANT_SET_FOCUS';
 
 const addParticipant = (participant) => {
-  const { id, name, local, screen, ignored, video } = participant;
+  const { id, name, local, screen, connected, video } = participant;
 
   return {
     type: PARTICIPANT_JOINED,
-    payload: { id, display: name, isPublisher: local, isLocalScreen: screen, isIgnored: ignored, video }
+    payload: { id, display: name, isPublisher: local, isLocalScreen: screen, connected, video }
   };
 };
 

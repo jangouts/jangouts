@@ -20,7 +20,7 @@ let participant = {
   display: undefined,
   isPublisher: undefined,
   isLocalScreen: undefined,
-  isIgnored: undefined,
+  connected: undefined,
   audio: undefined,
   speakingSince: undefined,
   video: true
@@ -127,9 +127,9 @@ describe('action creators', () => {
       const newParticipant = { ...participant, notExpectedKey: true };
 
       const action = actionCreators.addParticipant(newParticipant);
-      const { id, display, isPublisher, isLocalScreen, isIgnored } = participant;
+      const { id, display, isPublisher, isLocalScreen, connected } = participant;
       expect(action.payload).toEqual({
-        id, display, isPublisher, isLocalScreen, isIgnored, video: true
+        id, display, isPublisher, isLocalScreen, connected, video: true
       });
     });
   });
