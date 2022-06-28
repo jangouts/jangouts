@@ -26,6 +26,17 @@ function toggleFocus(id, focus) {
   return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
+/**
+ * @param props {object}
+ * @param props.id {}
+ * @param props.username {}
+ * @param props.isPublisher {}
+ * @param props.isLocalScreen {}
+ * @param props.streamReady {}
+ * @param props.focus {string?} null: no focus; 'auto': focus because speaking; 'user': focused by clicking
+ * @param props.speaking {}
+ * @param props.video {}
+ */
 function Participant({
   id,
   username,
