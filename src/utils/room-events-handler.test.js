@@ -129,9 +129,9 @@ describe('#handleFn', () => {
     });
   });
 
-  describe('with a createStream event', () => {
+  describe('with a updateStream event', () => {
     const feedId = 321;
-    const event = { event: 'createStream', payload: { feedId, stream: 'theStream' }};
+    const event = { event: 'updateStream', payload: { feedId, stream: 'theStream' }};
     actions.participants.setStream = jest.fn();
 
     test('assigns the stream to the given feed', () => {

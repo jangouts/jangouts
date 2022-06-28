@@ -123,7 +123,8 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
 
   /**
    * Sets janus stream for the feed
-   * @param {object} val - janus stream
+   *
+   * @param {MediaStream} val - janus stream
    */
   that.setStream = function(val) {
     if (that.publisher && !that.localScreen) {
@@ -140,6 +141,19 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
 
     stream = val;
   };
+
+  /**
+   * Adds a track to the stream
+   *
+   * @note A new stream is created if it does not exist.
+   * @param {MediaStreamTrack} track - media track
+   */
+  that.addTrack = function(track) {
+    if (!stream) {
+      stream = new MediaStream();
+    }
+    stream.addTrack(track.clone());
+  }
 
   /**
    * Gets janus stream for the feed

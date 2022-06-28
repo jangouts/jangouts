@@ -18,7 +18,7 @@ export const createRoomEventsHandler = (dispatchFn) => ({event, payload}) => {
         dispatchFn(actions.messages.add('newRemoteFeed', data));
       }
     },
-    createStream: (data) => {
+    updateStream: (data) => {
       dispatchFn(actions.participants.setStream(data.feedId, data.stream));
     },
     updateFeed: (data) => {

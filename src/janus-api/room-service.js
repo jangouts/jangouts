@@ -213,6 +213,9 @@ export const createRoomService = (
         that.sendStatus();
       },
       onlocalstream: function(stream) {
+        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onlocaltrack
+        // callback)
+
         // Step 4b (parallel with 4a).
         // Send the created stream to the UI, so it can be attached to
         // some element of the local DOM
@@ -220,7 +223,14 @@ export const createRoomService = (
         let feed = feedsService.findMain();
         feed.setStream(stream);
 
-        eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
+        eventsService.roomEvent('updateStream', { feedId: feed.id, stream: stream });
+        eventsService.auditEvent('stream');
+      },
+      onlocaltrack: function(track, _on) {
+        let feed = feedsService.findMain();
+        feed.addTrack(track);
+
+        eventsService.roomEvent('updateStream', { feedId: feed.id, stream: feed.getStream() });
         eventsService.auditEvent('stream');
       },
       oncleanup: function() {
@@ -372,10 +382,12 @@ export const createRoomService = (
         }
       },
       onremotestream: function(stream) {
-        // emit `remotestream` event
+        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onremotetrack
+        // callback)
+
         feedsService.waitFor(id).then(
           function(feed) {
-            eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
+            eventsService.roomEvent('updateStream', { feedId: feed.id, stream: stream });
             eventsService.auditEvent('stream');
             feed.setStream(stream);
           },
@@ -383,6 +395,13 @@ export const createRoomService = (
             console.error(reason);
           }
         );
+      },
+      onremotetrack: function(track, on) {
+        feedsService.waitFor(id).then(feed => {
+          feed.addTrack(track);
+          eventsService.roomEvent('updateStream', { feedId: feed.id, stream: feed.getStream() });
+          eventsService.auditEvent('stream');
+        }).catch(console.error);
       },
       ondataopen: function() {
         console.log('The subscriber DataChannel is available');
@@ -421,10 +440,13 @@ export const createRoomService = (
         console.error('  -- Error attaching screen plugin... ' + error);
       },
       onlocalstream: function(stream) {
+        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onlocaltrack
+        // callback)
+
         var feed = feedsService.find(id);
         feed.setStream(stream);
 
-        eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
+        eventsService.roomEvent('updateStream', { feedId: feed.id, stream: stream });
         eventsService.auditEvent('stream');
         eventsService.auditEvent('screenshare');
 
@@ -435,6 +457,12 @@ export const createRoomService = (
           unPublishFeed(id);
           // TODO: ScreenShareService.setInProgress(false);
         };
+      },
+      onlocaltrack: function(track, _on) {
+        let feed = feedsService.find(id);
+        feed.addTrack(track);
+
+        eventsService.roomEvent('updateStream', { feedId: feed.id, stream: feed.getStream() })
       },
       onmessage: function(msg, jsep) {
         console.debug(' ::: Got a message (screen) :::', msg);
