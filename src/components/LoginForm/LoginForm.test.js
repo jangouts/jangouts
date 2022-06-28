@@ -21,13 +21,15 @@ describe('LoginForm component', () => {
     expect(username_input).toBeInTheDocument();
   });
 
-  it('has a selector with the available rooms', async () => {
+  it('has a selector with the available rooms sorted by the shown text', async () => {
     act(() => {
       renderWithRedux(<LoginForm />);
     });
 
     const room_input = await screen.findByLabelText('Room');
-    const test_room = within(room_input).getByText('Test room (5/10 users)');
-    expect(test_room).toBeInTheDocument();
+    const options = within(room_input).getAllByRole('option');
+    expect(options[0].text).toBe('Another test room (2/10 users)');
+    expect(options[1].text).toBe('Test room (5/10 users)');
+    expect(options[2].text).toBe('Test room 3 (0/10 users)');
    });
 });
