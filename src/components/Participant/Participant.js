@@ -39,7 +39,7 @@ function Participant({
   const dispatch = useDispatch();
   const videoRef = React.createRef();
   const cssClassName = `Participant ${focus === 'user' ? 'focus' : ''}`;
-  const showVideo = video || isLocalScreen;
+  const showVideo = (video || isLocalScreen) && !focus;
 
   useEffect(() => setVideo(id, videoRef.current), [id, videoRef, streamReady]);
 
