@@ -213,15 +213,21 @@ export const createRoomService = (
         that.sendStatus();
       },
       onlocalstream: function(stream) {
+        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onlocaltrack
+        // callback)
+
         // Step 4b (parallel with 4a).
         // Send the created stream to the UI, so it can be attached to
         // some element of the local DOM
 
         let feed = feedsService.findMain();
         feed.setStream(stream);
-
-        eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
-        eventsService.auditEvent('stream');
+        emitStreamEvents(feed);
+      },
+      onlocaltrack: function(track, _on) {
+        let feed = feedsService.findMain();
+        feed.addTrack(track);
+        emitStreamEvents(feed);
       },
       oncleanup: function() {
         console.log(' ::: Got a cleanup notification: we are unpublished now :::');
@@ -242,9 +248,9 @@ export const createRoomService = (
 
           // Step 4a (parallel with 4b). Publish our feed on server
 
-          if (that.isPresent(joinUnmutedLimit)) {
+          if (isPresent(joinUnmutedLimit)) {
             startMuted =
-              that.isArray(msg.publishers) && msg.publishers.length >= joinUnmutedLimit;
+              isArray(msg.publishers) && msg.publishers.length >= joinUnmutedLimit;
           }
 
           connection.publish({
@@ -255,10 +261,10 @@ export const createRoomService = (
           });
 
           // Step 5. Attach to existing feeds, if any
-          if (that.isArray(msg.attendees)) {
+          if (isArray(msg.attendees)) {
             that.addFeeds(msg.attendees, false);
           }
-          if (that.isArray(msg.publishers)) {
+          if (isArray(msg.publishers)) {
             that.addFeeds(msg.publishers, true);
           }
           // The room has been destroyed
@@ -267,20 +273,20 @@ export const createRoomService = (
           eventsService.roomEvent('destroyRoom', {});
         } else if (event === 'event') {
           // Any new feed to attach to?
-          if (that.isArray(msg.publishers)) {
+          if (isArray(msg.publishers)) {
             that.addFeeds(msg.publishers, true);
           }
           // Any new non-publishing attendee?
-          if (that.isPresent(msg.joining)) {
+          if (isPresent(msg.joining)) {
             that.addFeed(msg.joining.id, msg.joining.display, false);
           }
           // One of the publishers has gone away?
-          if (that.isPresent(msg.leaving)) {
+          if (isPresent(msg.leaving)) {
             var leaving = msg.leaving;
             actionService.destroyFeed(leaving);
           }
           // One of the publishers has unpublished?
-          if (that.isPresent(msg.unpublished)) {
+          if (isPresent(msg.unpublished)) {
             var unpublished = msg.unpublished;
             actionService.unpublishFeed(unpublished);
           }
@@ -291,13 +297,13 @@ export const createRoomService = (
             eventsService.roomEvent('updateFeed', { id: feed.id, ...feed.getStatus() });
           }
           // The server reported an error
-          if (that.isPresent(msg.error)) {
+          if (isPresent(msg.error)) {
             console.log('Error message from server' + msg.error);
             eventsService.roomEvent('reportError', { error: msg.error });
           }
         }
 
-        if (that.isPresent(jsep)) {
+        if (isPresent(jsep)) {
           connection.handleRemoteJsep(jsep);
         }
       }
@@ -391,25 +397,27 @@ export const createRoomService = (
           console.log("We tried to subscribe to a feed that is not publishing (an attendee)");
           actionService.stopIgnoringFeed(id);
         } else {
-          console.log('What has just happened?!');
+          console.log('What has just happened?!', msg);
         }
 
-        if (that.isPresent(jsep)) {
+        if (isPresent(jsep)) {
           connection.subscribe(jsep);
         }
       },
       onremotestream: function(stream) {
-        // emit `remotestream` event
-        feedsService.waitFor(id).then(
-          function(feed) {
-            eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
-            eventsService.auditEvent('stream');
+        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onremotetrack
+        // callback)
+
+        feedsService.waitFor(id).then(feed => {
             feed.setStream(stream);
-          },
-          function(reason) {
-            console.error(reason);
-          }
-        );
+            emitStreamEvents(feed);
+        }).catch(console.error);
+      },
+      onremotetrack: function(track, _on) {
+        feedsService.waitFor(id).then(feed => {
+          feed.addTrack(track);
+          emitStreamEvents(feed);
+        }).catch(console.error);
       },
       ondataopen: function() {
         console.log('The subscriber DataChannel is available');
@@ -448,11 +456,12 @@ export const createRoomService = (
         console.error('  -- Error attaching screen plugin... ' + error);
       },
       onlocalstream: function(stream) {
+        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onlocaltrack
+        // callback)
+
         var feed = feedsService.find(id);
         feed.setStream(stream);
-
-        eventsService.roomEvent('createStream', { feedId: feed.id, stream: stream });
-        eventsService.auditEvent('stream');
+        emitStreamEvents(feed);
         eventsService.auditEvent('screenshare');
 
         // Unpublish feed when screen sharing stops
@@ -462,6 +471,12 @@ export const createRoomService = (
           unPublishFeed(id);
           // TODO: ScreenShareService.setInProgress(false);
         };
+      },
+      onlocaltrack: function(track, _on) {
+        let feed = feedsService.find(id);
+        feed.addTrack(track);
+        emitStreamEvents(feed);
+        eventsService.auditEvent('screenshare');
       },
       onmessage: function(msg, jsep) {
         console.debug(' ::: Got a message (screen) :::', msg);
@@ -490,7 +505,7 @@ export const createRoomService = (
         } else {
           console.log('Unexpected event for screen', msg);
         }
-        if (that.isPresent(jsep)) {
+        if (isPresent(jsep)) {
           connection.handleRemoteJsep(jsep);
         }
       }
@@ -537,16 +552,26 @@ export const createRoomService = (
   /**
    * Check whether the given argument has a value.
    */
-  that.isPresent = function(value) {
+  function isPresent(value) {
     return (value !== undefined && value !== null);
   };
 
   /**
    * Check whether the given argument is an Array.
    */
-  that.isArray = function(value) {
+  function isArray(value) {
     return (value instanceof Array);
   };
+
+  /**
+   * Registers the stream related events
+   *
+   * @param {object} feed - Feed to inform about
+   */
+  function emitStreamEvents(feed) {
+    eventsService.roomEvent('updateStream', { feedId: feed.id, stream: feed.getStream() });
+    eventsService.auditEvent('stream');
+  }
 
   return that;
 };
