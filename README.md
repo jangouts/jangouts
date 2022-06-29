@@ -1,5 +1,7 @@
 ## Running the React/Redux based branch
 
+[![Coverage Status](https://coveralls.io/repos/github/jangouts/jangouts/badge.svg?branch=master)](https://coveralls.io/github/jangouts/jangouts?branch=master)
+
 This branch contains the [React](https://reactjs.org/) and
 [Redux](https://react-redux.js.org/) based version of Jangouts. It is still a
 work in progress, but the basic features are already in place. We plan to
