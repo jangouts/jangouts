@@ -121,7 +121,7 @@ describe('#publish', () => {
   // TODO: check calls to createConnectionConfig factory.
 });
 
-xdescribe('#subscribe');
+xdescribe('#subscribe', () => {});
 
 describe('#setConfig', () => {
   describe('when no configuration options are set', () => {
