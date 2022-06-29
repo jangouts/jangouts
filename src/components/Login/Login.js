@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import Logo from '../Logo';
 import LoginForm from '../LoginForm';
@@ -15,7 +15,7 @@ function Login() {
   const room = useSelector((state) => state.room);
 
   if (room.loggedIn) {
-    return <Redirect to={`/room/${room.roomId}?user=${room.username}`} />;
+    return <Navigate to={`/room/${room.roomId}?user=${room.username}`} />;
   }
 
   return (

@@ -7,18 +7,24 @@
 
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { Redirect } from 'react-router';
+import { useLocation, useParams } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { actionCreators as roomActions } from '../../state/ducks/room';
 
 import { Classic as RoomLayout } from '../layouts';
 
 const randomUsername = () => `user_${Math.floor(Math.random() * 1000)}`;
 
-function Room({ location }) {
+function Room() {
+  const location = useLocation();
+  const params = useParams();
+
+  console.log("params", params);
+  console.log("location", location);
   const room = useSelector((state) => state.room);
   const dispatch = useDispatch();
   const { roomId } = useParams();
+
 
   useEffect(() => {
     if (room.loggedIn) return;
@@ -26,10 +32,10 @@ function Room({ location }) {
     const username = params.get('user') || randomUsername();
     // TODO: get username from local storage
     dispatch(roomActions.login(username, roomId));
-  }, []);
+  }, [location]);
 
-  if (room.error) {
-    return <Redirect to="/" />;
+  if (room.error || !room.loggedIn) {
+    return <Navigate to="/" />;
   }
 
   return <RoomLayout />;
