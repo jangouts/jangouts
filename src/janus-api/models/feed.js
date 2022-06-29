@@ -45,7 +45,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
     connected: 'connected'
   };
 
-  const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture', 'connected'];
+  const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture'];
 
   /**
    * Checks if a given channel is enabled
@@ -463,7 +463,11 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       if (!local_attr) return;
 
       const fn = 'set' + capitalize(local_attr);
-      that[fn](attrs[key]);
+      if (fn in that) {
+        that[fn](attrs[key]);
+      } else {
+        console.warn(fn, "is not defined for Feed");
+      }
     });
   };
 
