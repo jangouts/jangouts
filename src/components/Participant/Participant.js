@@ -46,8 +46,9 @@ function Participant({
   return (
     <div
       className={classNames(
-        'relative group p-1 border-2 border-white bg-white',
+        'relative group p-1 border-2 bg-white',
         'transition duration-150 ease-in-out',
+        focus || 'border-white',
         focus && 'border-secondary shadow-md',
         speaking && 'border-green-300'
       )}>

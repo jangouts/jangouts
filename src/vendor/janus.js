@@ -24,6 +24,8 @@
 	OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/* eslint-disable */
+
 import adapter from 'webrtc-adapter';
 
 // List of sessions

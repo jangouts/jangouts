@@ -6,7 +6,6 @@
  */
 
 import janusApi from '../../janus-api';
-import history from '../../utils/history';
 
 const ROOM_LOGIN = 'jangouts/room/LOGIN';
 const ROOM_LOGIN_REQUEST = 'jangouts/room/LOGIN_REQUEST';
@@ -48,8 +47,6 @@ const logout = () => {
     janusApi.leaveRoom();
 
     dispatch({ type: ROOM_LOGOUT });
-
-    history.push('/');
   };
 };
 
