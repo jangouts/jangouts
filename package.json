@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "dompurify": "^2.0.8",
-    "emojibase": "^4.0.1",
+    "emojibase": "^6.1.0",
     "interweave": "^13.0.0",
     "interweave-autolink": "^5.1.0",
     "interweave-emoji": "^7.0.0",
