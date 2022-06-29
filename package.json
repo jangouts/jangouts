@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "dompurify": "^2.0.8",
+    "dompurify": "^2.3.8",
     "emojibase": "^6.1.0",
     "interweave": "^13.0.0",
     "interweave-autolink": "^5.1.0",
