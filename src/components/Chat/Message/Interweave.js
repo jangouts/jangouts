@@ -30,6 +30,7 @@ export default function Interweave({ filters = [], matchers = [], ...props }) {
     new EmojiMatcher('emoji', {
       convertEmoticon: true,
       convertShortcode: true,
+      renderUnicode: true,
       enlargeThreshold: 0
     }),
     new SimpleBoldMatcher('bold'),
