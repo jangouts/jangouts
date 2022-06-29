@@ -7,10 +7,9 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import { HashRouter, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 
 import store from '../../state/store';
-import history from '../../utils/history';
 
 import Login from '../Login';
 import Room from '../Room';
@@ -22,9 +21,11 @@ function App() {
   return (
     <Provider store={store}>
       <AppStarter>
-        <HashRouter history={history}>
-          <Route exact path="/" component={Login} />
-          <Route path="/room/:roomId" component={Room} />
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/room/:roomId" element={<Room />} />
+          </Routes>
         </HashRouter>
       </AppStarter>
     </Provider>
