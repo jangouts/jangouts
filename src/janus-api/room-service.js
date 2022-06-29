@@ -213,6 +213,9 @@ export const createRoomService = (
         that.sendStatus();
       },
       onlocaltrack: function(track, _on) {
+        // Step 4b (parallel with 4a).
+        // Send the created stream to the UI, so it can be attached to
+        // some element of the local DOM
         let feed = feedsService.findMain();
         feed.addTrack(track);
         emitStreamEvents(feed);
