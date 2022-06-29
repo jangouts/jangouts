@@ -26,6 +26,8 @@
 
 /* eslint-disable */
 
+import adapter from 'webrtc-adapter';
+
 // List of sessions
 Janus.sessions = {};
 
