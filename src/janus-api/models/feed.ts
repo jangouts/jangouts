@@ -77,23 +77,6 @@ export class Feed {
     }
   };
 
-  /**
-   * Checks if a given local track is enabled.
-   *
-   * Take into account the term 'track' refers to the local tracks of the
-   * stream as rendered by the browser, not to the webRTC communication
-   * channels. For example, disabling a local audio track will cause the
-   * browser to stop reproducing the sound, but will not cause the browser
-   * to stop receiving it through the corresponding channel.
-   *
-   * @param {string} type - "audio" or "video"
-   * @returns {boolean}
-   */
-  isTrackEnabled(type: AudioOrVideo): boolean {
-    const track: MediaStreamTrack | null = this.getTrack(type);
-    return track !== null && track.enabled;
-  };
-
   /*
    * Enables or disables the given track.
    *
@@ -107,17 +90,6 @@ export class Feed {
     if (track !== null) {
       track.enabled = enabled;
     }
-  };
-
-  /*
-   * Checks whether the feed has a given track.
-   *
-   * See isTrackEnabled for more information about tracks vs channels.
-   *
-   * @param {string} type - "audio" or "video"
-   */
-  hasTrack(type: AudioOrVideo): boolean {
-    return this.getTrack(type) !== null;
   };
 
   /**
@@ -224,15 +196,6 @@ export class Feed {
    */
   getVideoEnabled(): boolean | null {
     return this.isEnabled('video');
-  };
-
-  /**
-   * Checks if audio is being currently detected in the local feed
-   *
-   * @returns {Boolean}
-   */
-  isVoiceDetected(): boolean {
-    return this.speakObserver?.isSpeaking();
   };
 
   /**
@@ -385,17 +348,6 @@ export class Feed {
   };
 
   /**
-   * Updates the value of the display attribute for that publisher feed,
-   * notifying changes to the remote peers.
-   * @fixme is still used?
-   */
-  updateDisplay(newDisplay: string) {
-    this.setDisplay(newDisplay);
-    this.eventsService.roomEvent('updateFeed', { id: this.id, name: newDisplay });
-    this.dataChannelService.sendStatus(this);
-  };
-
-  /**
    * Gets the current display name for publisher
    * @return {string} - current display
    */
@@ -477,37 +429,6 @@ export class Feed {
       const fn = 'set' + this.capitalize(local_attr);
       this[fn as keyof Feed](attrs[key]);
     });
-  };
-
-  /**
-   * Checks if the feed audio is inactive and, thus, can be hidden or
-   * rendered as a stream of pictures instead of a video
-   *
-   * @returns {boolean}
-   */
-  isSilent(threshold : number = 6000): boolean {
-    return !this.speaking && this.silentSince < Date.now() - threshold;
-  };
-
-  /**
-   * Enables or disables the video of the connection to Janus
-   */
-  setVideoSubscription(value: boolean) {
-    if (this.connection === null) { return; }
-    this.connection.setConfig({ values: { video: value } });
-  };
-
-  /**
-   * Gets the status of the video flag of the connection to Janus
-   *
-   * @returns {boolean}
-   */
-  getVideoSubscription() : boolean | null {
-    if (this.connection && this.connection.getConfig()) {
-      return this.connection.getConfig().video;
-    } else {
-      return null;
-    }
   };
 
   getTrack(type: AudioOrVideo): MediaStreamTrack | null {
