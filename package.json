@@ -8,7 +8,6 @@
     "interweave": "^13.0.0",
     "interweave-autolink": "^5.1.0",
     "interweave-emoji": "^7.0.0",
-    "npm-run-all": "^4.1.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-feather": "^2.0.4",
@@ -51,6 +50,7 @@
     "@testing-library/react": "^9.4.0",
     "jsdoc": "^3.6.10",
     "mutationobserver-shim": "^0.3.3",
+    "npm-run-all": "^4.1.5",
     "react-test-renderer": "^16.12.0",
     "redux-mock-store": "^1.5.4",
     "tailwindcss": "^3.1.4"
