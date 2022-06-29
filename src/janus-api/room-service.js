@@ -212,18 +212,6 @@ export const createRoomService = (
         connection.onDataOpen();
         that.sendStatus();
       },
-      onlocalstream: function(stream) {
-        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onlocaltrack
-        // callback)
-
-        // Step 4b (parallel with 4a).
-        // Send the created stream to the UI, so it can be attached to
-        // some element of the local DOM
-
-        let feed = feedsService.findMain();
-        feed.setStream(stream);
-        emitStreamEvents(feed);
-      },
       onlocaltrack: function(track, _on) {
         let feed = feedsService.findMain();
         feed.addTrack(track);
@@ -404,15 +392,6 @@ export const createRoomService = (
           connection.subscribe(jsep);
         }
       },
-      onremotestream: function(stream) {
-        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onremotetrack
-        // callback)
-
-        feedsService.waitFor(id).then(feed => {
-            feed.setStream(stream);
-            emitStreamEvents(feed);
-        }).catch(console.error);
-      },
       onremotetrack: function(track, _on) {
         feedsService.waitFor(id).then(feed => {
           feed.addTrack(track);
@@ -454,23 +433,6 @@ export const createRoomService = (
       },
       error: function(error) {
         console.error('  -- Error attaching screen plugin... ' + error);
-      },
-      onlocalstream: function(stream) {
-        // Support for pre 1.0.0 versions of janus-gateway (for newer versions, check onlocaltrack
-        // callback)
-
-        var feed = feedsService.find(id);
-        feed.setStream(stream);
-        emitStreamEvents(feed);
-        eventsService.auditEvent('screenshare');
-
-        // Unpublish feed when screen sharing stops
-        stream.oninactive = function() {
-          // emit 'screenshareStop' event
-          eventsService.auditEvent('screenshare');
-          unPublishFeed(id);
-          // TODO: ScreenShareService.setInProgress(false);
-        };
       },
       onlocaltrack: function(track, _on) {
         let feed = feedsService.find(id);
