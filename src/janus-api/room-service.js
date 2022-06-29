@@ -443,6 +443,10 @@ export const createRoomService = (
         emitStreamEvents(feed);
         eventsService.auditEvent('screenshare');
       },
+      oncleanup: function() {
+        eventsService.auditEvent('screenshareStop');
+        // TODO: ScreenShareService.setInProgress(false);
+      },
       onmessage: function(msg, jsep) {
         console.debug(' ::: Got a message (screen) :::', msg);
         var event = msg.videoroom;
