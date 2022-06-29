@@ -64,7 +64,6 @@ export class Feed {
   isEnabled(channel: AudioOrVideo): boolean | null {
     if (this.publisher) {
       if (this.connection) {
-        console.log("Conneciton", this.connection);
         const config = this.connection.getConfig();
         return config ? config[channel] : null;
       } else {
