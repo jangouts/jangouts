@@ -26,6 +26,9 @@ const apiAttrs : {
 
 const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture', 'connected'];
 
+/**
+ * Feed (?)
+ */
 export class Feed {
   id: number = 0;
   display: string;
