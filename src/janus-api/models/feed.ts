@@ -106,27 +106,6 @@ export class Feed {
   };
 
   /**
-   * Sets janus stream for the feed
-   *
-   * @param {MediaStream} val - janus stream
-   */
-  setStream(val: MediaStream) {
-    if (this.publisher && !this.localScreen) {
-      this.speakObserver = createSpeakObserver(val, {
-        start: () => {
-          this.updateLocalSpeaking(true);
-        },
-        stop: () => {
-          this.updateLocalSpeaking(false);
-        }
-      });
-      this.speakObserver.start();
-    }
-
-    this.stream = val;
-  };
-
-  /**
    * Adds a track to the stream
    *
    * @note A new stream is created if it does not exist.
@@ -137,6 +116,21 @@ export class Feed {
       this.stream = new MediaStream();
     }
     this.stream.addTrack(track.clone());
+    if (track.kind === "audio" && this.publisher && !this.localScreen) {
+      this.startObserver();
+    }
+  }
+
+  /**
+   * Starts the observer in the stream
+   */
+  startObserver() {
+    console.log("Starting the speaking observer");
+    this.speakObserver = createSpeakObserver(this.stream, {
+      start: () => this.updateLocalSpeaking(true),
+      stop: () => this.updateLocalSpeaking(false)
+    });
+    this.speakObserver.start();
   }
 
   /**
