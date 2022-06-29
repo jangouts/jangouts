@@ -417,8 +417,10 @@ export class Feed {
       const local_attr = this.getLocalAttr(key);
       if (!local_attr) return;
 
-      const fn = 'set' + this.capitalize(local_attr);
-      this[fn as keyof Feed](attrs[key]);
+      const fnName = 'set' + this.capitalize(local_attr);
+      if (fnName in this) {
+        this[fnName as keyof Feed](attrs[key]);
+      }
     });
   };
 
