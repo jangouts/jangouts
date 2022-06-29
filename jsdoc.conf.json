@@ -4,13 +4,17 @@
     "opts": {
         "destination": "./jsdoc.out/",
         "private": true,
-        "recurse": true
+        "readme": "README.md",
+        "recurse": true,
+        "template": "node_modules/better-docs"
     },
-    "plugins": [],
+    "plugins": [
+        "node_modules/better-docs/typescript"
+    ],
     "recurseDepth": 10,
     "source": {
         "include": [ "src/" ],
-        "includePattern": ".+\\.js(doc|x)?$",
+        "includePattern": ".+\\.[jt]s(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "sourceType": "module",
@@ -19,7 +23,13 @@
         "dictionaries": ["jsdoc","closure"]
     },
     "templates": {
+        "better-docs": {
+            "name": "Jangouts"
+        },
         "cleverLinks": false,
         "monospaceLinks": false
+    },
+    "typescript": {
+        "moduleRoot": "test"
     }
 }
