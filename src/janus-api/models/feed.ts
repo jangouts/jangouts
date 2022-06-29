@@ -420,6 +420,8 @@ export class Feed {
       const fnName = 'set' + this.capitalize(local_attr);
       if (fnName in this) {
         this[fnName as keyof Feed](attrs[key]);
+      } else {
+        console.warn(fnName, "is not defined for Feed")
       }
     });
   };
