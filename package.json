@@ -55,6 +55,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^9.4.0",
+    "better-docs": "~2.3.2",
     "jsdoc": "^3.6.10",
     "mutationobserver-shim": "^0.3.3",
     "react-test-renderer": "^16.12.0",
