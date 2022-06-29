@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import BaseInterweave from 'interweave';
+import { Interweave as BaseInterweave } from 'interweave';
 import { useEmojiData, EmojiMatcher } from 'interweave-emoji';
 import { UrlMatcher } from 'interweave-autolink';
 import ImgMatcher from './ImgMatcher';
@@ -30,6 +30,7 @@ export default function Interweave({ filters = [], matchers = [], ...props }) {
     new EmojiMatcher('emoji', {
       convertEmoticon: true,
       convertShortcode: true,
+      renderUnicode: true,
       enlargeThreshold: 0
     }),
     new SimpleBoldMatcher('bold'),
