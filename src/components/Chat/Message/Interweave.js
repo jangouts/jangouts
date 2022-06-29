@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import BaseInterweave from 'interweave';
+import { Interweave as BaseInterweave } from 'interweave';
 import { useEmojiData, EmojiMatcher } from 'interweave-emoji';
 import { UrlMatcher } from 'interweave-autolink';
 import ImgMatcher from './ImgMatcher';
