@@ -130,19 +130,10 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
    * @param {MediaStream} val - janus stream
    */
   that.setStream = function(val) {
-    if (that.publisher && !that.localScreen) {
-      speakObserver = createSpeakObserver(val, {
-        start: function() {
-          updateLocalSpeaking(true);
-        },
-        stop: function() {
-          updateLocalSpeaking(false);
-        }
-      });
-      speakObserver.start();
-    }
-
     stream = val;
+    if (that.publisher && !that.localScreen) {
+      that.startObserver();
+    }
   };
 
   /**
@@ -155,7 +146,31 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
     if (!stream) {
       stream = new MediaStream();
     }
+
     stream.addTrack(track.clone());
+
+    if (track.kind === "audio") {
+      that.startObserver();
+    }
+  }
+
+  /**
+   * Start the observer in the stream
+   */
+  that.startObserver = function() {
+    if (!stream) {
+      return;
+    }
+
+    speakObserver = createSpeakObserver(stream, {
+      start: function() {
+        updateLocalSpeaking(true);
+      },
+      stop: function() {
+        updateLocalSpeaking(false);
+      }
+    });
+    speakObserver.start();
   }
 
   /**
