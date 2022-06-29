@@ -37,7 +37,6 @@ export class Feed {
   private eventsService: any;
   private picture: string | null = null; // FIXME: is still used?
   private speaking: boolean = false;
-  private silentSince: number;
   private stream: MediaStream | null = null;
   private speakObserver: any;
   private videoRemoteEnabled: boolean = true;
@@ -54,7 +53,6 @@ export class Feed {
     this.connection = connection;
     this.dataChannelService = dataChannelService;
     this.eventsService = eventsService;
-    this.silentSince = Date.now();
   }
 
   /**
@@ -328,9 +326,6 @@ export class Feed {
     }
     if (this.speaking !== val) {
       this.speaking = val;
-      if (val === false) {
-        this.silentSince = Date.now();
-      }
       this.eventsService.roomEvent('updateFeed', { id: this.id, speaking: this.speaking });
       this.dataChannelService.sendSpeakingSignal(this);
     }
@@ -419,9 +414,6 @@ export class Feed {
    * sent by the remote peer)
    */
   setStatus(attrs: any) {
-    if (this.speaking === true && attrs.speaking === false) {
-      this.silentSince = Date.now();
-    }
     Object.keys(attrs).forEach(key => {
       const local_attr = this.getLocalAttr(key);
       if (!local_attr) return;
