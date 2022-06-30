@@ -17,7 +17,7 @@
         "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
 
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "error",
+        "react-hooks/exhaustive-deps": "off",
 
         "camelcase": "off",
         "comma-dangle": "off",
