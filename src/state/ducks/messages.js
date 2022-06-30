@@ -6,7 +6,7 @@
  */
 
 import janusApi from '../../janus-api';
-import { createLogEntry } from '../../utils/log-entry'
+import { createLogEntry } from '../../utils/log-entry';
 
 const MESSAGE_REGISTER = 'jangouts/message/REGISTER';
 

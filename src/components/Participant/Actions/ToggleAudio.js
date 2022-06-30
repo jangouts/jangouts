@@ -11,7 +11,7 @@ import { Mic, MicOff } from 'react-feather';
 import { actionCreators as participantsActions } from '../../../state/ducks/participants';
 import { classNames } from '../../../utils/common';
 
-import ParticipantActionButton from './ParticipantActionButton'
+import ParticipantActionButton from './ParticipantActionButton';
 
 function ToggleAudio({ participantId, iconStyle, ...props }) {
   const dispatch = useDispatch();

@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { RefreshCw } from 'react-feather';
 import { actionCreators as participantsActions } from '../../../state/ducks/participants';
 
-import ParticipantActionButton from './ParticipantActionButton'
+import ParticipantActionButton from './ParticipantActionButton';
 
 function Reconnect({ participantId, ...props }) {
   const dispatch = useDispatch();

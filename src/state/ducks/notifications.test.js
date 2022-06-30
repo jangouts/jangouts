@@ -88,7 +88,7 @@ describe('action creators', () => {
       );
       store.dispatch(actionCreators.notifyEvent(event));
       expect(store.getActions()).toEqual([]);
-    })
+    });
   });
 
   describe('block', () => {

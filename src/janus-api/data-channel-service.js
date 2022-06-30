@@ -9,10 +9,10 @@ export const createDataChannelService = (feedsService, eventsService) => {
   let that = {};
 
   that.receiveMessage = (data, remoteId) => {
-    var msg = JSON.parse(data);
-    var type = msg.type;
-    var content = msg.content;
-    var feed;
+    let msg = JSON.parse(data);
+    let type = msg.type;
+    let content = msg.content;
+    let feed;
 
     if (type === 'chatMsg') {
       eventsService.roomEvent('createChatMsg', {
@@ -41,7 +41,7 @@ export const createDataChannelService = (feedsService, eventsService) => {
   };
 
   that.sendMuteRequest = (feed) => {
-    var content = {
+    let content = {
       target: feed.id
     };
 
@@ -49,7 +49,7 @@ export const createDataChannelService = (feedsService, eventsService) => {
   };
 
   that.sendStatus = (feed, statusOptions) => {
-    var content = {
+    let content = {
       source: feed.id,
       status: feed.getStatus(statusOptions)
     };
@@ -69,18 +69,18 @@ export const createDataChannelService = (feedsService, eventsService) => {
 
   that.sendChatMessage = (text) => {
     eventsService.roomEvent('createChatMsg', {
-        feedId: feedsService.findMain().id,
-        text: text
+      feedId: feedsService.findMain().id,
+      text: text
     });
     that.sendMessage('chatMsg', text);
   };
 
   that.sendMessage = (type, content) => {
-    var text = JSON.stringify({
+    let text = JSON.stringify({
       type: type,
       content: content
     });
-    var mainFeed = feedsService.findMain();
+    let mainFeed = feedsService.findMain();
     if (mainFeed === null) {
       return;
     }
@@ -88,7 +88,7 @@ export const createDataChannelService = (feedsService, eventsService) => {
       console.log('Data channel not open yet. Skipping');
       return;
     }
-    var connection = mainFeed.connection;
+    let connection = mainFeed.connection;
     connection.sendData({
       text: text,
       error: function(reason) {

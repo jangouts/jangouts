@@ -53,7 +53,7 @@ export const createFeedsService = (eventsService) => {
           if (attempts === 0) {
             // No more attempts left and feed was not found
             window.clearInterval(interval);
-            reject('feed with id ' + id + ' was not found');
+            reject(new Error('feed with id ' + id + ' was not found'));
           }
         }, timeout);
       } else {

@@ -17,7 +17,7 @@ export const createActionService = (
   const createFeed = createFeedFactory(dataChannelService, eventsService);
 
   that.enterRoom = function(feedId, display, connection) {
-    var feed = createFeed({
+    let feed = createFeed({
       display: display,
       connection: connection,
       id: feedId,
@@ -31,7 +31,7 @@ export const createActionService = (
   };
 
   that.publishScreen = function(feedId, display, connection) {
-    var feed = createFeed({
+    let feed = createFeed({
       display: display,
       connection: connection,
       id: feedId,
@@ -42,7 +42,7 @@ export const createActionService = (
   };
 
   that.remoteJoin = function(feedId, display, connection) {
-    var feed = createFeed({
+    let feed = createFeed({
       display: display,
       connection: connection,
       id: feedId,
@@ -52,7 +52,7 @@ export const createActionService = (
   };
 
   that.connectToFeed = function(feedId, connection) {
-    var feed = feedsService.find(feedId);
+    let feed = feedsService.find(feedId);
     if (feed === null) {
       return;
     }
@@ -64,7 +64,7 @@ export const createActionService = (
   };
 
   that.destroyFeed = function(feedId) {
-    var feed = feedsService.find(feedId);
+    let feed = feedsService.find(feedId);
     if (feed === null) {
       return;
     }
@@ -73,7 +73,7 @@ export const createActionService = (
   };
 
   that.unpublishFeed = function(feedId) {
-    var feed = feedsService.find(feedId);
+    let feed = feedsService.find(feedId);
     if (feed === null) {
       return;
     }
@@ -81,7 +81,7 @@ export const createActionService = (
   };
 
   that.ignoreFeed = function(feedId) {
-    var feed = feedsService.find(feedId);
+    let feed = feedsService.find(feedId);
     if (feed === null) {
       return;
     }
@@ -89,7 +89,7 @@ export const createActionService = (
   };
 
   that.stopIgnoringFeed = function(feedId) {
-    var feed = feedsService.find(feedId);
+    let feed = feedsService.find(feedId);
     if (feed === null) {
       return;
     }
@@ -113,7 +113,7 @@ export const createActionService = (
       eventsService.roomEvent('muteFeed', { id: feed.id, requesterId: source.id });
     }
     if (feed.isEnabled(type)) {
-      var callback = null;
+      let callback = null;
       // If we are muting the main feed (the only publisher that can be
       // actually muted) raise a signal
       if (type === 'audio' && feed.getPublisher()) {
@@ -133,7 +133,7 @@ export const createActionService = (
    * @param {Boolean} boolval
    */
   that.setMedia = function(type, boolval) {
-    var feed = feedsService.findMain();
+    let feed = feedsService.findMain();
     if (!feed) {
       return;
     }

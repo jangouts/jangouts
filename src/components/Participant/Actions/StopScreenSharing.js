@@ -11,7 +11,7 @@ import { StopCircle } from 'react-feather';
 import { actionCreators as participantsActions } from '../../../state/ducks/participants';
 import { classNames } from '../../../utils/common';
 
-import ParticipantActionButton from './ParticipantActionButton'
+import ParticipantActionButton from './ParticipantActionButton';
 
 function StopScreenSharing({ participantId, ...props }) {
   const dispatch = useDispatch();

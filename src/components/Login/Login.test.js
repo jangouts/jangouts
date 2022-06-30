@@ -21,7 +21,7 @@ Janus.attachMediaStream = jest.fn();
 
 describe('logged in', () => {
   it('redirects to the room', async () => {
-    const { findByTestId } = renderWithRedux(
+    renderWithRedux(
       <MemoryRouter>
         <Routes>
           <Route exact path="/" element={<Login/>} />
@@ -31,7 +31,7 @@ describe('logged in', () => {
       { initialState: { room: { loggedIn: true } } }
     );
 
-    const speaker = await findByTestId('chatbox');
+    const speaker = await screen.findByTestId('chatbox');
     expect(speaker).toBeInTheDocument();
   });
 });

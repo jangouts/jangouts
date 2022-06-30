@@ -86,7 +86,7 @@ export class Feed {
    * @param {boolean} enabled
    */
   setEnabledTrack(type: AudioOrVideo, enabled: boolean): void {
-    var track: MediaStreamTrack | null = this.getTrack(type);
+    let track: MediaStreamTrack | null = this.getTrack(type);
     if (track !== null) {
       track.enabled = enabled;
     }
@@ -371,7 +371,7 @@ export class Feed {
   };
 
   apiObject({ include, exclude } : { include?: string[], exclude?: string[] } = {}) {
-    var attrs = include ? include : Object.keys(apiAttrs);
+    let attrs = include ? include : Object.keys(apiAttrs);
 
     if (exclude) {
       attrs = attrs.filter(attr => !exclude.includes(attr));
@@ -418,7 +418,7 @@ export class Feed {
       if (fnName in this) {
         this[fnName as keyof Feed](attrs[key]);
       } else {
-        console.warn(fnName, "is not defined for Feed")
+        console.warn(fnName, "is not defined for Feed");
       }
     });
   };
@@ -458,4 +458,4 @@ export class Feed {
 }
 export const createFeedFactory = (dataChannelService: any, eventsService: any) => (attrs: any) => {
   return new Feed({...attrs, dataChannelService, eventsService});
-}
+};

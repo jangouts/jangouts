@@ -66,6 +66,7 @@ export const initialState = {
   room: roomInitial,
   participants: participantsInitial,
   messages: messagesInitial,
+  config: configInitial,
   notifications: notificationsInitial
 };
 
@@ -74,6 +75,7 @@ export const actionCreators = {
   room: roomActions,
   participants: participantsActions,
   messages: messagesActions,
+  config: configActions,
   notifications: notificationActions
 };
 

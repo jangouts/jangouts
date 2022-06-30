@@ -6,19 +6,19 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Chat from './Chat';
 import { renderWithRedux } from '../../setupTests';
 import { createLogEntry } from '../../utils/log-entry';
+import { screen } from '@testing-library/react';
 
 it('renders without crashing', () => {
   renderWithRedux(<Chat />);
 });
 
 it('renders a chatbox', () => {
-  const { getByTestId } = renderWithRedux(<Chat />);
+  renderWithRedux(<Chat />);
 
-  expect(getByTestId('chatbox')).toBeInTheDocument();
+  expect(screen.getByTestId('chatbox')).toBeInTheDocument();
 });
 
 describe('when there are messages', () => {
@@ -32,7 +32,7 @@ describe('when there are messages', () => {
   };
 
   it('lists the messages', () => {
-    const { getByText } = renderWithRedux(<Chat />, { initialState: stateWithMessage });
-    expect(getByText('Hi all!')).not.toBeNull();
+    renderWithRedux(<Chat />, { initialState: stateWithMessage });
+    expect(screen.getByText('Hi all!')).not.toBeNull();
   });
 });

@@ -8,19 +8,20 @@
 import React from 'react';
 import MessageForm from './MessageForm';
 import { renderWithRedux } from '../../../setupTests';
+import { screen } from '@testing-library/react';
 
 it('renders without crashing', () => {
   renderWithRedux(<MessageForm />);
 });
 
 it('renders an input text', () => {
-  const { getByPlaceholderText } = renderWithRedux(<MessageForm />);
+  renderWithRedux(<MessageForm />);
 
-  expect(getByPlaceholderText('Enter your message here')).toBeInTheDocument();
+  expect(screen.getByPlaceholderText('Enter your message here')).toBeInTheDocument();
 });
 
 it('renders the "Send" input', () => {
-  const { getByDisplayValue } = renderWithRedux(<MessageForm />);
+  renderWithRedux(<MessageForm />);
 
-  expect(getByDisplayValue('Send')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('Send')).toBeInTheDocument();
 });

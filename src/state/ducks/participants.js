@@ -57,7 +57,7 @@ const unmute = () => (dispatch, getState) => {
   if (!audio) {
     dispatch(toggleAudio(id));
   }
-}
+};
 
 const toggleVideo = (id) => {
   return function() {

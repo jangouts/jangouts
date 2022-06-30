@@ -21,7 +21,7 @@ function AppStarter(props) {
 
   useEffect(() => {
     dispatch(configActions.load());
-  }, []);
+  }, [dispatch]);
 
   if (Object.entries(config).length === 0) {
     return (

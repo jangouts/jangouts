@@ -10,7 +10,6 @@
  *
  * @todo Read configuration.
  */
-import { Janus } from '../vendor/janus';
 import { createRoomService } from './room-service';
 import { createFeedsService } from './feeds-service';
 import { createEventsService } from './events-service';
@@ -18,7 +17,7 @@ import { createDataChannelService } from './data-channel-service';
 import { createActionService } from './action-service';
 
 export default (function() {
-  var that = {
+  let that = {
     dataChannelService: null,
     eventsService: null,
     feedsService: null,

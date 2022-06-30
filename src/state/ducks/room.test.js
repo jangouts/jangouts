@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import reducer, { actionTypes as types, actionCreators as actions } from './room';
+import reducer, { actionTypes as types } from './room';
 import UserSettings from "../../utils/user-settings";
 
 const username = 'jangouts';
