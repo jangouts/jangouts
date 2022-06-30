@@ -42,7 +42,7 @@ export const createSpeakObserver = (stream, options) => {
   let history = new Array(10).fill(0);
 
   that.start = function() {
-    let loop = window.setInterval(function() {
+    loop = window.setInterval(function() {
       // No clue why, but in some situations (which seems to be different in
       // every browser) audioContext is suspended.
       //
