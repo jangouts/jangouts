@@ -29,7 +29,7 @@ function Room() {
     const username = searchParams.get('user') || randomUsername();
     // TODO: get username from local storage
     dispatch(roomActions.login(username, roomId));
-  }, [dispatch, location, room.loggedIn, roomId]);
+  }, []);
 
   if (room.error || !room.loggedIn) {
     return <Navigate to="/" />;
