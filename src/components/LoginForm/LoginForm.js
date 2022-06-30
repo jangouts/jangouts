@@ -45,6 +45,7 @@ function findRoom(rooms, roomId) {
  * Handles the form submit
  *
  * @param {Function} dispatch - the dispatch function available in the Redux store
+ * @param {UserSettings} settings
  * @returns {Function}
  */
 function onSubmit(dispatch, settings) {

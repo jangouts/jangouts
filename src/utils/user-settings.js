@@ -6,7 +6,7 @@
  */
 
 /**
- * Class to represent user settings
+ * User Settings (user name, room id) in local storage so that they survive page refresh
  */
 class UserSettings {
   static STORAGE_KEY = "jangouts-user-settings";
