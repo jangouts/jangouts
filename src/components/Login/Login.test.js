@@ -8,8 +8,8 @@
 import React from 'react';
 import Login from './Login';
 import Room from '../Room';
-import { MemoryRouter, Route } from 'react-router-dom';
-import { act, screen } from '@testing-library/react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { screen, within } from '@testing-library/react';
 import { renderWithRedux } from '../../setupTests';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
@@ -23,8 +23,10 @@ describe('logged in', () => {
   it('redirects to the room', async () => {
     const { findByTestId } = renderWithRedux(
       <MemoryRouter>
-        <Route exact path="/" component={Login} />
-        <Route path="/room" component={Room} />
+        <Routes>
+          <Route exact path="/" element={<Login/>} />
+          <Route path="/room/:roomId" element={<Room/>} />
+        </Routes>
       </MemoryRouter>,
       { initialState: { room: { loggedIn: true } } }
     );
@@ -36,17 +38,17 @@ describe('logged in', () => {
 
 describe('not logged in', () => {
   it('displays the list of rooms', async () => {
-    act(() => {
-      renderWithRedux(
-        <MemoryRouter>
-          <Route exact path="/" component={Login} />
-          <Route path="/room" component={Room} />
-        </MemoryRouter>,
-        { initialState: { room: { loggedIn: false } } }
-      );
-    });
+    renderWithRedux(
+      <MemoryRouter>
+        <Routes>
+          <Route exact path="/" element={<Login/>} />
+          <Route path="/room/:roomId" element={<Room/>} />
+        </Routes>
+      </MemoryRouter>,
+      { initialState: { room: { loggedIn: false } } }
+    );
 
-    const testRoomOption = await screen.findByText('Test room');
-    expect(testRoomOption).toBeInTheDocument();
+    const roomSelector = await screen.findByRole("combobox");
+    await within(roomSelector).findByText("Test room (5/10 users)");
   });
 });

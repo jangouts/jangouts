@@ -60,6 +60,7 @@ describe('#fetch', () => {
     const xhrMock = createXhrMock('this is not JSON', 200);
     window.XMLHttpRequest = jest.fn(() => xhrMock);
 
+    console.warn = jest.fn();
     const configPromise = fetch();
     xhrMock.onload();
     configPromise.then((config) => {
@@ -67,6 +68,9 @@ describe('#fetch', () => {
       expect(config.videoThumbnails).toBe(true);
       done();
     });
+    expect(console.warn).toHaveBeenCalledWith(
+      "The configuration is not valid JSON.", expect.anything()
+    );
   });
 
   test('includes the ws: janusServer if none is given and current proto is http', (done) => {

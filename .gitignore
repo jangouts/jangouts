@@ -30,3 +30,6 @@ src/styles.css
 
 # JSDoc
 /jsdoc.out/
+
+# TypeScript
+src/react-app-env.d.ts
