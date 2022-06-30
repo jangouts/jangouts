@@ -111,21 +111,18 @@ describe('#find', () => {
 });
 
 describe('#waitFor', () => {
-  test('returns the feed with the given id', () => {
+  test('returns the feed with the given id', async () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
-    return feedsService.waitFor(secondFeed.id, 1, 100).then((result) => {
-      expect(result).toBe(secondFeed);
-    });
+    await expect(feedsService.waitFor(secondFeed.id, 1, 100)).resolves.toEqual(secondFeed);
   });
 
   describe('when a feed with the given', () => {
-    test('returns null', () => {
+    test('returns null', async () => {
       const feedsService = createFeedsService();
-      return feedsService.waitFor(secondFeed.id, 1, 100)
-        .then(console.log)
-        .catch((error) => { expect(error).toBe(`feed with id ${secondFeed.id} was not found`);
+      await expect(feedsService.waitFor(secondFeed.id, 1, 100)).rejects.toEqual({
+        error: `feed with id ${secondFeed.id} was not found`
       });
     });
   });
