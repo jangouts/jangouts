@@ -12,19 +12,32 @@ class UserSettings {
   static STORAGE_KEY = "jangouts-user-settings";
 
   /**
-   * Creates new settings from local storage data
+   * Creates new settings from local storage data, if any
    *
-   * @returns {UserSettings}
+   * @returns {(UserSettings|null)}
    */
   static load() {
     const storage = JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || {};
 
+    if (Object.keys(storage).length === 0)
+      return null;
+
     let settings = new UserSettings();
-    settings.username = storage._username;
-    settings.roomId = storage._roomId;
-    settings.chatOpen = storage._chatOpen;
+
+    if (storage._username !== undefined)
+      settings.username = storage._username;
+    if (storage._roomId !== undefined)
+      settings.roomId = storage._roomId;
+    if (storage._chatOpen !== undefined)
+      settings.chatOpen = storage._chatOpen;
 
     return settings;
+  }
+
+  constructor() {
+    this._username = null;
+    this._roomId = null;
+    this._chatOpen = false;
   }
 
   /**
@@ -34,17 +47,23 @@ class UserSettings {
     localStorage.setItem(UserSettings.STORAGE_KEY, JSON.stringify(this));
   }
 
+  /**
+   * @returns {(String|null)}
+   */
   get username() {
     return this._username;
   }
 
   /**
-   * @param {String} username
+   * @param {(String)} username
    */
   set username(username) {
     this._username = username;
   }
 
+  /**
+   * @returns {(String|null)}
+   */
   get roomId() {
     return this._roomId;
   }
@@ -56,6 +75,9 @@ class UserSettings {
     this._roomId = roomId;
   }
 
+  /**
+   * @returns {Boolean}
+   */
   get chatOpen() {
     return this._chatOpen;
   }

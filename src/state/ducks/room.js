@@ -53,7 +53,7 @@ const logout = () => {
 };
 
 const loadSettings = () => {
-  const settings = UserSettings.load();
+  const settings = UserSettings.load() || initialSettings();
   return { type: ROOM_SETTINGS_LOAD, payload: { settings } };
 };
 
@@ -77,10 +77,13 @@ const actionTypes = {
   ROOM_SETTINGS_LOAD
 };
 
-const initialSettings = new UserSettings();
-initialSettings.chatOpen = true;
+const initialSettings = () => {
+  let settings = new UserSettings();
+  settings.chatOpen = true;
+  return settings;
+};
 
-export const initialState = { settings: initialSettings, loggedIn: false, loggingIn: false };
+export const initialState = { settings: initialSettings(), loggedIn: false, loggingIn: false };
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;

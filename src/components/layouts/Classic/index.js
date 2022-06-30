@@ -5,7 +5,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import Header from '../../Header';
 import Speaker from '../../Speaker';
@@ -17,7 +18,8 @@ import Notifications from '../../Notifications';
 import { classNames } from '../../../utils/common';
 
 function Classic() {
-  const [showChat, setShowChat] = useState(true);
+  const { settings } = useSelector((state) => state.room);
+  const showChat = settings.chatOpen;
 
   return (
     <div className="w-screen h-screen bg-primary-dark border-b-8 border-primary-dark">
