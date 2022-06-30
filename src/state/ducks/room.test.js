@@ -6,6 +6,7 @@
  */
 
 import reducer, { actionTypes as types, actionCreators as actions } from './room';
+import UserSettings from "../../utils/user-settings";
 
 const username = 'jangouts';
 const roomId = 5678;
@@ -46,6 +47,18 @@ it('handles ROOM_LOGIN_REQUEST', () => {
   };
 
   expect(reducer({ roomId, username }, action)).toEqual({ roomId, username, loggingIn: true });
+});
+
+it('handles ROOM_SETTINGS_LOAD', () => {
+  const settings = new UserSettings();
+  settings.username = "test";
+
+  const action = {
+    type: types.ROOM_SETTINGS_LOAD,
+    payload: { settings }
+  };
+
+  expect(reducer({ roomId, username }, action)).toEqual({ roomId, username, settings });
 });
 
 describe('action creators', () => {
