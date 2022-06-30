@@ -55,7 +55,7 @@ it('handles ROOM_SETTINGS_LOAD', () => {
 
   const action = {
     type: types.ROOM_SETTINGS_LOAD,
-    payload: { settings: settings }
+    payload: { settings }
   };
 
   expect(reducer({ roomId, username }, action)).toEqual({ roomId, username, settings });

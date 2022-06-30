@@ -54,13 +54,11 @@ const logout = () => {
 
 const loadSettings = () => {
   const settings = UserSettings.load();
-
   return { type: ROOM_SETTINGS_LOAD, payload: { settings } };
 };
 
 const saveSettings = (settings) => {
   settings.save();
-
   return { type: ROOM_SETTINGS_LOAD, payload: { settings } };
 };
 
