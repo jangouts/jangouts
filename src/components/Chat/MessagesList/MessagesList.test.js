@@ -48,6 +48,6 @@ describe('when there are messages', () => {
     });
 
     const chatArea = getByRole('log');
-    expect(chatArea.scrollTo).toHaveBeenCalled()
+    expect(chatArea.scrollTo).toHaveBeenCalled();
   });
 });

@@ -7,7 +7,7 @@
 
 import janusApi from '../../janus-api';
 import reducer, { actionTypes, actionCreators } from './messages';
-import { createLogEntry } from '../../utils/log-entry'
+import { createLogEntry } from '../../utils/log-entry';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 

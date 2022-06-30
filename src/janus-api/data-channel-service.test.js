@@ -37,8 +37,8 @@ describe('#sendChatMessage', () => {
       'createChatMsg', { feedId: 666, text: 'Hello Dolly!'}
     );
 
-    var sentData = mainConnection.sendData.mock.calls;
-    var parsed = JSON.parse(sentData[0][0]['text']);
+    let sentData = mainConnection.sendData.mock.calls;
+    let parsed = JSON.parse(sentData[0][0]['text']);
 
     expect(sentData.length).toBe(1);
     expect(parsed).toStrictEqual({

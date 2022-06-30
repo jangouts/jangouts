@@ -45,7 +45,7 @@ describe('fromEvent', () => {
     });
 
     expect(notification).toBeNull();
-  })
+  });
 
   it('when the user speaks but is muted', () => {
     const notification = fromEvent({

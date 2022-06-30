@@ -16,7 +16,7 @@ describe('#handleFn', () => {
   const eventsHandler = createRoomEventsHandler(dispatchFn);
   subject.subscribe(eventsHandler);
 
-  beforeEach(() => { jest.resetAllMocks(); });
+  beforeEach(() => { jest.resetAllMocks() });
 
   describe('with a reportError event', () => {
     test('dispatchs an error', () => {

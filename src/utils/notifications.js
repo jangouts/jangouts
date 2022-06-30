@@ -31,16 +31,16 @@ export function UserNotification(id, text, type, severity, actions) {
  */
 export function Action(label, toDispatch) {
   this.label = label;
-  this.toDispatch = toDispatch
+  this.toDispatch = toDispatch;
 }
 
 const createDoNotShowAgainAction = (type) => {
-  return new Action("Do not show again", messageActions.block(type))
-}
+  return new Action("Do not show again", messageActions.block(type));
+};
 
 const createUnmuteAction = () => {
-  return new Action("Unmute", participantActions.unmute())
-}
+  return new Action("Unmute", participantActions.unmute());
+};
 
 /**
  * Turns an event into a user notification.
@@ -62,7 +62,7 @@ export const fromEvent = ({type, data}) => {
  */
 export const createNotification = (text, type, severity = SEVERITY_INFO, actions = []) => {
   return new UserNotification(nextId(), text, type, severity, actions);
-}
+};
 
 /**
  * Severity levels
@@ -97,7 +97,7 @@ const createMutedNotification= (data) => {
     notification.actions.push(createDoNotShowAgainAction(MUTED_TYPE));
   }
   return notification;
-}
+};
 
 const MUTED_JOIN = 'join';
 const MUTED_REQUEST = 'request';
@@ -139,7 +139,7 @@ const createSpeakingNotification = (_data) => {
     createDoNotShowAgainAction(SPEAKING_TYPE)
   ];
   return notification;
-}
+};
 
 const eventFactories = {
   [MUTED_TYPE]: createMutedNotification,

@@ -15,10 +15,10 @@
  * @param {Function} ok Callback to call on success
  */
 export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, ok) {
-  var current = {};
-  var requested = null;
-  var wanted = { audio: true, video: true, data: true };
-  var okCallback = null;
+  let current = {};
+  let requested = null;
+  let wanted = { audio: true, video: true, data: true };
+  let okCallback = null;
   Object.assign(wanted, wantedInit);
   // Initial configure
   configure({ jsep: jsep, ok: ok });
@@ -49,7 +49,7 @@ export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, o
   that.set = function(options) {
     options = options || {};
     options.values = options.values || {};
-    var oldWanted = {};
+    let oldWanted = {};
     Object.assign(oldWanted, current, wanted);
     Object.assign(wanted, current, options.values);
 
@@ -95,7 +95,7 @@ export const createConnectionConfig = function(pluginHandle, wantedInit, jsep, o
 
   function configure(options) {
     options = options || {};
-    var config = { request: 'configure' };
+    let config = { request: 'configure' };
     requested = {};
 
     Object.assign(requested, current, wanted);

@@ -23,26 +23,26 @@ export const createSpeakObserver = (stream, options) => {
   options = options || {};
   let that = {};
 
-  var interval = options.interval || DEFAULT_INTERVAL;
-  var threshold = options.threshold || DEFAULT_THRESHOLD;
+  let interval = options.interval || DEFAULT_INTERVAL;
+  let threshold = options.threshold || DEFAULT_THRESHOLD;
 
-  var AudioContextType = window.AudioContext || window.webkitAudioContext;
-  var audioContext = new AudioContextType();
+  let AudioContextType = window.AudioContext || window.webkitAudioContext;
+  let audioContext = new AudioContextType();
   // Setup an analyser
-  var analyser = audioContext.createAnalyser();
+  let analyser = audioContext.createAnalyser();
   analyser.fftSize = 512;
   analyser.smoothingTimeConstant = 0.1;
-  var fftBins = new window.Float32Array(analyser.fftSize);
+  let fftBins = new window.Float32Array(analyser.fftSize);
   // Setup a source node and connect it to the analyser
-  var sourceNode = audioContext.createMediaStreamSource(stream);
+  let sourceNode = audioContext.createMediaStreamSource(stream);
   sourceNode.connect(analyser);
 
-  var speaking = false;
-  var loop = null;
-  var history = new Array(10).fill(0);
+  let speaking = false;
+  let loop = null;
+  let history = new Array(10).fill(0);
 
   that.start = function() {
-    var loop = window.setInterval(function() {
+    let loop = window.setInterval(function() {
       // No clue why, but in some situations (which seems to be different in
       // every browser) audioContext is suspended.
       //
@@ -65,8 +65,8 @@ export const createSpeakObserver = (stream, options) => {
   };
 
   function poll() {
-    var audioDetected = isAudioDetected();
-    var sum;
+    let audioDetected = isAudioDetected();
+    let sum;
 
     if (audioDetected && !speaking) {
       // Make sure we have been above the threshold in, at least, 2 of the 3
@@ -97,7 +97,7 @@ export const createSpeakObserver = (stream, options) => {
     analyser.getFloatFrequencyData(fftBins);
     // Skip the first 4... simply because hark does it
     // (too low frequencies to be voice, I guess)
-    for (var i = 4, ii = fftBins.length; i < ii; i++) {
+    for (let i = 4, ii = fftBins.length; i < ii; i++) {
       if (fftBins[i] > threshold && fftBins[i] < 0) {
         return true;
       }

@@ -30,7 +30,7 @@ const secondFeed = {
 const eventsService = { roomEvent: jest.fn(), auditEvent: jest.fn() };
 
 describe('#add', () => {
-  beforeEach(() => { jest.resetAllMocks(); });
+  beforeEach(() => { jest.resetAllMocks() });
 
   test('adds the feed', () => {
     const feedsService = createFeedsService(eventsService);
@@ -68,7 +68,7 @@ describe('#add', () => {
 });
 
 describe('#destroy', () => {
-  beforeEach(() => { jest.resetAllMocks(); });
+  beforeEach(() => { jest.resetAllMocks() });
 
   test('removes the feed', () => {
     const feedsService = createFeedsService(eventsService);
