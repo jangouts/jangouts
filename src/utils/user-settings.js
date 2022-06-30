@@ -22,6 +22,7 @@ class UserSettings {
     let settings = new UserSettings();
     settings.username = storage._username;
     settings.roomId = storage._roomId;
+    settings.chatOpen = storage._chatOpen;
 
     return settings;
   }
@@ -37,6 +38,9 @@ class UserSettings {
     return this._username;
   }
 
+  /**
+   * @param {String} username
+   */
   set username(username) {
     this._username = username;
   }
@@ -45,8 +49,22 @@ class UserSettings {
     return this._roomId;
   }
 
+  /**
+   * @param {String} roomId
+   */
   set roomId(roomId) {
     this._roomId = roomId;
+  }
+
+  get chatOpen() {
+    return this._chatOpen;
+  }
+
+  /**
+   * @param {Booelan} chatOpen
+   */
+  set chatOpen(chatOpen) {
+    this._chatOpen = chatOpen;
   }
 }
 

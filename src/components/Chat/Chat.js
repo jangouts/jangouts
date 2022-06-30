@@ -6,16 +6,18 @@
  */
 
 import React from 'react';
+import { useSelector } from 'react-redux';
 import MessagesList from './MessagesList';
 import MessageForm from './MessageForm';
 
 function Chat() {
-  return (
+  const { settings } = useSelector((state) => state.room);
+
+  return settings.chatOpen &&
     <div className="relative h-full pb-12">
       <MessagesList />
       <MessageForm />
-    </div>
-  );
+    </div>;
 }
 
 export default Chat;

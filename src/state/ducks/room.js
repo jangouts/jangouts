@@ -77,7 +77,10 @@ const actionTypes = {
   ROOM_SETTINGS_LOAD
 };
 
-export const initialState = { settings: new UserSettings(), loggedIn: false, loggingIn: false };
+const initialSettings = new UserSettings();
+initialSettings.chatOpen = true;
+
+export const initialState = { settings: initialSettings, loggedIn: false, loggingIn: false };
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;

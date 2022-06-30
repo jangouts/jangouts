@@ -6,20 +6,37 @@
  */
 
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators as roomActions } from '../../../state/ducks/room';
 import { MessageSquare } from 'react-feather';
 import { classNames } from '../../../utils/common';
 
-function Toggler({}) {
+function toggle(dispatch, settings) {
+  return () => {
+    settings.chatOpen = !settings.chatOpen;
+    dispatch(roomActions.saveSettings(settings));
+  };
+}
+
+function Toggler() {
+  const dispatch = useDispatch();
+  const { settings } = useSelector((state) => state.room);
+
+  let title;
+  let classes;
+
+  if (settings.chatOpen) {
+    title = 'Hide chat';
+    classes = 'bg-white text-primary';
+  }
+  else {
+    title = 'Show chat';
+    classes = 'bg-primary-dark hover:bg-primary text-white';
+  }
+
   return (
-    <button
-      title={true ? 'Hide chat' : 'Show chat'}
-      onClick={true}>
-      <MessageSquare
-        className={classNames(
-          'p-1 rounded',
-          true ? 'bg-white text-primary' : 'bg-primary-dark hover:bg-primary text-white'
-        )}
-      />
+    <button title={ title } onClick={toggle(dispatch, settings)}>
+      <MessageSquare className={classNames('p-1 rounded', classes)} />
     </button>
   );
 }
