@@ -95,7 +95,7 @@ function LoginForm() {
   }, []);
 
   useEffect(() => {
-    const roomId = settings.roomId || rooms[0]?.id;
+    const roomId = settings?.roomId || rooms[0]?.id;
     reset({ room: roomId });
     setSelectedRoom(findRoom(rooms, roomId));
   }, [settings, rooms]);
@@ -114,7 +114,7 @@ function LoginForm() {
             type="text"
             ref={register}
             className="form-input"
-            defaultValue={settings.username}
+            defaultValue={settings?.username}
             autoComplete="username"
             required
           />

@@ -7,23 +7,14 @@
 
 import UserSettings from "./user-settings";
 
-let mockStorage;
-
-beforeAll(() => {
-  global.Storage.prototype.setItem = jest.fn((key, value) => {
-    mockStorage[key] = value;
-  })
-  global.Storage.prototype.getItem = jest.fn((key) => mockStorage[key]);
-})
-
 beforeEach(() => {
-  mockStorage = {};
+  localStorage.clear();
 });
 
 describe('load', () => {
   it('creates settings from the local storage', () => {
     let data = { _username: "test", _roomId: "1234" };
-    mockStorage[UserSettings.STORAGE_KEY] = JSON.stringify(data);
+    localStorage.setItem(UserSettings.STORAGE_KEY, JSON.stringify(data));
 
     const settings = UserSettings.load();
 
@@ -40,6 +31,6 @@ describe('save', () => {
 
     settings.save();
 
-    expect(mockStorage[UserSettings.STORAGE_KEY]).toEqual(JSON.stringify(settings));
+    expect(localStorage.getItem(UserSettings.STORAGE_KEY)).toEqual(JSON.stringify(settings));
   });
 });
