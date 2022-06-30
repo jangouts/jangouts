@@ -121,9 +121,9 @@ describe('#waitFor', () => {
   describe('when a feed with the given', () => {
     test('returns null', async () => {
       const feedsService = createFeedsService();
-      await expect(feedsService.waitFor(secondFeed.id, 1, 100)).rejects.toEqual({
-        error: `feed with id ${secondFeed.id} was not found`
-      });
+      await expect(feedsService.waitFor(secondFeed.id, 1, 100)).rejects.toEqual(
+        new Error(`feed with id ${secondFeed.id} was not found`)
+      );
     });
   });
 });
