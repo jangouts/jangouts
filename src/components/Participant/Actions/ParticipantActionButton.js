@@ -17,7 +17,7 @@ function ParticipantActionButton({ icon, label, className, iconStyle, labelStyle
       aria-label={label}
       className={classNames(
         "inline-flex items-center focus:outline-none",
-        props.disabled && "cursor-default" || "cursor-pointer",
+        props.disabled ? "cursor-default" : "cursor-pointer",
         className
       )}
       {...props}

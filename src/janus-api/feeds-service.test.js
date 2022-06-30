@@ -123,8 +123,9 @@ describe('#waitFor', () => {
   describe('when a feed with the given', () => {
     test('returns null', () => {
       const feedsService = createFeedsService();
-      return feedsService.waitFor(secondFeed.id, 1, 100).catch((error) => {
-        expect(error).toBe(`feed with id ${secondFeed.id} was not found`);
+      return feedsService.waitFor(secondFeed.id, 1, 100)
+        .then(console.log)
+        .catch((error) => { expect(error).toBe(`feed with id ${secondFeed.id} was not found`);
       });
     });
   });

@@ -20,7 +20,7 @@ import {
 // Interweave documentation recommends to compound around Interweave
 // itself using a custom component.
 export default function Interweave({ filters = [], matchers = [], ...props }) {
-  const [_emojis, source, _manager] = useEmojiData({ compact: false });
+  const [, source] = useEmojiData({ compact: false });
 
   const globalFilters = [];
 

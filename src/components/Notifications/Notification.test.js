@@ -9,6 +9,7 @@ import React from 'react';
 import { renderWithRedux } from '../../setupTests';
 import { createNotification, Action as NotificationAction } from '../../utils/notifications';
 import Notification from './Notification';
+import { screen } from '@testing-library/react';
 
 const toDispatch = jest.fn();
 const actions = [
@@ -21,17 +22,17 @@ const initialState = {
 
 
 it('renders without crashing', () => {
-  const { getByText } = renderWithRedux(<Notification notification={notification} />, {
+  renderWithRedux(<Notification notification={notification} />, {
     initialState
   });
 
-  expect(getByText(notification.text)).toBeInTheDocument();
+  expect(screen.getByText(notification.text)).toBeInTheDocument();
 });
 
 it('renders the "Do not show again" link if the notification has a type', () => {
-  const { getByText } = renderWithRedux(<Notification notification={notification} />, {
+  renderWithRedux(<Notification notification={notification} />, {
     initialState
   });
 
-  expect(getByText("Do not show again")).toBeInTheDocument();
+  expect(screen.getByText("Do not show again")).toBeInTheDocument();
 });

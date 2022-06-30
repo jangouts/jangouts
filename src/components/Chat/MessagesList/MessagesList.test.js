@@ -8,7 +8,7 @@
 import React from 'react';
 import MessagesList from './MessagesList';
 import { renderWithRedux } from '../../../setupTests';
-import { act } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 // TODO: we should test the auto-scrolling
 
@@ -35,19 +35,19 @@ describe('when there are messages', () => {
   };
 
   it('renders all messages', () => {
-    const { getAllByTestId } = renderWithRedux(<MessagesList id={1} display="User" />, {
+    renderWithRedux(<MessagesList id={1} display="User" />, {
       initialState
     });
 
-    expect(getAllByTestId('message')).toHaveLength(2);
+    expect(screen.getAllByTestId('message')).toHaveLength(2);
   });
 
   it('sets the initial scroll position', () => {
-    const { getByRole } = renderWithRedux(<MessagesList id={1} display="User" />, {
+    renderWithRedux(<MessagesList id={1} display="User" />, {
       initialState
     });
 
-    const chatArea = getByRole('log');
+    const chatArea = screen.getByRole('log');
     expect(chatArea.scrollTo).toHaveBeenCalled();
   });
 });

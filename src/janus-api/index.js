@@ -10,7 +10,6 @@
  *
  * @todo Read configuration.
  */
-import { Janus } from '../vendor/janus';
 import { createRoomService } from './room-service';
 import { createFeedsService } from './feeds-service';
 import { createEventsService } from './events-service';

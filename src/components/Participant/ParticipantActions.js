@@ -6,13 +6,12 @@
  */
 
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { X as Close, MoreVertical } from 'react-feather';
 import { ToggleAudio, ToggleVideo, Reconnect, StopScreenSharing } from './Actions';
-import { actionCreators as participantsActions } from '../../state/ducks/participants';
 import { classNames, discardFalses } from '../../utils/common';
 
-function ParticipantActions({ participantId, className }) {
+function ParticipantActions({ participantId }) {
   const [showMore, setShowMore] = useState(false);
   const participant = useSelector((state) => state.participants[participantId]);
 

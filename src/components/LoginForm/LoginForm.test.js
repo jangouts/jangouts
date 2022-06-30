@@ -8,7 +8,7 @@
 import React from 'react';
 import LoginForm from './LoginForm';
 import { renderWithRedux } from '../../setupTests';
-import { act, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 
 jest.mock('../../janus-api');
 
