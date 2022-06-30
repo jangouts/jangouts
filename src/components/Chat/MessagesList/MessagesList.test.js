@@ -12,12 +12,6 @@ import { act } from '@testing-library/react';
 
 // TODO: we should test the auto-scrolling
 
-it('renders without crashing', () => {
-  act(() => {
-    renderWithRedux(<MessagesList id={1} display="User" />);
-  });
-});
-
 describe('when there are messages', () => {
   const initialState = {
     messages: [
@@ -54,7 +48,6 @@ describe('when there are messages', () => {
     });
 
     const chatArea = getByRole('log');
-
     expect(chatArea.scrollTo).toHaveBeenCalled()
   });
 });

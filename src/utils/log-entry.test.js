@@ -40,11 +40,11 @@ describe('#text', () => {
     });
   });
 
-  xdescribe('publishScreenText');
-  xdescribe('destroyFeedText');
-  xdescribe('newRemoteFeedText');
-  xdescribe('ignoreFeedText');
-  xdescribe('reconnectFeedText');
+  describe('publishScreenText', () => {});
+  describe('destroyFeedText', () => {});
+  describe('newRemoteFeedText', () => {});
+  describe('ignoreFeedText', () => {});
+  describe('reconnectFeedText', () => {});
 });
 
-xdescribe('#hasText');
+xdescribe('#hasText', () => {});

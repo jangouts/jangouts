@@ -18,9 +18,6 @@ const randomUsername = () => `user_${Math.floor(Math.random() * 1000)}`;
 function Room() {
   const location = useLocation();
   const params = useParams();
-
-  console.log("params", params);
-  console.log("location", location);
   const room = useSelector((state) => state.room);
   const dispatch = useDispatch();
   const { roomId } = useParams();
@@ -28,8 +25,9 @@ function Room() {
 
   useEffect(() => {
     if (room.loggedIn) return;
-    const params = new URLSearchParams(location.search);
-    const username = params.get('user') || randomUsername();
+
+    const searchParams = new URLSearchParams(location.search);
+    const username = searchParams.get('user') || randomUsername();
     // TODO: get username from local storage
     dispatch(roomActions.login(username, roomId));
   }, [location]);

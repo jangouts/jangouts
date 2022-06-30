@@ -6,10 +6,12 @@
  */
 
 import janusApi from '../../janus-api';
+import UserSettings from '../../utils/user-settings';
 
 const ROOM_LOGIN = 'jangouts/room/LOGIN';
 const ROOM_LOGIN_REQUEST = 'jangouts/room/LOGIN_REQUEST';
 const ROOM_LOGOUT = 'jangouts/room/LOGOUT';
+const ROOM_SETTINGS_LOAD = 'jangouts/room/SETTINGS_LOAD';
 
 const login = (username, room, pin = undefined) => {
   return function(dispatch) {
@@ -50,26 +52,39 @@ const logout = () => {
   };
 };
 
+const loadSettings = () => {
+  const settings = UserSettings.load();
+  return { type: ROOM_SETTINGS_LOAD, payload: { settings } };
+};
+
+const saveSettings = (settings) => {
+  settings.save();
+  return { type: ROOM_SETTINGS_LOAD, payload: { settings } };
+};
+
 const actionCreators = {
   login,
   logout,
-  loginFailure
+  loginFailure,
+  loadSettings,
+  saveSettings
 };
 
 const actionTypes = {
   ROOM_LOGIN,
   ROOM_LOGIN_REQUEST,
-  ROOM_LOGOUT
+  ROOM_LOGOUT,
+  ROOM_SETTINGS_LOAD
 };
 
-export const initialState = { loggedIn: false, loggingIn: false };
+export const initialState = { settings: new UserSettings(), loggedIn: false, loggingIn: false };
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
     case ROOM_LOGIN_REQUEST: {
-      return { ...payload, loggingIn: true };
+      return { ...state, ...payload, loggingIn: true };
     }
     case ROOM_LOGIN: {
       if (payload !== undefined && payload.error) {
@@ -77,6 +92,9 @@ const reducer = function(state = initialState, action) {
       } else {
         return { ...state, loggingIn: false, loggedIn: true };
       }
+    }
+    case ROOM_SETTINGS_LOAD: {
+      return { ...state, settings: payload.settings };
     }
     case ROOM_LOGOUT: {
       return { ...state, loggedIn: false };

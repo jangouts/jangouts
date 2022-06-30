@@ -20,7 +20,7 @@ import { classNames } from '../../utils/common';
  */
 function roomOptions(rooms) {
   const availableRooms = rooms.sort((a, b) => a.description > b.description ? 1 : -1);
-    
+
   return availableRooms.map((r) => (
     <option key={r.id} value={r.id}>
       {r.description} ({r.participants}/{r.publishers} users)
@@ -45,10 +45,14 @@ function findRoom(rooms, roomId) {
  * Handles the form submit
  *
  * @param {Function} dispatch - the dispatch function available in the Redux store
+ * @param {UserSettings} settings
  * @returns {Function}
  */
-function onSubmit(dispatch) {
+function onSubmit(dispatch, settings) {
   return function(data) {
+    settings.username = data.username;
+    settings.roomId = data.room;
+    dispatch(roomActions.saveSettings(settings));
     dispatch(roomActions.login(data.username, data.room, data.pin));
   };
 }
@@ -57,55 +61,49 @@ function onSubmit(dispatch) {
  * Generates the markup to render an alert
  *
  * @param {String} error - the error message
- * @returns {?String} - the HTML markup if error message is defined; undefined otherwise
+ * @returns {String} - the HTML markup
  */
 function renderError(error) {
-  if (error) {
-    return (
-      <div
-        className="bg-gray-200 border-b-4 border-secondary text-secondary px-4 py-3 mx-1 mt-2 shadow-inner"
-        role="alert">
-        <div className="flex">
-          <svg
-            className="fill-current h-6 w-6 text-secondary mr-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20">
-            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-          </svg>
-          <div>
-            <p className="font-bold">{error}</p>
-          </div>
+  return (
+    <div
+      className="bg-gray-200 border-b-4 border-secondary text-secondary px-4 py-3 mx-1 mt-2 shadow-inner"
+      role="alert">
+      <div className="flex">
+        <svg
+          className="fill-current h-6 w-6 text-secondary mr-4"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20">
+          <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+        </svg>
+        <div>
+          <p className="font-bold">{error}</p>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 function LoginForm() {
   const dispatch = useDispatch();
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState({});
-  const previousRoom = useSelector((state) => state.room);
   const { register, handleSubmit, reset } = useForm();
-  const { username: previousUsername, error } = previousRoom;
+  const { settings, error } = useSelector((state) => state.room);
 
   useEffect(() => {
-    janusApi.getRooms().then((rooms) => {
-      setRooms(rooms);
-      let roomId;
-      if (previousRoom.roomId) {
-        roomId = previousRoom.roomId;
-      } else if (rooms.length > 0) {
-        roomId = rooms[0].id;
-      }
-      reset({ room: roomId });
-      setSelectedRoom(findRoom(rooms, roomId));
-    });
+    dispatch(roomActions.loadSettings());
+    janusApi.getRooms().then(setRooms);
   }, []);
 
+  useEffect(() => {
+    const roomId = settings?.roomId || rooms[0]?.id;
+    reset({ room: roomId });
+    setSelectedRoom(findRoom(rooms, roomId));
+  }, [settings, rooms]);
+
   return (
-    <form className="mt-2" onSubmit={handleSubmit(onSubmit(dispatch))}>
-      {renderError(error)}
+    <form className="mt-2" onSubmit={handleSubmit(onSubmit(dispatch, settings))}>
+      {error && renderError(error)}
       <div className="flex flex-col sm:flex-row lg:flex-col">
         <div className="form-element">
           <label className="form-label" htmlFor="username">
@@ -117,7 +115,7 @@ function LoginForm() {
             type="text"
             ref={register}
             className="form-input"
-            defaultValue={previousUsername}
+            defaultValue={settings?.username}
             autoComplete="username"
             required
           />

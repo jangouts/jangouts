@@ -17,21 +17,23 @@ import { initialState } from '../../state/ducks';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
+jest.mock('react-router-dom', () => ({
+  useLocation: () => ({ search: '?user=Jane' }),
+  useParams: () => ({ roomId: '5678' })
+}));
+
 jest.mock('react-router', () => ({
-  useParams: jest.fn().mockReturnValue({ roomId: '5678' })
+  Navigate: () => <></>
 }));
 
 // FIXME: for some reason, calling jest.mock does not work
-
-janusApi.enterRoom = jest.fn(() => Promise.resolve());
-janusApi.getFeedStream = jest.fn();
+janusApi.enterRoom = (room, username, pin) => Promise.resolve();
 Janus.attachMediaStream = jest.fn();
 
 describe('when the user is not logged in', () => {
   it('tries to log in taking room and username from the URL', () => {
     const store = mockStore({ ...initialState, room: { loggedIn: false } });
-
-    renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
+    renderWithRedux(<Room location={{ search: '?user=Jane' }} />, { store });
 
     expect(store.getActions()).toEqual([
       {
@@ -45,7 +47,6 @@ describe('when the user is not logged in', () => {
 describe('when the user is logged in', () => {
   it('does not try to log in', () => {
     const store = mockStore({ ...initialState, room: { loggedIn: true } });
-
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
     expect(store.getActions()).toEqual([]);

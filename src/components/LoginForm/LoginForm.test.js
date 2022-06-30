@@ -14,17 +14,14 @@ jest.mock('../../janus-api');
 
 describe('LoginForm component', () => {
   it('has an input to enter the username', async () => {
-    act(() => {
-      renderWithRedux(<LoginForm />);
-    });
+    renderWithRedux(<LoginForm />);
+
     const username_input = await screen.findByLabelText('Username');
     expect(username_input).toBeInTheDocument();
   });
 
   it('has a selector with the available rooms sorted by the shown text', async () => {
-    act(() => {
-      renderWithRedux(<LoginForm />);
-    });
+    renderWithRedux(<LoginForm />);
 
     const room_input = await screen.findByLabelText('Room');
     const options = within(room_input).getAllByRole('option');
