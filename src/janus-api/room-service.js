@@ -25,8 +25,8 @@ const configuredJanusServer = (server, sslServer, useSSL) =>
  * @todo it is copied from the old room service. Please, refactor.
  */
 const defaultJanusServer = (useSSL) => {
-  var wsProtocol;
-  var wsPort;
+  let wsProtocol;
+  let wsPort;
 
   if (useSSL) {
     wsProtocol = 'wss:';
@@ -150,7 +150,7 @@ export const createRoomService = (
               // Free the resource (it looks safe to do it here)
               pluginHandle.detach();
               if (result.videoroom === 'success') {
-                var rooms = result.list.map((r) => createRoomFromJanus(r));
+                let rooms = result.list.map((r) => createRoomFromJanus(r));
                 resolve(rooms);
               } else {
                 reject();
@@ -173,7 +173,7 @@ export const createRoomService = (
   };
 
   that.doEnter = (username, pin) => {
-    var connection = null;
+    let connection = null;
     that.pin = pin;
 
     // sending user joining event
@@ -224,7 +224,7 @@ export const createRoomService = (
         console.log(' ::: Got a cleanup notification: we are unpublished now :::');
       },
       onmessage: function(msg, jsep) {
-        var event = msg.videoroom;
+        let event = msg.videoroom;
         console.debug('Event: ' + event);
 
         // Step 2. Response from janus confirming we joined
@@ -273,12 +273,12 @@ export const createRoomService = (
           }
           // One of the publishers has gone away?
           if (isPresent(msg.leaving)) {
-            var leaving = msg.leaving;
+            let leaving = msg.leaving;
             actionService.destroyFeed(leaving);
           }
           // One of the publishers has unpublished?
           if (isPresent(msg.unpublished)) {
-            var unpublished = msg.unpublished;
+            let unpublished = msg.unpublished;
             actionService.unpublishFeed(unpublished);
           }
           // Reply to a configure request
@@ -315,18 +315,18 @@ export const createRoomService = (
   };
 
   that.addFeeds = function(list, subscribe) {
-    if (list.length === 0) { return; }
+    if (list.length === 0) { return }
 
     console.debug('Got a list of available feeds (' + subscribe + '):', list);
-    for (var f = 0; f < list.length; f++) {
-      var id = list[f].id;
-      var display = list[f].display;
+    for (let f = 0; f < list.length; f++) {
+      let id = list[f].id;
+      let display = list[f].display;
       that.addFeed(id, display, subscribe);
     }
   };
 
   that.addFeed = function(id, display, subscribe) {
-    var feed = feedsService.find(id);
+    let feed = feedsService.find(id);
 
     if (subscribe) {
       if (feed === null || feed.waitingForConnection()) {
@@ -340,8 +340,8 @@ export const createRoomService = (
   };
 
   that.subscribeToFeed = function(id, display) {
-    var feed = feedsService.find(id);
-    var connection = null;
+    let feed = feedsService.find(id);
+    let connection = null;
 
     if (feed) {
       display = feed.display;
@@ -362,7 +362,7 @@ export const createRoomService = (
         console.error('  -- Error attaching plugin... ' + error);
       },
       onmessage: function(msg, jsep) {
-        var event = msg.videoroom;
+        let event = msg.videoroom;
         if (event === 'attached') {
           // Subscriber created and attached
           // emit 'subscriber attached' event
@@ -399,7 +399,8 @@ export const createRoomService = (
         feedsService.waitFor(id).then(feed => {
           feed.addTrack(track);
           emitStreamEvents(feed);
-        }).catch(console.error);
+        })
+          .catch(console.error);
       },
       ondataopen: function() {
         console.log('The subscriber DataChannel is available');
@@ -417,10 +418,10 @@ export const createRoomService = (
   };
 
   that.publishScreen = function(videoSource) {
-    var feed = feedsService.findMain();
-    var display = feed.display;
-    var connection;
-    var id;
+    let feed = feedsService.findMain();
+    let display = feed.display;
+    let connection;
+    let id;
 
     // emit `screenshare` event
     eventsService.auditEvent('screenshare');
@@ -449,7 +450,7 @@ export const createRoomService = (
       },
       onmessage: function(msg, jsep) {
         console.debug(' ::: Got a message (screen) :::', msg);
-        var event = msg.videoroom;
+        let event = msg.videoroom;
 
         if (event === 'joined') {
           id = msg.id;

@@ -9,6 +9,7 @@ import React from 'react';
 import { renderWithRedux } from '../../setupTests';
 import { createNotification } from '../../utils/notifications';
 import Notifications from './Notifications';
+import { screen } from '@testing-library/react';
 
 const notification1 = createNotification('You have been muted.');
 const notification2 = createNotification('Nobody is listening!');
@@ -17,7 +18,7 @@ const initialState = {
 };
 
 it('renders without crashing', () => {
-  const { getByText } = renderWithRedux(<Notifications />, { initialState });
-  expect(getByText(notification1.text)).toBeInTheDocument();
-  expect(getByText(notification2.text)).toBeInTheDocument();
+  renderWithRedux(<Notifications />, { initialState });
+  expect(screen.getByText(notification1.text)).toBeInTheDocument();
+  expect(screen.getByText(notification2.text)).toBeInTheDocument();
 });

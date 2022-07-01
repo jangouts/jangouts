@@ -13,7 +13,7 @@ class Room {
   description: string;
   participants: number;
   publishers: number;
-  pinRequired: boolean
+  pinRequired: boolean;
 
   constructor(
     id: number, description: string, participants: number, publishers: number, pinRequired: boolean

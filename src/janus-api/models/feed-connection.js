@@ -37,7 +37,7 @@ export const createFeedConnection = (eventsService) => (
   };
 
   that.register = function(display, pin) {
-    var register = {
+    let register = {
       request: 'join',
       room: roomId,
       ptype: 'publisher',
@@ -48,7 +48,7 @@ export const createFeedConnection = (eventsService) => (
   };
 
   that.listen = function(feedId, pin, privateId) {
-    var listen = {
+    let listen = {
       request: 'join', room: roomId, ptype: 'subscriber', feed: feedId,
       pin: pin || '', private_id: privateId
     };
@@ -80,8 +80,8 @@ export const createFeedConnection = (eventsService) => (
   that.publish = function(options) {
     options = options || {};
 
-    var media = { videoRecv: false, audioRecv: false };
-    var cfg = { video: true, audio: true };
+    let media = { videoRecv: false, audioRecv: false };
+    let cfg = { video: true, audio: true };
     if (that.role === 'main') {
       if (options.muted) {
         cfg.audio = false;
@@ -141,7 +141,7 @@ export const createFeedConnection = (eventsService) => (
       },
       success: function(jsep) {
         console.debug('Got SDP!');
-        var start = { request: 'start', room: roomId };
+        let start = { request: 'start', room: roomId };
         pluginHandle.send({ message: start, jsep: jsep });
       },
       error: function(error) {
@@ -164,7 +164,7 @@ export const createFeedConnection = (eventsService) => (
     if (that.config) {
       that.config.set(options);
     } else {
-      var cfg = createConnectionConfig(pluginHandle, options.values, null, options.ok);
+      let cfg = createConnectionConfig(pluginHandle, options.values, null, options.ok);
       that.config = cfg;
     }
   };

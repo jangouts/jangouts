@@ -7,7 +7,7 @@
 
 import React from 'react';
 import Message from './Message';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 // TODO: I was not able to test the emoji matcher. Not even after checking how it is done here:
 // https://github.com/milesj/interweave/blob/master/packages/emoji/tests/Interweave.test.tsx
@@ -28,21 +28,21 @@ it('renders without crashing', () => {
 });
 
 it('renders the user name', () => {
-  const { getByText } = render(<Message {...plainMessage} />);
+  render(<Message {...plainMessage} />);
 
-  expect(getByText('John')).toBeInTheDocument();
+  expect(screen.getByText('John')).toBeInTheDocument();
 });
 
 it('renders the message', () => {
-  const { getByText } = render(<Message {...plainMessage} />);
+  render(<Message {...plainMessage} />);
 
-  expect(getByText('Hi Jane!')).toBeInTheDocument();
+  expect(screen.getByText('Hi Jane!')).toBeInTheDocument();
 });
 
 it('renders the time in HH:MM format', () => {
-  const { getByText } = render(<Message {...plainMessage} />);
+  render(<Message {...plainMessage} />);
 
-  expect(getByText('18:01')).toBeInTheDocument();
+  expect(screen.getByText('18:01')).toBeInTheDocument();
 });
 
 const htmlMessage = {
@@ -51,16 +51,16 @@ const htmlMessage = {
 };
 
 it('filters out the dangerous HTML markup', () => {
-  const { getByTestId } = render(<Message {...htmlMessage} />);
+  render(<Message {...htmlMessage} />);
 
-  expect(getByTestId('message')).not.toContainHTML('<script>');
-  expect(getByTestId('message')).not.toContainHTML('window.alert');
+  expect(screen.getByTestId('message')).not.toContainHTML('<script>');
+  expect(screen.getByTestId('message')).not.toContainHTML('window.alert');
 });
 
 it('keeps the acceptable HTML markup', () => {
-  const { getByTestId } = render(<Message {...htmlMessage} />);
+  render(<Message {...htmlMessage} />);
 
-  expect(getByTestId('message')).toContainHTML('<b>bold</b>');
+  expect(screen.getByTestId('message')).toContainHTML('<b>bold</b>');
 });
 
 const imgMessage = {
@@ -69,9 +69,9 @@ const imgMessage = {
 };
 
 it('renders images inline', () => {
-  const { getByTestId } = render(<Message {...imgMessage} />);
+  render(<Message {...imgMessage} />);
 
-  expect(getByTestId('message')).toContainHTML('<img src="http://www.google.com/logo.png"');
+  expect(screen.getByTestId('message')).toContainHTML('<img src="http://www.google.com/logo.png"');
 });
 
 const formattedMessage = {
@@ -85,21 +85,21 @@ const redundantFormatMessage = {
 };
 
 it('formats bold and italic text', () => {
-  const { getByTestId } = render(<Message {...formattedMessage} />);
+  render(<Message {...formattedMessage} />);
 
-  expect(getByTestId('message')).toContainHTML('Some <b>bold</b>,');
-  expect(getByTestId('message')).toContainHTML(' <i>italic</i> ');
-  expect(getByTestId('message')).toContainHTML(' <b><i>combined</i></b>.');
+  expect(screen.getByTestId('message')).toContainHTML('Some <b>bold</b>,');
+  expect(screen.getByTestId('message')).toContainHTML(' <i>italic</i> ');
+  expect(screen.getByTestId('message')).toContainHTML(' <b><i>combined</i></b>.');
 });
 
 it('formats correctly text with redundant markup', () => {
-  const { getByTestId } = render(<Message {...redundantFormatMessage} />);
+  render(<Message {...redundantFormatMessage} />);
 
-  expect(getByTestId('message')).toContainHTML('Very <b>bold</b> and');
+  expect(screen.getByTestId('message')).toContainHTML('Very <b>bold</b> and');
 });
 
 it('formats correctly text with asymmetric markup', () => {
-  const { getByTestId } = render(<Message {...redundantFormatMessage} />);
+  render(<Message {...redundantFormatMessage} />);
 
-  expect(getByTestId('message')).toContainHTML('<b>*unbalanced</b>.');
+  expect(screen.getByTestId('message')).toContainHTML('<b>*unbalanced</b>.');
 });

@@ -33,7 +33,7 @@ const notifyEvent = (event, timeout) => (dispatch) => {
 const NOTIFY_DEFAULT_OPTIONS = {
   timeout: DEFAULT_TIMEOUT,
   block: false
-}
+};
 /**
  * Action to display a notification (and hide it after the timeout)
  *
@@ -107,8 +107,8 @@ const unblock = (type) => ({
  */
 const dispatchAction = (id, action) => (dispatch) => {
   dispatch(action);
-  dispatch(close(id))
-}
+  dispatch(close(id));
+};
 
 /**
  * Determines whether a notification type is blocked
@@ -123,7 +123,7 @@ const isBlocked = (type, state) => {
     return block > Date.now();
   }
   return block;
-}
+};
 
 /**
  * Helper function to add a type to the blocklist
@@ -135,7 +135,7 @@ const isBlocked = (type, state) => {
  */
 const addTypeToBlocklist = (type, block, state) => {
   return {...state, blocklist: {...state.blocklist, [type]: block}};
-}
+};
 
 /**
  * Helper function to remove a type from the blocklist
@@ -147,7 +147,7 @@ const addTypeToBlocklist = (type, block, state) => {
 const removeTypeFromBlocklist = (type, state) => {
   const {[type]: _v, ...blocklist } = state.blocklist;
   return {...state, blocklist};
-}
+};
 
 const actionCreators = {
   notifyEvent,
@@ -164,7 +164,7 @@ const actionTypes = {
   NOTIFICATION_BLOCK
 };
 
-const initialState = { notifications: [], blocklist: {} }
+const initialState = { notifications: [], blocklist: {} };
 
 const reducer = function(state = initialState, action) {
   switch (action.type) {

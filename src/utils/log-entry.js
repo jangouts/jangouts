@@ -17,7 +17,7 @@ export const createLogEntry = (type, content) => {
   };
 
   that.muteRequestText = function() {
-    var res;
+    let res;
 
     if (that.content.source.isPublisher) {
       res = 'You have muted ';

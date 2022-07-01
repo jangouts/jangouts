@@ -7,7 +7,7 @@
 
 import React from 'react';
 import Participants from './Participants';
-import { screen, within } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderWithRedux } from '../../setupTests';
 import { Janus } from '../../vendor/janus';
 
@@ -24,6 +24,6 @@ const initialState = {
 };
 
 it('displays the participants in the room', async () => {
-  const { getByText } = renderWithRedux(<Participants />, { initialState });
-  const jane = await screen.findByText('Jane');
+  renderWithRedux(<Participants />, { initialState });
+  await screen.findByText('Jane');
 });

@@ -8,6 +8,7 @@
 import React from 'react';
 import ToggleAudio from './ToggleAudio';
 import { renderWithRedux } from '../../../setupTests';
+import { screen } from '@testing-library/react';
 
 const initialState = {
   participants: {
@@ -21,15 +22,15 @@ const initialState = {
 describe('when given participant is the publisher', () => {
   describe('and audio is true', () => {
     it('renders it enabled', () => {
-      const { getByTitle } = renderWithRedux(<ToggleAudio participantId={1} />, { initialState });
-      const button = getByTitle('Mute');
+      renderWithRedux(<ToggleAudio participantId={1} />, { initialState });
+      const button = screen.getByTitle('Mute');
 
       expect(button.disabled).not.toBe(true);
     });
 
     it('renders "Mute"', () => {
-      const { getByTitle } = renderWithRedux(<ToggleAudio participantId={1} />, { initialState });
-      const button = getByTitle('Mute');
+      renderWithRedux(<ToggleAudio participantId={1} />, { initialState });
+      const button = screen.getByTitle('Mute');
 
       expect(button).toBeInTheDocument();
     });
@@ -37,15 +38,15 @@ describe('when given participant is the publisher', () => {
 
   describe('and audio is false', () => {
     it('renders it enabled', () => {
-      const { getByTitle } = renderWithRedux(<ToggleAudio participantId={2} />, { initialState });
-      const button = getByTitle('Unmute');
+      renderWithRedux(<ToggleAudio participantId={2} />, { initialState });
+      const button = screen.getByTitle('Unmute');
 
       expect(button.disabled).not.toBe(true);
     });
 
     it('renders "Unmute"', () => {
-      const { getByTitle } = renderWithRedux(<ToggleAudio participantId={2} />, { initialState });
-      const button = getByTitle('Unmute');
+      renderWithRedux(<ToggleAudio participantId={2} />, { initialState });
+      const button = screen.getByTitle('Unmute');
 
       expect(button).toBeInTheDocument();
     });
@@ -55,15 +56,15 @@ describe('when given participant is the publisher', () => {
 describe('when given participant is not the publisher', () => {
   describe('and audio is true', () => {
     it('renders it enabled', () => {
-      const { getByTitle } = renderWithRedux(<ToggleAudio participantId={3} />, { initialState });
-      const button = getByTitle('Mute');
+      renderWithRedux(<ToggleAudio participantId={3} />, { initialState });
+      const button = screen.getByTitle('Mute');
 
       expect(button.disabled).not.toBe(true);
     });
 
     it('renders "Mute"', () => {
-      const { getByTitle } = renderWithRedux(<ToggleAudio participantId={3} />, { initialState });
-      const button = getByTitle('Mute');
+      renderWithRedux(<ToggleAudio participantId={3} />, { initialState });
+      const button = screen.getByTitle('Mute');
 
       expect(button).toBeInTheDocument();
     });
@@ -71,15 +72,15 @@ describe('when given participant is not the publisher', () => {
 
   describe('and audio is false', () => {
     it('renders as disabled', () => {
-      const { getByTitle } = renderWithRedux(<ToggleAudio participantId={4} />, { initialState });
-      const button = getByTitle('John is muted');
+      renderWithRedux(<ToggleAudio participantId={4} />, { initialState });
+      const button = screen.getByTitle('John is muted');
 
       expect(button.disabled).toBe(true);
     });
 
-    it('renders "${username} is muted"', () => {
-      const { getByTitle } = renderWithRedux(<ToggleAudio participantId={4} />, { initialState });
-      const button = getByTitle('John is muted');
+    it('renders "username is muted"', () => {
+      renderWithRedux(<ToggleAudio participantId={4} />, { initialState });
+      const button = screen.getByTitle('John is muted');
 
       expect(button).toBeInTheDocument();
     });

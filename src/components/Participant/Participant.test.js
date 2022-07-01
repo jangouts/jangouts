@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Participant from './Participant';
 import { renderWithRedux } from '../../setupTests';
 

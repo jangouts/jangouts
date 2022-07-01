@@ -15,6 +15,29 @@ const connection = {
 
 const createFeed = createFeedFactory(dataChannelService, eventsService);
 
+describe('#createFeed', () => {
+  it('returns a feed with the given values', () => {
+    const feed = createFeed({
+      id: 1, isLocalScreen: true, ignored: true
+    });
+    expect(feed.id).toEqual(1);
+    expect(feed.localScreen).toEqual(true);
+    expect(feed.ignored).toEqual(true);
+  });
+
+  describe('when no attributes are given', () => {
+    it('returns a feed with default values', () => {
+      const feed = createFeed({});
+      expect(feed.id).toEqual(0);
+      expect(feed.display).toBeNull();
+      expect(feed.publisher).toEqual(false);
+      expect(feed.localScreen).toEqual(false);
+      expect(feed.connection).toBeNull();
+      expect(feed.dataChannelService).toEqual(dataChannelService);
+      expect(feed.eventsService).toEqual(eventsService);
+    });
+  });
+});
 describe('#isEnabled', () => {
   describe('when is a publisher', () => {
     describe('but the connection is not defined', () => {

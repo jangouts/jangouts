@@ -30,8 +30,8 @@ const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture'];
  * Feed (?)
  */
 export class Feed {
-  id: number = 0;
-  display: string;
+  id: number;
+  display: string | null;
   publisher: boolean;
   localScreen: boolean;
   ignored: boolean;
@@ -48,12 +48,12 @@ export class Feed {
   constructor({
     id, display, isPublisher, isLocalScreen, connection, ignored, dataChannelService, eventsService
   }: FeedArgs) {
-    this.id = id;
-    this.display = display;
-    this.publisher = isPublisher;
-    this.localScreen = isLocalScreen;
-    this.ignored = ignored; // is still used?
-    this.connection = connection;
+    this.id = id || 0;
+    this.display = display || null;
+    this.publisher = isPublisher || false;
+    this.localScreen = isLocalScreen || false;
+    this.ignored = ignored || false; // is still used?
+    this.connection = connection || null;
     this.dataChannelService = dataChannelService;
     this.eventsService = eventsService;
   }
@@ -86,7 +86,7 @@ export class Feed {
    * @param {boolean} enabled
    */
   setEnabledTrack(type: AudioOrVideo, enabled: boolean): void {
-    var track: MediaStreamTrack | null = this.getTrack(type);
+    let track: MediaStreamTrack | null = this.getTrack(type);
     if (track !== null) {
       track.enabled = enabled;
     }
@@ -342,7 +342,7 @@ export class Feed {
    * Gets the current display name for publisher
    * @return {string} - current display
    */
-  getDisplay(): string {
+  getDisplay(): string | null {
     return this.display;
   };
 
@@ -371,7 +371,7 @@ export class Feed {
   };
 
   apiObject({ include, exclude } : { include?: string[], exclude?: string[] } = {}) {
-    var attrs = include ? include : Object.keys(apiAttrs);
+    let attrs = include ? include : Object.keys(apiAttrs);
 
     if (exclude) {
       attrs = attrs.filter(attr => !exclude.includes(attr));
@@ -418,7 +418,7 @@ export class Feed {
       if (fnName in this) {
         this[fnName as keyof Feed](attrs[key]);
       } else {
-        console.warn(fnName, "is not defined for Feed")
+        console.warn(fnName, "is not defined for Feed");
       }
     });
   };
@@ -458,4 +458,4 @@ export class Feed {
 }
 export const createFeedFactory = (dataChannelService: any, eventsService: any) => (attrs: any) => {
   return new Feed({...attrs, dataChannelService, eventsService});
-}
+};

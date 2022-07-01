@@ -136,7 +136,7 @@ describe('action creators', () => {
 
   describe('#removeParticipant', () => {
     const store = mockStore({ participants: [] });
-    beforeEach(() => { store.clearActions(); });
+    beforeEach(() => { store.clearActions() });
 
 
     it('creates an action to detach a participant and another to notify that', () => {
@@ -168,7 +168,7 @@ describe('action creators', () => {
     let participants = {};
     participants[participant.id] = participant;
     const store = mockStore({ participants });
-    beforeEach(() => { store.clearActions(); });
+    beforeEach(() => { store.clearActions() });
 
     it('creates an action to update the participant status', () => {
       store.dispatch(actionCreators.setStream(participant.id, {}));
@@ -197,7 +197,7 @@ describe('action creators', () => {
 
   describe('#toggleAudio', () => {
     const store = mockStore({});
-    beforeEach(() => { store.clearActions(); });
+    beforeEach(() => { store.clearActions() });
 
     it('returns a function that asks janus to toggle the audio', () => {
       janusApi.toggleAudio = jest.fn();

@@ -50,9 +50,9 @@ function MessagesList() {
     const wrapper = wrapperRef.current;
 
     if (wrapper) {
-      wrapper.scrollTo({ top: wrapper.scrollHeight })
+      wrapper.scrollTo({ top: wrapper.scrollHeight });
     }
-  }, [])
+  }, []);
 
   const messages = filterMessages(useSelector((state) => state.messages));
 

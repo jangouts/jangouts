@@ -30,7 +30,7 @@ const secondFeed = {
 const eventsService = { roomEvent: jest.fn(), auditEvent: jest.fn() };
 
 describe('#add', () => {
-  beforeEach(() => { jest.resetAllMocks(); });
+  beforeEach(() => { jest.resetAllMocks() });
 
   test('adds the feed', () => {
     const feedsService = createFeedsService(eventsService);
@@ -68,7 +68,7 @@ describe('#add', () => {
 });
 
 describe('#destroy', () => {
-  beforeEach(() => { jest.resetAllMocks(); });
+  beforeEach(() => { jest.resetAllMocks() });
 
   test('removes the feed', () => {
     const feedsService = createFeedsService(eventsService);
@@ -111,21 +111,19 @@ describe('#find', () => {
 });
 
 describe('#waitFor', () => {
-  test('returns the feed with the given id', () => {
+  test('returns the feed with the given id', async () => {
     const feedsService = createFeedsService(eventsService);
     feedsService.add(firstFeed);
     feedsService.add(secondFeed);
-    return feedsService.waitFor(secondFeed.id, 1, 100).then((result) => {
-      expect(result).toBe(secondFeed);
-    });
+    await expect(feedsService.waitFor(secondFeed.id, 1, 100)).resolves.toEqual(secondFeed);
   });
 
   describe('when a feed with the given', () => {
-    test('returns null', () => {
+    test('returns null', async () => {
       const feedsService = createFeedsService();
-      return feedsService.waitFor(secondFeed.id, 1, 100).catch((error) => {
-        expect(error).toBe(`feed with id ${secondFeed.id} was not found`);
-      });
+      await expect(feedsService.waitFor(secondFeed.id, 1, 100)).rejects.toEqual(
+        new Error(`feed with id ${secondFeed.id} was not found`)
+      );
     });
   });
 });

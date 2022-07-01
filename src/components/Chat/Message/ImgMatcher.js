@@ -28,7 +28,7 @@ export default class ImgMatcher extends Matcher {
     return (
       <span className="img-matcher" key={props.key}>
         {children}
-        <img src={props.src} onLoad={props.onRender} />
+        <img alt={props.key} src={props.src} onLoad={props.onRender} />
       </span>
     );
   }
