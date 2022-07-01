@@ -62,7 +62,7 @@ const reducer = function(state = initialState, action) {
       const { type, timestamp, content } = entry;
       const list = state.list;
 
-      return {...state, list: [...list, { index: list.length, type, timestamp, content, text: entry.text() }]};
+      return {...state, list: [...list, { index: list.length, text: entry.text(), type, timestamp, content }]};
     }
 
     case MESSAGE_DISPLAYED: {
