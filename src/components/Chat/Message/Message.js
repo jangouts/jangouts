@@ -24,7 +24,7 @@ function Message({ type, content, text, timestamp, onRender }) {
   if (type === 'chatMsg')
     return (
       <li
-        className="rounded m-2 p-2 bg-white overflow-hidden overflow-x-auto shadow"
+        className="rounded scroll-mb-2 m-2 p-2 bg-white overflow-hidden overflow-x-auto shadow"
         data-testid="message">
         <div className="flex justify-between">
           <div className="mr-1 font-bold text-xs md:text-sm">
