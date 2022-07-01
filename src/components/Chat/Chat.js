@@ -13,7 +13,7 @@ import MessageForm from './MessageForm';
 function Chat() {
   const { settings } = useSelector((state) => state.room);
 
-  if (!settings.chatOpen) { return null; }
+  if (!settings.chatOpen) { return null }
 
   return (
     <div className="relative h-full pb-12">
