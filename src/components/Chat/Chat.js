@@ -6,10 +6,15 @@
  */
 
 import React from 'react';
+import { useSelector } from 'react-redux';
 import MessagesList from './MessagesList';
 import MessageForm from './MessageForm';
 
 function Chat() {
+  const { settings } = useSelector((state) => state.room);
+
+  if (!settings.chatOpen) { return null }
+
   return (
     <div className="relative h-full pb-12">
       <MessagesList />

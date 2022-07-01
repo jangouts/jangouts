@@ -15,7 +15,7 @@ const newMessage = { feed: '5678', text: 'See you!' };
 const newEntry = createLogEntry('chatMsg', newMessage);
 
 describe('reducer', () => {
-  const initialState = [{ id: '1234', content: 'Hello!', type: 'message' }];
+  const initialState = { list: [{ id: '1234', content: 'Hello!', type: 'message' }] };
 
   it('does not handle unknown action', () => {
     const action = { type: 'UNKNOWN', payload: newMessage };
@@ -26,10 +26,10 @@ describe('reducer', () => {
   it('handles MESSAGE_REGISTER', () => {
     const action = { type: actionTypes.MESSAGE_REGISTER, payload: newEntry };
 
-    expect(reducer(initialState, action)).toEqual([
+    expect(reducer(initialState, action)).toEqual({
       ...initialState,
-      expect.objectContaining({text: newEntry.text(), content: newMessage})
-    ]);
+      list: [...initialState.list, expect.objectContaining({text: newEntry.text(), content: newMessage})]
+    });
   });
 });
 

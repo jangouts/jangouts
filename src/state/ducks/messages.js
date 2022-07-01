@@ -9,6 +9,7 @@ import janusApi from '../../janus-api';
 import { createLogEntry } from '../../utils/log-entry';
 
 const MESSAGE_REGISTER = 'jangouts/message/REGISTER';
+const MESSAGE_DISPLAYED = 'jangouts/message/DISPLAYED';
 
 const send = function(text) {
   return function() {
@@ -35,26 +36,41 @@ const register = (entry) => ({
   payload: entry
 });
 
+const markDisplayed = (index) => ({
+  type: MESSAGE_DISPLAYED,
+  payload: index
+});
+
 const actionCreators = {
   send,
   add,
-  addChatMsg
+  addChatMsg,
+  markDisplayed
 };
 
 const actionTypes = {
-  MESSAGE_REGISTER
+  MESSAGE_REGISTER,
+  MESSAGE_DISPLAYED
 };
 
-const initialState = [];
+const initialState = { displayed: -1, list: [] };
 
 const reducer = function(state = initialState, action) {
   switch (action.type) {
     case MESSAGE_REGISTER: {
       const entry = action.payload;
       const { type, timestamp, content } = entry;
+      const list = state.list;
 
-      return [...state, { type, timestamp, content, text: entry.text() }];
+      return {...state, list: [...list, { index: list.length, text: entry.text(), type, timestamp, content }]};
     }
+
+    case MESSAGE_DISPLAYED: {
+      const index = action.payload;
+
+      return {...state, displayed: Math.max(index, state.displayed) };
+    }
+
     default:
       return state;
   }

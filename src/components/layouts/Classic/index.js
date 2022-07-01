@@ -5,35 +5,28 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import React, { useState } from 'react';
-import { MessageSquare } from 'react-feather';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import Header from '../../Header';
 import Speaker from '../../Speaker';
 import Participants from '../../Participants';
 import Chat from '../../Chat';
+import ChatToggler from '../../Chat/Toggler';
 import Notifications from '../../Notifications';
 
 import { classNames } from '../../../utils/common';
 
 function Classic() {
-  const [showChat, setShowChat] = useState(true);
+  const { settings } = useSelector((state) => state.room);
+  const showChat = settings.chatOpen;
 
   return (
     <div className="w-screen h-screen bg-primary-dark border-b-8 border-primary-dark">
       <div className="h-full padding-b-4 flex flex-col bg-gray-100">
         <div className="px-4 py-1 text-white font-bold border-b-4 border-secondary bg-primary-dark ">
           <Header>
-            <button
-              title={showChat ? 'Hide chat' : 'Show chat'}
-              onClick={() => setShowChat(!showChat)}>
-              <MessageSquare
-                className={classNames(
-                  'p-1 rounded',
-                  showChat ? 'bg-white text-primary' : 'bg-primary-dark hover:bg-primary text-white'
-                )}
-              />
-            </button>
+            <ChatToggler />
           </Header>
         </div>
         <div className="flex-1 pt-2 overflow-hidden grid gap-2 grid-rows-6 grid-cols-2 sm:grid-flow-col">
