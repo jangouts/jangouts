@@ -43,13 +43,14 @@ function Toggler() {
     300
   );
 
-  const displayedClasses =
-    'absolute -top-1 -right-1 h-5 w-5 text-secondary rounded-full flex justify-center items-center items';
+  const counterPosition = `absolute -top-2 -right-${unread < 99 ? 2 : 3}`;
+  const counterStyle =
+    'p-0.5 shadow-md bg-secondary text-xs text-white rounded-full flex justify-center items-center items';
 
   return (
-    <button title={ title } onClick={toggle(dispatch, settings)}>
+    <button title={title} onClick={toggle(dispatch, settings)}>
       <strong className="relative inline-flex items-center top-0.5">
-        <span className={classNames(unread > 0 || 'hidden', displayedClasses)}>
+        <span className={classNames(unread > 0 || 'hidden', counterPosition, counterStyle)}>
           <span>{unread}</span>
         </span>
         <MessageSquare className={classNames('p-0.5 rounded', classes)} />
