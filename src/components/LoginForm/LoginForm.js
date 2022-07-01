@@ -91,7 +91,6 @@ function LoginForm() {
   const { settings, error } = useSelector((state) => state.room);
 
   useEffect(() => {
-    dispatch(roomActions.loadSettings());
     janusApi.getRooms().then(setRooms);
   }, []);
 

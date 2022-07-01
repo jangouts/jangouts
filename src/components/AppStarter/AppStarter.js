@@ -8,6 +8,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as configActions } from '../../state/ducks/config';
+import { actionCreators as roomActions } from '../../state/ducks/room';
 import Logo from '../Logo';
 
 import './AppStarter.css';
@@ -21,6 +22,7 @@ function AppStarter(props) {
 
   useEffect(() => {
     dispatch(configActions.load());
+    dispatch(roomActions.loadSettings());
   }, []);
 
   if (Object.entries(config).length === 0) {
