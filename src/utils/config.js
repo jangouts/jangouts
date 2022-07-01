@@ -50,30 +50,22 @@ const defaultJanusServer = () => {
 const replacePlaceholders = (text) => text.replace('%{hostname}', window.location.hostname);
 
 /**
- * Parses a piece of JSON returning an empty object if it is not valid.
- *
- * @param {string} text Configuration (in JSON format).
- * @returns {Object}
- */
-const parseJSON = (text) => {
-  try {
-    return JSON.parse(text);
-  } catch (e) {
-    console.warn('The configuration is not valid JSON.', e);
-    return {};
-  }
-};
-
-/**
- * Parses and buids the configuration object.
+ * Parses and builds the configuration object.
  *
  * @param {string} text Configuration (in JSON format).
  * @returns {Object}
  */
 function parseConfig(text) {
   const replacedText = replacePlaceholders(text);
-  const config = parseJSON(replacedText);
-  Object.keys(config).forEach((k) => {
+  let config;
+  try {
+    config = JSON.parse(replacedText);
+  } catch (e) {
+    console.error(`Could not parse the configuration file: ${e}. Using default values.`);
+    return defaultConfig();
+  }
+
+  Object.keys(config).forEach(k => {
     if (config[k] === undefined || config[k] === null) {
       delete config[k];
     }
@@ -81,32 +73,20 @@ function parseConfig(text) {
   return { ...defaultConfig(), ...config };
 }
 
-const READY_STATE_DONE = 4;
-const STATUS_SUCCESS = 200;
-
 /**
- * Fetches and parses the configuration from the `config.json` file.
+ * Retrieves the configuration
  *
- * @returns {Object}
+ * It tries to get a custom configuration from `/config.json`. If a valid configuration
+ * file is found, it merges its values into the default ones. Otherwise, it returns
+ * the default configuration.
+ *  
  */
-export const fetch = () => {
-  return new Promise((resolve, reject) => {
-    let xhr = new XMLHttpRequest();
-    xhr.onload = function(e) {
-      if (xhr.readyState === READY_STATE_DONE) {
-        if (xhr.status === STATUS_SUCCESS) {
-          resolve(parseConfig(xhr.responseText));
-        } else {
-          resolve(defaultConfig());
-        }
-      }
-    };
-
-    xhr.onerror = function(e) {
-      resolve(defaultConfig());
-    };
-
-    xhr.open('GET', 'config.json');
-    xhr.send(null);
-  });
+export const fetchConfig = async () => {
+  const response = await fetch('/config.json');
+  if (response.ok) {
+    return parseConfig(await response.text());
+  } else {
+    console.error("Could not load the configuration file. Using default values.");
+    return defaultConfig();
+  }
 };

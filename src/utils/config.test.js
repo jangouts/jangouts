@@ -5,99 +5,63 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import { fetch } from './config';
+import { fetchConfig } from './config';
 
-const createXhrMock = (responseText, status = 200) => {
-  return {
-    open: jest.fn(),
-    send: jest.fn(),
-    readyState: 4,
-    status,
-    responseText
-  };
+const mockFetch = ({text, ok}) => {
+  global.fetch = jest.fn(() => {
+    return Promise.resolve({
+      text: () => Promise.resolve(text),
+      ok: ok
+    });
+  });
 };
 
-describe('#fetch', () => {
-  const oldXMLHttpRequest = window.XMLHttpRequest;
-  const oldLocation = window.location;
+beforeAll(() => {
+  console.error = jest.fn();
+});
 
-  afterAll(() => {
-    window.XMLHttpRequest = oldXMLHttpRequest;
-    window.location = oldLocation;
-  });
-
-  test('fetches and returns the configuration', (done) => {
-    const config = {
-      janusServer: 'ws://jangouts.io:8188/janus',
-      videoThumbnails: true
-    };
-    const xhrMock = createXhrMock(JSON.stringify(config));
-    window.XMLHttpRequest = jest.fn(() => xhrMock);
-
-    const configPromise = fetch();
-    xhrMock.onload();
-    configPromise.then((config) => {
-      expect(config.janusServer).toBe('ws://jangouts.io:8188/janus');
-      expect(config.videoThumbnails).toBe(true);
-      done();
+describe('#fetchConfig', () => {
+  it('fetches and returns the configuration', async () => {
+    mockFetch({
+      ok: true,
+      text: '{"janusServer": "ws://jangouts.io:8188/janus"}'
     });
+
+    const config = await fetchConfig();
+    expect(config.janusServer).toEqual("ws://jangouts.io:8188/janus");
   });
 
-  test('returns the default configuration if not found', (done) => {
-    const xhrMock = createXhrMock('', 404);
-    window.XMLHttpRequest = jest.fn(() => xhrMock);
+  it('returns the default configuration if not found', async () => {
+    mockFetch({ ok: false });
 
-    const configPromise = fetch();
-    xhrMock.onload();
-    configPromise.then((config) => {
-      expect(config.janusServer).toBe('ws://localhost:8188/janus');
-      expect(config.videoThumbnails).toBe(true);
-      done();
-    });
+    const config = await fetchConfig();
+    expect(config.janusServer).toEqual("ws://localhost:8188/janus");
   });
 
-  test('returns the default configuration if no valid JSON is found', (done) => {
-    const xhrMock = createXhrMock('this is not JSON', 200);
-    window.XMLHttpRequest = jest.fn(() => xhrMock);
+  it('returns the default configuration if no valid JSON is found', async () => {
+    mockFetch({ ok: true, text: 'not JSON' });
 
-    console.warn = jest.fn();
-    const configPromise = fetch();
-    xhrMock.onload();
-    configPromise.then((config) => {
-      expect(config.janusServer).toBe('ws://localhost:8188/janus');
-      expect(config.videoThumbnails).toBe(true);
-      done();
-    });
-    expect(console.warn).toHaveBeenCalledWith(
-      "The configuration is not valid JSON.", expect.anything()
-    );
+    const config = await fetchConfig();
+    expect(config.janusServer).toEqual("ws://localhost:8188/janus");
   });
 
-  test('includes the ws: janusServer if none is given and current proto is http', (done) => {
+  it('includes the ws: janusServer if none is given and current proto is http', async () => {
+    mockFetch({ ok: true, text: '{}' });
+
     delete window.location;
     window.location = { protocol: 'http:', hostname: 'example.net' };
-    const xhrMock = createXhrMock(JSON.stringify({ janusServer: null }));
-    window.XMLHttpRequest = jest.fn(() => xhrMock);
 
-    const configPromise = fetch();
-    xhrMock.onload();
-    configPromise.then((config) => {
-      expect(config.janusServer).toBe('ws://example.net:8188/janus');
-      done();
-    });
+    const config = await fetchConfig();
+    expect(config.janusServer).toEqual("ws://example.net:8188/janus");
   });
 
-  test('includes the wss: janusServer if none is given and the current proto is https', (done) => {
+  it('includes the wss: janusServer if none is given and the current proto is https', async () => {
+    mockFetch({ ok: true, text: '{}' });
+
     delete window.location;
     window.location = { protocol: 'https:', hostname: 'example.net' };
-    const xhrMock = createXhrMock(JSON.stringify({ janusServer: null }));
-    window.XMLHttpRequest = jest.fn(() => xhrMock);
 
-    const configPromise = fetch();
-    xhrMock.onload();
-    configPromise.then((config) => {
-      expect(config.janusServer).toBe('wss://example.net:8189/janus');
-      done();
-    });
+    const config = await fetchConfig();
+    expect(config.janusServer).toEqual("wss://example.net:8189/janus");
   });
 });

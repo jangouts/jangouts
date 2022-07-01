@@ -6,7 +6,7 @@
  */
 
 import janusApi from '../../janus-api';
-import { fetch as fetchConfig } from '../../utils/config';
+import { fetchConfig } from '../../utils/config';
 import { createRoomEventsHandler } from '../../utils/room-events-handler';
 
 const LOAD_CONFIG = 'jangouts/config/LOAD';
