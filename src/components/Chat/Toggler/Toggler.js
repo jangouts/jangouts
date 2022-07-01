@@ -29,8 +29,7 @@ function Toggler() {
   if (settings.chatOpen) {
     title = 'Hide chat';
     classes = 'bg-white text-primary';
-  }
-  else {
+  } else {
     title = 'Show chat';
     classes = 'bg-primary-dark hover:bg-primary text-white';
   }
