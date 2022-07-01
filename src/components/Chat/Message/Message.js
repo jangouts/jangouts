@@ -16,7 +16,7 @@ const renderUsername = (feed) => {
   return <span>{feed.display}</span>;
 };
 
-function Message({ type, content, text, timestamp, onRender }) {
+function Message({ type, index, content, text, timestamp, onRender }) {
   // TODO: use date-fns, luxon or similar?
   const datetime = new Date(timestamp);
   const time = `${datetime.getHours()}:${String(datetime.getMinutes()).padStart('2', 0)}`;
@@ -25,7 +25,7 @@ function Message({ type, content, text, timestamp, onRender }) {
     return (
       <li
         className="rounded scroll-mb-2 m-2 p-2 bg-white overflow-hidden overflow-x-auto shadow"
-        data-testid="message">
+        data-testid="message" data-index={index}>
         <div className="flex justify-between">
           <div className="mr-1 font-bold text-xs md:text-sm">
             {content && renderUsername(content.feed)}
