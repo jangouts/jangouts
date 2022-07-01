@@ -11,29 +11,6 @@
 class UserSettings {
   static STORAGE_KEY = "jangouts-user-settings";
 
-  /**
-   * Creates new settings from local storage data, if any
-   *
-   * @returns {(UserSettings|null)}
-   */
-  static load() {
-    const storage = JSON.parse(localStorage.getItem(this.STORAGE_KEY)) || {};
-
-    if (Object.keys(storage).length === 0)
-      return null;
-
-    let settings = new UserSettings();
-
-    if (storage._username !== undefined)
-      settings.username = storage._username;
-    if (storage._roomId !== undefined)
-      settings.roomId = storage._roomId;
-    if (storage._chatOpen !== undefined)
-      settings.chatOpen = storage._chatOpen;
-
-    return settings;
-  }
-
   constructor() {
     this._username = null;
     this._roomId = null;
@@ -41,10 +18,56 @@ class UserSettings {
   }
 
   /**
+   * Creates new settings from local storage data, if any
+   *
+   * @returns {(UserSettings|null)}
+   */
+  static load() {
+    const storage = JSON.parse(localStorage.getItem(this.STORAGE_KEY));
+
+    if (!storage) { return null }
+
+    return this.fromPlain(storage);
+  }
+
+  /**
+   * Creates new settings from plain object
+   *
+   * @param {Object} plainSettings
+   * @returns {UserSettings}
+   */
+  static fromPlain(plainSettings) {
+    let settings = new UserSettings();
+
+    if (plainSettings.username !== undefined)
+      settings.username = plainSettings.username;
+    if (plainSettings.roomId !== undefined)
+      settings.roomId = plainSettings.roomId;
+    if (plainSettings.chatOpen !== undefined)
+      settings.chatOpen = plainSettings.chatOpen;
+
+    return settings;
+  }
+
+  /**
+   * Converts to plain object
+   *
+   * @returns {Object}
+   */
+  toPlain() {
+    return {
+      username: this.username,
+      roomId: this.roomId,
+      chatOpen: this.chatOpen
+    };
+  }
+
+  /**
    * Saves the settings into local storage
    */
   save() {
-    localStorage.setItem(UserSettings.STORAGE_KEY, JSON.stringify(this));
+    const plainSettings = this.toPlain();
+    localStorage.setItem(UserSettings.STORAGE_KEY, JSON.stringify(plainSettings));
   }
 
   /**
@@ -55,7 +78,7 @@ class UserSettings {
   }
 
   /**
-   * @param {(String)} username
+   * @param {String} username
    */
   set username(username) {
     this._username = username;

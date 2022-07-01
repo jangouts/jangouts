@@ -32,7 +32,7 @@ Janus.attachMediaStream = jest.fn();
 
 describe('when the user is not logged in', () => {
   it('tries to log in taking room and username from the URL', () => {
-    const store = mockStore({ ...initialState, room: { loggedIn: false } });
+    const store = mockStore({ ...initialState, room: { ...initialState.room, loggedIn: false } });
     renderWithRedux(<Room location={{ search: '?user=Jane' }} />, { store });
 
     expect(store.getActions()).toEqual([
@@ -46,7 +46,7 @@ describe('when the user is not logged in', () => {
 
 describe('when the user is logged in', () => {
   it('does not try to log in', () => {
-    const store = mockStore({ ...initialState, room: { loggedIn: true } });
+    const store = mockStore({ ...initialState, room: { ...initialState.room, loggedIn: true } });
     renderWithRedux(<Room location={{ search: 'user=Jane' }} />, { store });
 
     expect(store.getActions()).toEqual([]);

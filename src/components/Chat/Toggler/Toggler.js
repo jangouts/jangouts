@@ -13,8 +13,8 @@ import { classNames } from '../../../utils/common';
 
 function toggle(dispatch, settings) {
   return () => {
-    settings.chatOpen = !settings.chatOpen;
-    dispatch(roomActions.saveSettings(settings));
+    const newSettings = {...settings, chatOpen: !settings.chatOpen };
+    dispatch(roomActions.saveSettings(newSettings));
   };
 }
 

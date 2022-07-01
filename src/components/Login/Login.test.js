@@ -13,6 +13,7 @@ import { screen, within } from '@testing-library/react';
 import { renderWithRedux } from '../../setupTests';
 import janusApi from '../../janus-api';
 import { Janus } from '../../vendor/janus';
+import { initialState as roomInitialState } from '../../state/ducks/room';
 
 jest.mock('../../janus-api');
 
@@ -28,7 +29,7 @@ describe('logged in', () => {
           <Route path="/room/:roomId" element={<Room/>} />
         </Routes>
       </MemoryRouter>,
-      { initialState: { room: { loggedIn: true } } }
+      { initialState: { room: { ...roomInitialState, loggedIn: true } } }
     );
 
     const speaker = await screen.findByTestId('chatbox');
@@ -45,7 +46,7 @@ describe('not logged in', () => {
           <Route path="/room/:roomId" element={<Room/>} />
         </Routes>
       </MemoryRouter>,
-      { initialState: { room: { loggedIn: false } } }
+      { initialState: { room: { ...roomInitialState, loggedIn: false } } }
     );
 
     const roomSelector = await screen.findByRole("combobox");

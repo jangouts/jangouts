@@ -45,14 +45,13 @@ function findRoom(rooms, roomId) {
  * Handles the form submit
  *
  * @param {Function} dispatch - the dispatch function available in the Redux store
- * @param {UserSettings} settings
+ * @param {Object} settings
  * @returns {Function}
  */
 function onSubmit(dispatch, settings) {
   return function(data) {
-    settings.username = data.username;
-    settings.roomId = data.room;
-    dispatch(roomActions.saveSettings(settings));
+    const newSettings = { ...settings, username: data.username, roomId: data.room };
+    dispatch(roomActions.saveSettings(newSettings));
     dispatch(roomActions.login(data.username, data.room, data.pin));
   };
 }
@@ -95,7 +94,7 @@ function LoginForm() {
   }, []);
 
   useEffect(() => {
-    const roomId = settings?.roomId || rooms[0]?.id;
+    const roomId = settings.roomId || rooms[0]?.id;
     reset({ room: roomId });
     setSelectedRoom(findRoom(rooms, roomId));
   }, [settings, rooms]);
@@ -114,7 +113,7 @@ function LoginForm() {
             type="text"
             ref={register}
             className="form-input"
-            defaultValue={settings?.username}
+            defaultValue={settings.username}
             autoComplete="username"
             required
           />

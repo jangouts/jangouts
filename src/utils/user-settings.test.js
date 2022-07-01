@@ -13,7 +13,7 @@ beforeEach(() => {
 
 describe('load', () => {
   it('creates settings from the local storage', () => {
-    let data = { _username: "test", _roomId: "1234" };
+    let data = { username: "test", roomId: "1234" };
     localStorage.setItem(UserSettings.STORAGE_KEY, JSON.stringify(data));
 
     const settings = UserSettings.load();
@@ -31,6 +31,7 @@ describe('save', () => {
 
     settings.save();
 
-    expect(localStorage.getItem(UserSettings.STORAGE_KEY)).toEqual(JSON.stringify(settings));
+    const plainSettings = settings.toPlain();
+    expect(localStorage.getItem(UserSettings.STORAGE_KEY)).toEqual(JSON.stringify(plainSettings));
   });
 });
