@@ -26,6 +26,28 @@ function toggleFocus(id, focus) {
   return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
+const Video = ({id, focus, streamReady, showVideo, isPublisher, isLocalScreen}) => {
+  const dispatch = useDispatch();
+  const videoRef = React.createRef();
+
+  useEffect(() => setVideo(id, videoRef.current), [id, videoRef, streamReady]);
+
+  return (
+    <video
+      ref={videoRef}
+      muted={isPublisher}
+      autoPlay
+      className={classNames(
+        showVideo || 'hidden',
+        isPublisher && !isLocalScreen && 'mirrored'
+      )}
+      onClick={() => dispatch(toggleFocus(id, focus))}
+    />
+  );
+};
+
+const ParticipantVideo = React.memo(Video);
+
 /**
  * @param props {object}
  * @param props.id {}
@@ -47,11 +69,7 @@ function Participant({
   speaking,
   video
 }) {
-  const dispatch = useDispatch();
-  const videoRef = React.createRef();
   const showVideo = (video || isLocalScreen) && !focus;
-
-  useEffect(() => setVideo(id, videoRef.current), [id, videoRef, streamReady]);
 
   return (
     <div
@@ -63,15 +81,13 @@ function Participant({
         speaking && 'border-green-300'
       )}>
       <div className="relative bg-gray-100">
-        <video
-          ref={videoRef}
-          muted={isPublisher}
-          autoPlay
-          className={classNames(
-            showVideo || 'hidden',
-            isPublisher && !isLocalScreen && 'mirrored'
-          )}
-          onClick={() => dispatch(toggleFocus(id, focus))}
+        <ParticipantVideo 
+          id={id}
+          focus={focus}
+          showVideo={showVideo}
+          streamReady={streamReady}
+          isLocalScreen={isLocalScreen}
+          isPublisher={isPublisher}
         />
         <UserIcon className={classNames('w-4/6 h-auto m-auto text-secondary', showVideo && 'hidden')} />
       </div>
