@@ -22,7 +22,7 @@ function Header({ children }) {
       <div className="flex w-2/5 justify-end">
         {/* General actions */}
         {children}
-        <RoomActions className="ml-2 p-px" />
+        <RoomActions className="ml-4 p-px" />
       </div>
     </div>
   );
