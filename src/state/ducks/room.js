@@ -81,10 +81,10 @@ const actionTypes = {
 const initialSettings = () => {
   let settings = new UserSettings();
   settings.chatOpen = true;
-  return settings.toPlain();
+  return settings;
 };
 
-export const initialState = { settings: initialSettings(), loggedIn: false, loggingIn: false };
+export const initialState = { settings: initialSettings().toPlain(), loggedIn: false, loggingIn: false };
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;
