@@ -54,7 +54,7 @@ function MessagesList() {
     }
   }, []);
 
-  const messages = filterMessages(useSelector((state) => state.messages));
+  const messages = filterMessages(useSelector((state) => state.messages.list));
 
   return (
     <div ref={wrapperRef} className="h-full overflow-y-auto" role="log">

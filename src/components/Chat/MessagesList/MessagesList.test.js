@@ -14,24 +14,26 @@ import { screen } from '@testing-library/react';
 
 describe('when there are messages', () => {
   const initialState = {
-    messages: [
-      {
-        type: 'chatMsg',
-        content: {
-          feed: { display: 'John Doe' }
+    messages: {
+      list: [
+        {
+          type: 'chatMsg',
+          content: {
+            feed: { display: 'John Doe' }
+          },
+          text: 'Hi Jane!',
+          timestamp: '2020-02-10T18:28:58.439Z'
         },
-        text: 'Hi Jane!',
-        timestamp: '2020-02-10T18:28:58.439Z'
-      },
-      {
-        type: 'chatMsg',
-        content: {
-          feed: { display: 'Jane Doe' }
-        },
-        text: "What's up John!",
-        timestamp: '2020-02-10T18:29:58.439Z'
-      }
-    ]
+        {
+          type: 'chatMsg',
+          content: {
+            feed: { display: 'Jane Doe' }
+          },
+          text: "What's up John!",
+          timestamp: '2020-02-10T18:29:58.439Z'
+        }
+      ]
+    }
   };
 
   it('renders all messages', () => {

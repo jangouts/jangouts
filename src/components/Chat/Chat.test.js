@@ -28,7 +28,7 @@ describe('when there are messages', () => {
   };
   const message = createLogEntry('chatMsg', { feed: sender, text: 'Hi all!' });
   const stateWithMessage = {
-    messages: [{...message, text: message.text()}]
+    messages: {list: [{...message, text: message.text()}]}
   };
 
   it('lists the messages', () => {

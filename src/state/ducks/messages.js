@@ -45,15 +45,16 @@ const actionTypes = {
   MESSAGE_REGISTER
 };
 
-const initialState = [];
+const initialState = { list: [] };
 
 const reducer = function(state = initialState, action) {
   switch (action.type) {
     case MESSAGE_REGISTER: {
       const entry = action.payload;
       const { type, timestamp, content } = entry;
+      const list = state.list;
 
-      return [...state, { type, timestamp, content, text: entry.text() }];
+      return {...state, list: [...list, { type, timestamp, content, text: entry.text() }]};
     }
     default:
       return state;

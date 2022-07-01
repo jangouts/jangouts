@@ -20,7 +20,7 @@ describe('reducer', () => {
     participants: {
       1: 'fakeParticipant'
     },
-    messages: ['fake', 'messages'],
+    messages: { list: ['fake', 'messages'] },
     notifications: []
   };
 
@@ -30,7 +30,7 @@ describe('reducer', () => {
     it('resets the full state except the configuration', () => {
       expect(reducer(currentState, action)).toEqual({
         config: currentState.config,
-        messages: [],
+        messages: { list: [] },
         notifications: { notifications: [], blocklist: {} },
         participants: {},
         room: { ...currentState.room, loggedIn: false }
