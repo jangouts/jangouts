@@ -30,8 +30,8 @@ const statusAttrs = ['name', 'speaking', 'audio', 'video', 'picture'];
  * Feed (?)
  */
 export class Feed {
-  id: number = 0;
-  display: string;
+  id: number;
+  display: string | null;
   publisher: boolean;
   localScreen: boolean;
   ignored: boolean;
@@ -48,12 +48,12 @@ export class Feed {
   constructor({
     id, display, isPublisher, isLocalScreen, connection, ignored, dataChannelService, eventsService
   }: FeedArgs) {
-    this.id = id;
-    this.display = display;
-    this.publisher = isPublisher;
-    this.localScreen = isLocalScreen;
-    this.ignored = ignored; // is still used?
-    this.connection = connection;
+    this.id = id || 0;
+    this.display = display || null;
+    this.publisher = isPublisher || false;
+    this.localScreen = isLocalScreen || false;
+    this.ignored = ignored || false; // is still used?
+    this.connection = connection || null;
     this.dataChannelService = dataChannelService;
     this.eventsService = eventsService;
   }
@@ -342,7 +342,7 @@ export class Feed {
    * Gets the current display name for publisher
    * @return {string} - current display
    */
-  getDisplay(): string {
+  getDisplay(): string | null {
     return this.display;
   };
 
