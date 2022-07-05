@@ -68,7 +68,11 @@ const reducer = function(state = initialState, action) {
     case MESSAGE_DISPLAYED: {
       const index = action.payload;
 
-      return {...state, displayed: Math.max(index, state.displayed) };
+      if (index === null) {
+        return {...state};
+      } else {
+        return {...state, displayed: Math.max(index, state.displayed) };
+      }
     }
 
     default:

@@ -66,6 +66,7 @@ function MessagesList() {
     const displayed = latestDisplayedMessage();
     if (displayed) {
       const idx = parseInt(displayed.dataset.index);
+      if (idx === null) { return }
       dispatch(chatActions.markDisplayed(idx));
     }
   };
