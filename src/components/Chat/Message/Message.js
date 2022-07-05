@@ -42,8 +42,8 @@ function Message({ type, index, content, text, timestamp, onRender }) {
 
   return (
     <li
-      className="rounded m-2 p-1 bg-white overflow-hidden overflow-x-auto shadow"
-      data-testid="message">
+      className="rounded scroll-mb-2 m-2 p-1 bg-white overflow-hidden overflow-x-auto shadow"
+      data-testid="message" data-index={index}>
       <div className="px-2 italic text-xs md:text-sm">{text}</div>
     </li>
   );

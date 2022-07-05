@@ -36,10 +36,19 @@ function Toggler() {
 
   const { displayed, list: messages } = useSelector((state) => state.messages);
 
+  const isUnread = (message) => {
+    // We only care about chat messages, not other kind of notifications
+    if (message.type !== "chatMsg") { return false }
+    // We don't care about our own messages
+    if (message.content.feed.isPublisher) { return false }
+
+    return message.index > displayed;
+  };
+
   // Use debounce to give the new messages the opportunity to be displayed
   // (that may imply waiting for an smooth scroll to finish)
   const [unread] = useDebounce(
-    messages.filter((m) => m.type === "chatMsg" && m.index > displayed).length,
+    messages.filter((m) => isUnread(m)).length,
     300
   );
 

@@ -56,7 +56,9 @@ function MessagesList() {
 
     if (!lastMsg || !mustScroll(lastMsg)) return;
 
-    lastMsg.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    // This used to include {behavior: 'smooth'} but the delay introduced by it sometimes
+    // confused mustScroll in some machines/browsers
+    lastMsg.scrollIntoView({ block: 'end' });
   };
 
   /*
@@ -66,6 +68,7 @@ function MessagesList() {
     const displayed = latestDisplayedMessage();
     if (displayed) {
       const idx = parseInt(displayed.dataset.index);
+      if (idx === null) { return }
       dispatch(chatActions.markDisplayed(idx));
     }
   };
