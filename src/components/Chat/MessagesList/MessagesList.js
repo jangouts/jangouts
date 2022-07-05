@@ -56,7 +56,9 @@ function MessagesList() {
 
     if (!lastMsg || !mustScroll(lastMsg)) return;
 
-    lastMsg.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    // This used to include {behavior: 'smooth'} but the delay introduced by it sometimes
+    // confused mustScroll in some machines/browsers
+    lastMsg.scrollIntoView({ block: 'end' });
   };
 
   /*
