@@ -224,6 +224,19 @@ export class Feed {
       this.speakObserver.destroy();
     }
     this.connection = null;
+    this.removeStream();
+  };
+
+  /**
+   * Unsets the stream from the feed, stopping all its tracks.
+   */
+  private removeStream() {
+    if (this.stream) {
+      let tracks = this.stream.getTracks();
+      for(let i in tracks) {
+        tracks[i].stop();
+      }
+    }
     this.stream = null;
   };
 
