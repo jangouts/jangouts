@@ -74,12 +74,13 @@ function Participant({
   return (
     <div
       className={classNames(
-        'relative group p-1 border-2 bg-white',
+        'participant relative group p-1 border-2 bg-white',
         'transition duration-150 ease-in-out',
         focus || 'border-white',
         focus && 'border-secondary shadow-md',
         speaking && 'border-green-300'
-      )}>
+      )}
+      style={{width: "calc(var(--partSlotWidth) - 6px", height: "calc(var(--partSlotWidth) - 6px)", margin: "3px"}}>
       <div className="relative bg-gray-100">
         <ParticipantVideo 
           id={id}

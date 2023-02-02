@@ -5,21 +5,100 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import Participant from '../Participant';
 
+/*
+ * See setParticipantVars
+ */
+function getCssConfig(element, property, def) {
+  let value = element.style.getPropertyValue(property);
+
+  if (value === "") {
+    return def;
+  } else {
+    return Number(value);
+  }
+}
+
+/*
+ * Calculates the optimal width for the participants inside the div and stores
+ * the calculated values (size and number of squares) as CSS variables in the
+ * given div.
+ *
+ * The calculation can be configured with some CSS variables in the div.
+ *
+ * The range of possible values for --partSlotWidth can be configured with
+ * --partMaxSlotWidth, --partMinSlotWidth and --partStepSlotWidth.
+ *
+ * By default, the algorithm assumes a square representation for each
+ * participant. That can be configured with the variables --partHeightFactor,
+ * --partHeightExtra and --partWidthExtra.
+ */
+function setParticipantVars(div) {
+  let totalWidth = div.offsetWidth;
+  let totalHeight = div.offsetHeight;
+  let qty = div.querySelectorAll(".participant").length;
+
+  let max = getCssConfig(div, "--partMaxSlotWidth", 160);
+  let min = getCssConfig(div, "--partMinSlotWidth", 80);
+  let step = getCssConfig(div, "--partStepSlotWidth", 4);
+
+  let heightFactor = getCssConfig(div, "--partHeightFactor", 1);
+  let heightExtra = getCssConfig(div, "--partHeightExtra", 0);
+  let widthExtra = getCssConfig(div, "--partWidthExtra", 0);
+
+  let slotWidth, perRow, numRows, rowHeight;
+
+  if (qty === 0) {
+    div.style.setProperty("--partSlotWidth", max + "px");
+    div.style.setProperty("--partSlotQty", qty);
+    return;
+  }
+
+  // Do the calculations by trial and error
+  for (slotWidth = max; slotWidth >= min; slotWidth -= step) {
+    perRow = Math.floor(totalWidth / slotWidth);
+    numRows = Math.ceil(qty / perRow);
+    rowHeight = heightExtra + heightFactor * (slotWidth - widthExtra);
+    // It fits already, we don't need to keep trying
+    if (numRows * rowHeight <= totalHeight) {
+      break;
+    }
+  }
+  if (slotWidth < min) { slotWidth = min }
+
+  div.style.setProperty("--partSlotWidth", slotWidth + "px");
+  div.style.setProperty("--partSlotQty", qty);
+}
+
 const Participants = () => {
   const participants = useSelector((state) => state.participants);
+  const mainRef = React.createRef();
+  const observer = new ResizeObserver((entries) => {
+    setParticipantVars(entries[0].target);
+  });
 
   // TODO: allow to choose the order via prop.
   const orderedParticipants = Object.values(participants).sort((a, b) => {
     return a.display.localeCompare(b.display);
   });
 
+  useEffect(() => {
+    observer.observe(mainRef.current);
+    return () => { observer.disconnect() };
+  }, []);
+
+  useEffect(() => {
+    setParticipantVars(mainRef.current);
+  }, [orderedParticipants.length]);
+
   return (
-    <div className="grid items-center grid-cols-3 lg:grid-cols-5 gap-2 row-gap-3 p-2">
+    <div
+      ref={mainRef}
+      className="h-full w-full flex flex-row flex-wrap content-start overflow-x-hidden overflow-y-auto">
       {orderedParticipants.map((participant) => {
         let {
           id,
