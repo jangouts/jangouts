@@ -28,7 +28,7 @@ function ParticipantActions({ participantId }) {
   const visibleActionsProps = {
     ...commonProps,
     showLabel: false,
-    className: 'w-6 md:w-4 mr-1'
+    className: 'w-4 mr-1'
   };
 
   const moreActionsProps = {
