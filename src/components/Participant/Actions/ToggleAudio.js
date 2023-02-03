@@ -13,7 +13,7 @@ import { classNames } from '../../../utils/common';
 
 import ParticipantActionButton from './ParticipantActionButton';
 
-function ToggleAudio({ participantId, iconStyle, ...props }) {
+function ToggleAudio({ participantId, iconStyle, activeClassNames = "", inactiveClassNames = "", ...props }) {
   const dispatch = useDispatch();
   const participant = useSelector((state) => state.participants[participantId]);
   if (!participant) return null;
@@ -33,6 +33,7 @@ function ToggleAudio({ participantId, iconStyle, ...props }) {
       disabled={disabled}
       iconStyle={classNames(
         disabled ? disableClassNames : enableClassNames,
+        audio? activeClassNames : inactiveClassNames,
         iconStyle
       )}
       onClick={() => dispatch(participantsActions.toggleAudio(participantId))}

@@ -27,7 +27,6 @@ function toggleFocus(id, focus) {
 }
 
 const Video = ({id, focus, streamReady, showVideo, isPublisher, isLocalScreen}) => {
-  const dispatch = useDispatch();
   const videoRef = React.createRef();
 
   useEffect(() => setVideo(id, videoRef.current), [id, videoRef, streamReady]);
@@ -42,7 +41,6 @@ const Video = ({id, focus, streamReady, showVideo, isPublisher, isLocalScreen}) 
         isPublisher && !isLocalScreen && 'mirrored',
         "max-h-full"
       )}
-      onClick={() => dispatch(toggleFocus(id, focus))}
     />
   );
 };
@@ -71,6 +69,7 @@ function Participant({
   video
 }) {
   const showVideo = (video || isLocalScreen) && !focus;
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -81,10 +80,11 @@ function Participant({
         focus && 'border-secondary shadow-md',
         speaking && 'border-green-300'
       )}
-      style={{width: "calc(var(--partSlotWidth) - 6px)", margin: "3px", padding: "4px", "border-width": "2px"}}>
+      style={{width: "calc(var(--partSlotWidth) - 6px)", margin: "3px", padding: "4px", borderWidth: "2px"}}>
       <div
         className="relative bg-gray-100"
-        style={{"height": "calc((var(--partSlotWidth) - 18px) * 0.75)"}}>
+        style={{"height": "calc((var(--partSlotWidth) - 18px) * 0.75)"}}
+        onClick={() => dispatch(toggleFocus(id, focus))}>
         <ParticipantVideo 
           id={id}
           focus={focus}

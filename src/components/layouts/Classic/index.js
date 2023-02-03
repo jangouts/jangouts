@@ -13,6 +13,7 @@ import Speaker from '../../Speaker';
 import Participants from '../../Participants';
 import Chat from '../../Chat';
 import ChatToggler from '../../Chat/Toggler';
+import ParticipantActions from '../../Participant/HeaderActions';
 import Notifications from '../../Notifications';
 
 import { classNames } from '../../../utils/common';
@@ -26,6 +27,7 @@ function Classic() {
       <div className="h-full padding-b-4 flex flex-col bg-gray-100">
         <div className="px-4 pt-2 pb-1 text-white font-bold border-b-4 border-secondary bg-primary-dark ">
           <Header>
+            <ParticipantActions />
             <ChatToggler />
           </Header>
         </div>
