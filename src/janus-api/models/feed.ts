@@ -236,10 +236,7 @@ export class Feed {
    */
   private removeStream() {
     if (this.stream) {
-      let tracks = this.stream.getTracks();
-      for(let i in tracks) {
-        tracks[i].stop();
-      }
+      this.stream.getTracks().forEach(t => t.stop());
     }
     this.stream = null;
   };
