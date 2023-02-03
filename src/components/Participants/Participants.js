@@ -14,13 +14,8 @@ import Participant from '../Participant';
  * See setParticipantVars
  */
 function getCssConfig(element, property, def) {
-  let value = element.style.getPropertyValue(property);
-
-  if (value === "") {
-    return def;
-  } else {
-    return Number(value);
-  }
+  const value = element.style.getPropertyValue(property);
+  return value === "" ? def : Number(value);
 }
 
 /*
@@ -38,17 +33,17 @@ function getCssConfig(element, property, def) {
  * --partHeightExtra and --partWidthExtra.
  */
 function setParticipantVars(div) {
-  let totalWidth = div.offsetWidth;
-  let totalHeight = div.offsetHeight;
-  let qty = div.querySelectorAll(".participant").length;
+  const totalWidth = div.offsetWidth;
+  const totalHeight = div.offsetHeight;
+  const qty = div.querySelectorAll(".participant").length;
 
-  let max = getCssConfig(div, "--partMaxSlotWidth", 160);
-  let min = getCssConfig(div, "--partMinSlotWidth", 80);
-  let step = getCssConfig(div, "--partStepSlotWidth", 4);
+  const max = getCssConfig(div, "--partMaxSlotWidth", 160);
+  const min = getCssConfig(div, "--partMinSlotWidth", 80);
+  const step = getCssConfig(div, "--partStepSlotWidth", 4);
 
-  let heightFactor = getCssConfig(div, "--partHeightFactor", 1);
-  let heightExtra = getCssConfig(div, "--partHeightExtra", 0);
-  let widthExtra = getCssConfig(div, "--partWidthExtra", 0);
+  const heightFactor = getCssConfig(div, "--partHeightFactor", 1);
+  const heightExtra = getCssConfig(div, "--partHeightExtra", 0);
+  const widthExtra = getCssConfig(div, "--partWidthExtra", 0);
 
   let slotWidth, perRow, numRows, rowHeight;
 
