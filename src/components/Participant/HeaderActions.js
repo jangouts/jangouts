@@ -20,7 +20,9 @@ function HeaderActions() {
   const actionsProps = {
     participantId: participant.id,
     showLabel: false,
-    className: 'p-0.5 rounded'
+    activeClassNames: 'bg-white text-green-600',
+    inactiveClassNames: 'bg-secondary !text-white',
+    iconStyle: 'p-0.5 rounded',
   };
 
   return [
