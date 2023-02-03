@@ -80,7 +80,11 @@ export class Feed {
   /*
    * Enables or disables the given track.
    *
-   * See isTrackEnabled for more information about tracks vs channels.
+   * Take into account the term 'track' refers to the local tracks of the
+   * stream as rendered by the browser, not to the webRTC communication
+   * channels. For example, disabling a local audio track will cause the
+   * browser to stop reproducing the sound, but will not cause the browser
+   * to stop receiving it through the corresponding channel.
    *
    * @param {string} type - "audio" or "video"
    * @param {boolean} enabled
@@ -232,10 +236,7 @@ export class Feed {
    */
   private removeStream() {
     if (this.stream) {
-      let tracks = this.stream.getTracks();
-      for(let i in tracks) {
-        tracks[i].stop();
-      }
+      this.stream.getTracks().forEach(t => t.stop());
     }
     this.stream = null;
   };

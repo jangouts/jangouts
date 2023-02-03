@@ -127,19 +127,5 @@ export const createActionService = (
     }
   };
 
-  /**
-   * Disable or enable audio or video for the main feed
-   * @param {channel_type} type
-   * @param {Boolean} boolval
-   */
-  that.setMedia = function(type, boolval) {
-    let feed = feedsService.findMain();
-    if (!feed) {
-      return;
-    }
-
-    feed.setEnabledChannel(type, boolval);
-  };
-
   return that;
 };
