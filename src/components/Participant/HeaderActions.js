@@ -5,7 +5,7 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectors } from '../../state/ducks/participants';
 import { ToggleAudio, ToggleVideo } from './Actions';
