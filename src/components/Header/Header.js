@@ -8,12 +8,13 @@
 import React from 'react';
 import Logo from '../Logo';
 import RoomActions from '../Room/RoomActions.js';
+import RoomName from '../Room/RoomName';
 
 function Header({ children }) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex w-2/5">
-        <span>{/* Room Name */}</span>
+        <RoomName/>
         <span>{/* N participants? */}</span>
       </div>
       <div className="flex w-1/5 py-1 justify-center">

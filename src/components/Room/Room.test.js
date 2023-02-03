@@ -28,6 +28,7 @@ jest.mock('react-router', () => ({
 
 // FIXME: for some reason, calling jest.mock does not work
 janusApi.enterRoom = (room, username, pin) => Promise.resolve();
+janusApi.getRooms= () => Promise.resolve([]);
 Janus.attachMediaStream = jest.fn();
 
 describe('when the user is not logged in', () => {
