@@ -22,7 +22,7 @@ function ParticipantActionButton({ icon, label, className, iconStyle, labelStyle
       )}
       {...props}
     >
-      <Icon className={classNames("h-auto text-white", iconStyle)} />
+      <Icon className={classNames("h-auto", iconStyle)} />
       {
         showLabel &&
         <span className={classNames("ml-2 text-left text-xs text-white", labelStyle)}>
