@@ -9,6 +9,8 @@ import React from 'react';
 import Header from './Header';
 import { renderWithRedux } from '../../setupTests';
 
+jest.mock('../../janus-api');
+
 it('renders without crashing', () => {
   renderWithRedux(<Header />);
 });

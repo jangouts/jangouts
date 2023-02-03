@@ -22,15 +22,7 @@ function Login() {
     <div className="flex items-center justify-center h-screen w-screen bg-signal">
       <div className="w-5/6 sm:w-2/3 lg:w-1/3 p-5 lg:py-8 bg-primary-dark shadow-2xl">
         <Logo className="w-2/3 mx-auto" />
-
         <LoginForm />
-
-        <div className="mt-4 p-2 text-xs text-center text-gray-100">
-          <p>
-            Tested with recent versions of Firefox and Chromium. Please review the detailed
-            information about browsers before proceeding.
-          </p>
-        </div>
       </div>
     </div>
   );
