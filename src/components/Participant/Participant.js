@@ -39,7 +39,8 @@ const Video = ({id, focus, streamReady, showVideo, isPublisher, isLocalScreen}) 
       autoPlay
       className={classNames(
         showVideo || 'hidden',
-        isPublisher && !isLocalScreen && 'mirrored'
+        isPublisher && !isLocalScreen && 'mirrored',
+        "max-h-full"
       )}
       onClick={() => dispatch(toggleFocus(id, focus))}
     />
@@ -74,14 +75,16 @@ function Participant({
   return (
     <div
       className={classNames(
-        'participant relative group p-1 border-2 bg-white',
+        'participant relative group bg-white',
         'transition duration-150 ease-in-out',
         focus || 'border-white',
         focus && 'border-secondary shadow-md',
         speaking && 'border-green-300'
       )}
-      style={{width: "calc(var(--partSlotWidth) - 6px", height: "calc(var(--partSlotWidth) - 6px)", margin: "3px"}}>
-      <div className="relative bg-gray-100">
+      style={{width: "calc(var(--partSlotWidth) - 6px)", margin: "3px", padding: "4px", "border-width": "2px"}}>
+      <div
+        className="relative bg-gray-100"
+        style={{"height": "calc((var(--partSlotWidth) - 18px) * 0.75)"}}>
         <ParticipantVideo 
           id={id}
           focus={focus}
@@ -94,7 +97,7 @@ function Participant({
       </div>
       <div className="flex items-center p-1 bg-gray-200">
         <ParticipantActions participantId={id} />
-        <div className="text-sx md:text-sm whitespace-no-wrap truncate">{username}</div>
+        <div className="text-sm whitespace-no-wrap truncate">{username}</div>
       </div>
     </div>
   );
