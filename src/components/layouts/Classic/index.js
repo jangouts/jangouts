@@ -5,8 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ArrowRight, ArrowLeft } from 'react-feather';
 
 import Header from '../../Header';
 import Speaker from '../../Speaker';
@@ -18,9 +19,32 @@ import Notifications from '../../Notifications';
 
 import { classNames } from '../../../utils/common';
 
+const START = "start";
+const END = "end";
+
 function Classic() {
   const { settings } = useSelector((state) => state.room);
   const showChat = settings.chatOpen;
+  const [chatPosition, setChatPosition] = useState(END);
+
+  const swapPosition = () => {
+    setChatPosition(chatPosition === END ? START : END);
+  };
+
+  const SwapButton = () => {
+    const styleX = chatPosition === START ? "left-1/2 md:left-full" : "left-1/2 md:left-0";
+    const styleY = chatPosition === START ? "sm:bottom-0 md:bottom-1/2" : "bottom-full md:bottom-1/2";
+    const commonIconStyle = "relative rounded-full bg-gray-100 text-gray-300 hover:text-primary-dark";
+
+    return (
+      <button title="Change chat position" className={`absolute ${styleX} ${styleY}`} onClick={swapPosition}>
+        { chatPosition === START
+          ? <ArrowRight style={{width: "20px" }} className={`${commonIconStyle} rotate-90 sm:rotate-0 bottom-[6px] sm:left-[-12px] border-r-2`} />
+          : <ArrowLeft style={{width: "20px" }} className={`${commonIconStyle} rotate-90 sm:rotate-0 top-[12px] sm:left-[-10px] border-l-2`} />
+        }
+      </button>
+    );
+  };
 
   return (
     <div className="w-screen h-screen bg-primary-dark border-b-8 border-primary-dark">
@@ -31,7 +55,7 @@ function Classic() {
             <ChatToggler />
           </Header>
         </div>
-        <div className="flex-1 pt-2 overflow-hidden grid gap-2 grid-rows-6 grid-cols-2 lg:grid-cols-3 sm:grid-flow-col">
+        <div className="flex-1 transition-all pt-2 overflow-hidden grid gap-2 grid-rows-6 grid-cols-2 lg:grid-cols-3 sm:grid-flow-col">
           <Notifications
             className="w-full absolute z-50 flex flex-col items-center"
           />
@@ -45,13 +69,18 @@ function Classic() {
           <div
             className={classNames(
               'overflow-y-auto row-span-2 col-span-2 border-t sm:row-span-3 sm:col-span-1 lg:col-span-2 sm:border-t-0',
-              !showChat && 'row-span-4 sm:row-span-6'
+              !showChat && 'row-span-4 sm:row-span-6',
             )}>
             <Participants />
           </div>
           {showChat && (
-            <div className="overflow-y-auto row-span-2 col-span-2 border-t sm:row-span-6 sm:border-t-0 sm:border-l-2">
+            <div className={classNames(
+              "relative transition-all row-span-2 col-span-2 sm:row-span-6 sm:border-t-0 sm:border-b-0 sm:border-l-2",
+              chatPosition === START && "row-start-1 !sm:col-start-1 sm:col-end-2 border-b pb-2 sm:border-r-2",
+              chatPosition === END && "!sm:col-start-2 lg:col-start-3 border-t pt-2 sm:border-l-2",
+            )}>
               <Chat />
+              <SwapButton />
             </div>
           )}
         </div>
