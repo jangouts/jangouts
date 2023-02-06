@@ -45,6 +45,47 @@
     @apply w-full p-2 bg-secondary;
     @apply text-white font-bold uppercase;
   }
+
+  .chat-position-toggler {
+    --icon-size: 16px;
+    --half-icon-size: calc(var(--icon-size) / 2);
+    position: absolute;
+    left: calc(50% - var(--half-icon-size));
+    bottom: calc(0 - var(--half-icon-size));
+  }
+
+  .chat-position-toggler svg {
+    position: relative;
+    border-radius: 1000px;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    @apply bg-gray-100 text-gray-300 hover:text-primary-dark;
+  }
+
+  .chat-position-toggler[data-chat-position="end"] {
+    bottom: calc(100% - var(--half-icon-size));
+  }
+
+  .chat-position-toggler[data-chat-position="start"] svg {
+    border-bottom: 1px solid;
+  }
+
+  .chat-position-toggler[data-chat-position="end"] svg {
+    border-top: 1px solid;
+  }
+
+  @media (min-width: 640px) {
+    .chat-position-toggler {
+      position: absolute;
+      rotate: -90deg;
+      left: calc(100% - var(--half-icon-size));
+      top: calc(50% - var(--half-icon-size));
+    }
+
+    .chat-position-toggler[data-chat-position="end"] {
+      left: calc(0% - var(--icon-size));
+    }
+  }
 };
 
 @layer utils {

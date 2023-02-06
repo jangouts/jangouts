@@ -32,16 +32,14 @@ function Classic() {
   };
 
   const SwapButton = () => {
-    const styleX = chatPosition === START ? "left-1/2 md:left-full" : "left-1/2 md:left-0";
-    const styleY = chatPosition === START ? "sm:bottom-0 md:bottom-1/2" : "bottom-full md:bottom-1/2";
-    const commonIconStyle = "relative rounded-full bg-gray-100 text-gray-300 hover:text-primary-dark";
-
     return (
-      <button title="Toggle chat position" className={`absolute sm:-rotate-90 p-0 ${styleX} ${styleY}`} onClick={swapPosition}>
-        { chatPosition === START
-          ? <ArrowDown style={{width: "16px", height: "16px" }} className={`${commonIconStyle} bottom-[2px] sm:top-[-8px] p-0 border-b-2`} />
-          : <ArrowUp style={{width: "16px", height: "16px" }} className={`${commonIconStyle} top-[8px] sm:top-[-8px] p-0 border-t-2`} />
-        }
+      <button
+        title="Toggle chat position"
+        className="chat-position-toggler"
+        data-chat-position={chatPosition}
+        onClick={swapPosition}
+      >
+        { chatPosition === START ? <ArrowDown /> : <ArrowUp /> }
       </button>
     );
   };
