@@ -46,6 +46,25 @@
     @apply text-white font-bold uppercase;
   }
 
+  .chat-wrapper {
+    position: relative;
+    grid-column: span 2 / span 2;
+    grid-row: 1 / span 2;
+  }
+
+  .chat-wrapper input {
+    padding: 0.5rem;
+  }
+
+  .chat-wrapper[data-chat-position="start"] {
+    border-bottom-width: 2px;
+  }
+
+  .chat-wrapper[data-chat-position="end"] {
+    grid-row-start: 5;
+    border-top-width: 2px;
+  }
+
   .chat-position-toggler {
     --icon-size: 16px;
     --half-icon-size: calc(var(--icon-size) / 2);
@@ -75,6 +94,23 @@
   }
 
   @media (min-width: 640px) {
+    .chat-wrapper {
+      grid-column: 1 / 2;
+      grid-row: 1 / 7;
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    .chat-wrapper[data-chat-position="start"] {
+      border-right-width: 2px;
+    }
+
+    .chat-wrapper[data-chat-position="end"] {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      border-left-width: 2px;
+    }
+
     .chat-position-toggler {
       position: absolute;
       rotate: -90deg;
@@ -86,7 +122,14 @@
       left: calc(0% - var(--icon-size));
     }
   }
+
+  @media (min-width: 1024px) {
+    .chat-wrapper[data-chat-position="end"]{
+      grid-column: 3 / 3;
+    }
+  }
 };
+
 
 @layer utils {
   .mirrored {

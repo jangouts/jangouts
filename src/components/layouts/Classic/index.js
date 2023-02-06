@@ -44,6 +44,17 @@ function Classic() {
     );
   };
 
+  const ChatColumn = () => {
+    if (!showChat) return null;
+
+    return (
+      <div className="chat-wrapper" data-chat-position={chatPosition}>
+        <Chat />
+        <SwapButton />
+      </div>
+    );
+  };
+
   return (
     <div className="w-screen h-screen bg-primary-dark border-b-8 border-primary-dark">
       <div className="h-full padding-b-4 flex flex-col bg-gray-100">
@@ -71,16 +82,7 @@ function Classic() {
             )}>
             <Participants />
           </div>
-          {showChat && (
-            <div className={classNames(
-              "relative transition-all row-span-2 col-span-2 sm:row-span-6 sm:border-t-0 sm:border-b-0 sm:border-l-2",
-              chatPosition === START && "row-start-1 !sm:col-start-1 sm:col-end-2 border-b pb-2 sm:border-r-2",
-              chatPosition === END && "!sm:col-start-2 lg:col-start-3 border-t pt-2 sm:border-l-2",
-            )}>
-              <Chat />
-              <SwapButton />
-            </div>
-          )}
+          <ChatColumn />
         </div>
       </div>
     </div>
