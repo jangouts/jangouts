@@ -50,27 +50,30 @@
     position: relative;
     grid-column: span 2 / span 2;
     grid-row: 1 / span 2;
-  }
-
-  .chat-wrapper input {
-    padding: 0.5rem;
+    border-color: var(--colors-primary);
+    padding: 8px 4px;
   }
 
   .chat-wrapper[data-chat-position="start"] {
-    border-bottom-width: 2px;
+    border-bottom-width: 1px;
   }
 
   .chat-wrapper[data-chat-position="end"] {
     grid-row-start: 5;
-    border-top-width: 2px;
+    border-top-width: 1px;
   }
 
   .chat-position-toggler {
-    --icon-size: 16px;
+    --icon-size: 24px;
     --half-icon-size: calc(var(--icon-size) / 2);
     position: absolute;
     left: calc(50% - var(--half-icon-size));
-    bottom: calc(0 - var(--half-icon-size));
+    bottom: calc(0% - var(--half-icon-size));
+    color: var(--colors-primary-dark);
+  }
+
+  .chat-position-toggler:hover {
+    color: var(--colors-secondary);
   }
 
   .chat-position-toggler svg {
@@ -78,7 +81,7 @@
     border-radius: 1000px;
     width: var(--icon-size);
     height: var(--icon-size);
-    @apply bg-gray-100 text-gray-300 hover:text-primary-dark;
+    @apply bg-gray-100;
   }
 
   .chat-position-toggler[data-chat-position="end"] {
@@ -102,24 +105,28 @@
     }
 
     .chat-wrapper[data-chat-position="start"] {
-      border-right-width: 2px;
+      border-right-width: 1px;
     }
 
     .chat-wrapper[data-chat-position="end"] {
       grid-column-start: 2;
       grid-row-start: 1;
-      border-left-width: 2px;
+      border-left-width: 1px;
     }
 
     .chat-position-toggler {
       position: absolute;
       rotate: -90deg;
       left: calc(100% - var(--half-icon-size));
-      top: calc(50% - var(--half-icon-size));
+    }
+
+    .chat-position-toggler[data-chat-position="start"] {
+      bottom: 50%;
     }
 
     .chat-position-toggler[data-chat-position="end"] {
-      left: calc(0% - var(--icon-size));
+      left: calc(0% - var(--half-icon-size));
+      bottom: 50%;
     }
   }
 
