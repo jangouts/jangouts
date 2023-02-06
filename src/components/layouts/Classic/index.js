@@ -37,7 +37,7 @@ function Classic() {
     const commonIconStyle = "relative rounded-full bg-gray-100 text-gray-300 hover:text-primary-dark";
 
     return (
-      <button title="Change chat position" className={`absolute sm:-rotate-90 p-0 ${styleX} ${styleY}`} onClick={swapPosition}>
+      <button title="Toggle chat position" className={`absolute sm:-rotate-90 p-0 ${styleX} ${styleY}`} onClick={swapPosition}>
         { chatPosition === START
           ? <ArrowDown style={{width: "16px", height: "16px" }} className={`${commonIconStyle} bottom-[2px] sm:top-[-8px] p-0 border-b-2`} />
           : <ArrowUp style={{width: "16px", height: "16px" }} className={`${commonIconStyle} top-[8px] sm:top-[-8px] p-0 border-t-2`} />
