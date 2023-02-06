@@ -7,7 +7,7 @@
 
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ArrowRight, ArrowLeft } from 'react-feather';
+import { ArrowDown, ArrowUp } from 'react-feather';
 
 import Header from '../../Header';
 import Speaker from '../../Speaker';
@@ -37,10 +37,10 @@ function Classic() {
     const commonIconStyle = "relative rounded-full bg-gray-100 text-gray-300 hover:text-primary-dark";
 
     return (
-      <button title="Change chat position" className={`absolute ${styleX} ${styleY}`} onClick={swapPosition}>
+      <button title="Change chat position" className={`absolute sm:-rotate-90 p-0 ${styleX} ${styleY}`} onClick={swapPosition}>
         { chatPosition === START
-          ? <ArrowRight style={{width: "20px" }} className={`${commonIconStyle} rotate-90 sm:rotate-0 bottom-[6px] sm:left-[-12px] border-r-2`} />
-          : <ArrowLeft style={{width: "20px" }} className={`${commonIconStyle} rotate-90 sm:rotate-0 top-[12px] sm:left-[-10px] border-l-2`} />
+          ? <ArrowDown style={{width: "16px", height: "16px" }} className={`${commonIconStyle} bottom-[2px] sm:top-[-8px] p-0 border-b-2`} />
+          : <ArrowUp style={{width: "16px", height: "16px" }} className={`${commonIconStyle} top-[8px] sm:top-[-8px] p-0 border-t-2`} />
         }
       </button>
     );
