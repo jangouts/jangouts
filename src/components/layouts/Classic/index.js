@@ -58,7 +58,7 @@ function Classic() {
   return (
     <div className="w-screen h-screen bg-primary-dark border-b-8 border-primary-dark">
       <div className="h-full padding-b-4 flex flex-col bg-gray-100">
-        <div className="px-4 pt-2 pb-1 text-white font-bold border-b-4 border-secondary bg-primary-dark ">
+        <div className="px-4 pt-2 pb-1 text-white font-bold border-b-4 border-secondary bg-primary-dark">
           <Header>
             <ParticipantActions />
             <ChatToggler />
