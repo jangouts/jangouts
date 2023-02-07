@@ -67,7 +67,7 @@
     --half-icon-size: calc(var(--icon-size) / 2);
     position: absolute;
     left: calc(50% - var(--half-icon-size));
-    bottom: calc(0% - var(--half-icon-size));
+    bottom: calc(0% - var(--half-icon-size) + 1px);
     color: var(--colors-primary-dark);
   }
 
@@ -84,7 +84,7 @@
   }
 
   .chat-position-toggler[data-chat-position="end"] {
-    bottom: calc(100% - var(--half-icon-size));
+    bottom: calc(100% - var(--half-icon-size) - 1px);
   }
 
   .chat-position-toggler[data-chat-position="start"] svg {
@@ -116,7 +116,7 @@
     .chat-position-toggler {
       position: absolute;
       rotate: -90deg;
-      left: calc(100% - var(--half-icon-size));
+      left: calc(100% - var(--half-icon-size) - 1px);
     }
 
     .chat-position-toggler[data-chat-position="start"] {
@@ -124,7 +124,7 @@
     }
 
     .chat-position-toggler[data-chat-position="end"] {
-      left: calc(0% - var(--half-icon-size));
+      left: calc(0% - var(--half-icon-size) + 1px);
       bottom: 50%;
     }
   }
