@@ -78,7 +78,7 @@ function Classic() {
           <div
             className={classNames(
               'overflow-y-auto row-span-2 col-span-2 border-t sm:row-span-3 sm:col-span-1 lg:col-span-2 sm:border-t-0',
-              !showChat && 'row-span-4 sm:row-span-6',
+              !showChat && 'row-span-4 sm:row-span-6'
             )}>
             <Participants />
           </div>
