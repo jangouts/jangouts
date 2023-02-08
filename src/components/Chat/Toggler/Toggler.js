@@ -52,18 +52,18 @@ function Toggler() {
     300
   );
 
-  const counterPosition = `absolute -top-2 -right-${unread < 99 ? 2 : 3}`;
-  const counterStyle =
-    'p-0.5 shadow-md bg-secondary text-xs text-white rounded-full flex justify-center items-center items';
-
   return (
-    <button title={title} onClick={toggle(dispatch, settings)}>
-      <strong className="relative inline-flex items-center top-0.5">
-        <span className={classNames(unread > 0 || 'hidden', counterPosition, counterStyle)}>
-          <span>{unread}</span>
-        </span>
-        <MessageSquare className={classNames('p-0.5 rounded', classes)} />
-      </strong>
+    <button title={title} onClick={toggle(dispatch, settings)} className="relative">
+      <span className={classNames(
+        unread < 1 && 'hidden',
+        'absolute -top-[6px] left-[10px]', // position
+        'bg-secondary text-white', // colors
+        'w-5 h-5 min-w-fit min-h-fit', // size
+        'p-1 text-sm rounded-full flex justify-center items-center cursor-default' // others
+      )}>
+        <span>{unread}</span>
+      </span>
+      <MessageSquare className={classNames('p-0.5 rounded', classes)} />
     </button>
   );
 }

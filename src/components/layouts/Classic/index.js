@@ -5,8 +5,9 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ArrowDown, ArrowUp } from 'react-feather';
 
 import Header from '../../Header';
 import Speaker from '../../Speaker';
@@ -18,20 +19,52 @@ import Notifications from '../../Notifications';
 
 import { classNames } from '../../../utils/common';
 
+const START = "start";
+const END = "end";
+
 function Classic() {
   const { settings } = useSelector((state) => state.room);
   const showChat = settings.chatOpen;
+  const [chatPosition, setChatPosition] = useState(END);
+
+  const swapPosition = () => {
+    setChatPosition(chatPosition === END ? START : END);
+  };
+
+  const SwapButton = () => {
+    return (
+      <button
+        title="Toggle chat position"
+        className="chat-position-toggler"
+        data-chat-position={chatPosition}
+        onClick={swapPosition}
+      >
+        { chatPosition === START ? <ArrowDown /> : <ArrowUp /> }
+      </button>
+    );
+  };
+
+  const ChatColumn = () => {
+    if (!showChat) return null;
+
+    return (
+      <div className="chat-wrapper" data-chat-position={chatPosition}>
+        <Chat />
+        <SwapButton />
+      </div>
+    );
+  };
 
   return (
     <div className="w-screen h-screen bg-primary-dark border-b-8 border-primary-dark">
       <div className="h-full padding-b-4 flex flex-col bg-gray-100">
-        <div className="px-4 pt-2 pb-1 text-white font-bold border-b-4 border-secondary bg-primary-dark ">
+        <div className="px-4 pt-2 pb-1 text-white font-bold border-b-4 border-secondary bg-primary-dark">
           <Header>
             <ParticipantActions />
             <ChatToggler />
           </Header>
         </div>
-        <div className="flex-1 pt-2 overflow-hidden grid gap-2 grid-rows-6 grid-cols-2 lg:grid-cols-3 sm:grid-flow-col">
+        <div className="flex-1 transition-all pt-2 overflow-hidden grid gap-2 grid-rows-6 grid-cols-2 lg:grid-cols-3 sm:grid-flow-col">
           <Notifications
             className="w-full absolute z-50 flex flex-col items-center"
           />
@@ -49,11 +82,7 @@ function Classic() {
             )}>
             <Participants />
           </div>
-          {showChat && (
-            <div className="overflow-y-auto row-span-2 col-span-2 border-t sm:row-span-6 sm:border-t-0 sm:border-l-2">
-              <Chat />
-            </div>
-          )}
+          <ChatColumn />
         </div>
       </div>
     </div>

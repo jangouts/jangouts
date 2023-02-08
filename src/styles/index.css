@@ -5,7 +5,6 @@
 @layer base {
   .theme-classic {
     --colors-primary-dark: #272727;
-    --colors-primary-dark: #272727;
     --colors-primary: #676767;
     --colors-primary-lighter: #a7a7a7;
     --colors-secondary: #f15a5c;
@@ -44,6 +43,96 @@
     @apply appearance-none box-border cursor-pointer;
     @apply w-full p-2 bg-secondary;
     @apply text-white font-bold uppercase;
+  }
+
+  .chat-wrapper {
+    position: relative;
+    grid-column: span 2 / span 2;
+    grid-row: 1 / span 2;
+    border-color: var(--colors-primary);
+    padding: 8px 4px;
+  }
+
+  .chat-wrapper[data-chat-position="start"] {
+    border-bottom-width: 1px;
+  }
+
+  .chat-wrapper[data-chat-position="end"] {
+    grid-row-start: 5;
+    border-top-width: 1px;
+  }
+
+  .chat-position-toggler {
+    --icon-size: 24px;
+    --half-icon-size: calc(var(--icon-size) / 2);
+    position: absolute;
+    left: calc(50% - var(--half-icon-size));
+    bottom: calc(0% - var(--half-icon-size) + 1px);
+    color: var(--colors-primary-dark);
+  }
+
+  .chat-position-toggler:hover {
+    color: var(--colors-secondary);
+  }
+
+  .chat-position-toggler svg {
+    position: relative;
+    border-radius: 1000px;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    @apply bg-gray-100;
+  }
+
+  .chat-position-toggler[data-chat-position="end"] {
+    bottom: calc(100% - var(--half-icon-size) - 1px);
+  }
+
+  .chat-position-toggler[data-chat-position="start"] svg {
+    border-bottom: 1px solid;
+  }
+
+  .chat-position-toggler[data-chat-position="end"] svg {
+    border-top: 1px solid;
+  }
+
+  @media (min-width: 640px) {
+    .chat-wrapper {
+      grid-column: 1 / 2;
+      grid-row: 1 / 7;
+      border-top: 0;
+      border-bottom: 0;
+    }
+
+    .chat-wrapper[data-chat-position="start"] {
+      border-right-width: 1px;
+    }
+
+    .chat-wrapper[data-chat-position="end"] {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      border-left-width: 1px;
+    }
+
+    .chat-position-toggler {
+      position: absolute;
+      rotate: -90deg;
+      left: calc(100% - var(--half-icon-size) - 1px);
+    }
+
+    .chat-position-toggler[data-chat-position="start"] {
+      bottom: 50%;
+    }
+
+    .chat-position-toggler[data-chat-position="end"] {
+      left: calc(0% - var(--half-icon-size) + 1px);
+      bottom: 50%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .chat-wrapper[data-chat-position="end"]{
+      grid-column: 3 / 3;
+    }
   }
 };
 

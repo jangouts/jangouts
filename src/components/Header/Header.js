@@ -18,7 +18,7 @@ function Header({ children }) {
         <span>{/* N participants? */}</span>
       </div>
       <div className="flex w-1/5 py-1 justify-center">
-        <Logo className="h-6 w-auto" />
+        <Logo className="h-6 w-auto hidden sm:block" />
       </div>
       <div className="flex gap-1 w-2/5 justify-end">
         {/* General actions */}
