@@ -93,7 +93,7 @@ const Participants = () => {
   return (
     <div
       ref={mainRef}
-      className="h-full w-full flex flex-row flex-wrap content-start overflow-x-hidden overflow-y-auto"
+      className="h-full w-full flex flex-row flex-wrap content-start justify-evenly overflow-x-hidden overflow-y-auto"
       style={{"--partWidthExtra": 18, "--partHeightExtra": 46, "--partHeightFactor": 0.75}}>
       {orderedParticipants.map((participant) => {
         let {
