@@ -93,8 +93,8 @@ const Participants = () => {
   return (
     <div
       ref={mainRef}
-      className="h-full w-full flex flex-row flex-wrap content-start overflow-x-hidden overflow-y-auto"
-      style={{"--partWidthExtra": 18, "--partHeightExtra": 46, "--partHeightFactor": 0.75}}>
+      className="h-full w-full grid content-start justify-evenly overflow-x-hidden overflow-y-auto"
+      style={{"--partWidthExtra": 18, "--partHeightExtra": 46, "--partHeightFactor": 0.75, "grid-template-columns": "repeat(auto-fill, var(--partSlotWidth))"}}>
       {orderedParticipants.map((participant) => {
         let {
           id,
