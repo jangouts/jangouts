@@ -26,7 +26,7 @@ export default function Interweave({ filters = [], matchers = [], ...props }) {
 
   const globalMatchers = [
     new ImgMatcher('img', { onRender: props.onRender }),
-    new UrlMatcher('url'),
+    new UrlMatcher('url', { validateTLD: false }),
     new EmojiMatcher('emoji', {
       convertEmoticon: true,
       convertShortcode: true,
