@@ -35,7 +35,7 @@ function Speaker() {
   return (
     <video
       ref={video}
-      muted={isPublisher}
+      muted={true}
       className={classNames(
         'max-h-full w-full focus:outline-none',
         isPublisher && !isLocalScreen && 'mirrored'
