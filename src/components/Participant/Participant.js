@@ -13,6 +13,8 @@ import { classNames, attachStream } from '../../utils/common';
 import StreamsService from '../../utils/streams-service';
 import { User as UserIcon } from 'react-feather';
 
+import './Participant.css';
+
 function setVideo(id, videoRef) {
   const stream = StreamsService.get(id);
 
@@ -26,7 +28,7 @@ function toggleFocus(id, focus) {
   return focus === 'user' ? participantsActions.unsetFocus() : participantsActions.setFocus(id);
 }
 
-const Video = ({id, focus, streamReady, showVideo, isPublisher, isLocalScreen}) => {
+const Video = ({id, streamReady, isPublisher, isLocalScreen}) => {
   const videoRef = React.createRef();
 
   useEffect(() => setVideo(id, videoRef.current), [id, videoRef, streamReady]);
@@ -37,7 +39,6 @@ const Video = ({id, focus, streamReady, showVideo, isPublisher, isLocalScreen}) 
       muted={isPublisher}
       autoPlay
       className={classNames(
-        showVideo || 'hidden',
         isPublisher && !isLocalScreen && 'mirrored',
         "max-h-full"
       )}
@@ -84,14 +85,12 @@ function Participant({
       <div
         className={classNames(
           "relative flex justify-evenly",
-          showVideo ? "bg-primary-dark" : "bg-gray-100"
+          showVideo ? "bg-primary-dark" : "bg-gray-100 hidden-video"
         )}
         style={{"height": "calc((var(--partSlotWidth) - 18px) * 0.75)"}}
         onClick={() => dispatch(toggleFocus(id, focus))}>
         <ParticipantVideo 
           id={id}
-          focus={focus}
-          showVideo={showVideo}
           streamReady={streamReady}
           isLocalScreen={isLocalScreen}
           isPublisher={isPublisher}
