@@ -82,7 +82,10 @@ function Participant({
       )}
       style={{width: "calc(var(--partSlotWidth) - 6px)", margin: "3px", padding: "4px", borderWidth: "2px"}}>
       <div
-        className="relative flex justify-evenly bg-primary-dark"
+        className={classNames(
+          "relative flex justify-evenly",
+          showVideo ? "bg-primary-dark" : "bg-gray-100"
+        )}
         style={{"height": "calc((var(--partSlotWidth) - 18px) * 0.75)"}}
         onClick={() => dispatch(toggleFocus(id, focus))}>
         <ParticipantVideo 
