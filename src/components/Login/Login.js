@@ -24,7 +24,7 @@ function Login() {
         <Logo className="w-2/3 mx-auto" />
         <LoginForm />
         <div className="text-xs text-white text-center mt-5">
-          Powered by <a target="_blank" href="https://github.com/jangouts/jangouts" className="underline">Jangouts</a>
+          Powered by <a target="_blank" rel="noreferrer" href="https://github.com/jangouts/jangouts" className="underline">Jangouts</a>
         </div>
       </div>
     </div>

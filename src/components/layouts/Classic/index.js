@@ -85,7 +85,7 @@ function Classic() {
           <ChatColumn />
         </div>
         <div className="bg-primary-dark border-t-2 border-secondary text-xs text-white text-center py-1">
-          Powered by <a target="_blank" href="https://github.com/jangouts/jangouts" className="underline">Jangouts</a>
+          Powered by <a target="_blank" rel="noreferrer" href="https://github.com/jangouts/jangouts" className="underline">Jangouts</a>
         </div>
       </div>
     </div>
