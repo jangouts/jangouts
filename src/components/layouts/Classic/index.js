@@ -56,7 +56,7 @@ function Classic() {
   };
 
   return (
-    <div className="w-screen h-screen bg-primary-dark border-b-8 border-primary-dark">
+    <div className="w-screen h-screen bg-primary-dark border-b-1 border-primary-dark">
       <div className="h-full padding-b-4 flex flex-col bg-gray-100">
         <div className="px-4 pt-2 pb-1 text-white font-bold border-b-4 border-secondary bg-primary-dark">
           <Header>
@@ -83,6 +83,9 @@ function Classic() {
             <Participants />
           </div>
           <ChatColumn />
+        </div>
+        <div className="bg-primary-dark border-t-2 border-secondary text-xs text-white text-center py-1">
+          Powered by <a target="_blank" href="https://github.com/jangouts/jangouts" className="underline">Jangouts</a>
         </div>
       </div>
     </div>
