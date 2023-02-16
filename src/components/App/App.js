@@ -25,6 +25,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/room/:roomId" element={<Room />} />
+            {/* Backwards compatibility with the URLs of the Angular-based version */}
+            <Route path="/rooms/:roomId" element={<Room />} />
           </Routes>
         </HashRouter>
       </AppStarter>
