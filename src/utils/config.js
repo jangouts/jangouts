@@ -47,7 +47,7 @@ const defaultJanusServer = () => {
  *
  * For the time being, only `%{hostname}` is supported.
  */
-const replacePlaceholders = (text) => text.replace('%{hostname}', window.location.hostname);
+const replacePlaceholders = (text) => text.replace(/%{hostname}/g, window.location.hostname);
 
 /**
  * Parses and builds the configuration object.
