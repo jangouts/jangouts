@@ -14,7 +14,7 @@ import { createFeedConnection } from './models/feed-connection';
  *
  * @param {Object} config Janus config options
  * @property {String | Array<String>} config.janusServer Janus server URL. It can be an array with several URLs.
- * @property {Boolean} config.janusDebug NOT IMPLEMENTED
+ * @property {Boolean | String | Array<String>} config.janusDebug Debug parameter for Janus.init()
  * @property {Boolean} config.janusWithCredentials Whether to set credentials in XHR requests
  * @property {Integer} config.joinUnmutedLimit Feeds limit to connect as unmuted
  * @property {Boolean} config.videoThumbnails Whether to use video thumbnails by default
@@ -27,7 +27,7 @@ export const createRoomService = (
   eventsService,
   actionService
 ) => {
-  const { janusServer, janusWithCredentials, joinUnmutedLimit, videoThumbnails } = config;
+  const { janusServer, janusDebug, janusWithCredentials, joinUnmutedLimit, videoThumbnails } = config;
   const createFeedConnectionFactory = createFeedConnection(eventsService);
   let startMuted = false;
 
@@ -49,7 +49,7 @@ export const createRoomService = (
       if (that.janus) {
         resolve(true);
       } else {
-        Janus.init();
+        Janus.init({debug: janusDebug});
         console.log(that.server);
         that.janus = new Janus({
           server: that.server,
