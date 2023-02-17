@@ -15,7 +15,7 @@ const DEFAULT_CONFIG = {
 // Map protocols to ports
 const PORTS = {
   ws: '8188',
-  wss: '8189'
+  wss: '8989'
 };
 
 /**
@@ -39,7 +39,10 @@ const usingSSL = () => window.location.protocol === 'https:';
  */
 const defaultJanusServer = () => {
   const proto = usingSSL() ? 'wss' : 'ws';
-  return `${proto}://${window.location.hostname}:${PORTS[proto]}/janus`;
+  return [
+    `${proto}://${window.location.hostname}/janus`,
+    `${proto}://${window.location.hostname}:${PORTS[proto]}/janus`
+  ];
 };
 
 /**

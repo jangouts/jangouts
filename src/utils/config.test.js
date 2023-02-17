@@ -35,33 +35,41 @@ describe('#fetchConfig', () => {
     mockFetch({ ok: false });
 
     const config = await fetchConfig();
-    expect(config.janusServer).toEqual("ws://localhost:8188/janus");
+    expect(config.janusServer).toEqual(
+      ["ws://localhost/janus", "ws://localhost:8188/janus"]
+    );
   });
 
   it('returns the default configuration if no valid JSON is found', async () => {
     mockFetch({ ok: true, text: 'not JSON' });
 
     const config = await fetchConfig();
-    expect(config.janusServer).toEqual("ws://localhost:8188/janus");
+    expect(config.janusServer).toEqual(
+      ["ws://localhost/janus", "ws://localhost:8188/janus"]
+    );
   });
 
-  it('includes the ws: janusServer if none is given and current proto is http', async () => {
+  it('includes ws: URLs in janusServer if none is given and current proto is http', async () => {
     mockFetch({ ok: true, text: '{}' });
 
     delete window.location;
     window.location = { protocol: 'http:', hostname: 'example.net' };
 
     const config = await fetchConfig();
-    expect(config.janusServer).toEqual("ws://example.net:8188/janus");
+    expect(config.janusServer).toEqual(
+      ["ws://example.net/janus", "ws://example.net:8188/janus"]
+    );
   });
 
-  it('includes the wss: janusServer if none is given and the current proto is https', async () => {
+  it('includes wss: URLs in janusServer if none is given and the current proto is https', async () => {
     mockFetch({ ok: true, text: '{}' });
 
     delete window.location;
     window.location = { protocol: 'https:', hostname: 'example.net' };
 
     const config = await fetchConfig();
-    expect(config.janusServer).toEqual("wss://example.net:8189/janus");
+    expect(config.janusServer).toEqual(
+      ["wss://example.net/janus", "wss://example.net:8989/janus"]
+    );
   });
 });
