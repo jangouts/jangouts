@@ -10,49 +10,14 @@ import { createRoomFromJanus } from './models/room';
 import { createFeedConnection } from './models/feed-connection';
 
 /**
- * Returns the Janus server URL from the configuration
- *
- * @param {String} server Janus server URI
- * @param {String} sslServer Janus SSL server URI
- * @param {Boolean} useSSL Whether to use SSL or not
- */
-const configuredJanusServer = (server, sslServer, useSSL) =>
-  sslServer && useSSL ? sslServer : server;
-
-/**
- * Guess the default janus server
- *
- * @todo it is copied from the old room service. Please, refactor.
- */
-const defaultJanusServer = (useSSL) => {
-  let wsProtocol;
-  let wsPort;
-
-  if (useSSL) {
-    wsProtocol = 'wss:';
-    wsPort = '8989';
-  } else {
-    wsProtocol = 'ws:';
-    wsPort = '8188';
-  }
-
-  return [
-    wsProtocol + '//' + window.location.hostname + ':' + wsPort + '/janus/',
-    window.location.protocol + '//' + window.location.hostname + '/janus/'
-  ];
-};
-
-/**
  * Builds an object to interact with a Janus server
  *
  * @param {Object} config Janus config options
- * @property {String} config.janusServer Janus server URL
- * @property {String} config.janusServerSSL Janus SSL server URL
- * @property {Boolean} config.janusDebug NOT IMPLEMENTED
- * @property {Boolean} config.janusWithCredentials Set credentials in XHR requests
+ * @property {String | Array<String>} config.janusServer Janus server URL. It can be an array with several URLs.
+ * @property {Boolean | String | Array<String>} config.janusDebug Debug parameter for Janus.init()
+ * @property {Boolean} config.janusWithCredentials Whether to set credentials in XHR requests
  * @property {Integer} config.joinUnmutedLimit Feeds limit to connect as unmuted
- * @property {Boolean} config.videThumbnails Use only thumbnails
- * @property {Boolean} config.useSSL Whether to use SSL or not (TODO: autodetect?)
+ * @property {Boolean} config.videoThumbnails Whether to use video thumbnails by default
  * @returns {Object}
  */
 export const createRoomService = (
@@ -62,9 +27,7 @@ export const createRoomService = (
   eventsService,
   actionService
 ) => {
-  const { janusServer, janusServerSSL, janusWithCredentials, useSSL, joinUnmutedLimit } = config;
-  // TODO: the logic for default values should be encapsulated in a proper object
-  const videoThumbnails = config.videoThumbnails === undefined ? true : config.videoThumbnails;
+  const { janusServer, janusDebug, janusWithCredentials, joinUnmutedLimit, videoThumbnails } = config;
   const createFeedConnectionFactory = createFeedConnection(eventsService);
   let startMuted = false;
 
@@ -74,8 +37,7 @@ export const createRoomService = (
     privateId: null,
     withCredentials: !!janusWithCredentials
   };
-  that.server =
-    configuredJanusServer(janusServer, janusServerSSL, useSSL) || defaultJanusServer(useSSL);
+  that.server = janusServer;
 
   /**
    * Connects to the Janus server
@@ -87,7 +49,7 @@ export const createRoomService = (
       if (that.janus) {
         resolve(true);
       } else {
-        Janus.init();
+        Janus.init({debug: janusDebug});
         console.log(that.server);
         that.janus = new Janus({
           server: that.server,
@@ -383,7 +345,7 @@ export const createRoomService = (
           connection.confirmConfig();
         } else if (msg.started) {
           // Initial setConfig, needed to complete all the initializations
-          connection.setConfig({ values: { audio: true, data: true, video: videoThumbnails } });
+          connection.setConfig({ values: { audio: true, data: true, video: !!videoThumbnails } });
         } else if (msg.error_code === 428) {
           console.log("We tried to subscribe to a feed that is not publishing (an attendee)");
           actionService.stopIgnoringFeed(id);

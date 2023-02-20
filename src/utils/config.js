@@ -7,6 +7,7 @@
 
 // Values for the default configuration
 const DEFAULT_CONFIG = {
+  janusDebug: false,
   janusWithCredentials: true,
   joinUnmutedLimit: 3,
   videoThumbnails: true
@@ -15,7 +16,7 @@ const DEFAULT_CONFIG = {
 // Map protocols to ports
 const PORTS = {
   ws: '8188',
-  wss: '8189'
+  wss: '8989'
 };
 
 /**
@@ -39,7 +40,10 @@ const usingSSL = () => window.location.protocol === 'https:';
  */
 const defaultJanusServer = () => {
   const proto = usingSSL() ? 'wss' : 'ws';
-  return `${proto}://${window.location.hostname}:${PORTS[proto]}/janus`;
+  return [
+    `${proto}://${window.location.hostname}/janus`,
+    `${proto}://${window.location.hostname}:${PORTS[proto]}/janus`
+  ];
 };
 
 /**
@@ -47,7 +51,7 @@ const defaultJanusServer = () => {
  *
  * For the time being, only `%{hostname}` is supported.
  */
-const replacePlaceholders = (text) => text.replace('%{hostname}', window.location.hostname);
+const replacePlaceholders = (text) => text.replace(/%{hostname}/g, window.location.hostname);
 
 /**
  * Parses and builds the configuration object.
