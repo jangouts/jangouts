@@ -41,8 +41,8 @@ const usingSSL = () => window.location.protocol === 'https:';
 const defaultJanusServer = () => {
   const proto = usingSSL() ? 'wss' : 'ws';
   return [
-    `${proto}://${window.location.hostname}/janus`,
-    `${proto}://${window.location.hostname}:${PORTS[proto]}/janus`
+    `${proto}://${window.location.hostname}/janus/`,
+    `${proto}://${window.location.hostname}:${PORTS[proto]}/janus/`
   ];
 };
 
@@ -90,7 +90,7 @@ export const fetchConfig = async () => {
   if (response.ok) {
     return parseConfig(await response.text());
   } else {
-    console.error("Could not load the configuration file. Using default values.");
+    console.warn("Could not load the configuration file. Using default values.");
     return defaultConfig();
   }
 };
