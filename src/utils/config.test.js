@@ -36,7 +36,7 @@ describe('#fetchConfig', () => {
 
     const config = await fetchConfig();
     expect(config.janusServer).toEqual(
-      ["ws://localhost/janus", "ws://localhost:8188/janus"]
+      ["ws://localhost/janus/", "ws://localhost:8188/janus/"]
     );
   });
 
@@ -45,7 +45,7 @@ describe('#fetchConfig', () => {
 
     const config = await fetchConfig();
     expect(config.janusServer).toEqual(
-      ["ws://localhost/janus", "ws://localhost:8188/janus"]
+      ["ws://localhost/janus/", "ws://localhost:8188/janus/"]
     );
   });
 
@@ -57,7 +57,7 @@ describe('#fetchConfig', () => {
 
     const config = await fetchConfig();
     expect(config.janusServer).toEqual(
-      ["ws://example.net/janus", "ws://example.net:8188/janus"]
+      ["ws://example.net/janus/", "ws://example.net:8188/janus/"]
     );
   });
 
@@ -69,7 +69,7 @@ describe('#fetchConfig', () => {
 
     const config = await fetchConfig();
     expect(config.janusServer).toEqual(
-      ["wss://example.net/janus", "wss://example.net:8989/janus"]
+      ["wss://example.net/janus/", "wss://example.net:8989/janus/"]
     );
   });
 });
