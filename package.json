@@ -2,6 +2,7 @@
   "name": "Jangouts",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@types/jest": "^28.1.3",
     "@types/node": "^18.0.0",
