@@ -28,6 +28,9 @@ function Room() {
     const searchParams = new URLSearchParams(location.search);
     const username = searchParams.get('user') || randomUsername();
     // TODO: get username from local storage
+
+    // Save settings, in case we don't come from the login form
+    dispatch(roomActions.saveSettings({...room.settings, username, roomId}));
     dispatch(roomActions.login(username, roomId));
   }, []);
 
