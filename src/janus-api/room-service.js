@@ -51,10 +51,13 @@ export const createRoomService = (
       } else {
         Janus.init({debug: janusDebug});
         console.log(that.server);
-        that.janus = new Janus({
+        const jn = new Janus({
           server: that.server,
           withCredentials: that.withCredentials,
-          success: () => resolve(true),
+          success: () => {
+            that.janus = jn;
+            resolve(true);
+          },
           error: (e) => {
             // TODO: move this to a better place
             const msg = `Janus error: ${e}. Do you want to reload in order to retry?"`;
