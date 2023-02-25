@@ -84,7 +84,7 @@ const initialSettings = () => {
   return settings;
 };
 
-export const initialState = { settings: initialSettings().toPlain(), loggedIn: false, loggingIn: false };
+export const initialState = { settings: initialSettings().toPlain(), loggedIn: false, loggingIn: false, error: null };
 
 const reducer = function(state = initialState, action) {
   const { type, payload } = action;
@@ -97,7 +97,7 @@ const reducer = function(state = initialState, action) {
       if (payload !== undefined && payload.error) {
         return { ...state, loggingIn: false, loggedIn: false, error: payload.error };
       } else {
-        return { ...state, loggingIn: false, loggedIn: true };
+        return { ...state, loggingIn: false, loggedIn: true, error: null };
       }
     }
     case ROOM_SETTINGS_LOAD: {

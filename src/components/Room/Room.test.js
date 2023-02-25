@@ -32,16 +32,24 @@ janusApi.getRooms= () => Promise.resolve([]);
 Janus.attachMediaStream = jest.fn();
 
 describe('when the user is not logged in', () => {
+  it('updates the settings with the username and room id from the URL', () => {
+    const store = mockStore({ ...initialState, room: { ...initialState.room, loggedIn: false } });
+    renderWithRedux(<Room location={{ search: '?user=Jane' }} />, { store });
+
+    expect(store.getActions()).toContainEqual({
+      type: 'jangouts/room/SETTINGS_LOAD',
+      payload: { settings: { ...initialState.room.settings, roomId: '5678', username: 'Jane' } }
+    });
+  });
+
   it('tries to log in taking room and username from the URL', () => {
     const store = mockStore({ ...initialState, room: { ...initialState.room, loggedIn: false } });
     renderWithRedux(<Room location={{ search: '?user=Jane' }} />, { store });
 
-    expect(store.getActions()).toEqual([
-      {
-        type: 'jangouts/room/LOGIN_REQUEST',
-        payload: { roomId: 5678, username: 'Jane' }
-      }
-    ]);
+    expect(store.getActions()).toContainEqual({
+      type: 'jangouts/room/LOGIN_REQUEST',
+      payload: { roomId: 5678, username: 'Jane' }
+    });
   });
 });
 

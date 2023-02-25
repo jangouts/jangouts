@@ -29,7 +29,8 @@ describe('reducer', () => {
       roomId,
       username,
       loggingIn: false,
-      loggedIn: true
+      loggedIn: true,
+      error: null
     });
   });
 

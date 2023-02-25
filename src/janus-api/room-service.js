@@ -51,10 +51,13 @@ export const createRoomService = (
       } else {
         Janus.init({debug: janusDebug});
         console.log(that.server);
-        that.janus = new Janus({
+        const jn = new Janus({
           server: that.server,
           withCredentials: that.withCredentials,
-          success: () => resolve(true),
+          success: () => {
+            that.janus = jn;
+            resolve(true);
+          },
           error: (e) => {
             // TODO: move this to a better place
             const msg = `Janus error: ${e}. Do you want to reload in order to retry?"`;
@@ -128,13 +131,12 @@ export const createRoomService = (
   that.enter = (username, pin) => {
     return new Promise((resolve, reject) => {
       that.connect().then(function() {
-        that.doEnter(username, pin);
-        resolve();
+        that.doEnter(username, pin, resolve, reject);
       });
     });
   };
 
-  that.doEnter = (username, pin) => {
+  that.doEnter = (username, pin, resolve, reject) => {
     let connection = null;
     that.pin = pin;
 
@@ -192,6 +194,7 @@ export const createRoomService = (
         // Step 2. Response from janus confirming we joined
         if (event === 'joined') {
           console.log('Successfully joined room ' + msg.room);
+          resolve(true);
           // sending user joined event
           eventsService.auditEvent('user');
 
@@ -251,7 +254,8 @@ export const createRoomService = (
           }
           // The server reported an error
           if (isPresent(msg.error)) {
-            console.log('Error message from server' + msg.error);
+            console.log('Error message from server', msg.error);
+            reject(msg.error);
             eventsService.roomEvent('reportError', { error: msg.error });
           }
         }
