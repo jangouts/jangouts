@@ -86,7 +86,7 @@ function parseConfig(text) {
  *  
  */
 export const fetchConfig = async () => {
-  const response = await fetch('/config.json');
+  const response = await fetch('config.json');
   if (response.ok) {
     return parseConfig(await response.text());
   } else {
