@@ -1,54 +1,100 @@
-## Running the React/Redux based branch
+# Jangouts
 
 [![Coverage Status](https://coveralls.io/repos/github/jangouts/jangouts/badge.svg?branch=master)](https://coveralls.io/github/jangouts/jangouts?branch=master)
 
-This branch contains the [React](https://reactjs.org/) and
-[Redux](https://react-redux.js.org/) based version of Jangouts. It is still a
-work in progress, but the basic features are already in place. We plan to
-replace the stable version with this one shortly. You can check the progress on
-the [project's page](https://github.com/jangouts/jangouts/projects/1).
+Jangouts (for "Janus Hangouts") is a solution for videoconferencing based on WebRTC and the
+excellent [Janus Gateway](http://janus.conf.meetecho.com/) with a user interface loosely inspired by
+Google Hangouts. It aims to provide a completely self-hosted open source alternative to Google
+Hangouts and similar solutions. Currently Jangouts supports conferences with video, audio, screen
+sharing and textual chat organized into an unlimited amount of conference rooms with a configurable
+limit of participants per room.
 
-This document explains how to set up Jangouts for development and testing. As we
-use [Create React App](https://github.com/facebook/create-react-app) to
-bootstrap this branch, you might be interested in checking the [Getting
-Started](https://facebook.github.io/create-react-app/docs/getting-started) guide
-for further information.
+![Example screen of Jangouts 0.4.0](screenshot.png?raw=true)
 
-### Testing and development
+## Installation
 
-To use Jangouts, you need a [Janus](https://janus.conf.meetecho.com/) server.
-After all, Jangouts is _just_ a user interface on top of Janus. We recommend
-installing a recent version, like 0.8.2.
+Jangouts is a JavaScript application running exclusively client-side (i.e. in the browser). The
+server simply needs to provide a bunch of static files through a web server.
 
-If your Linux distribution offers up-to-date packages, you can use them. For
-instance, recent versions of Janus are available [for
-SUSE/openSUSE](https://build.opensuse.org/package/show/network:jangouts/janus-gateway).
+### Step 1. Janus Gateway
 
-Alternatively, you can use [Docker](https://www.docker.com/). The repository
-includes the required configuration files to set up the Janus server using
-[Docker Compose](https://docs.docker.com/compose/). After installing
-*docker-compose*, run:
+All the server-side WebRTC handling is performed by Janus Gateway, so the first requirement is a
+running janus server with support for data channels compiled in, with the videoroom plugin enabled
+and with a valid list of rooms in the `janus.plugin.videoroom.cfg` file. 
 
-    docker-compose up
-    
-Grab a coffee and wait for the service to be available.
+There are many ways to get a Janus Gateway server running in your system. Check [JANUS.md](JANUS.md)
+for some guidance.
 
-Now, let's start Jangouts. You need [Node.js](https://nodejs.org/) and `npm` to
-be available in your system. From the repository, run:
+### Step 2. Download and configure Jangouts
 
-    npm start
-    
-Now point your browser to `http://localhost:3000/`, and you should be able to
-see the login screen.
+The easiest way to get Jangouts is to download the latest archive from the [Jangouts releases page
+at Github](https://github.com/jangouts/jangouts/releases).  For deployment purposes, the only
+relevant directory in that archive is the one called `build`, which contains the files to be served
+by the HTTP server to the participants' browsers.
 
-### Production
+A file called `config.json` can be added to that directory to point the participants to any Janus
+server, to enable extra debugging, or to tweak Jangouts in several ways. Use the file
+`config.sample.json` as starting point. It's fine to operate Jangouts without a `config.json` file
+or to have some parameters set to `null` in that file, Jangouts will try to guess the proper value
+during runtime.
 
-This version of Jangouts is not ready for prime-time yet. However, you can give
-it a try by following almost the [same
-instructions](https://github.com/jangouts/jangouts#installation) that you would
-use for the stable version.
+### Step 3. Serve the `build` folder
 
-The only difference is step 3: instead of serving the `dist` folder, you need to
-run the following command and serve the generated `build` folder:
+Given than a Janus Gateway server is running and reachable and that `config.json` contains the
+proper values (in case something needs to be adjusted), all that needs to be done is to serve the
+content of the `build` directory to the clients. Any web server, such as Apache, can be used for
+that purpose.
 
-    npm run-script build
+The simplest way (although certainly not the cleanest) to do such thing in an (open)SUSE
+system would be:
+
+1. `sudo zypper in apache2`
+2. Copy the content of `build` directly into `/srv/www/htdocs/`
+3. `sudo systemctl start apache2.service`
+
+Done. At that point you should be able to access your own instance of Jangouts just by pointing your
+browser to `http://localhost/`.
+
+See the [deployment instructions](DEPLOYMENT.md) for more information about how to properly
+configure Apache.
+
+## A note about security and browsers
+
+Browsers will refuse to allow screen sharing through WebRTC for connections not using SSL. In most
+cases, they will even refuse to send any WebRTC content at all, neither video or audio. Providing
+HTTPS access to both the files and the Janus gateway, like shown in the [deployment
+instructions](DEPLOYMENT.md), may be crucial for a proper usage experience.
+
+## Plugins
+
+Jangouts includes limited support for plugins in order to provide additional functionality. But
+plugins are temporarily disabled in the current version of Jangouts. If you are interested on
+Jangouts plugins, use Jangouts version 0.5.x for the time being. Information about configuring the
+existing plugins is found in the README.md file for that release.
+
+## Troubleshooting
+
+If Jangouts does not work, please check the [troubleshooting guide](TROUBLES.md).
+
+## Developing Jangouts
+
+In order to modify Jangouts, it's necessary to install some development tools.
+That setup is detailed in the [development instructions](DEVELOPMENT.md).
+
+## Acknowledgments
+
+* [Janus Gateway](http://janus.conf.meetecho.com/) developers, for such a powerful and
+  versatile tool.
+* [SUSE Linux](http://www.suse.com), for the awesome [Hack Week](http://hackweek.suse.com)
+  initiative.
+
+## License
+
+This software is released under the terms of the MIT License. See the
+[license file](LICENSE.txt) for more information.
+
+## Find us
+
+Jangouts developers can be usually found at:
+ - [#jangouts IRC channel at Freenode](https://webchat.freenode.net/?channels=%23jangouts)
+ - [Google Groups](https://groups.google.com/forum/#!forum/jangouts)
