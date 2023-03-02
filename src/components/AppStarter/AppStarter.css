@@ -1,0 +1,24 @@
+/**
+ * Copyright (c) [2020] SUSE Linux
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license.  See the LICENSE.txt file for details.
+ */
+
+.AppStarter {
+  background-color: #272727;
+  color: #fff;
+  display: flex;
+  height: 100vh;
+  text-align: center;
+}
+
+.AppStarter img.logo {
+  margin: 2rem auto;
+  width: 100%;
+}
+
+.AppStarter .content {
+  margin: auto;
+  width: 25%;
+}

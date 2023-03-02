@@ -1,5 +1,10 @@
 # Setting up the development environment
 
+This document explains how to set up Jangouts for development and testing. As we use [Create React
+App](https://github.com/facebook/create-react-app) to bootstrap the application, you might be
+interested in checking the [Getting Started](https://facebook.github.io/create-react-app/docs/getting-started)
+guide for further information.
+
 ## Step 1. Getting and configuring Jangouts
 
 The first step to develop Jangouts is to get a local copy of its repository:
@@ -14,25 +19,17 @@ are running (open)SUSE you could type:
 sudo zypper in git
 ```
 
-Then you could adapt the configuration by creating a file called
-`src/config.json`. You have an sample file in `src/config.json.sample`.
-
-For a development environment, the next configuration would be fine:
-
-```json
-{
-  "janusServer": "http://localhost:8088/janus"
-}
-```
+Once you get the source code, you may need to adapt the configuration by creating a file called
+`public/config.json`. You have an sample file at `public/config.sample.json`. This step is usually
+not needed if you are running a local instance of Janus Gateway listening on its standard wss port.
 
 ## Step 2. Install requirements
 
 In addition to fetching the Jangouts source code, you also need to install
-[Node.js](http://nodejs.org), [npm](http://npmjs.com), [Bower](http://bower.io)
-and [Gulp.js](http://gulpjs.com).
+[Node.js](http://nodejs.org) and [npm](http://npmjs.com).
 
-Node.js and npm should be available in any Linux distribution. For example, if you’re
-running (open)SUSE you could type:
+Node.js and npm should be available in any Linux distribution. For example, if you’re running
+(open)SUSE you could type:
 
 ```sh
 sudo zypper in nodejs nodejs-npm
@@ -40,35 +37,24 @@ sudo zypper in nodejs nodejs-npm
 
 Take into account that, in some cases, npm is bundled in the same package as Node.js.
 
-If you prefer, you could use [Node Version
-Manager](https://github.com/creationix/nvm) to install Node.js and npm.
+If you prefer, you could use [Node Version Manager](https://github.com/creationix/nvm) to install
+Node.js and npm.
 
-Now, you must install Bower and Gulp.js globally through npm. Just type:
-
-```sh
-sudo npm install -g bower gulp
-```
-
-## Step 3. Install dependencies
-
-This project uses npm to manage development dependencies and Bower for runtime dependencies.
-Those dependencies are defined in `package.json` and `bower.json` files. To install them,
-just type:
+Once you have installed Node.js and npm, just run this from the Jangouts directory (the one
+containing the file `package.json`).
 
 ```sh
-npm install && bower install
+npm install
 ```
 
-Bear in mind that every time a new dependency is added, you must run this command again.
+That will fetch all the development packages Jangouts depends on.
 
-## Step 4. Start the webserver
+## Step 3. Start the webserver
 
-If you only want to make some development, you don’t need to install any
-webserver. Just type:
+If you only want to make some development, you don’t need to install any webserver. Just type:
 
 ```sh
-gulp serve
+npm start
 ```
 
-Now you should be able to access with your browser through the URL
-`http://localhost:3000/`.
+Now point your browser to `http://localhost:3000/`, and you should be able to see the login screen.
