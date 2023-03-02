@@ -1,0 +1,22 @@
+FROM opensuse/leap:15.4
+
+RUN zypper --non-interactive in --no-recommends curl && zypper clean -a
+
+RUN curl --insecure -L -O https://build.opensuse.org/projects/network:telephony/public_key \
+  && rpm --import public_key \
+  && rm public_key
+
+RUN zypper ar -f -r \
+  https://download.opensuse.org/repositories/network:/telephony/15.4/network:telephony.repo \
+  && zypper --non-interactive in --no-recommends janus-gateway \
+  && zypper clean -a
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
+
+EXPOSE 8088
+EXPOSE 8089
+EXPOSE 8188
+EXPOSE 8189
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["janus"]
