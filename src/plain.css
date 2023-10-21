@@ -139,6 +139,39 @@ button[data-chat-status="closed"]:hover svg {
   background: var(--colors-primary);
 }
 
+div[role="alertdialog"] {
+  background: white;
+  border-bottom: 2px solid var(--colors-secondary);
+  box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.7);
+  padding: 1rem;
+  min-width: 60%;
+  max-width: 60%;
+}
+
+div[role="alertdialog"] p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+div[role="alertdialog"] div {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+div[role="alertdialog"] div button {
+  border: 2px solid var(--colors-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  color: var(--colors-primary);
+  font-weight: bold;
+}
+
+div[role="alertdialog"] div button:hover {
+  border-color: var(--colors-primary-dark);
+  color: var(--colors-primary-dark);
+}
+
 .powered-by {
   color: white;
   font-size: 0.8rem;
