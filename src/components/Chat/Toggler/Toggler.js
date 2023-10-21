@@ -24,14 +24,11 @@ function Toggler() {
   const { settings } = useSelector((state) => state.room);
 
   let title;
-  let classes;
 
   if (settings.chatOpen) {
     title = 'Hide chat';
-    classes = 'bg-white text-primary';
   } else {
     title = 'Show chat';
-    classes = 'bg-primary-dark hover:bg-primary text-white';
   }
 
   const { displayed, list: messages } = useSelector((state) => state.messages);
@@ -53,17 +50,19 @@ function Toggler() {
   );
 
   return (
-    <button title={title} onClick={toggle(dispatch, settings)} className="relative">
+    <button
+      title={title}
+      data-chat-status={settings.chatOpen ? "open" : "closed"}
+      onClick={toggle(dispatch, settings)}
+      className="chat-toggler"
+    >
       <span className={classNames(
+        'unread-messages',
         unread < 1 && 'hidden',
-        'absolute -top-[6px] left-[10px]', // position
-        'bg-secondary text-white', // colors
-        'w-5 h-5 min-w-fit min-h-fit', // size
-        'p-1 text-sm rounded-full flex justify-center items-center cursor-default' // others
       )}>
-        <span>{unread}</span>
+        {unread}
       </span>
-      <MessageSquare className={classNames('p-0.5 rounded', classes)} />
+      <MessageSquare />
     </button>
   );
 }

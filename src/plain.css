@@ -30,7 +30,6 @@ input[type="submit"] {
   color: white;
   background: var(--colors-secondary);
   padding: 0.5rem;
-  margin-top: 0.5rem;
   font-weight: bold;
 }
 
@@ -48,6 +47,96 @@ input[type="submit"] {
 .header .actions {
   display: flex;
   gap: 0.2rem;
+}
+
+.header .actions button svg {
+  border-radius: 4px;
+}
+
+.chat {
+  position: relative;
+  height: 100%;
+  padding-bottom: 4rem;
+}
+
+.chat div[role="log"] {
+  height: 100%;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.chat li {
+  background: white;
+  margin-bottom: 0.5rem;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.6);
+}
+
+.chat .message .data {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat .message .data span {
+  font-weight: bold;
+}
+
+.chat .message .data time {
+  font-family: mono;
+  font-size: 0.7rem;
+}
+
+.chat .info {
+  font-style: italic;
+}
+
+.chat form {
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.chat form input {
+  appearance: none;
+  padding: 0.5rem;
+
+}
+
+.unread-messages {
+  position: absolute;
+  background: var(--colors-secondary);
+  padding: 1px 4px;
+  top: -8px;
+  right: -8px;
+  width: 22px;
+  min-width: min-content;
+  height: 22px;
+  min-height: min-content;
+  font-size: 12px;
+  border-radius: 10px;
+  text-align: center;
+
+}
+
+.chat-toggler {
+  position: relative;
+}
+
+button[data-chat-status="open"] svg {
+  background: white;
+  color: var(--colors-primary);
+}
+
+button[data-chat-status="closed"] svg {
+  background: var(--colors-primary-dark);
+  color: white;
+}
+
+button[data-chat-status="closed"]:hover svg {
+  background: var(--colors-primary);
 }
 
 .powered-by {
