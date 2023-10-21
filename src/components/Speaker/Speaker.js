@@ -37,7 +37,6 @@ function Speaker() {
       ref={video}
       muted={true}
       className={classNames(
-        'max-h-full w-full focus:outline-none',
         isPublisher && !isLocalScreen && 'mirrored'
       )}
       autoPlay
