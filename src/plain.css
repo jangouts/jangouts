@@ -12,9 +12,31 @@
   padding: 20px;
 }
 
+.login-wrapper div[role="alert"] {
+  background: white;
+  padding: 0.5rem;
+  color: red;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.login-wrapper div[role="alert"] > svg {
+  width: 1.5rem;
+  color: red;
+}
+
 .powered-by {
   color: white;
   font-size: 0.8rem;
   text-align: center;
   margin-top: 1rem;
+}
+
+input[type="submit"] {
+  width: 100%;
+  color: white;
+  background: var(--colors-secondary);
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  font-weight: bold;
 }
