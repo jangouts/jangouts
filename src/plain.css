@@ -25,13 +25,6 @@
   color: red;
 }
 
-.powered-by {
-  color: white;
-  font-size: 0.8rem;
-  text-align: center;
-  margin-top: 1rem;
-}
-
 input[type="submit"] {
   width: 100%;
   color: white;
@@ -40,3 +33,27 @@ input[type="submit"] {
   margin-top: 0.5rem;
   font-weight: bold;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header .logo {
+  width: 25%;
+  min-width: 100px;
+}
+
+.header .actions {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.powered-by {
+  color: white;
+  font-size: 0.8rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
