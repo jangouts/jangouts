@@ -9,7 +9,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { LogOut as LogOutIcon } from 'react-feather';
 import { actionCreators as roomActions } from '../../../state/ducks/room';
-import { classNames } from '../../../utils/common';
 
 function LogOut({className, iconStyle}) {
   const label = "Leave the room";
@@ -21,7 +20,7 @@ function LogOut({className, iconStyle}) {
       aria-label={label}
       className={className}
       onClick={() => dispatch(roomActions.logout())}>
-      <LogOutIcon className={classNames("text-secondary", iconStyle)} />
+      <LogOutIcon className="logout-action"/>
     </button>
   );
 }

@@ -172,6 +172,10 @@ div[role="alertdialog"] div button:hover {
   color: var(--colors-primary-dark);
 }
 
+.logout-action {
+  color: var(--colors-secondary);
+}
+
 .powered-by {
   color: white;
   font-size: 0.8rem;
