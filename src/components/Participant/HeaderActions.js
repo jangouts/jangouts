@@ -20,9 +20,8 @@ function HeaderActions() {
   const actionsProps = {
     participantId: participant.id,
     showLabel: false,
-    activeClassNames: 'bg-white text-green-600',
-    inactiveClassNames: 'bg-secondary !text-white',
-    iconStyle: 'p-0.5 rounded',
+    activeClassNames: 'action-on',
+    inactiveClassNames: 'action-off',
   };
 
   return [

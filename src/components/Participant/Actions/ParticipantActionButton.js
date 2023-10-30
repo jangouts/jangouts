@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import { classNames } from '../../../utils/common';
 
 function ParticipantActionButton({ icon, label, className, iconStyle, labelStyle, showLabel = false, ...props }) {
   const Icon = icon;
@@ -15,17 +14,13 @@ function ParticipantActionButton({ icon, label, className, iconStyle, labelStyle
     <button
       title={label}
       aria-label={label}
-      className={classNames(
-        "inline-flex items-center focus:outline-none",
-        props.disabled ? "cursor-default" : "cursor-pointer",
-        className
-      )}
+      className={className}
       {...props}
     >
-      <Icon className={classNames("h-auto", iconStyle)} />
+      <Icon className={iconStyle} />
       {
         showLabel &&
-        <span className={classNames("ml-2 text-left text-xs text-white", labelStyle)}>
+        <span className={labelStyle}>
           {label}
         </span>
       }
