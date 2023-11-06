@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { Monitor } from 'react-feather';
 import { actionCreators as participantActions } from '../../../state/ducks/participants';
 
-function ShareScreen({className, iconStyle}) {
+function ShareScreen({className}) {
   const label = "Share Screen";
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ function ShareScreen({className, iconStyle}) {
       aria-label={label}
       className={className}
       onClick={() => dispatch(participantActions.startScreenSharing())}>
-      <Monitor className={iconStyle} />
+      <Monitor />
     </button>
   );
 }

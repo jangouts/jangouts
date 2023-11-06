@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { LogOut as LogOutIcon } from 'react-feather';
 import { actionCreators as roomActions } from '../../../state/ducks/room';
 
-function LogOut({className, iconStyle}) {
+function LogOut({className}) {
   const label = "Leave the room";
   const dispatch = useDispatch();
 

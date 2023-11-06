@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-function ParticipantActionButton({ icon, label, className, iconStyle, labelStyle, showLabel = false, ...props }) {
+function ParticipantActionButton({ icon, label, className, showLabel = false, ...props }) {
   const Icon = icon;
 
   return(
@@ -17,13 +17,8 @@ function ParticipantActionButton({ icon, label, className, iconStyle, labelStyle
       className={className}
       {...props}
     >
-      <Icon className={iconStyle} />
-      {
-        showLabel &&
-        <span className={labelStyle}>
-          {label}
-        </span>
-      }
+      <Icon />
+      { showLabel && <span>{label}</span> }
     </button>
   );
 }

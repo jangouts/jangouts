@@ -39,6 +39,21 @@ input[type="submit"] {
   justify-content: space-between;
 }
 
+.header button {
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.header button[data-status="on"] {
+  background: white;
+  color: #16a34a; /* green-600 */
+}
+
+.header button[data-status="off"] {
+  background: var(--colors-secondary);
+  color: white;
+}
+
 .header .logo {
   width: 25%;
   min-width: 100px;
@@ -125,18 +140,14 @@ input[type="submit"] {
   position: relative;
 }
 
-button[data-chat-status="open"] svg {
+button.chat-toggler[data-status="open"] {
   background: white;
   color: var(--colors-primary);
 }
 
-button[data-chat-status="closed"] svg {
+button.chat-toggle[data-status="closed"] {
   background: var(--colors-primary-dark);
   color: white;
-}
-
-button[data-chat-status="closed"]:hover svg {
-  background: var(--colors-primary);
 }
 
 div[role="alertdialog"] {
@@ -217,6 +228,18 @@ div[role="alertdialog"] div button:hover {
   background: #e2e8f0; /* gray-200 */
 }
 
+.participant-info button[data-status="on"] {
+  color: #16a34a; /* green-600 */
+}
+
+.participant-info button[data-status="off"] {
+  color: var(--colors-secondary);
+}
+
+.stop-sharing svg {
+  color: var(--colors-secondary);;
+}
+
 .participant .show-more-actions {
   position: absolute;
   top: 5px;
@@ -274,15 +297,17 @@ div[role="alertdialog"] div button:hover {
   display: none;
 }
 
-.action-on {
-  background: white;
-  color: #16a34a; /* green-600 */
-}
+/* .action-on { */
+/*   background: white; */
+/*   color: #16a34a; /* green-600 */ */
+/* } */
+/**/
 
-.action-off {
-  background: var(--colors-secondary);
-  color: white;
-}
+/* .action-off { */
+/*   background: var(--colors-secondary); */
+/*   color: white; */
+/* } */
+/**/
 
 .powered-by {
   color: white;

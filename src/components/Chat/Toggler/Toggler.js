@@ -52,7 +52,7 @@ function Toggler() {
   return (
     <button
       title={title}
-      data-chat-status={settings.chatOpen ? "open" : "closed"}
+      data-status={settings.chatOpen ? "open" : "closed"}
       onClick={toggle(dispatch, settings)}
       className="chat-toggler"
     >

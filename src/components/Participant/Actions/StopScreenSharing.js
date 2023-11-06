@@ -9,7 +9,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { StopCircle } from 'react-feather';
 import { actionCreators as participantsActions } from '../../../state/ducks/participants';
-import { classNames } from '../../../utils/common';
 
 import ParticipantActionButton from './ParticipantActionButton';
 
@@ -21,7 +20,7 @@ function StopScreenSharing({ participantId, ...props }) {
     <ParticipantActionButton
       icon={StopCircle}
       label={label}
-      iconStyle={classNames("text-red-600", props.iconStyle)}
+      className="stop-sharing"
       onClick={() => dispatch(participantsActions.stopScreenSharing(participantId))}
       {...props}
     />
