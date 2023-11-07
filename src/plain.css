@@ -336,6 +336,16 @@ div[role="alertdialog"] div button:hover {
   width: 100%;
 }
 
+.participants-container {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  align-content: flex-start;
+  justify-content: space-evenly;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .footer {
   background: var(--colors-primary-dark);
   border-top: 2px solid var(--colors-secondary);
