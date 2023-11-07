@@ -2,123 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  .theme-classic {
-    --colors-primary-dark: #272727;
-    --colors-primary: #676767;
-    --colors-primary-lighter: #a7a7a7;
-    --colors-secondary: #f15a5c;
-    --colors-secondary-lighter: #f48b78; /* Salmon */
-    --colors-inverse: #eeeff1; /* Fog */
-    --colors-yellow-dark: #d7cc9f;
-    --colors-yellow-light: #e0dbbd;
-  }
+.theme-classic {
+  --colors-primary-dark: #272727;
+  --colors-primary: #676767;
+  --colors-primary-lighter: #a7a7a7;
+  --colors-secondary: #f15a5c;
+  --colors-secondary-lighter: #f48b78; /* Salmon */
+  --colors-inverse: #eeeff1; /* Fog */
+  --colors-yellow-dark: #d7cc9f;
+  --colors-yellow-light: #e0dbbd;
+}
 
-  .theme-classic .bg-signal {
-    background-color: #e0dbbd;
-    background-image: url("data:image/svg+xml,%3Csvg width='84' height='48' viewBox='0 0 84 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h12v6H0V0zm28 8h12v6H28V8zm14-8h12v6H42V0zm14 0h12v6H56V0zm0 8h12v6H56V8zM42 8h12v6H42V8zm0 16h12v6H42v-6zm14-8h12v6H56v-6zm14 0h12v6H70v-6zm0-16h12v6H70V0zM28 32h12v6H28v-6zM14 16h12v6H14v-6zM0 24h12v6H0v-6zm0 8h12v6H0v-6zm14 0h12v6H14v-6zm14 8h12v6H28v-6zm-14 0h12v6H14v-6zm28 0h12v6H42v-6zm14-8h12v6H56v-6zm0-8h12v6H56v-6zm14 8h12v6H70v-6zm0 8h12v6H70v-6zM14 24h12v6H14v-6zm14-8h12v6H28v-6zM14 8h12v6H14V8zM0 8h12v6H0V8z' fill='%23d7cc9f' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
-  }
-};
+.theme-classic .bg-signal {
+  background-color: #e0dbbd;
+  background-image: url("data:image/svg+xml,%3Csvg width='84' height='48' viewBox='0 0 84 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h12v6H0V0zm28 8h12v6H28V8zm14-8h12v6H42V0zm14 0h12v6H56V0zm0 8h12v6H56V8zM42 8h12v6H42V8zm0 16h12v6H42v-6zm14-8h12v6H56v-6zm14 0h12v6H70v-6zm0-16h12v6H70V0zM28 32h12v6H28v-6zM14 16h12v6H14v-6zM0 24h12v6H0v-6zm0 8h12v6H0v-6zm14 0h12v6H14v-6zm14 8h12v6H28v-6zm-14 0h12v6H14v-6zm28 0h12v6H42v-6zm14-8h12v6H56v-6zm0-8h12v6H56v-6zm14 8h12v6H70v-6zm0 8h12v6H70v-6zM14 24h12v6H14v-6zm14-8h12v6H28v-6zM14 8h12v6H14V8zM0 8h12v6H0V8z' fill='%23d7cc9f' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
 
-@layer components {
-  .form-element {
-    flex: 1 1 0%;
-    margin-top: 0.625rem;
-  }
+.form-element {
+  flex: 1 1 0%;
+  margin-top: 0.625rem;
+}
 
-  .form-label {
-    display: block;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    color: #e5e7eb; /* gray-200 */
-    font-weight: bold;
-  }
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #e5e7eb; /* gray-200 */
+  font-weight: bold;
+}
 
-  .form-input {
-    width: 100%;
-    margin-top: 0.25rem;
-    padding: 0.5rem;
-    opacity: 0.75;
-  }
+.form-input {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+  opacity: 0.75;
+}
 
-  .form-input:focus {
-    background: white;
-    opacity: 1;
-  }
+.form-input:focus {
+  background: white;
+  opacity: 1;
+}
 
-  input[type="submit"] {
-    width: 100%;
-    color: white;
-    background: var(--colors-secondary);
-    padding: 0.5rem;
-    font-weight: bold;
-  }
+input[type="submit"] {
+  width: 100%;
+  color: white;
+  background: var(--colors-secondary);
+  padding: 0.5rem;
+  font-weight: bold;
+}
 
-  form input[type="submit"] {
-    cursor: pointer;
-  }
+form input[type="submit"] {
+  cursor: pointer;
+}
 
-  .chat-wrapper {
-    position: relative;
-    grid-column: 3 / span 2;
-    grid-row: 1 / span 7;
-    border-color: var(--colors-primary);
-    padding: 8px 4px;
-  }
+.chat-wrapper {
+  position: relative;
+  grid-column: 3 / span 2;
+  grid-row: 1 / span 7;
+  border-color: var(--colors-primary);
+  padding: 8px 4px;
+}
 
-  .chat-wrapper[data-chat-position="start"] {
-    border-right-width: 1px;
-  }
+.chat-wrapper[data-chat-position="start"] {
+  border-right-width: 1px;
+}
 
-  .chat-wrapper[data-chat-position="end"] {
-    grid-column-start: 3;
-    grid-row-start: 1;
-    border-left-width: 1px;
-  }
+.chat-wrapper[data-chat-position="end"] {
+  grid-column-start: 3;
+  grid-row-start: 1;
+  border-left-width: 1px;
+}
 
-  .chat-wrapper a {
-    text-decoration: underline;
-  }
+.chat-wrapper a {
+  text-decoration: underline;
+}
 
-  .chat-position-toggler {
-    --icon-size: 24px;
-    --half-icon-size: calc(var(--icon-size) / 2);
-    rotate: -90deg;
-    position: absolute;
-    left: calc(100% - var(--half-icon-size) + 1px);
-    bottom: calc(50% - var(--half-icon-size));
-    color: var(--colors-primary-dark);
-  }
+.chat-position-toggler {
+  --icon-size: 24px;
+  --half-icon-size: calc(var(--icon-size) / 2);
+  rotate: -90deg;
+  position: absolute;
+  left: calc(100% - var(--half-icon-size) + 1px);
+  bottom: calc(50% - var(--half-icon-size));
+  color: var(--colors-primary-dark);
+}
 
-  .chat-position-toggler:hover {
-    color: var(--colors-secondary);
-  }
+.chat-position-toggler:hover {
+  color: var(--colors-secondary);
+}
 
-  .chat-position-toggler svg {
-    position: relative;
-    border-radius: 1000px;
-    width: var(--icon-size);
-    height: var(--icon-size);
-    background: #f3f4f6; /* gray-100 */
-  }
+.chat-position-toggler svg {
+  position: relative;
+  border-radius: 1000px;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background: #f3f4f6; /* gray-100 */
+}
 
-  .chat-position-toggler[data-chat-position="start"] svg {
-    border-bottom: 1px solid;
-  }
+.chat-position-toggler[data-chat-position="start"] svg {
+  border-bottom: 1px solid;
+}
 
-  .chat-position-toggler[data-chat-position="end"] {
-    left: calc(0% - var(--half-icon-size) + 1px);
-  }
+.chat-position-toggler[data-chat-position="end"] {
+  left: calc(0% - var(--half-icon-size) + 1px);
+}
 
-  .chat-position-toggler[data-chat-position="end"] svg {
-    border-top: 1px solid;
-  }
-};
+.chat-position-toggler[data-chat-position="end"] svg {
+  border-top: 1px solid;
+}
 
-@layer utils {
-  .mirrored {
-    transform: rotateY(180deg);
-    -webkit-transform: rotateY(180deg); /* Safari and Chrome */
-    -moz-transform: rotateY(180deg); /* Firefox */
-  }
-};
+.mirrored {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
