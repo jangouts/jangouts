@@ -1,6 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 .theme-classic {
   --colors-primary-dark: #272727;
@@ -115,4 +114,8 @@ form input[type="submit"] {
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
   -moz-transform: rotateY(180deg); /* Firefox */
+}
+
+.hidden {
+  display: none;
 }
