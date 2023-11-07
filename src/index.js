@@ -7,6 +7,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './styles/preflight.css';
 import './styles.css';
 import './plain.css';
 import App from './components/App';
