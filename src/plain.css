@@ -52,14 +52,6 @@
   color: red;
 }
 
-input[type="submit"] {
-  width: 100%;
-  color: white;
-  background: var(--colors-secondary);
-  padding: 0.5rem;
-  font-weight: bold;
-}
-
 .header-wrapper {
   padding: 2px 4px;
   font-weight: bold;

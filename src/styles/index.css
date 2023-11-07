@@ -22,27 +22,40 @@
 
 @layer components {
   .form-element {
-    @apply flex-1 mt-2 mx-1;
+    flex: 1 1 0%;
+    margin-top: 0.625rem;
   }
 
   .form-label {
-    @apply block;
-    @apply text-sm text-gray-200 font-bold;
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: #e5e7eb; /* gray-200 */
+    font-weight: bold;
   }
 
   .form-input {
-    @apply w-full mt-1 p-2 opacity-75;
-    @apply transition-all duration-200 ease-in;
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+    opacity: 0.75;
   }
 
   .form-input:focus {
-    @apply bg-white opacity-100;
+    background: white;
+    opacity: 1;
   }
 
-  .form-btn {
-    @apply appearance-none box-border cursor-pointer;
-    @apply w-full p-2 bg-secondary;
-    @apply text-white font-bold uppercase;
+  input[type="submit"] {
+    width: 100%;
+    color: white;
+    background: var(--colors-secondary);
+    padding: 0.5rem;
+    font-weight: bold;
+  }
+
+  form input[type="submit"] {
+    cursor: pointer;
   }
 
   .chat-wrapper {
