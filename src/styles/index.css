@@ -99,7 +99,7 @@
     border-radius: 1000px;
     width: var(--icon-size);
     height: var(--icon-size);
-    @apply bg-gray-100;
+    background: #f3f4f6; /* gray-100 */
   }
 
   .chat-position-toggler[data-chat-position="start"] svg {
