@@ -9,7 +9,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/preflight.css';
 import './styles/index.css';
-import './plain.css';
+import './styles/migration.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
