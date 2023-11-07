@@ -47,19 +47,20 @@
 
   .chat-wrapper {
     position: relative;
-    grid-column: span 2 / span 2;
-    grid-row: 1 / span 2;
+    grid-column: 3 / span 2;
+    grid-row: 1 / span 7;
     border-color: var(--colors-primary);
     padding: 8px 4px;
   }
 
   .chat-wrapper[data-chat-position="start"] {
-    border-bottom-width: 1px;
+    border-right-width: 1px;
   }
 
   .chat-wrapper[data-chat-position="end"] {
-    grid-row-start: 5;
-    border-top-width: 1px;
+    grid-column-start: 3;
+    grid-row-start: 1;
+    border-left-width: 1px;
   }
 
   .chat-wrapper a {
@@ -69,9 +70,10 @@
   .chat-position-toggler {
     --icon-size: 24px;
     --half-icon-size: calc(var(--icon-size) / 2);
+    rotate: -90deg;
     position: absolute;
-    left: calc(50% - var(--half-icon-size));
-    bottom: calc(0% - var(--half-icon-size) + 1px);
+    left: calc(100% - var(--half-icon-size) + 1px);
+    bottom: calc(50% - var(--half-icon-size));
     color: var(--colors-primary-dark);
   }
 
@@ -87,56 +89,16 @@
     @apply bg-gray-100;
   }
 
-  .chat-position-toggler[data-chat-position="end"] {
-    bottom: calc(100% - var(--half-icon-size) - 1px);
-  }
-
   .chat-position-toggler[data-chat-position="start"] svg {
     border-bottom: 1px solid;
   }
 
+  .chat-position-toggler[data-chat-position="end"] {
+    left: calc(0% - var(--half-icon-size) + 1px);
+  }
+
   .chat-position-toggler[data-chat-position="end"] svg {
     border-top: 1px solid;
-  }
-
-  @media (min-width: 640px) {
-    .chat-wrapper {
-      grid-column: 1 / 2;
-      grid-row: 1 / 7;
-      border-top: 0;
-      border-bottom: 0;
-    }
-
-    .chat-wrapper[data-chat-position="start"] {
-      border-right-width: 1px;
-    }
-
-    .chat-wrapper[data-chat-position="end"] {
-      grid-column-start: 2;
-      grid-row-start: 1;
-      border-left-width: 1px;
-    }
-
-    .chat-position-toggler {
-      position: absolute;
-      rotate: -90deg;
-      left: calc(100% - var(--half-icon-size) - 1px);
-    }
-
-    .chat-position-toggler[data-chat-position="start"] {
-      bottom: 50%;
-    }
-
-    .chat-position-toggler[data-chat-position="end"] {
-      left: calc(0% - var(--half-icon-size) + 1px);
-      bottom: 50%;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .chat-wrapper[data-chat-position="end"]{
-      grid-column: 3 / 3;
-    }
   }
 };
 
