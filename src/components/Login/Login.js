@@ -20,6 +20,7 @@ function Login() {
 
   return (
     <div className="full-viewport bg-signal">
+      <div>{ /* Temporary hack to keep the login form in middle row of "full-viewport" grid */ }</div>
       <div className="login-wrapper">
         <Logo />
         <LoginForm />

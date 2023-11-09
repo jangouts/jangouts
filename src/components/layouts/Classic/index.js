@@ -55,27 +55,23 @@ function Classic() {
 
   return (
     <div className="full-viewport">
-      <div className="wrapper">
-        <div className="header-wrapper">
-          <Header>
-            <ParticipantActions />
-            <ChatToggler />
-          </Header>
+      <div className="header-wrapper">
+        <Header>
+          <ParticipantActions />
+          <ChatToggler />
+        </Header>
+      </div>
+      <div className="content-wrapper">
+        <ChatColumn />
+        <Notifications className="notifications-wrapper"
+        />
+        <div className="speaker-wrapper">
+          <Speaker />
         </div>
-        <div className="content-wrapper">
-          <ChatColumn />
-          <Notifications className="notifications-wrapper"
-          />
-          <div className="speaker-wrapper">
-            <Speaker />
-          </div>
-          <div className="participants-wrapper">
-            <Participants />
-          </div>
-        </div>
-        <div className="footer">
-          Powered by <a target="_blank" rel="noreferrer" href="https://github.com/jangouts/jangouts" className="underline">Jangouts</a>
-        </div>
+        <Participants />
+      </div>
+      <div className="footer">
+        Powered by <a target="_blank" rel="noreferrer" href="https://github.com/jangouts/jangouts" className="underline">Jangouts</a>
       </div>
     </div>
   );
