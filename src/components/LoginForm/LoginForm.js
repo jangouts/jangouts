@@ -97,21 +97,20 @@ function LoginForm() {
       <label htmlFor="username">Username</label>
       <input
         id="username"
-        name="username"
         type="text"
-        ref={register}
         defaultValue={settings.username}
         autoComplete="username"
-        required
+        {...register("username", { required: true })}
       />
 
       <label htmlFor="room">Room</label>
       <select
         id="room"
-        name="room"
-        ref={register}
-        onChange={(e) => setSelectedRoom(findRoom(rooms, e.target.value))}
-        required>
+        {...register("room", {
+          required: true,
+          onChange: (e) => setSelectedRoom(findRoom(rooms, e.target.value))
+        })}
+      >
         {roomOptions(rooms)}
       </select>
 
@@ -120,11 +119,9 @@ function LoginForm() {
           <label htmlFor="pin">PIN</label>
           <input
             id="pin"
-            name="pin"
             type="password"
-            ref={register}
             autoComplete="current-password"
-            required
+            {...register("pin", { required: true })}
           />
         </>
       )}
