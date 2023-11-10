@@ -23,7 +23,7 @@
     "react-scripts": "5.0.1",
     "rxjs": "^7.5.5",
     "typescript": "^4.7.4",
-    "use-debounce": "^8.0.1",
+    "use-debounce": "^10.0.0",
     "webrtc-adapter": "^8.2.0"
   },
   "scripts": {
