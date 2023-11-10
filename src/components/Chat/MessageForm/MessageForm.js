@@ -25,21 +25,15 @@ function MessageForm() {
   return (
     <form
       data-testid="chatbox"
-      className="flex absolute bottom-0 w-full h-12 p-1 bg-gray-100 border-t"
       onSubmit={(event) => handleSubmit(event, dispatch, textInput)}>
       <input
         id="text"
         type="text"
         autoComplete="off"
-        className="appearance-none rounded w-full mr-2 px-2 py-4 focus:border-secondary focus:outline-none focus:shadow"
         placeholder="Enter your message here"
         ref={textInput}
       />
-      <input
-        type="submit"
-        className="appearance-none rounded px-4 font-bold border-none text-white uppercase bg-secondary"
-        value="Send"
-      />
+      <input type="submit" value="Send" />
     </form>
   );
 }

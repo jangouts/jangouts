@@ -16,7 +16,7 @@ function Chat() {
   if (!settings.chatOpen) { return null }
 
   return (
-    <div className="relative h-full pb-12">
+    <div className="chat">
       <MessagesList />
       <MessageForm />
     </div>

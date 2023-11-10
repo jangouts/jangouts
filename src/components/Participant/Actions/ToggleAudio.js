@@ -9,11 +9,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Mic, MicOff } from 'react-feather';
 import { actionCreators as participantsActions } from '../../../state/ducks/participants';
-import { classNames } from '../../../utils/common';
 
 import ParticipantActionButton from './ParticipantActionButton';
 
-function ToggleAudio({ participantId, iconStyle, activeClassNames = "", inactiveClassNames = "", ...props }) {
+function ToggleAudio({ participantId, ...props }) {
   const dispatch = useDispatch();
   const participant = useSelector((state) => state.participants[participantId]);
   if (!participant) return null;
@@ -23,19 +22,13 @@ function ToggleAudio({ participantId, iconStyle, activeClassNames = "", inactive
 
   const icon = audio ? Mic : MicOff;
   const label = audio ? 'Mute' : 'Unmute';
-  const enableClassNames = audio ? "text-green-600" : "text-red-600";
-  const disableClassNames = "text-gray-800";
 
   return (
     <ParticipantActionButton
       icon={icon}
       label={disabled ? `${username} is muted` : label}
+      data-status={audio ? 'on' : 'off' }
       disabled={disabled}
-      iconStyle={classNames(
-        disabled ? disableClassNames : enableClassNames,
-        audio? activeClassNames : inactiveClassNames,
-        iconStyle
-      )}
       onClick={() => dispatch(participantsActions.toggleAudio(participantId))}
       {...props}
     />

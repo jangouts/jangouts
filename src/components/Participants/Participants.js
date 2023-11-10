@@ -93,7 +93,7 @@ const Participants = () => {
   return (
     <div
       ref={mainRef}
-      className="h-full w-full grid content-start justify-evenly overflow-x-hidden overflow-y-auto"
+      className="participants-wrapper"
       style={{"--partWidthExtra": 18, "--partHeightExtra": 46, "--partHeightFactor": 0.75, "gridTemplateColumns": "repeat(auto-fill, var(--partSlotWidth))"}}>
       {orderedParticipants.map((participant) => {
         let {

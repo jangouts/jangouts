@@ -95,7 +95,7 @@ function MessagesList() {
   const messages = filterMessages(useSelector((state) => state.messages.list));
 
   return (
-    <div ref={wrapperRef} className="h-full overflow-y-auto" role="log">
+    <div ref={wrapperRef} role="log">
       <ul ref={messagesRef}>
         {messages.map((m, index) => (
           <Message key={index} {...m} />
