@@ -50,8 +50,8 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.1.1",
-    "@testing-library/react": "^9.4.0",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.1.0",
     "better-docs": "~2.3.2",
     "jsdoc": "^3.6.10",
     "mutationobserver-shim": "^0.3.3",
