@@ -94,51 +94,39 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit(dispatch, settings))}>
       {error && renderError(error)}
-      <div className="form-element">
-        <label className="form-label" htmlFor="username">
-          Username
-        </label>
-        <input
-          id="username"
-          name="username"
-          type="text"
-          ref={register}
-          className="form-input"
-          defaultValue={settings.username}
-          autoComplete="username"
-          required
-        />
-      </div>
+      <label htmlFor="username">Username</label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        ref={register}
+        defaultValue={settings.username}
+        autoComplete="username"
+        required
+      />
 
-      <div className="form-element">
-        <label className="form-label" htmlFor="room">
-          Room
-        </label>
-        <select
-          id="room"
-          name="room"
-          ref={register}
-          className="form-input"
-          onChange={(e) => setSelectedRoom(findRoom(rooms, e.target.value))}
-          required>
-          {roomOptions(rooms)}
-        </select>
-      </div>
+      <label htmlFor="room">Room</label>
+      <select
+        id="room"
+        name="room"
+        ref={register}
+        onChange={(e) => setSelectedRoom(findRoom(rooms, e.target.value))}
+        required>
+        {roomOptions(rooms)}
+      </select>
+
       {selectedRoom.pinRequired && (
-        <div className="form-element">
-          <label className="form-label" htmlFor="pin">
-            PIN
-          </label>
+        <>
+          <label htmlFor="pin">PIN</label>
           <input
             id="pin"
             name="pin"
             type="password"
             ref={register}
-            className="form-input"
             autoComplete="current-password"
             required
           />
-        </div>
+        </>
       )}
       <input type="submit" value="Enter" />
     </form>

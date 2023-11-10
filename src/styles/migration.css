@@ -49,85 +49,100 @@ body {
 
 .login-wrapper {
   width: 60%;
-  background: var(--colors-primary-dark);
+  max-width: 400px;
+  background: var(--primary-color);
   align-self: center;
   justify-self: center;
   padding: 20px;
 }
 
-.login-wrapper div[role="alert"] {
+.login-wrapper img {
+  margin: 0 auto;
+  max-width: 70%;
+}
+
+div[role="alert"] {
+  border-radius: 2px;
+  margin: var(--spacing-base) auto;
   background: white;
-  padding: 0.5rem;
-  color: red;
+  padding: var(--spacing-lg);
+  font-size: var(--font-size-lg);
+  color: var(--secondary-color);
+  font-weight: bold;
+  border-bottom: 4px solid var(--secondary-color);
+  box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+div[role="alert"] svg {
+  fill: var(--secondary-color);
 }
 
 .login-wrapper div[role="alert"] > svg {
-  width: 1.5rem;
+  width: var(--font-size-xxl);
   color: red;
-}
-
-.header-wrapper {
-  padding: 2px 4px;
-  font-weight: bold;
-  color: white;
-  background: var(--colors-primary-dark);
-  border-bottom: 4px solid var(--colors-secondary);
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: var(--spacing-xs);
+  font-weight: bold;
+  color: white;
+  background: var(--primary-color);
+  border-bottom: 4px solid var(--secondary-color);
 }
 
 .header button {
-  padding: 2px;
-  border-radius: 4px;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-base);
 }
 
 .header button[data-status="on"] {
-  background: white;
-  color: #16a34a; /* green-600 */
+  color: var(--on-status-color);
+  background: var(--on-status-background);
 }
 
 .header button[data-status="off"] {
-  background: var(--colors-secondary);
-  color: white;
+  color: var(--off-status-color);
+  background: var(--off-status-background);
 }
 
 .header .logo {
-  width: 25%;
-  min-width: 100px;
+  width: 20%;
+  min-width: 70px;
+  max-width: 200px;
 }
 
 .header .actions {
   display: flex;
-  gap: 0.2rem;
+  gap: var(--spacing-xs);
 }
 
 .header .actions button svg {
-  border-radius: 4px;
+  border-radius: var(--border-radius-base);
 }
 
 .chat {
   position: relative;
   height: 100%;
-  padding-bottom: 4rem;
+  padding-bottom: 6rem;
 }
 
 .chat div[role="log"] {
   height: 100%;
   overflow-y: auto;
-  padding: 0.5rem;
+  padding: var(--spacing-sm);
 }
 
 .chat li {
-  background: white;
-  margin-bottom: 0.5rem;
-  padding: 0.3rem;
-  border-radius: 0.3rem;
+  background: var(--chat-message-background);
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-base);
   box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.6);
 }
 
@@ -142,7 +157,7 @@ body {
 
 .chat .message .data time {
   font-family: mono;
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
 }
 
 .chat .info {
@@ -153,17 +168,21 @@ body {
   bottom: 0;
   position: absolute;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  gap: 0.5rem;
+  gap: var(--spacing-xs);
 }
 
 .chat form input {
   appearance: none;
-  padding: 0.5rem;
+  padding: var(--spacing-sm);
   flex-grow: 2;
   overflow: hidden;
   flex-basis: 5%;
+  opacity: 1;
+  margin-top: 0;
+  box-shadow: 1px 1px 2px 0 rgba(0,0,0,0.7);
 }
 .chat form input[type="submit"] {
   flex-grow: 1;
@@ -191,49 +210,48 @@ body {
 
 button.chat-toggler[data-status="open"] {
   background: white;
-  color: var(--colors-primary);
+  color: var(--primary-color);
 }
 
 button.chat-toggle[data-status="closed"] {
-  background: var(--colors-primary-dark);
+  background: var(--primary-color);
   color: white;
 }
 
 div[role="alertdialog"] {
   background: white;
-  border-bottom: 2px solid var(--colors-secondary);
+  border-bottom: 2px solid var(--secondary-color);
   box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.7);
   padding: 1rem;
-  min-width: 60%;
   max-width: 60%;
 }
 
 div[role="alertdialog"] p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-base);
 }
 
 div[role="alertdialog"] div {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-base);
   justify-content: center;
 }
 
 div[role="alertdialog"] div button {
-  border: 2px solid var(--colors-primary);
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  color: var(--colors-primary);
+  border: 2px solid var(--notification-button-color);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-base);
+  color: var(--notification-button-color);
   font-weight: bold;
 }
 
 div[role="alertdialog"] div button:hover {
-  border-color: var(--colors-primary-dark);
-  color: var(--colors-primary-dark);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .logout-action {
-  color: var(--colors-secondary);
+  color: var(--secondary-color);
 }
 
 .participant {
@@ -242,25 +260,25 @@ div[role="alertdialog"] div button:hover {
 }
 
 .participant.focused {
-  border-color: var(--colors-secondary);
+  border-color: var(--participant-focused-color);
 }
 
 .participant.speaking {
-  border-color: #86efac /** green-300 */
+  border-color: var(--participant-speaking-color);
 }
 
 .participant-video {
   position: relative;
   display: flex;
-  background: var(--colors-primary-dark);
+  background: var(--video-background);
 }
 
 .participant-video.placeholder {
-  background: #f3f4f6; /* gray-100 */
+  background: var(--placeholder-background);
 }
 
 .participant-video.placeholder svg {
-  color: var(--colors-secondary);
+  color: var(--secondary-color);
   height: 100%;
   width: 100%;
 }
@@ -272,45 +290,54 @@ div[role="alertdialog"] div button:hover {
 
 .participant-info {
   display: flex;
-  gap: 2px;
-  padding: 3px 1px;
-  background: #e2e8f0; /* gray-200 */
+  gap: var(--spacing-xxs);
+  padding: var(--spacing-xs);
+  background: var(--placeholder-background);
 }
 
 .participant-info button[data-status="on"] {
-  color: #16a34a; /* green-600 */
+  color: var(--on-status-color);
 }
 
 .participant-info button[data-status="off"] {
-  color: var(--colors-secondary);
+  color: var(--off-status-color);
 }
 
 .stop-sharing svg {
-  color: var(--colors-secondary);;
+  color: var(--secondary-color);;
 }
 
 .participant .show-more-actions {
+  --padding: 2px;
+  --size: calc(
+    var(--font-size-base) +
+    calc(var(--padding) * 2)
+  );
   position: absolute;
-  top: 5px;
-  right: 4px;
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
   z-index: 50;
-  width: 20px;
-  height: 20px;
+  width: var(--size);
+  height: var(--size);
   opacity: 0.75;
-  border-radius: 1000px;
+  border-radius: 100px;
   background: white;
   cursor: pointer;
   text-align: center;
-  padding: 1px;
+  padding: var(--padding);
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.6);
 }
 
 .participant .show-more-actions svg {
-  width: 18px;
-  height: 18px;
+  --size: var(--font-size-base);
+  width: var(--size);
+  height: var(--size);
 }
 
 .participant .more-actions {
+  --padding-block: calc(var(--spacing-lg) + 4px);
+  --padding-inline: var(--spacing-xs);
+
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -318,28 +345,28 @@ div[role="alertdialog"] div button:hover {
   left: 0;
   height: 100%;
   width: 100%;
-  background: var(--colors-primary-dark);
-  padding: 30px 5px;
+  background: var(--primary-color);
+  padding: var(--padding-block) var(--padding-inline);
   color: white;
   opacity: 0.9;
   overflow-y: scroll;
 }
 
 .participant .more-actions button {
-  padding: 1px 4px;
+  padding: var(--spacing-xs);
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 14px;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-xs);
 }
 
 .participant .more-actions button svg {
   color: white;
-  width: 10px;
+  width: var(--font-size-xs);
 }
 
 .participant .more-actions button:hover {
-  background: var(--colors-primary);
+  background: var(--primary-color-lighter);
 }
 
 .participant .hidden {
@@ -356,19 +383,18 @@ div[role="alertdialog"] div button:hover {
 }
 
 .footer {
-  background: var(--colors-primary-dark);
-  border-top: 2px solid var(--colors-secondary);
-  font-size: 0.75rem;
-  line-height: 1rem;
+  background: var(--primary-color);
+  border-top: 2px solid var(--secondary-color);
+  font-size: var(--font-size-xs);
   color: white;
   text-align: center;
-  padding: 0.25rem 0;
+  padding: var(--spacing-xs);
 }
 
 .powered-by {
   color: white;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   text-align: center;
-  margin-top: 1rem;
+  margin-top: var(--spacing-base);
 }
 

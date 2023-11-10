@@ -55,12 +55,10 @@ function Classic() {
 
   return (
     <div className="full-viewport">
-      <div className="header-wrapper">
-        <Header>
-          <ParticipantActions />
-          <ChatToggler />
-        </Header>
-      </div>
+      <Header>
+        <ParticipantActions />
+        <ChatToggler />
+      </Header>
       <div className="content-wrapper">
         <ChatColumn />
         <Notifications className="notifications-wrapper"
