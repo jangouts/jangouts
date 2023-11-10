@@ -54,7 +54,7 @@
     "@testing-library/react": "^14.1.0",
     "better-docs": "~2.3.2",
     "jsdoc": "^3.6.10",
-    "mutationobserver-shim": "^0.3.3",
+    "mutationobserver-shim": "^0.3.7",
     "react-test-renderer": "^18.2.0",
     "redux-mock-store": "^1.5.4"
   },
