@@ -64,5 +64,10 @@
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/vendor/janus.js"
     ]
+  },
+  "overrides": {
+    "react-scripts": {
+      "typescript": "^5"
+    }
   }
 }
