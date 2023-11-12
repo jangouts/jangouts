@@ -31,7 +31,7 @@
     "build": "react-scripts build",
     "test": "TZ=UTC react-scripts test",
     "eject": "react-scripts eject",
-    "jsdoc": "npx jsdoc -c jsdoc.conf.json && echo Tip: && echo xdg-open jsdoc.out/index.html",
+    "doc": "typedoc && echo Tip: && echo xdg-open docs/index.html",
     "lint": "npx eslint src"
   },
   "eslintConfig": {
@@ -53,10 +53,10 @@
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.0",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
-    "jsdoc": "^3.6.10",
     "mutationobserver-shim": "^0.3.7",
     "react-test-renderer": "^18.2.0",
-    "redux-mock-store": "^1.5.4"
+    "redux-mock-store": "^1.5.4",
+    "typedoc": "^0.25.3"
   },
   "jest": {
     "collectCoverageFrom": [

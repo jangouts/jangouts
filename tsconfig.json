@@ -21,5 +21,14 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "typedocOptions": {
+    "entryPoints": [
+      "./src"
+    ],
+    "entryPointStrategy": "expand",
+    "excludeNotDocumented": true,
+    "includeVersion": true,
+    "out": "docs"
+  }
 }
