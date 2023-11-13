@@ -39,8 +39,7 @@ const Video = ({id, streamReady, isPublisher, isLocalScreen}) => {
       muted={isPublisher}
       autoPlay
       className={classNames(
-        isPublisher && !isLocalScreen && 'mirrored',
-        "max-h-full"
+        isPublisher && !isLocalScreen && 'mirrored'
       )}
     />
   );
@@ -75,31 +74,30 @@ function Participant({
   return (
     <div
       className={classNames(
-        'participant relative group bg-white',
-        'transition duration-150 ease-in-out',
-        focus || 'border-white',
-        focus && 'border-secondary shadow-md',
-        speaking && 'border-green-300'
+        'participant',
+        focus && 'focused',
+        speaking && 'speaking'
       )}
       style={{width: "calc(var(--partSlotWidth) - 6px)", margin: "3px", padding: "4px", borderWidth: "2px"}}>
       <div
         className={classNames(
-          "relative flex justify-evenly",
-          showVideo ? "bg-primary-dark" : "bg-gray-100 hidden-video"
+          "participant-video",
+          showVideo || "placeholder"
         )}
+        data-state
         style={{"height": "calc((var(--partSlotWidth) - 18px) * 0.75)"}}
         onClick={() => dispatch(toggleFocus(id, focus))}>
-        <ParticipantVideo 
+        <ParticipantVideo
           id={id}
           streamReady={streamReady}
           isLocalScreen={isLocalScreen}
           isPublisher={isPublisher}
         />
-        <UserIcon className={classNames('w-4/6 h-auto m-auto text-secondary', showVideo && 'hidden')} />
+        <UserIcon className={classNames(showVideo && 'hidden')} />
       </div>
-      <div className="flex items-center p-1 bg-gray-200">
+      <div className="participant-info">
         <ParticipantActions participantId={id} />
-        <div className="text-sm whitespace-no-wrap truncate">{username}</div>
+        <div>{username}</div>
       </div>
     </div>
   );

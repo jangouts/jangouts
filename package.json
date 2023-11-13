@@ -4,38 +4,33 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@types/jest": "^28.1.3",
-    "@types/node": "^18.0.0",
-    "@types/react": "^18.0.14",
-    "@types/react-dom": "^18.0.5",
-    "dompurify": "^2.3.8",
-    "emojibase": "^6.1.0",
-    "interweave": "^13.0.0",
-    "interweave-autolink": "^5.1.0",
+    "@reduxjs/toolkit": "^1.9.7",
+    "@types/jest": "^29.5.8",
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "dompurify": "^3.0.6",
+    "emojibase": "^15.2.0",
+    "interweave": "^13.1.0",
+    "interweave-autolink": "^5.1.1",
     "interweave-emoji": "^7.0.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-feather": "^2.0.4",
-    "react-hook-form": "^5.1.3",
-    "react-redux": "^7.2.8",
-    "react-router-dom": "^6.3.0",
+    "react-hook-form": "^7.48.2",
+    "react-redux": "^8.1.3",
+    "react-router-dom": "^6.18.0",
     "react-scripts": "5.0.1",
-    "redux-thunk": "^2.4.1",
-    "rxjs": "^7.5.5",
-    "typescript": "^4.7.4",
-    "use-debounce": "^8.0.1",
+    "rxjs": "^7.8.1",
+    "use-debounce": "^10.0.0",
     "webrtc-adapter": "^8.2.0"
   },
   "scripts": {
-    "build:css": "tailwindcss -i ./src/styles/index.css -o ./src/styles.css",
-    "watch:css": "tailwindcss -i ./src/styles/index.css -o ./src/styles.css --watch",
-    "start": "run-p watch:css start:react",
-    "start:react": "react-scripts start",
-    "prebuild": "npm run build:css",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "TZ=UTC react-scripts test",
     "eject": "react-scripts eject",
-    "jsdoc": "npx jsdoc -c jsdoc.conf.json && echo Tip: && echo xdg-open jsdoc.out/index.html",
+    "doc": "typedoc && echo Tip: && echo xdg-open docs/index.html",
     "lint": "npx eslint src"
   },
   "eslintConfig": {
@@ -54,20 +49,24 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.1.1",
-    "@testing-library/react": "^9.4.0",
-    "better-docs": "~2.3.2",
-    "jsdoc": "^3.6.10",
-    "mutationobserver-shim": "^0.3.3",
-    "npm-run-all": "^4.1.5",
-    "react-test-renderer": "^16.12.0",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.1.0",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
+    "mutationobserver-shim": "^0.3.7",
+    "react-test-renderer": "^18.2.0",
     "redux-mock-store": "^1.5.4",
-    "tailwindcss": "^3.1.4"
+    "typedoc": "^0.25.3"
   },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/vendor/janus.js"
     ]
+  },
+  "overrides": {
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "8.47.0",
+    "typescript": "^5.2.2"
   }
 }

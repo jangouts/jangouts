@@ -23,28 +23,22 @@ function Message({ type, index, content, text, timestamp, onRender }) {
 
   if (type === 'chatMsg')
     return (
-      <li
-        className="rounded scroll-mb-2 m-2 p-2 bg-white overflow-hidden overflow-x-auto shadow"
-        data-testid="message" data-index={index}>
-        <div className="flex justify-between">
-          <div className="mr-1 font-bold text-xs md:text-sm">
+      <li className="message" data-testid="message" data-index={index}>
+        <div className="data">
+          <span>
             {content && renderUsername(content.feed)}
-          </div>
-          <time className="font-mono text-xs text-primary" dateTime={timestamp}>
+          </span>
+          <time dateTime={timestamp}>
             {time}
           </time>
         </div>
-        <div className="px-2">
-          <Interweave content={text} onRender={onRender} />
-        </div>
+        <Interweave content={text} onRender={onRender} />
       </li>
     );
 
   return (
-    <li
-      className="rounded scroll-mb-2 m-2 p-1 bg-white overflow-hidden overflow-x-auto shadow"
-      data-testid="message" data-index={index}>
-      <div className="px-2 italic text-xs md:text-sm">{text}</div>
+    <li className="info" data-testid="message" data-index={index}>
+      {text}
     </li>
   );
 }

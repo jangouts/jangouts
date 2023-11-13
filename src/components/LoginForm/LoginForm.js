@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form';
 import janusApi from '../../janus-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as roomActions } from '../../state/ducks/room';
-import { classNames } from '../../utils/common';
 
 /**
  * Build options for the selector of rooms.
@@ -64,20 +63,13 @@ function onSubmit(dispatch, settings) {
  */
 function renderError(error) {
   return (
-    <div
-      className="bg-gray-200 border-b-4 border-secondary text-secondary px-4 py-3 mx-1 mt-2 shadow-inner"
-      role="alert">
-      <div className="flex">
-        <svg
-          className="fill-current h-6 w-6 text-secondary mr-4"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20">
-          <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
-        </svg>
-        <div>
-          <p className="font-bold">{error}</p>
-        </div>
-      </div>
+    <div role="alert">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20">
+        <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+      </svg>
+      <p>{error}</p>
     </div>
   );
 }
@@ -100,71 +92,40 @@ function LoginForm() {
   }, [settings, rooms]);
 
   return (
-    <form className="mt-2" onSubmit={handleSubmit(onSubmit(dispatch, settings))}>
+    <form onSubmit={handleSubmit(onSubmit(dispatch, settings))}>
       {error && renderError(error)}
-      <div className="flex flex-col sm:flex-row lg:flex-col">
-        <div className="form-element">
-          <label className="form-label" htmlFor="username">
-            Username
-          </label>
-          <input
-            id="username"
-            name="username"
-            type="text"
-            ref={register}
-            className="form-input"
-            defaultValue={settings.username}
-            autoComplete="username"
-            required
-          />
-        </div>
+      <label htmlFor="username">Username</label>
+      <input
+        id="username"
+        type="text"
+        defaultValue={settings.username}
+        autoComplete="username"
+        {...register("username", { required: true })}
+      />
 
-        <div className="form-element">
-          <label className="form-label" htmlFor="room">
-            Room
-          </label>
-          <select
-            id="room"
-            name="room"
-            ref={register}
-            className="form-input"
-            onChange={(e) => setSelectedRoom(findRoom(rooms, e.target.value))}
-            required>
-            {roomOptions(rooms)}
-          </select>
-        </div>
-      </div>
-      <div className="flex">
-        <div
-          className={classNames(
-            'transition-all duration-300 ease-out',
-            selectedRoom.pinRequired ? 'form-element w-1/2 self-end' : 'w-0'
-          )}>
-          {selectedRoom.pinRequired && (
-            <div className="">
-              <label className="form-label" htmlFor="pin">
-                PIN
-              </label>
-              <input
-                id="pin"
-                name="pin"
-                type="password"
-                ref={register}
-                className="form-input"
-                autoComplete="current-password"
-                required
-              />
-            </div>
-          )}
-        </div>
-        <div
-          className={classNames(
-            'form-element self-end',
-            selectedRoom.pinRequired ? 'w-1/2' : 'w-full mt-6'
-          )}>
-          <input className="form-btn" type="submit" value="Enter" />
-        </div>
-      </div>
+      <label htmlFor="room">Room</label>
+      <select
+        id="room"
+        {...register("room", {
+          required: true,
+          onChange: (e) => setSelectedRoom(findRoom(rooms, e.target.value))
+        })}
+      >
+        {roomOptions(rooms)}
+      </select>
+
+      {selectedRoom.pinRequired && (
+        <>
+          <label htmlFor="pin">PIN</label>
+          <input
+            id="pin"
+            type="password"
+            autoComplete="current-password"
+            {...register("pin", { required: true })}
+          />
+        </>
+      )}
+      <input type="submit" value="Enter" />
     </form>
   );
 }

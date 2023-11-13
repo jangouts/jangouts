@@ -27,14 +27,12 @@ function ParticipantActions({ participantId }) {
 
   const visibleActionsProps = {
     ...commonProps,
-    showLabel: false,
-    className: 'w-4 mr-1'
+    showLabel: false
   };
 
   const moreActionsProps = {
     ...commonProps,
-    showLabel: true,
-    className: 'w-full p-1 hover:bg-primary'
+    showLabel: true
   };
 
   const visibleActions = discardFalses([
@@ -54,17 +52,17 @@ function ParticipantActions({ participantId }) {
   if (moreActions.length) {
     return [
       <div
-        className="absolute top-0 right-0 z-50 w-6 h-6 mt-2 mr-2 cursor-pointer opacity-75 bg-white rounded-full"
+        className="show-more-actions"
         onClick={() => setShowMore(!showMore)}>
-        {showMore ? <Close className="w-2/3 m-auto text-secondary" /> : <MoreVertical />}
+        {showMore ? <Close /> : <MoreVertical />}
       </div>,
       <React.Fragment>
         {visibleActions}
       </React.Fragment>,
       <div
         className={classNames(
-          'absolute top-0 inset-x-0 min-h-full bg-primary-dark opacity-75 overflow-hidden',
-          showMore ? 'flex flex-col' : 'hidden'
+          'more-actions',
+          showMore || 'hidden'
         )}>
         {moreActions}
       </div>
