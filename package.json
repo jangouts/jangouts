@@ -22,7 +22,6 @@
     "react-router-dom": "^6.18.0",
     "react-scripts": "5.0.1",
     "rxjs": "^7.8.1",
-    "typescript": "^5.2.2",
     "use-debounce": "^10.0.0",
     "webrtc-adapter": "^8.2.0"
   },
@@ -65,8 +64,9 @@
     ]
   },
   "overrides": {
-    "react-scripts": {
-      "typescript": "^5"
-    }
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "8.47.0",
+    "typescript": "^5.2.2"
   }
 }
